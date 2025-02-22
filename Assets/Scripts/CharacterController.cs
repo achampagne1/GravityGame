@@ -31,7 +31,6 @@ public class CharacterController : ObjectController{
     Vector2 previousMove = new Vector2(0, 0);
     Vector2 jumpExtraction = new Vector2(0, 0);
     Vector2 additionalForce = new Vector2(0, 0);
-    Vector2 qq = new Vector2(0, 10);
 
     public void setMovement(int moveInput)
     {
@@ -90,21 +89,25 @@ public class CharacterController : ObjectController{
 
     public void calculateCharacterUpdate()
     {
-        turnLeftRight();
+        turnLeftRight(); 
 
         //Check if the player is grounded
         isGrounded = IsGrounded();
 
 
         calculateJump();
-
         calculateMovement();
-
         calculateDrag();
 
-        rb.AddForce(jump, ForceMode2D.Impulse);
-        rb.AddForce(moveDirection, ForceMode2D.Impulse);
-        rb.AddForce(drag, ForceMode2D.Impulse);
+        if (!wallInFront())
+        {
+            rb.AddForce(jump, ForceMode2D.Impulse);
+            rb.AddForce(moveDirection, ForceMode2D.Impulse);
+            rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
+
+            if (!isGrounded)
+                rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //this line is causing the glitch for them to fly up
+        }
 
         //for some reason aidng the aitional force oes nothing
         /*if (additionalForce != Vector2.zero)
@@ -116,8 +119,7 @@ public class CharacterController : ObjectController{
         }*/
         calculateUpdate();
 
-        if (!IsGrounded())
-            rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //this line is causing the glitch for them to fly up
+        //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravity
         
 
         previousV = -rb.velocity;
@@ -139,6 +141,19 @@ public class CharacterController : ObjectController{
         RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, gravityDirection, heightTestPlayer, layerMaskPlanet);
         bool ground = hit.collider != null;
         return ground;
+    }
+
+    bool wallInFront()
+    {
+        Vector2 frontOfPlayer = new Vector2(circleColliderPlayer.bounds.center.x + Mathf.Cos(transform.eulerAngles.z) * heightTestPlayer, circleColliderPlayer.bounds.center.y + Mathf.Sin(transform.eulerAngles.z) * heightTestPlayer);
+        RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, Vector2.Perpendicular(gravityDirection), heightTestPlayer + 3, layerMaskPlanet);
+        Vector2 groundNormal = hit.normal; // The normal of the surface
+        float angle = Mathf.Atan2(groundNormal.y, groundNormal.x) * Mathf.Rad2Deg;
+        Debug.Log(angle);
+
+        if (angle > 90)
+            return true;
+        return false;
     }
 
     float CalculateMagnitude(Vector2 vector)
@@ -169,6 +184,7 @@ public class CharacterController : ObjectController{
 
         jumpMagnitude = CalculateMagnitude(jumpExtraction);
 
+
         // Jump if grounded and space is pressed
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
@@ -183,6 +199,15 @@ public class CharacterController : ObjectController{
         //movement
         rotatedX = -gravityDirection.y;
         rotatedY = gravityDirection.x;
+
+        /*Vector2 frontOfPlayer = new Vector2(circleColliderPlayer.bounds.center.x+ Mathf.Cos(transform.eulerAngles.z) * heightTestPlayer, circleColliderPlayer.bounds.center.y + Mathf.Sin(transform.eulerAngles.z) * heightTestPlayer);
+        RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, Vector2.Perpendicular(gravityDirection), heightTestPlayer + 3, layerMaskPlanet);
+        Vector2 groundNormal = hit.normal; // The normal of the surface
+        float angle = Mathf.Atan2(groundNormal.y, groundNormal.x) * Mathf.Rad2Deg;
+        Debug.Log(angle+" "+isGrounded);
+
+        if (angle > 90 )
+            return;*/
         moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
     }
 
@@ -198,16 +223,5 @@ public class CharacterController : ObjectController{
 
     }
 
-    Vector2 rotate(Vector2 v, float angle)
-    {
-        float radian = angle * Mathf.Deg2Rad; // Convert angle to radians
-        float cosTheta = Mathf.Cos(radian);
-        float sinTheta = Mathf.Sin(radian);
-
-        float newX = cosTheta * v.x - sinTheta * v.y;
-        float newY = sinTheta * v.x + cosTheta * v.y;
-
-        return new Vector2(newX, newY);
-    }
 
 }

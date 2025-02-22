@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,14 +7,16 @@ public class SpaceZombieController : CharacterController
 {
     //object creation
     RandomTimer pauseDuration = new RandomTimer();
-    RandomTimer moveDuration = new RandomTimer(); 
+    RandomTimer moveDuration = new RandomTimer();
+
+    //public variables
+    public bool first = false;
 
     //game variables
     int moveInput = 0;
     bool pause = false;
     bool following = false;
     public bool movementToggle = true;
-    bool first = true;
 
     void Start()
     {

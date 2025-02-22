@@ -8,11 +8,14 @@ public class ZombieSpawner : ObjectController
     GameObject zombieObject;
     Timer timer;
 
+    //public variables
+    public float spawnRate = 3f;
+
     void Start()
     {
         calculateStart();
         zombieObject = GameObject.Find("SpaceZombie");
-        timer = new Timer(1f);
+        timer = new Timer(spawnRate);
         timer.startTimer();
     }
 
