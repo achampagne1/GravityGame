@@ -99,27 +99,18 @@ public class CharacterController : ObjectController{
         calculateMovement();
         calculateDrag();
 
+        rb.AddForce(jump, ForceMode2D.Impulse);
+
         if (!wallInFront())
         {
-            rb.AddForce(jump, ForceMode2D.Impulse);
             rb.AddForce(moveDirection, ForceMode2D.Impulse);
             rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
 
+            //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravity
             if (!isGrounded)
-                rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //this line is causing the glitch for them to fly up
+                rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; 
         }
-
-        //for some reason aidng the aitional force oes nothing
-        /*if (additionalForce != Vector2.zero)
-        {
-            Debug.Log("ouch");
-            rb.AddForce(additionalForce, ForceMode2D.Impulse);
-            Debug.Log(additionalForce);
-            additionalForce = Vector2.zero;
-        }*/
         calculateUpdate();
-
-        //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravity
         
 
         previousV = -rb.velocity;
@@ -145,13 +136,16 @@ public class CharacterController : ObjectController{
 
     bool wallInFront()
     {
-        Vector2 frontOfPlayer = new Vector2(circleColliderPlayer.bounds.center.x + Mathf.Cos(transform.eulerAngles.z) * heightTestPlayer, circleColliderPlayer.bounds.center.y + Mathf.Sin(transform.eulerAngles.z) * heightTestPlayer);
-        RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, Vector2.Perpendicular(gravityDirection), heightTestPlayer + 3, layerMaskPlanet);
+        int layerMask = LayerMask.GetMask("Default", "enemy", "player");
+        int currentLayer = gameObject.layer;
+        int finalMask = layerMask & ~(1 << currentLayer);
+
+        RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, facingLeft ? -Vector2.Perpendicular(gravityDirection) : Vector2.Perpendicular(gravityDirection), heightTestPlayer + 3, finalMask);
         Vector2 groundNormal = hit.normal; // The normal of the surface
         float angle = Mathf.Atan2(groundNormal.y, groundNormal.x) * Mathf.Rad2Deg;
         Debug.Log(angle);
 
-        if (angle > 90)
+        if (angle > 90 || angle <0)
             return true;
         return false;
     }
