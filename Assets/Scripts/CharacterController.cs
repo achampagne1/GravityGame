@@ -143,7 +143,6 @@ public class CharacterController : ObjectController{
         RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, facingLeft ? -Vector2.Perpendicular(gravityDirection) : Vector2.Perpendicular(gravityDirection), heightTestPlayer + 3, finalMask);
         Vector2 groundNormal = hit.normal; // The normal of the surface
         float angle = Mathf.Atan2(groundNormal.y, groundNormal.x) * Mathf.Rad2Deg;
-        Debug.Log(angle);
 
         if (angle > 90 || angle <0)
             return true;
