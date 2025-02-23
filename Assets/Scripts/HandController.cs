@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditor.Search;
 using UnityEngine;
+using UnityEngine.InputSystem;
+
 public class HandController : MonoBehaviour
 {
     //object creation
@@ -12,6 +14,9 @@ public class HandController : MonoBehaviour
     Queue<Vector2> delay;
     float smoothTime = .05f;
     Vector2 velocity = Vector2.zero;
+
+    //public variables
+    public bool holding = false;
 
     // Start is called before the first frame update
     void Start()
@@ -26,23 +31,44 @@ public class HandController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad; 
-        Vector2 localOffset = new Vector2(characterController.getFacingLeft() ? 0.3f : -0.3f, -0.2f); //calculates the local offset to the body including if the player is facing left or right
+        Vector2 localOffset = new Vector2(characterController.getFacingLeft() ? -.5f : .5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
+
+        float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
 
         Vector2 offset = new Vector2(
             localOffset.x * Mathf.Cos(angleRad) - localOffset.y * Mathf.Sin(angleRad),
             localOffset.x * Mathf.Sin(angleRad) + localOffset.y * Mathf.Cos(angleRad)
         ); //converts the local offset into a global one
 
-        Vector2 targetPosition = (Vector2)playerBody.position + offset;  //calcluates a target positions
+        if (!holding)
+        {
 
-        delay.Enqueue(targetPosition); //adds the target to a queue. this is so the hand follows a path that is sligthly behind the body
+            Vector2 targetPosition = (Vector2)playerBody.position + offset;  //calcluates a target positions
+
+            delay.Enqueue(targetPosition); //adds the target to a queue. this is so the hand follows a path that is sligthly behind the body
 
 
-        Vector2 delayedTarget = delay.Dequeue(); //gets the old delay
+            Vector2 delayedTarget = delay.Dequeue(); //gets the old delay
 
 
-        transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); //smoothly places the hand
+            transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); //smoothly places the hand
+        }
+        else
+        {
+            transform.position = (Vector2)playerBody.position + offset;
+        }
     }
+
+    private static Vector3 getMouseDirection(Vector3 mousePosition, Quaternion playerRotation)
+    {
+        //This function was written by chat GPT
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Vector2 direction = new Vector2(mousePosition.x, mousePosition.y) - screenCenter;
+        Vector2 normalizedDirection = direction.normalized;
+        Vector3 direction3D = new Vector3(normalizedDirection.x, normalizedDirection.y, 0f);
+        Vector3 rotatedDirection = playerRotation * direction3D;
+        return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
+    }
+
 
 }
