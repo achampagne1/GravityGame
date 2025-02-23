@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -31,31 +32,29 @@ public class HandController : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        Vector2 localOffset = new Vector2(characterController.getFacingLeft() ? -.5f : .5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
-
-        float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
-
-        Vector2 offset = new Vector2(
-            localOffset.x * Mathf.Cos(angleRad) - localOffset.y * Mathf.Sin(angleRad),
-            localOffset.x * Mathf.Sin(angleRad) + localOffset.y * Mathf.Cos(angleRad)
-        ); //converts the local offset into a global one
 
         if (!holding)
         {
-
+            Vector2 localOffset = new Vector2(characterController.getFacingLeft() ? -.5f : .5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
+            float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
+            Vector2 offset = new Vector2(
+                localOffset.x * Mathf.Cos(angleRad) - localOffset.y * Mathf.Sin(angleRad),
+                localOffset.x * Mathf.Sin(angleRad) + localOffset.y * Mathf.Cos(angleRad)
+            ); //converts the local offset into a global one
             Vector2 targetPosition = (Vector2)playerBody.position + offset;  //calcluates a target positions
-
             delay.Enqueue(targetPosition); //adds the target to a queue. this is so the hand follows a path that is sligthly behind the body
-
-
             Vector2 delayedTarget = delay.Dequeue(); //gets the old delay
-
-
             transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); //smoothly places the hand
         }
         else
         {
+            Vector2 rotation = getMouseDirection(Input.mousePosition, playerBody.rotation);
+            float angleRad= Mathf.Atan2(rotation.y, rotation.x);
+            float angleDeg = angleRad * Mathf.Rad2Deg;
+            Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
+            Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
             transform.position = (Vector2)playerBody.position + offset;
+            transform.rotation = rotationQuaternion;
         }
     }
 
