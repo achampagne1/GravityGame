@@ -13,6 +13,7 @@ public class CharacterController : ObjectController{
     //game variables
     float heightTestPlayer = 0;
     float horizontalInput = 0;
+    float direcitonInput = 0;
     float rotatedX = 0;
     float rotatedY = 0;
     float jumpMagnitude = 0;
@@ -35,6 +36,11 @@ public class CharacterController : ObjectController{
     public void setMovement(int moveInput)
     {
         horizontalInput = moveInput;
+    }
+
+    public void setOrientation(int direction)
+    {
+        direcitonInput = direction;
     }
 
     public void setJump(bool jumpInput)
@@ -156,12 +162,12 @@ public class CharacterController : ObjectController{
 
     void turnLeftRight()
     {
-        if (horizontalInput == -1 && facingLeft == false)
+        if (direcitonInput == -1 && facingLeft == false)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             facingLeft = true;
         }
-        else if (horizontalInput == 1 && facingLeft == true)
+        else if (direcitonInput == 1 && facingLeft == true)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             facingLeft = false;
@@ -192,15 +198,6 @@ public class CharacterController : ObjectController{
         //movement
         rotatedX = -gravityDirection.y;
         rotatedY = gravityDirection.x;
-
-        /*Vector2 frontOfPlayer = new Vector2(circleColliderPlayer.bounds.center.x+ Mathf.Cos(transform.eulerAngles.z) * heightTestPlayer, circleColliderPlayer.bounds.center.y + Mathf.Sin(transform.eulerAngles.z) * heightTestPlayer);
-        RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, Vector2.Perpendicular(gravityDirection), heightTestPlayer + 3, layerMaskPlanet);
-        Vector2 groundNormal = hit.normal; // The normal of the surface
-        float angle = Mathf.Atan2(groundNormal.y, groundNormal.x) * Mathf.Rad2Deg;
-        Debug.Log(angle+" "+isGrounded);
-
-        if (angle > 90 )
-            return;*/
         moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
     }
 

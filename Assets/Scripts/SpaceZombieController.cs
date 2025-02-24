@@ -42,6 +42,7 @@ public class SpaceZombieController : CharacterController
                 else
                     randomMovement();
                 setMovement(moveInput);
+                setOrientation(moveInput);
             }
             calculateCharacterUpdate();
             if (getHealth() == 0)

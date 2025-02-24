@@ -15,6 +15,7 @@ public class HandController : MonoBehaviour
     Queue<Vector2> delay;
     float smoothTime = .05f;
     Vector2 velocity = Vector2.zero;
+    bool facingLeft = false;
 
     //public variables
     public bool holding = false;
@@ -22,7 +23,7 @@ public class HandController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        GameObject temp = GameObject.Find("SpaceMan");
+        GameObject temp = transform.parent.gameObject;
         playerBody = temp.GetComponent<Transform>();
         characterController = temp.GetComponent<CharacterController>();
         delay = new Queue<Vector2>();
@@ -53,6 +54,16 @@ public class HandController : MonoBehaviour
             float angleDeg = angleRad * Mathf.Rad2Deg;
             Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
             Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+            if (characterController.getFacingLeft() && facingLeft == false)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+                facingLeft = true;
+            }
+            else if (!characterController.getFacingLeft() && facingLeft == true)
+            {
+                transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
+                facingLeft = false;
+            }
             transform.position = (Vector2)playerBody.position + offset;
             transform.rotation = rotationQuaternion;
         }

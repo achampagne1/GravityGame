@@ -5,18 +5,30 @@ using UnityEngine.InputSystem;
 
 public class GunController : MonoBehaviour
 {
+
+
     //object creation
     GameObject bulletObject;
+    Transform playerBody;
+    CharacterController characterController;
     public void Start()
     {
         bulletObject = GameObject.Find("Bullet");
+
+        GameObject temp = GameObject.Find("SpaceMan"); //this probably needs to change if we give enemies guns
+        characterController = temp.GetComponent<CharacterController>();
+        playerBody = temp.GetComponent<Transform>();
+
     }
 
     void Update()
     {
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            shoot(transform.position, getMouseDirection(Input.mousePosition, transform.rotation));
+            Debug.Log("pew");
+            Vector3 offset = new Vector3(.5f, .25f, 0);
+            offset.y = offset.y* (characterController.getFacingLeft() ? -1:1);
+            shoot(transform.position+ transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
         }
     }
 

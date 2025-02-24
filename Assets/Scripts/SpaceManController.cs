@@ -18,13 +18,9 @@ public class SpaceManController : CharacterController
     void FixedUpdate()
     {
         setMovement(inputSystemToGetAxis());
+        setOrientation(lookLeftOrRight());
         setJump(Keyboard.current.spaceKey.isPressed);
         calculateCharacterUpdate();
-    }
-
-    private void Update()
-    {
-       
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -55,6 +51,23 @@ public class SpaceManController : CharacterController
             return -1;
         if (Keyboard.current.dKey.isPressed)
             return 1;
+        else
+            return 0;
+    }
+
+    int lookLeftOrRight()
+    {
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Vector2 direction = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - screenCenter;
+
+        if (direction.x < 0)
+        {
+            return -1;
+        }
+        if (direction.x >= 0)
+        {
+            return 1;
+        }
         else
             return 0;
     }

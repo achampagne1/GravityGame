@@ -5,14 +5,15 @@ public class BulletController : ObjectController
 {
     //object creation
     CircleCollider2D circleColliderPlayer;
-    public GameObject prefab;
     Timer timer;
+
+    //public variables
+    public float bulletForce = 50.0f;
 
     //game variables
     float drag = .1f;
     bool first = true;
     bool playerInvulnerable = true;
-    float bulletForce = 50.0f;
 
     //vectors
     Vector2 initialForce = new Vector2(0, 0);
