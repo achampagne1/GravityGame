@@ -47,7 +47,7 @@ public class ObjectController : MonoBehaviour
 
     private void FindClosestField()
     {
-        GameObject temp = GameObject.Find("GravityPointsList");
+        GameObject temp = GameObject.Find("GravityPointsList"); //resuing temp might be a bad idea
         GravityPointsList gravityPointsList = temp.GetComponent<GravityPointsList>();
         List<GameObject> gravityPoints = gravityPointsList.gravityPoints;
 

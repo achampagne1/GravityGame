@@ -6,7 +6,7 @@ public class GravityPointController : MonoBehaviour
 {
     //public variables
     public float fieldStrength = 20f;
-    public float fieldSize = 100f; //divide by this number
+    public float fieldSize = 100.0f; //divide by this number
 
     public float getFieldStrength()
     {
