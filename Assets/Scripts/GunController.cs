@@ -25,7 +25,6 @@ public class GunController : MonoBehaviour
     {
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Debug.Log("pew");
             Vector3 offset = new Vector3(.5f, .25f, 0);
             offset.y = offset.y* (characterController.getFacingLeft() ? -1:1);
             shoot(transform.position+ transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
@@ -35,6 +34,7 @@ public class GunController : MonoBehaviour
     public void shoot(Vector3 location, Vector3 direction)
     {
         GameObject ShotBullet = Instantiate(bulletObject, location, Quaternion.identity);
+        ShotBullet.transform.localScale = new Vector3(.075f, .075f, .075f);
         ShotBullet.GetComponent<BulletController>().newInstance(direction);
         ShotBullet.GetComponent<BulletController>().Start();
     }

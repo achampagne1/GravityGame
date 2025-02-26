@@ -5,6 +5,7 @@ public class BulletController : ObjectController
 {
     //object creation
     CircleCollider2D circleColliderPlayer;
+    CharacterController characterController;
     Timer timer;
 
     //public variables
@@ -30,6 +31,8 @@ public class BulletController : ObjectController
         Physics2D.IgnoreLayerCollision(9, 12, true);
         Physics2D.IgnoreLayerCollision(12, 12, true);
         rb.AddForce(initialForce*bulletForce, ForceMode2D.Impulse);
+        GameObject temp = GameObject.Find("SpaceMan");
+        characterController = temp.GetComponent<CharacterController>();
     }
 
     // Update is called once per frame
@@ -43,6 +46,13 @@ public class BulletController : ObjectController
             calculateRotation();
             calculateUpdate();
             rb.velocity = calculateDrag(rb.velocity);
+        }
+        else //this seciton is for the original bullet
+        {
+            Vector3 offset = new Vector3(0, .3f, 0);
+            offset.y = offset.y * (characterController.getFacingLeft() ? -1 : 1);
+            transform.position = transform.parent.position + transform.rotation * offset;
+            transform.rotation = transform.parent.rotation;
         }
     }
 
@@ -67,7 +77,8 @@ public class BulletController : ObjectController
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(this.gameObject);
+        if (!first)
+            Destroy(this.gameObject);
     }
 
     public void newInstance(Vector2 direction)

@@ -24,9 +24,7 @@ public class ObjectController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         layerMaskPlanet = LayerMask.GetMask("Default");
 
-        GameObject temp = GameObject.Find("Planet");
-        planetCenter = temp.GetComponent<Transform>();
-
+        FindClosestField();
         rb.velocity = new Vector2(0, 0); //this can be moifie to have a starting velocity*/
     }
 
@@ -41,9 +39,30 @@ public class ObjectController : MonoBehaviour
 
     protected virtual void calculateGravity() 
     {
+        FindClosestField();
         //Calculate gravitational force towards the planet
         gravityDirection = (planetCenter.position - transform.position).normalized;
         gravityForce = gravityDirection * gravityForceMag;
+    }
+
+    private void FindClosestField()
+    {
+        GameObject temp = GameObject.Find("GravityPointsList");
+        GravityPointsList gravityPointsList = temp.GetComponent<GravityPointsList>();
+        List<GameObject> gravityPoints = gravityPointsList.gravityPoints;
+
+        float closestGravityField = 1000f;
+        foreach (GameObject gravityPoint in gravityPoints)
+        {
+            GravityPointController gravityPointController = gravityPoint.GetComponent<GravityPointController>();
+            float adjustedDistance = (float)(transform.position - gravityPoint.transform.position).magnitude / gravityPointController.getFieldSize();
+            if (adjustedDistance < closestGravityField)
+            {
+                closestGravityField = adjustedDistance;
+                temp = gravityPoint;
+            }
+        }
+        planetCenter = temp.GetComponent<Transform>();
     }
 
     protected virtual void calculateRotation()
