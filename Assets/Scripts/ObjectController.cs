@@ -45,7 +45,7 @@ public class ObjectController : MonoBehaviour
         gravityForce = gravityDirection * gravityForceMag;
     }
 
-    private void FindClosestField()
+    private void FindClosestField() //this might need to be revamped one day. maybe not check for a new gravity field every update
     {
         GameObject temp = GameObject.Find("GravityPointsList"); //resuing temp might be a bad idea
         GravityPointsList gravityPointsList = temp.GetComponent<GravityPointsList>();
@@ -62,16 +62,18 @@ public class ObjectController : MonoBehaviour
                 temp = gravityPoint;
             }
         }
+
         planetCenter = temp.GetComponent<Transform>();
     }
 
     protected virtual void calculateRotation()
     {
-        // Create a quaternion representing the desired rotation angle around the y-axis
-        float angle = Mathf.Atan2(gravityDirection.y, gravityDirection.x) * Mathf.Rad2Deg;
-        Quaternion desiredRotation = Quaternion.Euler(0f, 0f, 90f + angle);
-        transform.rotation = desiredRotation;
+            float rotationSmoothTime = 0.05f; // Adjust for more/less smoothness
+            float rotationVelocity = 0f;
+
+            float targetAngle = Mathf.Atan2(gravityDirection.y, gravityDirection.x) * Mathf.Rad2Deg + 90f;
+            float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.z, targetAngle, ref rotationVelocity, rotationSmoothTime);
+
+            transform.rotation = Quaternion.Euler(0f, 0f, smoothedAngle);
     }
-
-
 }

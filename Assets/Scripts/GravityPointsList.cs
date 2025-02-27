@@ -69,7 +69,7 @@ public class GravityPointsList : MonoBehaviour
             for (int y = 0; y < screenHeight; y += (int)spacing)
             {
                 // Convert screen point to world position
-                Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(x, y, Camera.main.nearClipPlane));
+                Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(x, y, 10f));
 
                 Gizmos.color = Color.yellow;
                 float closestGravityField = float.MaxValue;
