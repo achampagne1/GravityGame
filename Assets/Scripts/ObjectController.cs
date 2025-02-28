@@ -9,11 +9,9 @@ public class ObjectController : MonoBehaviour
     protected Rigidbody2D rb;
     protected Transform planetCenter;
 
-    //constants
-    protected float gravityForceMag = 20f;
-
     //game variables
     protected int layerMaskPlanet = 0;
+    protected float gravityForceMag = 20f;
 
     //vectors
     protected Vector2 gravityDirection = new Vector2(0, 0);
@@ -64,6 +62,7 @@ public class ObjectController : MonoBehaviour
         }
 
         planetCenter = temp.GetComponent<Transform>();
+        gravityForceMag = temp.GetComponent<GravityPointController>().getFieldStrength();
     }
 
     protected virtual void calculateRotation()
