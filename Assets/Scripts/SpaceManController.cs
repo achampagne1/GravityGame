@@ -5,15 +5,12 @@ using UnityEngine.InputSystem;
 
 public class SpaceManController : CharacterController
 {
-    //object creation 
-    private Animator animator;
 
     //game variables
     bool enemyCollideFlag = false;
 
     void Start()
     {
-        animator = GetComponent<Animator>();
         calculateCharacterStart();
         setMaxHealth(10f);
     }
@@ -51,20 +48,11 @@ public class SpaceManController : CharacterController
     int inputSystemToGetAxis()
     {
         if (Keyboard.current.aKey.isPressed)
-        {
-            animator.SetBool("Walk", true);
             return -1;
-        }
         if (Keyboard.current.dKey.isPressed)
-        {
-            animator.SetBool("Walk", true);
-            return 1;
-        }
+            return 1;   
         else
-        {
-            animator.SetBool("Walk", false);
             return 0;
-        }
     }
 
     int lookLeftOrRight()

@@ -4,34 +4,35 @@ using UnityEngine;
 
 public class CharacterController : ObjectController{
     //object creation
-    CircleCollider2D circleColliderPlayer;
+    private CircleCollider2D circleColliderPlayer;
+    private Animator animator;
 
     //constants
     public float moveSpeed = 20f;
     public float jumpForce = 11f;
 
     //game variables
-    float heightTestPlayer = 0;
-    float horizontalInput = 0;
-    float direcitonInput = 0;
-    float rotatedX = 0;
-    float rotatedY = 0;
-    float jumpMagnitude = 0;
-    float maxHealth = 3f; //default max health is 3
-    float health = 0f;
-    bool isGrounded = false;
-    bool space = false;
-    bool facingLeft = false;
+    private float heightTestPlayer = 0;
+    private float horizontalInput = 0;
+    private float direcitonInput = 0;
+    private float rotatedX = 0;
+    private float rotatedY = 0;
+    private float jumpMagnitude = 0;
+    private float maxHealth = 3f; //default max health is 3
+    private float health = 0f;
+    private bool isGrounded = false;
+    private bool space = false;
+    private bool facingLeft = false;
     
 
     //vectors
-    Vector2 moveDirection = new Vector2(0, 0);
-    Vector2 jump = new Vector2(0, 0);
-    Vector2 previousV = new Vector2(0, 0);
-    Vector2 drag = new Vector2(0, 0);
-    Vector2 previousMove = new Vector2(0, 0);
-    Vector2 jumpExtraction = new Vector2(0, 0);
-    Vector2 additionalForce = new Vector2(0, 0);
+    private Vector2 moveDirection = new Vector2(0, 0);
+    private Vector2 jump = new Vector2(0, 0);
+    private Vector2 previousV = new Vector2(0, 0);
+    private Vector2 drag = new Vector2(0, 0);
+    private Vector2 previousMove = new Vector2(0, 0);
+    private Vector2 jumpExtraction = new Vector2(0, 0);
+    private Vector2 additionalForce = new Vector2(0, 0);
 
     public void setMovement(int moveInput)
     {
@@ -89,14 +90,16 @@ public class CharacterController : ObjectController{
         health = maxHealth;
         calculateStart();      
         circleColliderPlayer = GetComponent<CircleCollider2D>();
-        heightTestPlayer = circleColliderPlayer.bounds.extents.y + 0.05f;
+        animator = GetComponent<Animator>();
+
+        heightTestPlayer = circleColliderPlayer.bounds.extents.y + 0.05f; //whta this
 
     }
 
     public void calculateCharacterUpdate()
     {
-        turnLeftRight(); 
-
+        turnLeftRight();
+        determineAnimation();
         //Check if the player is grounded
         isGrounded = IsGrounded();
 
@@ -125,22 +128,19 @@ public class CharacterController : ObjectController{
 
     public void addForceLocal(Vector2 force)
     {
-        //Vector2 localForce = new Vector2(0, 0);
 
         float angle = Vector2.SignedAngle(gravityDirection, force);
         additionalForce = force;
-       // Debug.Log(localForce);
-        //rb.AddForce(localForce);
     }
 
-    bool IsGrounded()
+    private bool IsGrounded()
     {
         RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, gravityDirection, heightTestPlayer, layerMaskPlanet);
         bool ground = hit.collider != null;
         return ground;
     }
 
-    bool wallInFront()
+    private bool wallInFront()
     {
         int layerMask = LayerMask.GetMask("Default", "enemy", "player");
         int currentLayer = gameObject.layer;
@@ -155,12 +155,12 @@ public class CharacterController : ObjectController{
         return false;
     }
 
-    float CalculateMagnitude(Vector2 vector)
+    private float CalculateMagnitude(Vector2 vector)
     {
         return Mathf.Sqrt(vector.x * vector.x + vector.y * vector.y);
     }
 
-    void turnLeftRight()
+    private void turnLeftRight()
     {
         if (direcitonInput == -1 && facingLeft == false)
         {
@@ -174,7 +174,7 @@ public class CharacterController : ObjectController{
         }
     }
 
-    void calculateJump()
+    private void calculateJump()
     {
         if (!isGrounded)
             jumpExtraction = rb.velocity - gravityForce - moveDirection;
@@ -193,7 +193,7 @@ public class CharacterController : ObjectController{
             jump = new Vector2(0, 0);
     }
 
-    void calculateMovement()
+    private void calculateMovement()
     {
         //movement
         rotatedX = -gravityDirection.y;
@@ -201,7 +201,7 @@ public class CharacterController : ObjectController{
         moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
     }
 
-    void calculateDrag()
+    private void calculateDrag()
     {
         //drag calculation
         if (isGrounded)
@@ -213,5 +213,29 @@ public class CharacterController : ObjectController{
 
     }
 
-
+    private void determineAnimation()
+    {
+        if(horizontalInput == 0 /*|| !isGrounded uncomment when is grounded is more robust*/) //for idle
+        {
+            animator.SetBool("Walk", false);
+            animator.SetBool("Backwards", false);
+        }
+        else if(jump != Vector2.zero)
+        {
+            animator.SetBool("Jump", true);
+        }
+        else //for walking
+        {
+            if ((facingLeft && horizontalInput == 1) || (!facingLeft && horizontalInput == -1))
+            {
+                animator.SetBool("Walk", true);
+                animator.SetBool("Backwards", true);
+            }
+            else
+            {
+                animator.SetBool("Walk", true);
+                animator.SetBool("Backwards", false);
+            }
+        }
+    }
 }

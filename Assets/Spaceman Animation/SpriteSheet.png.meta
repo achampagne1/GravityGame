@@ -105,11 +105,11 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1113
-        height: 986
+        width: 1152
+        height: 1002
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -124,13 +124,13 @@ TextureImporter:
       name: SpriteSheet_1
       rect:
         serializedVersion: 2
-        x: 1113
+        x: 1152
         y: 0
-        width: 1113
-        height: 986
+        width: 1152
+        height: 1002
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -145,13 +145,13 @@ TextureImporter:
       name: SpriteSheet_2
       rect:
         serializedVersion: 2
-        x: 2226
+        x: 2304
         y: 0
-        width: 1113
-        height: 986
+        width: 1152
+        height: 1002
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -166,13 +166,13 @@ TextureImporter:
       name: SpriteSheet_3
       rect:
         serializedVersion: 2
-        x: 3339
+        x: 3456
         y: 0
-        width: 1113
-        height: 986
+        width: 1152
+        height: 1002
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -187,13 +187,13 @@ TextureImporter:
       name: SpriteSheet_4
       rect:
         serializedVersion: 2
-        x: 4452
+        x: 4608
         y: 0
-        width: 1113
-        height: 986
+        width: 1152
+        height: 1002
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -208,13 +208,13 @@ TextureImporter:
       name: SpriteSheet_5
       rect:
         serializedVersion: 2
-        x: 5565
+        x: 5760
         y: 0
-        width: 1113
-        height: 986
+        width: 1152
+        height: 1002
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -229,13 +229,13 @@ TextureImporter:
       name: SpriteSheet_6
       rect:
         serializedVersion: 2
-        x: 6678
+        x: 6912
         y: 0
-        width: 1113
-        height: 986
+        width: 1152
+        height: 1002
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
@@ -250,13 +250,13 @@ TextureImporter:
       name: SpriteSheet_7
       rect:
         serializedVersion: 2
-        x: 7791
+        x: 8064
         y: 0
-        width: 1113
-        height: 986
+        width: 1152
+        height: 1002
       alignment: 0
       pivot: {x: 0, y: 0}
-      border: {x: 4, y: 4, z: 4, w: 4}
+      border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
