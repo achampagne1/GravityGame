@@ -210,8 +210,9 @@ public class CharacterController : ObjectController{
     {
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
+        Debug.Log(groundTimer.checkTimer()+" "+groundTimer.getTimeRemaining());
         if (space && groundTimer.checkTimer())
-            hover = new Vector2(rotatedX * jumpForce, rotatedY * jumpForce);
+            hover = new Vector2(rotatedX * jumpForce*10, rotatedY * jumpForce*10);
         else
             hover = new Vector2(0, 0);
     }
