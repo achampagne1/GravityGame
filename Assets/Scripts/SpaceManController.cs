@@ -25,7 +25,7 @@ public class SpaceManController : CharacterController
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.name == "SpaceZombie(Clone)" && enemyCollideFlag == false)
+        if ((collision.gameObject.name == "SpaceZombie(Clone)" || collision.gameObject.name == "SpaceZombie") && enemyCollideFlag == false)
         {
             //Vector2 forceVector = new Vector2(-5f,0f);
             //addForceLocal(forceVector);
@@ -33,7 +33,7 @@ public class SpaceManController : CharacterController
             UIHandler.instance.setHealthValue(getHealth());
             enemyCollideFlag = true;
         }
-        else if (collision.gameObject.name != "SpaceZombie(Clone)" && enemyCollideFlag == true)
+        else if ((collision.gameObject.name != "SpaceZombie(Clone)" || collision.gameObject.name != "SpaceZombie") && enemyCollideFlag == true)
             enemyCollideFlag = false;
 
         if (collision.gameObject.name == "MedPack")

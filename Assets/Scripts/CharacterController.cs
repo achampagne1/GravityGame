@@ -6,6 +6,7 @@ public class CharacterController : ObjectController{
     //object creation
     private CircleCollider2D circleColliderPlayer;
     private Animator animator;
+    private Timer groundTimer; 
 
     //constants
     public float moveSpeed = 20f;
@@ -23,11 +24,13 @@ public class CharacterController : ObjectController{
     private bool isGrounded = false;
     private bool space = false;
     private bool facingLeft = false;
+    private bool timerFlag = false;
     
 
     //vectors
     private Vector2 moveDirection = new Vector2(0, 0);
     private Vector2 jump = new Vector2(0, 0);
+    private Vector2 hover = new Vector2(0, 0);
     private Vector2 previousV = new Vector2(0, 0);
     private Vector2 drag = new Vector2(0, 0);
     private Vector2 previousMove = new Vector2(0, 0);
@@ -91,7 +94,7 @@ public class CharacterController : ObjectController{
         calculateStart();      
         circleColliderPlayer = GetComponent<CircleCollider2D>();
         animator = GetComponent<Animator>();
-
+        groundTimer = new Timer(0.2f);
         heightTestPlayer = circleColliderPlayer.bounds.extents.y + 0.05f; //whta this
 
     }
@@ -103,12 +106,13 @@ public class CharacterController : ObjectController{
         //Check if the player is grounded
         isGrounded = IsGrounded();
 
-
         calculateJump();
+        calculateJetPackHover();
         calculateMovement();
         calculateDrag();
 
         rb.AddForce(jump, ForceMode2D.Impulse);
+        rb.AddForce(hover);
 
         if (!wallInFront())
         {
@@ -128,7 +132,6 @@ public class CharacterController : ObjectController{
 
     public void addForceLocal(Vector2 force)
     {
-
         float angle = Vector2.SignedAngle(gravityDirection, force);
         additionalForce = force;
     }
@@ -137,6 +140,16 @@ public class CharacterController : ObjectController{
     {
         RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, gravityDirection, heightTestPlayer, layerMaskPlanet);
         bool ground = hit.collider != null;
+        if (!ground && !timerFlag)
+        {
+            groundTimer.startTimer();
+            timerFlag = true;
+        }
+        else if (ground && timerFlag)
+        {
+            groundTimer.resetTimer();
+            timerFlag = false;
+        }
         return ground;
     }
 
@@ -191,6 +204,16 @@ public class CharacterController : ObjectController{
             jump = new Vector2(rotatedX * jumpForce, rotatedY * jumpForce);
         else
             jump = new Vector2(0, 0);
+    }
+
+    private void calculateJetPackHover()
+    {
+        rotatedX = -gravityDirection.x;
+        rotatedY = -gravityDirection.y;
+        if (space && groundTimer.checkTimer())
+            hover = new Vector2(rotatedX * jumpForce, rotatedY * jumpForce);
+        else
+            hover = new Vector2(0, 0);
     }
 
     private void calculateMovement()
