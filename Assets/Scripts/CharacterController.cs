@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -8,11 +9,12 @@ public class CharacterController : ObjectController{
     private Animator animator;
     private Timer groundTimer; 
 
-    //constants
+    //public game variables
     public float moveSpeed = 20f;
     public float jumpForce = 11f;
+    public float jetPackForce = 30f;
 
-    //game variables
+    //private game variables
     private float heightTestPlayer = 0;
     private float horizontalInput = 0;
     private float direcitonInput = 0;
@@ -93,11 +95,20 @@ public class CharacterController : ObjectController{
         health = maxHealth;
         calculateStart();      
         circleColliderPlayer = GetComponent<CircleCollider2D>();
-        animator = GetComponent<Animator>();
+
+        try
+        {
+            animator = GetComponent<Animator>();
+        }
+        catch(Exception e)
+        {
+            Debug.LogError(e);
+        }
+
         groundTimer = new Timer(0.2f);
         heightTestPlayer = circleColliderPlayer.bounds.extents.y + 0.05f; //whta this
 
-    }
+        }
 
     public void calculateCharacterUpdate()
     {
@@ -113,7 +124,6 @@ public class CharacterController : ObjectController{
 
         rb.AddForce(jump, ForceMode2D.Impulse);
         rb.AddForce(hover);
-
         if (!wallInFront())
         {
             rb.AddForce(moveDirection, ForceMode2D.Impulse);
@@ -206,13 +216,12 @@ public class CharacterController : ObjectController{
             jump = new Vector2(0, 0);
     }
 
-    private void calculateJetPackHover()
+    private void calculateJetPackHover() //might change this to space man only
     {
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
-        Debug.Log(groundTimer.checkTimer()+" "+groundTimer.getTimeRemaining());
         if (space && groundTimer.checkTimer())
-            hover = new Vector2(rotatedX * jumpForce*10, rotatedY * jumpForce*10);
+            hover = new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce);
         else
             hover = new Vector2(0, 0);
     }
@@ -239,27 +248,34 @@ public class CharacterController : ObjectController{
 
     private void determineAnimation()
     {
-        if(horizontalInput == 0 /*|| !isGrounded uncomment when is grounded is more robust*/) //for idle
+        try
         {
-            animator.SetBool("Walk", false);
-            animator.SetBool("Backwards", false);
-        }
-        else if(jump != Vector2.zero)
-        {
-            animator.SetBool("Jump", true);
-        }
-        else //for walking
-        {
-            if ((facingLeft && horizontalInput == 1) || (!facingLeft && horizontalInput == -1))
+            if (horizontalInput == 0 /*|| !isGrounded uncomment when is grounded is more robust*/) //for idle
             {
-                animator.SetBool("Walk", true);
-                animator.SetBool("Backwards", true);
-            }
-            else
-            {
-                animator.SetBool("Walk", true);
+                animator.SetBool("Walk", false);
                 animator.SetBool("Backwards", false);
             }
+            else if (jump != Vector2.zero)
+            {
+                animator.SetBool("Jump", true);
+            }
+            else //for walking
+            {
+                if ((facingLeft && horizontalInput == 1) || (!facingLeft && horizontalInput == -1))
+                {
+                    animator.SetBool("Walk", true);
+                    animator.SetBool("Backwards", true);
+                }
+                else
+                {
+                    animator.SetBool("Walk", true);
+                    animator.SetBool("Backwards", false);
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
         }
     }
 }
