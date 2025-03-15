@@ -19,9 +19,6 @@ public class BulletController : ObjectController
     //vectors
     Vector2 initialForce = new Vector2(0, 0);
 
-
-
-
     // Start is called before the first frame update
     public void Start()
     {

@@ -26,8 +26,8 @@ public class GunController : MonoBehaviour
         if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
         {
             Vector3 offset = new Vector3(.5f, .25f, 0);
-            offset.y = offset.y* (characterController.getFacingLeft() ? -1:1);
-            shoot(transform.position+ transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
+            offset.y = offset.y * (characterController.getFacingLeft() ? -1 : 1);
+            shoot(transform.position + transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
         }
     }
 

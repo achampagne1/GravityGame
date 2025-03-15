@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32.SafeHandles;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -133,8 +134,7 @@ public class CharacterController : ObjectController{
             if (!isGrounded)
                 rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; 
         }
-        calculateUpdate();
-        
+        calculateUpdate();  
 
         previousV = -rb.velocity;
         previousMove = -moveDirection;
@@ -275,7 +275,7 @@ public class CharacterController : ObjectController{
         }
         catch (Exception e)
         {
-            Debug.LogError(e);
+            bool ham = false;
         }
     }
 }

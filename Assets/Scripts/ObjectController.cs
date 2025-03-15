@@ -9,6 +9,9 @@ public class ObjectController : MonoBehaviour
     protected Rigidbody2D rb;
     protected Transform planetCenter;
 
+    //public game variables
+    public float terminalVelocity = 30f;
+
     //game variables
     protected int layerMaskPlanet = 0;
     protected float gravityForceMag = 20f;
@@ -33,6 +36,7 @@ public class ObjectController : MonoBehaviour
         calculateRotation();
 
         rb.AddForce(gravityForce);
+        rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
     }
 
     protected virtual void calculateGravity() 
