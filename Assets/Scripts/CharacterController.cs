@@ -96,7 +96,6 @@ public class CharacterController : ObjectController{
         health = maxHealth;
         calculateStart();      
         circleColliderPlayer = GetComponent<CircleCollider2D>();
-
         try
         {
             animator = GetComponent<Animator>();

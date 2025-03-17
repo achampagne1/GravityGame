@@ -5,21 +5,26 @@ using UnityEngine.InputSystem;
 
 public class SpaceManController : CharacterController
 {
-
+    
     //game variables
     bool enemyCollideFlag = false;
+    bool throwItem = false;
+    bool click = false;
 
-    void Start()
+    public void Start()
     {
         calculateCharacterStart();
         setMaxHealth(10f);
+
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         setMovement(inputSystemToGetAxis());
         setOrientation(lookLeftOrRight());
         setJump(Keyboard.current.spaceKey.isPressed);
+        throwItem = Keyboard.current.qKey.isPressed;
+        click = Mouse.current.leftButton.wasPressedThisFrame;
         calculateCharacterUpdate();
     }
 
@@ -45,7 +50,7 @@ public class SpaceManController : CharacterController
 
     }
 
-    int inputSystemToGetAxis()
+    public int inputSystemToGetAxis()
     {
         if (Keyboard.current.aKey.isPressed)
             return -1;
@@ -55,7 +60,7 @@ public class SpaceManController : CharacterController
             return 0;
     }
 
-    int lookLeftOrRight()
+    public int lookLeftOrRight()
     {
         Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Vector2 direction = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - screenCenter;
@@ -70,6 +75,16 @@ public class SpaceManController : CharacterController
         }
         else
             return 0;
+    }
+
+    public bool getThrow()
+    {
+        return throwItem;
+    }
+
+    public bool getClick()
+    {
+        return click;
     }
 
 }

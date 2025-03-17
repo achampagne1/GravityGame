@@ -11,6 +11,8 @@ public class ObjectController : MonoBehaviour
 
     //public game variables
     public float terminalVelocity = 30f;
+    public bool gravityAffected = true;
+    public bool orientToGravity = true;
 
     //game variables
     protected int layerMaskPlanet = 0;
@@ -31,12 +33,14 @@ public class ObjectController : MonoBehaviour
 
     protected void calculateUpdate()
     {
-        calculateGravity();
+        if (gravityAffected)
+        {
+            calculateGravity();
+            rb.AddForce(gravityForce);
+            rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
+        }
 
-        calculateRotation();
-
-        rb.AddForce(gravityForce);
-        rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
+        if(orientToGravity) calculateRotation();
     }
 
     protected virtual void calculateGravity() 
@@ -77,6 +81,7 @@ public class ObjectController : MonoBehaviour
             float targetAngle = Mathf.Atan2(gravityDirection.y, gravityDirection.x) * Mathf.Rad2Deg + 90f;
             float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.z, targetAngle, ref rotationVelocity, rotationSmoothTime);
 
-            transform.rotation = Quaternion.Euler(0f, 0f, smoothedAngle);
+            transform.rotation = Quaternion.Euler(0f, 0f, smoothedAngle); //this should be done in update if you want to be consistant with all the other updates
+
     }
 }

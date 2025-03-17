@@ -23,9 +23,7 @@ public class GravityPointsList : MonoBehaviour
     void Start()
     {
         foreach (Transform child in transform)
-        {
             gravityPoints.Add(child.gameObject);
-        }
     }
 
     // Update is called once per frame

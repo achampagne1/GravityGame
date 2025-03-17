@@ -10,20 +10,20 @@ public class GunController : MonoBehaviour
     //object creation
     GameObject bulletObject;
     Transform playerBody;
-    CharacterController characterController;
+    SpaceManController characterController;
     public void Start()
     {
         bulletObject = GameObject.Find("Bullet");
 
         GameObject temp = GameObject.Find("SpaceMan"); //this probably needs to change if we give enemies guns
-        characterController = temp.GetComponent<CharacterController>();
+        characterController = temp.GetComponent<SpaceManController>();
         playerBody = temp.GetComponent<Transform>();
 
     }
 
     void Update()
     {
-        if (Mouse.current != null && Mouse.current.leftButton.wasPressedThisFrame)
+        if (characterController.getClick())
         {
             Vector3 offset = new Vector3(.5f, .25f, 0);
             offset.y = offset.y * (characterController.getFacingLeft() ? -1 : 1);

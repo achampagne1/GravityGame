@@ -114,8 +114,8 @@ GameObject:
   - component: {fileID: 6531168470496589060}
   - component: {fileID: 6531168470496589067}
   - component: {fileID: 1239260081404318765}
-  - component: {fileID: 6067367242204666336}
   - component: {fileID: 8323687981923977175}
+  - component: {fileID: 76191401300093832}
   m_Layer: 9
   m_Name: SpaceMan
   m_TagString: Untagged
@@ -257,22 +257,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
---- !u!114 &6067367242204666336
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6531168470496589063}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c1cb199dd2c295488a3e5db6f9ffe32, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  terminalVelocity: 30
-  moveSpeed: 20
-  jumpForce: 11
-  jetPackForce: 70
 --- !u!95 &8323687981923977175
 Animator:
   serializedVersion: 7
@@ -295,6 +279,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &76191401300093832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6531168470496589063}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c1cb199dd2c295488a3e5db6f9ffe32, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  terminalVelocity: 30
+  gravityAffected: 1
+  orientToGravity: 1
+  moveSpeed: 20
+  jumpForce: 11
+  jetPackForce: 30
 --- !u!1 &7388870892404204327
 GameObject:
   m_ObjectHideFlags: 0
