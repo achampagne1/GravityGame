@@ -98,5 +98,10 @@ public class HandController : MonoBehaviour
         return characterController.getClick();
     }
 
+    public bool getFacingLeft()
+    {
+        return facingLeft;
+    }
+
 
 }

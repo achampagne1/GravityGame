@@ -9,17 +9,18 @@ public class GunController : ItemController
     //object creation
     GameObject bulletObject;
     Transform playerBody;
-    CharacterController characterController;
+    HandController handController;
 
     //private variables
     private bool parented = false;
+    private bool facingLeft = false;
 
     public void Start()
     {
-        bulletObject = GameObject.Find("Bullet");
+        bulletObject = transform.GetChild(0).gameObject; //the bullet is the first child object of the gun
         GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
-        characterController = temp.GetComponent<CharacterController>();
-        playerBody = temp.GetComponent<Transform>();
+        handController = transform.parent.GetComponent<HandController>();
+        playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
         calculateItemStart();   
     }
 
@@ -28,12 +29,19 @@ public class GunController : ItemController
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
 
         calculateItemUpdate();
-        if (parented && characterController.getClick())
+        if (parented)
         {
-            Vector3 offset = new Vector3(.5f, .25f, 0);
-            offset.y = offset.y * (characterController.getFacingLeft() ? -1 : 1);
-            shoot(transform.position + transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
+            setFloatFlag(false);
+            facingLeft = handController.getFacingLeft();
+            if (handController.getClick())
+            {
+                Vector3 offset = new Vector3(.5f, .25f, 0);
+                offset.y = offset.y * (facingLeft ? -1 : 1);
+                shoot(transform.position + transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
+            }
         }
+        else
+            setFloatFlag(true);
     }
 
     public void shoot(Vector3 location, Vector3 direction)
@@ -53,5 +61,10 @@ public class GunController : ItemController
         Vector3 direction3D = new Vector3(normalizedDirection.x, normalizedDirection.y, 0f);
         Vector3 rotatedDirection = playerRotation * direction3D;
         return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
+    }
+
+    public bool getFacingLeft()
+    {
+        return facingLeft;
     }
 }
