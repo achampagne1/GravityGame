@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Unity.Collections.AllocatorManager;
 
 public class CharacterController : ObjectController{
     //object creation
@@ -28,7 +29,9 @@ public class CharacterController : ObjectController{
     private bool space = false;
     private bool facingLeft = false;
     private bool timerFlag = false;
-    
+    private bool throwItem = false;
+    private bool click = false;
+
 
     //vectors
     private Vector2 moveDirection = new Vector2(0, 0);
@@ -39,56 +42,6 @@ public class CharacterController : ObjectController{
     private Vector2 previousMove = new Vector2(0, 0);
     private Vector2 jumpExtraction = new Vector2(0, 0);
     private Vector2 additionalForce = new Vector2(0, 0);
-
-    public void setMovement(int moveInput)
-    {
-        horizontalInput = moveInput;
-    }
-
-    public void setOrientation(int direction)
-    {
-        direcitonInput = direction;
-    }
-
-    public void setJump(bool jumpInput)
-    {
-        space = jumpInput;
-    }
-
-    public void setHealth(float newHealth)
-    {
-        health = newHealth;
-    }
-
-    public void setMaxHealth(float newMaxHealth)
-    {
-        maxHealth = newMaxHealth;
-    }
-
-    public CircleCollider2D getCharacterCollider()
-    {
-        return circleColliderPlayer;
-    }
-
-    public Vector2 getGravityDirection()
-    {
-        return gravityDirection;
-    }
-
-    public float getCharacterOrientation()
-    {
-        return transform.rotation.eulerAngles.z;
-    }
-
-    public bool getFacingLeft()
-    {
-        return facingLeft;
-    }
-
-    public float getHealth()
-    {
-        return health;
-    }
 
 
     public void calculateCharacterStart()
@@ -276,5 +229,75 @@ public class CharacterController : ObjectController{
         {
             bool ham = false;
         }
+    }
+
+    public void setMovement(int moveInput)
+    {
+        horizontalInput = moveInput;
+    }
+
+    public void setOrientation(int direction)
+    {
+        direcitonInput = direction;
+    }
+
+    public void setJump(bool jumpInput)
+    {
+        space = jumpInput;
+    }
+
+    public void setHealth(float newHealth)
+    {
+        health = newHealth;
+    }
+
+    public void setMaxHealth(float newMaxHealth)
+    {
+        maxHealth = newMaxHealth;
+    }
+
+    public void setThrow(bool throwInput)
+    {
+        throwItem = throwInput;
+    }
+
+    public void setClick(bool clickInput)
+    {
+        click = clickInput;
+    }
+
+    public CircleCollider2D getCharacterCollider()
+    {
+        return circleColliderPlayer;
+    }
+
+    public Vector2 getGravityDirection()
+    {
+        return gravityDirection;
+    }
+
+    public float getCharacterOrientation()
+    {
+        return transform.rotation.eulerAngles.z;
+    }
+
+    public bool getFacingLeft()
+    {
+        return facingLeft;
+    }
+
+    public float getHealth()
+    {
+        return health;
+    }
+
+    public bool getThrow()
+    {
+        return throwItem;
+    }
+
+    public bool getClick()
+    {
+        return click;
     }
 }

@@ -9,7 +9,7 @@ public class HandController : MonoBehaviour
 {
     //object creation
     Transform playerBody;  // Assign the player's body transform
-    SpaceManController characterController;
+    CharacterController characterController;
 
     //game variables
     private Queue<Vector2> delay;
@@ -21,9 +21,10 @@ public class HandController : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
-        GameObject temp = transform.parent.gameObject;
+        GameObject temp = transform.parent.gameObject; //hand will always have a character parent
         playerBody = temp.GetComponent<Transform>();
-        characterController = temp.GetComponent<SpaceManController>();
+        characterController = temp.GetComponent<CharacterController>();
+
         delay = new Queue<Vector2>();
         delay.Enqueue(transform.position);
     }
@@ -31,7 +32,7 @@ public class HandController : MonoBehaviour
     // Update is called once per frame
     public void FixedUpdate()
     {
-        if (characterController.getThrow())
+        if (characterController.getThrow()&& transform.childCount!=0)
         {
             Transform child = transform.GetChild(0); // Get first child
             child.SetParent(null);
@@ -90,6 +91,11 @@ public class HandController : MonoBehaviour
         Vector3 direction3D = new Vector3(normalizedDirection.x, normalizedDirection.y, 0f);
         Vector3 rotatedDirection = playerRotation * direction3D;
         return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
+    }
+
+    public bool getClick()
+    {
+        return characterController.getClick();
     }
 
 

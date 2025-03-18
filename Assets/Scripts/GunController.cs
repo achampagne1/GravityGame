@@ -1,29 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
-public class GunController : MonoBehaviour
+public class GunController : ItemController
 {
 
 
     //object creation
     GameObject bulletObject;
     Transform playerBody;
-    SpaceManController characterController;
+    CharacterController characterController;
+
+    //private variables
+    private bool parented = false;
+
     public void Start()
     {
         bulletObject = GameObject.Find("Bullet");
-
-        GameObject temp = GameObject.Find("SpaceMan"); //this probably needs to change if we give enemies guns
-        characterController = temp.GetComponent<SpaceManController>();
+        GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
+        characterController = temp.GetComponent<CharacterController>();
         playerBody = temp.GetComponent<Transform>();
-
+        calculateItemStart();   
     }
 
-    void Update()
+    public void Update()
     {
-        if (characterController.getClick())
+        parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
+
+        calculateItemUpdate();
+        if (parented && characterController.getClick())
         {
             Vector3 offset = new Vector3(.5f, .25f, 0);
             offset.y = offset.y * (characterController.getFacingLeft() ? -1 : 1);

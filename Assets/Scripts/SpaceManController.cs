@@ -8,8 +8,6 @@ public class SpaceManController : CharacterController
     
     //game variables
     bool enemyCollideFlag = false;
-    bool throwItem = false;
-    bool click = false;
 
     public void Start()
     {
@@ -23,8 +21,8 @@ public class SpaceManController : CharacterController
         setMovement(inputSystemToGetAxis());
         setOrientation(lookLeftOrRight());
         setJump(Keyboard.current.spaceKey.isPressed);
-        throwItem = Keyboard.current.qKey.isPressed;
-        click = Mouse.current.leftButton.wasPressedThisFrame;
+        setThrow(Keyboard.current.qKey.isPressed);
+        setClick(Mouse.current.leftButton.wasPressedThisFrame);
         calculateCharacterUpdate();
     }
 
@@ -75,16 +73,6 @@ public class SpaceManController : CharacterController
         }
         else
             return 0;
-    }
-
-    public bool getThrow()
-    {
-        return throwItem;
-    }
-
-    public bool getClick()
-    {
-        return click;
     }
 
 }
