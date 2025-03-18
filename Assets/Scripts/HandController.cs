@@ -35,6 +35,8 @@ public class HandController : MonoBehaviour
         if (characterController.getThrow()&& transform.childCount!=0)
         {
             Transform child = transform.GetChild(0); // Get first child
+            GunController childController = child.gameObject.GetComponent<GunController>();
+            childController.setForceBuffer(new Vector2(5f, 3f));
             child.SetParent(null);
         }
 

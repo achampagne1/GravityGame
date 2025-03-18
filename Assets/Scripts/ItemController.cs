@@ -8,7 +8,6 @@ public class ItemController : ObjectController
 
 
     //vectors
-    //Vector2 originalPosition = new Vector2(0, 0);
 
     //private variables
     private float floatCounter = 360f;
@@ -32,16 +31,17 @@ public class ItemController : ObjectController
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        Destroy(this.gameObject);
+        //Destroy(this.gameObject);
     }
 
     private void floatItem (){
         gravityAffected = true;
-        Vector2 newPosition = new Vector2((transform.position.x + (Mathf.Sin(floatCounter) * .015f) * -gravityDirection.x), (transform.position.y + (Mathf.Sin(floatCounter) * .015f) * -gravityDirection.y));
+        orientToGravity = true;
+        /**Vector2 newPosition = new Vector2((transform.position.x + (Mathf.Sin(floatCounter) * .015f) * -gravityDirection.x), (transform.position.y + (Mathf.Sin(floatCounter) * .015f) * -gravityDirection.y));
         rb.MovePosition(newPosition);
         floatCounter -= .05f;
         if (floatCounter <= 0)
-            floatCounter = 360;
+            floatCounter = 360;**/
     }
 
     public void setFloatFlag(bool flag)

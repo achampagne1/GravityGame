@@ -5,18 +5,23 @@ using UnityEngine;
 public class GunController : ItemController
 {
 
+    //vectors
+    private Vector2 forceBuffer = new Vector2(0, 0);
 
     //object creation
-    GameObject bulletObject;
-    Transform playerBody;
-    HandController handController;
+    private GameObject bulletObject;
+    private Transform playerBody;
+    private HandController handController;
+
 
     //private variables
     private bool parented = false;
     private bool facingLeft = false;
+    private bool parentLatch = true;
 
     public void Start()
     {
+        Physics2D.IgnoreLayerCollision(9, 13, true);
         bulletObject = transform.GetChild(0).gameObject; //the bullet is the first child object of the gun
         GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
         handController = transform.parent.GetComponent<HandController>();
@@ -31,7 +36,10 @@ public class GunController : ItemController
         calculateItemUpdate();
         if (parented)
         {
-            setFloatFlag(false);
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            floatFlag = false;
+            gravityAffected = false;    
+            orientToGravity = false;
             facingLeft = handController.getFacingLeft();
             if (handController.getClick())
             {
@@ -41,7 +49,14 @@ public class GunController : ItemController
             }
         }
         else
-            setFloatFlag(true);
+        {
+            rb.bodyType = RigidbodyType2D.Dynamic;
+            if(parentLatch)
+                rb.AddForce(forceBuffer,ForceMode2D.Impulse);
+            floatFlag=true; 
+
+        }
+        parentLatch = parented;
     }
 
     public void shoot(Vector3 location, Vector3 direction)
@@ -66,5 +81,10 @@ public class GunController : ItemController
     public bool getFacingLeft()
     {
         return facingLeft;
+    }
+
+    public void setForceBuffer(Vector2 force)
+    {
+        forceBuffer = force;
     }
 }

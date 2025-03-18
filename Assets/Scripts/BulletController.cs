@@ -27,6 +27,7 @@ public class BulletController : ObjectController
         timer = new Timer(.5f);
         timer.startTimer();
         Physics2D.IgnoreLayerCollision(9, 12, true);
+        Physics2D.IgnoreLayerCollision(12, 13, true);
         Physics2D.IgnoreLayerCollision(12, 12, true);
         rb.AddForce(initialForce*bulletForce, ForceMode2D.Impulse);
         if(first)
@@ -34,7 +35,7 @@ public class BulletController : ObjectController
     }
 
     // Update is called once per frame
-    void Update()
+    public void Update()
     {
         if (!first)
         {
