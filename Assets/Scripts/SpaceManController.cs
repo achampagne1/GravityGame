@@ -44,7 +44,12 @@ public class SpaceManController : CharacterController
             setHealth(10f);
             UIHandler.instance.setHealthValue(getHealth());
         }
-            
+
+        if (collision.gameObject.name == "Gun")
+        {
+            Debug.Log("here");
+        }
+
 
     }
 

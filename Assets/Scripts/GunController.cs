@@ -51,7 +51,7 @@ public class GunController : ItemController
         else
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
-            if(parentLatch)
+            if (parentLatch)
                 rb.AddForce(forceBuffer,ForceMode2D.Impulse);
             floatFlag=true; 
 
@@ -85,6 +85,10 @@ public class GunController : ItemController
 
     public void setForceBuffer(Vector2 force)
     {
-        forceBuffer = force;
+        calculateGravity();
+        float rotatedX = -gravityDirection.x;
+        float rotatedY = -gravityDirection.y;
+
+        forceBuffer = new Vector2(rotatedX* force.x, rotatedY* force.y);
     }
 }
