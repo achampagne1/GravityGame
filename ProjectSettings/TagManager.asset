@@ -19,8 +19,8 @@ TagManager:
   - background
   - enemy
   - bullet
-  - powerups
-  - 
+  - items
+  - TriggerBoudary
   - 
   - 
   - 

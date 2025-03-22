@@ -46,6 +46,8 @@ public class SpaceManController : CharacterController
         }
     }
 
+    //NOTE: triggers have to be done on a seperate trigger game object. If you are looking for a trigger, look there
+
     public int inputSystemToGetAxis()
     {
         if (Keyboard.current.aKey.isPressed)

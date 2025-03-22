@@ -22,6 +22,7 @@ public class GunController : ItemController
     public void Start()
     {
         Physics2D.IgnoreLayerCollision(9, 13, true);
+        parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
         bulletObject = transform.GetChild(0).gameObject; //the bullet is the first child object of the gun
         GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
         handController = transform.parent.GetComponent<HandController>();
@@ -78,14 +79,14 @@ public class GunController : ItemController
         return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        Debug.Log("Trigger detected with " + other.gameObject.name);
-    }
-
     public bool getFacingLeft()
     {
         return facingLeft;
+    }
+
+    public bool getParented()
+    {
+        return parented;
     }
 
     public void setForceBuffer(Vector2 force)
