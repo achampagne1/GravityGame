@@ -78,6 +78,11 @@ public class GunController : ItemController
         return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        Debug.Log("Trigger detected with " + other.gameObject.name);
+    }
+
     public bool getFacingLeft()
     {
         return facingLeft;
