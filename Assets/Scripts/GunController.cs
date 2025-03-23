@@ -12,6 +12,7 @@ public class GunController : ItemController
     private GameObject bulletObject;
     private Transform playerBody;
     private HandController handController;
+    private Timer throwTimer;
 
 
     //private variables
@@ -21,12 +22,16 @@ public class GunController : ItemController
 
     public void Start()
     {
+        throwTimer = new Timer(.25f); //this is to make sure the player doesnt immidietly grab the item when it is thrown
         Physics2D.IgnoreLayerCollision(9, 13, true);
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
         bulletObject = transform.GetChild(0).gameObject; //the bullet is the first child object of the gun
-        GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
-        handController = transform.parent.GetComponent<HandController>();
-        playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
+        if (parented)
+        {
+            GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
+            handController = transform.parent.GetComponent<HandController>();
+            playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
+        }
         calculateItemStart();   
     }
 
@@ -37,6 +42,12 @@ public class GunController : ItemController
         calculateItemUpdate();
         if (parented)
         {
+            if (!parentLatch)
+            {
+                GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
+                handController = transform.parent.GetComponent<HandController>();
+                playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
+            }
             rb.bodyType = RigidbodyType2D.Kinematic;
             floatFlag = false;
             gravityAffected = false;    
@@ -58,6 +69,9 @@ public class GunController : ItemController
 
         }
         parentLatch = parented;
+
+        if(throwTimer.checkTimer())
+            Physics2D.IgnoreLayerCollision(13, 14, false);
     }
 
     public void shoot(Vector3 location, Vector3 direction)
@@ -79,6 +93,24 @@ public class GunController : ItemController
         return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
     }
 
+    public void setForceBuffer(Vector2 force)
+    {
+        calculateGravity();
+        Physics2D.IgnoreLayerCollision(13, 14, true);
+        throwTimer.startTimer();
+        float rotatedX = -gravityDirection.x;
+        float rotatedY = -gravityDirection.y;
+
+        forceBuffer = new Vector2(rotatedX * force.x, rotatedY * force.y);
+    }
+
+    public void setParent(GameObject parent)
+    {
+        transform.SetParent(parent.transform);
+        transform.localPosition = new Vector3(1.5f, 1f, 0f);
+        transform.rotation = parent.transform.rotation;
+    }
+
     public bool getFacingLeft()
     {
         return facingLeft;
@@ -89,12 +121,5 @@ public class GunController : ItemController
         return parented;
     }
 
-    public void setForceBuffer(Vector2 force)
-    {
-        calculateGravity();
-        float rotatedX = -gravityDirection.x;
-        float rotatedY = -gravityDirection.y;
 
-        forceBuffer = new Vector2(rotatedX* force.x, rotatedY* force.y);
-    }
 }

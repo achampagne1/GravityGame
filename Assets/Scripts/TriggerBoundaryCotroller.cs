@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class TriggerBoundaryCotroller : MonoBehaviour
 {
+    //object creation
+    private GameObject characterHand;
+
     // Start is called before the first frame update
     void Start()
     {
+        characterHand = GameObject.Find("SpaceManHand");
         Physics2D.IgnoreLayerCollision(9, 14, true);
     }
 
@@ -20,6 +24,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
     {
         if(trigger.gameObject.name == "Gun" && !trigger.gameObject.GetComponent<GunController>().getParented())//will need to change to item controller once parenting is moved to item
         {
+            trigger.gameObject.GetComponent<GunController>().setParent(characterHand);
             Debug.Log("grab");
         }
     }

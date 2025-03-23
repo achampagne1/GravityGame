@@ -29,7 +29,7 @@ public class Timer
             currentTime -= Time.deltaTime; // Decrease the timer based on time passed
             if (currentTime <= 0)
             {
-                //isRunning = false;
+                isRunning = false;
                 currentTime = 0f;
                 return true; // Timer has ended
             }
