@@ -64,7 +64,11 @@ public class GunController : ItemController
         {
             rb.bodyType = RigidbodyType2D.Dynamic;
             if (parentLatch)
-                rb.AddForce(forceBuffer,ForceMode2D.Impulse);
+            {
+                rb.AddForce(forceBuffer, ForceMode2D.Impulse);
+                handController = null;
+                playerBody = null;
+            }
             floatFlag=true; 
 
         }
@@ -106,13 +110,13 @@ public class GunController : ItemController
 
     public void setParent(GameObject parent)
     {
-        transform.SetParent(parent.transform);
+        transform.SetParent(parent.transform); //slightly different method
         transform.rotation = parent.transform.rotation;
-        if (parent.gameObject.GetComponent<HandController>().getFacingLeft()&&!facingLeft)
+        if (parent.gameObject.GetComponent<HandController>().getFacingLeft()!=facingLeft)
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
             transform.localPosition = new Vector3(-1.5f, -1f, 0f);
-            facingLeft = true;
+            facingLeft = parent.gameObject.GetComponent<HandController>().getFacingLeft();
         }
         else
             transform.localPosition = new Vector3(1.5f, 1f, 0f);

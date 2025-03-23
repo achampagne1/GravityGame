@@ -27,6 +27,10 @@ public class HandController : MonoBehaviour
 
         delay = new Queue<Vector2>();
         delay.Enqueue(transform.position);
+        holding = transform.childCount;
+        if (holding != 0)
+            setChild();
+
     }
 
     // Update is called once per frame
@@ -94,6 +98,13 @@ public class HandController : MonoBehaviour
         Vector3 direction3D = new Vector3(normalizedDirection.x, normalizedDirection.y, 0f);
         Vector3 rotatedDirection = playerRotation * direction3D;
         return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
+    }
+
+    private void setChild()
+    {
+        Transform child = transform.GetChild(0);
+        GunController childController = child.gameObject.GetComponent<GunController>();
+        childController.setParent(gameObject);
     }
 
     public bool getClick()
