@@ -31,7 +31,7 @@ public class CharacterController : ObjectController{
     private bool timerFlag = false;
     private bool throwItem = false;
     private bool click = false;
-
+    private bool hoverFlag = false;
 
     //vectors
     private Vector2 moveDirection = new Vector2(0, 0);
@@ -172,10 +172,16 @@ public class CharacterController : ObjectController{
     {
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
-        if (space && groundTimer.checkTimer())
-            hover = new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce);
-        else
-            hover = new Vector2(0, 0);
+        if (space && !isGrounded)
+        {
+            hoverFlag = true;
+            Debug.Log("Hover");
+        }
+
+        if (!space)
+            hoverFlag = false;
+
+        hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce): Vector2.zero;
     }
 
     private void calculateMovement()
