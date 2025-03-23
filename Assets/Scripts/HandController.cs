@@ -52,6 +52,7 @@ public class HandController : MonoBehaviour
     private void emptyHand()
     {
         Vector2 localOffset = new Vector2(characterController.getFacingLeft() ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
+        facingLeft = characterController.getFacingLeft();
         float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 offset = new Vector2(
             localOffset.x * Mathf.Cos(angleRad) - localOffset.y * Mathf.Sin(angleRad),
@@ -70,12 +71,12 @@ public class HandController : MonoBehaviour
         float angleDeg = angleRad * Mathf.Rad2Deg;
         Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
         Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
-        if (characterController.getFacingLeft() && facingLeft == false)
+        if (characterController.getFacingLeft() && !facingLeft)
         {
             transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
             facingLeft = true;
         }
-        else if (!characterController.getFacingLeft() && facingLeft == true)
+        else if (!characterController.getFacingLeft() && facingLeft)
         {
             transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
             facingLeft = false;

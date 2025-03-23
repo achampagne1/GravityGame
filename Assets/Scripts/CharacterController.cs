@@ -102,16 +102,6 @@ public class CharacterController : ObjectController{
     {
         RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, gravityDirection, heightTestPlayer, layerMaskPlanet);
         bool ground = hit.collider != null;
-        if (!ground && !timerFlag)
-        {
-            groundTimer.startTimer();
-            timerFlag = true;
-        }
-        else if (ground && timerFlag)
-        {
-            groundTimer.resetTimer();
-            timerFlag = false;
-        }
         return ground;
     }
 
@@ -173,10 +163,7 @@ public class CharacterController : ObjectController{
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
         if (space && !isGrounded)
-        {
             hoverFlag = true;
-            Debug.Log("Hover");
-        }
 
         if (!space)
             hoverFlag = false;
