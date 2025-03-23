@@ -29,21 +29,23 @@ public class HandController : MonoBehaviour
         delay.Enqueue(transform.position);
         holding = transform.childCount;
         if (holding != 0)
-            setChild();
+            setChild(transform.GetChild(0));
 
     }
 
     // Update is called once per frame
     public void FixedUpdate()
     {
+        //this is just for the throwing action
         if (characterController.getThrow()&& transform.childCount!=0)
         {
             Transform child = transform.GetChild(0); // Get first child
-            GunController childController = child.gameObject.GetComponent<GunController>();
+            GunController childController = child.gameObject.GetComponent<GunController>(); //will be chagned to item controller
             childController.setForceBuffer(new Vector2(15f, 6f));
-            child.SetParent(null);
+            child.SetParent(null); //using transform.SetParent not Item.SetParent
         }
 
+        //this is for handling if youre holding an item or not
         holding = transform.childCount;
         if (holding == 0)
             emptyHand();
@@ -55,8 +57,8 @@ public class HandController : MonoBehaviour
 
     private void emptyHand()
     {
-        Vector2 localOffset = new Vector2(characterController.getFacingLeft() ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
         facingLeft = characterController.getFacingLeft();
+        Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
         float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 offset = new Vector2(
             localOffset.x * Mathf.Cos(angleRad) - localOffset.y * Mathf.Sin(angleRad),
@@ -75,15 +77,10 @@ public class HandController : MonoBehaviour
         float angleDeg = angleRad * Mathf.Rad2Deg;
         Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
         Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
-        if (characterController.getFacingLeft() && !facingLeft)
+        if (characterController.getFacingLeft() != facingLeft)
         {
             transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
-            facingLeft = true;
-        }
-        else if (!characterController.getFacingLeft() && facingLeft)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
-            facingLeft = false;
+            facingLeft = !facingLeft;
         }
         transform.position = (Vector2)playerBody.position + offset;
         transform.rotation = rotationQuaternion;
@@ -100,9 +97,8 @@ public class HandController : MonoBehaviour
         return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
     }
 
-    private void setChild()
+    public void setChild(Transform child)
     {
-        Transform child = transform.GetChild(0);
         GunController childController = child.gameObject.GetComponent<GunController>();
         childController.setParent(gameObject);
     }

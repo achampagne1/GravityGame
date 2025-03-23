@@ -116,7 +116,7 @@ public class GunController : ItemController
         {
             transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
             transform.localPosition = new Vector3(-1.5f, -1f, 0f);
-            facingLeft = parent.gameObject.GetComponent<HandController>().getFacingLeft();
+            facingLeft = !facingLeft;
         }
         else
             transform.localPosition = new Vector3(1.5f, 1f, 0f);
