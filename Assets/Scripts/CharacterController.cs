@@ -77,15 +77,13 @@ public class CharacterController : ObjectController{
 
         rb.AddForce(jump, ForceMode2D.Impulse);
         rb.AddForce(hover);
-        if (!wallInFront())
-        {
-            rb.AddForce(moveDirection, ForceMode2D.Impulse);
-            rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
 
-            //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravity
-            if (!isGrounded)
-                rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; 
-        }
+        rb.AddForce(moveDirection, ForceMode2D.Impulse);
+        rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
+
+        //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravity
+        if (!isGrounded)
+            rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; 
         calculateUpdate();  
 
         previousV = -rb.velocity;
@@ -109,19 +107,21 @@ public class CharacterController : ObjectController{
         return ground;
     }
 
-    private bool wallInFront()
+    private int wallInFront()
     {
-        int layerMask = LayerMask.GetMask("Default", "enemy", "player");
+        int layerMask = LayerMask.GetMask("Default", "enemy", "player","Platforms"); //how can this be done better
         int currentLayer = gameObject.layer;
         int finalMask = layerMask & ~(1 << currentLayer);
 
-        RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, facingLeft ? -Vector2.Perpendicular(gravityDirection) : Vector2.Perpendicular(gravityDirection), heightTestPlayer + 3, finalMask);
-        Vector2 groundNormal = hit.normal; // The normal of the surface
-        float angle = Mathf.Atan2(groundNormal.y, groundNormal.x) * Mathf.Rad2Deg;
-
-        if (angle > 90 || angle <0)
-            return true;
-        return false;
+        Vector2 left = Physics2D.Raycast(circleColliderPlayer.bounds.center,-Vector2.Perpendicular(gravityDirection), heightTestPlayer + .2f, finalMask).normal;
+        Vector2 right = Physics2D.Raycast(circleColliderPlayer.bounds.center,Vector2.Perpendicular(gravityDirection), heightTestPlayer + .2f, finalMask).normal;
+        float angleLeft = Mathf.Atan2(left.y, left.x) * Mathf.Rad2Deg;
+        float angleRight = Mathf.Atan2(right.y, right.x) * Mathf.Rad2Deg;
+        if (angleLeft > 90 || angleLeft <0) //these need to be tweaked
+            return -1;
+        if (angleRight > 90 || angleRight < 0)
+            return 1;
+        return 0;
     }
 
     private float CalculateMagnitude(Vector2 vector)
@@ -131,12 +131,12 @@ public class CharacterController : ObjectController{
 
     private void turnLeftRight()
     {
-        if (direcitonInput == -1 && facingLeft == false)
+        if (direcitonInput == -1 && !facingLeft)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             facingLeft = true;
         }
-        else if (direcitonInput == 1 && facingLeft == true)
+        else if (direcitonInput == 1 && facingLeft)
         {
             transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
             facingLeft = false;
@@ -180,6 +180,8 @@ public class CharacterController : ObjectController{
         //movement
         rotatedX = -gravityDirection.y;
         rotatedY = gravityDirection.x;
+        if (wallInFront() == (int)horizontalInput)
+            horizontalInput = 0;
         moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
     }
 
