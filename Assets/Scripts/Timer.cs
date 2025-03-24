@@ -49,4 +49,9 @@ public class Timer
     {
         return currentTime;
     }
+
+    public bool getIsRunning()
+    {
+        return isRunning;
+    }
 }

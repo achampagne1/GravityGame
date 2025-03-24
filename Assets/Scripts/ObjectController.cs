@@ -33,9 +33,9 @@ public class ObjectController : MonoBehaviour
 
     protected void calculateUpdate()
     {
+        calculateGravity();
         if (gravityAffected)
         {
-            calculateGravity();
             rb.AddForce(gravityForce);
             rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
         }
@@ -56,7 +56,6 @@ public class ObjectController : MonoBehaviour
         GameObject temp = GameObject.Find("GravityPointsList"); //resuing temp might be a bad idea
         GravityPointsList gravityPointsList = temp.GetComponent<GravityPointsList>();
         List<GameObject> gravityPoints = gravityPointsList.gravityPoints;
-
         float closestGravityField = 1000f;
         foreach (GameObject gravityPoint in gravityPoints)
         {
@@ -77,11 +76,11 @@ public class ObjectController : MonoBehaviour
     {
             float rotationSmoothTime = 0.05f; // Adjust for more/less smoothness
             float rotationVelocity = 0f;
-
             float targetAngle = Mathf.Atan2(gravityDirection.y, gravityDirection.x) * Mathf.Rad2Deg + 90f;
             float smoothedAngle = Mathf.SmoothDampAngle(transform.eulerAngles.z, targetAngle, ref rotationVelocity, rotationSmoothTime);
 
-            transform.rotation = Quaternion.Euler(0f, 0f, smoothedAngle); //this should be done in update if you want to be consistant with all the other updates
+            transform.rotation = Quaternion.Euler(0f, 0f, smoothedAngle); //this should be done in update if you want to be consistant with all the other update
+            //the rotation transform must be modified here directly since the class is virtual. bullet overrides this for its own
 
     }
 }
