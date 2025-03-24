@@ -25,6 +25,7 @@ public class CharacterController : ObjectController{
     private float jumpMagnitude = 0;
     private float maxHealth = 3f; //default max health is 3
     private float health = 0f;
+    private float groundAngle = 0f;
     private bool isGrounded = false;
     private bool space = false;
     private bool facingLeft = false;
@@ -58,8 +59,8 @@ public class CharacterController : ObjectController{
             Debug.LogError(e);
         }
 
-        groundTimer = new Timer(0.2f);
-        heightTestPlayer = circleColliderPlayer.bounds.extents.y + 0.05f; //whta this
+        groundTimer = new Timer(0.4f);
+        heightTestPlayer = circleColliderPlayer.bounds.extents.y + 0.05f;
 
         }
 
@@ -103,7 +104,11 @@ public class CharacterController : ObjectController{
         if (!ground && !groundTimer.getIsRunning())
             groundTimer.startTimer();
         if (ground)
+        {
             groundTimer.resetTimer();
+            Vector2 groundNormal = hit.normal;
+            groundAngle = Vector2.Angle(gravityDirection, groundNormal);
+        }
         return ground;
     }
 
