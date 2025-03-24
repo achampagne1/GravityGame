@@ -25,7 +25,7 @@ public class ObjectController : MonoBehaviour
     protected void calculateStart()
     {
         rb = GetComponent<Rigidbody2D>();
-        layerMaskPlanet = LayerMask.GetMask("Default");
+        layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
 
         FindClosestField();
         rb.velocity = new Vector2(0, 0); //this can be moifie to have a starting velocity*/
