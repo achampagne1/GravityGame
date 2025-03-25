@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 5070827973349304947}
   - component: {fileID: 507273502032372736}
   - component: {fileID: 2667448509233387349}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: SpaceManHand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -332,8 +332,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.056013465, y: 0.1973021}
-  m_Radius: 5.0424356
+  m_Offset: {x: -0.056013465, y: 0.39623618}
+  m_Radius: 4.8435006
 --- !u!50 &1239260081404318765
 Rigidbody2D:
   serializedVersion: 4
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 7601894536948443485}
   - component: {fileID: 3757223145137466355}
   - component: {fileID: 9025898114710739492}
-  m_Layer: 0
+  m_Layer: 2
   m_Name: CM vcam1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

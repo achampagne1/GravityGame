@@ -35,13 +35,12 @@ public class ItemController : ObjectController
     }
 
     private void floatItem (){
-        gravityAffected = true;
         orientToGravity = true;
-        /**Vector2 newPosition = new Vector2((transform.position.x + (Mathf.Sin(floatCounter) * .015f) * -gravityDirection.x), (transform.position.y + (Mathf.Sin(floatCounter) * .015f) * -gravityDirection.y));
+        Vector2 newPosition = new Vector2((transform.position.x + (Mathf.Sin(floatCounter) * .015f) * -gravityDirection.x), (transform.position.y + (Mathf.Sin(floatCounter) * .015f) * -gravityDirection.y));
         rb.MovePosition(newPosition);
         floatCounter -= .05f;
         if (floatCounter <= 0)
-            floatCounter = 360;**/
+            floatCounter = 360;
     }
 
     public void setFloatFlag(bool flag)

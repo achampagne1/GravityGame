@@ -7,9 +7,7 @@ using static Unity.Collections.AllocatorManager;
 
 public class CharacterController : ObjectController{
     //object creation
-    private CircleCollider2D circleColliderPlayer;
     private Animator animator;
-    private Timer groundTimer; 
 
     //public game variables
     public float moveSpeed = 20f;
@@ -17,7 +15,6 @@ public class CharacterController : ObjectController{
     public float jetPackForce = 30f;
 
     //private game variables
-    private float heightTestPlayer = 0;
     private float horizontalInput = 0;
     private float direcitonInput = 0;
     private float rotatedX = 0;
@@ -25,8 +22,6 @@ public class CharacterController : ObjectController{
     private float jumpMagnitude = 0;
     private float maxHealth = 3f; //default max health is 3
     private float health = 0f;
-    private float groundAngle = 0f;
-    private bool isGrounded = false;
     private bool space = false;
     private bool facingLeft = false;
     private bool timerFlag = false;
@@ -49,7 +44,6 @@ public class CharacterController : ObjectController{
     {
         health = maxHealth;
         calculateStart();      
-        circleColliderPlayer = GetComponent<CircleCollider2D>();
         try
         {
             animator = GetComponent<Animator>();
@@ -59,17 +53,12 @@ public class CharacterController : ObjectController{
             Debug.LogError(e);
         }
 
-        groundTimer = new Timer(0.4f);
-        heightTestPlayer = circleColliderPlayer.bounds.extents.y + 0.05f;
-
-        }
+    }
 
     public void calculateCharacterUpdate()
     {
         turnLeftRight();
         determineAnimation();
-        //Check if the player is grounded
-        isGrounded = IsGrounded();
 
         calculateJump();
         calculateJetPackHover();
@@ -97,29 +86,14 @@ public class CharacterController : ObjectController{
         additionalForce = force;
     }
 
-    private bool IsGrounded()
-    {
-        RaycastHit2D hit = Physics2D.Raycast(circleColliderPlayer.bounds.center, gravityDirection, heightTestPlayer, layerMaskPlanet);
-        bool ground = hit.collider != null;
-        if (!ground && !groundTimer.getIsRunning())
-            groundTimer.startTimer();
-        if (ground)
-        {
-            groundTimer.resetTimer();
-            Vector2 groundNormal = hit.normal;
-            groundAngle = Vector2.Angle(gravityDirection, groundNormal);
-        }
-        return ground;
-    }
-
     private int wallInFront()
     {
         int layerMask = LayerMask.GetMask("Default", "enemy", "player","Platforms"); //how can this be done better
         int currentLayer = gameObject.layer;
         int finalMask = layerMask & ~(1 << currentLayer);
 
-        Vector2 left = Physics2D.Raycast(circleColliderPlayer.bounds.center,-Vector2.Perpendicular(gravityDirection), heightTestPlayer + .2f, finalMask).normal;
-        Vector2 right = Physics2D.Raycast(circleColliderPlayer.bounds.center,Vector2.Perpendicular(gravityDirection), heightTestPlayer + .2f, finalMask).normal;
+        Vector2 left = Physics2D.Raycast(transform.position,-Vector2.Perpendicular(gravityDirection), heightObject + .2f, finalMask).normal;
+        Vector2 right = Physics2D.Raycast(transform.position,Vector2.Perpendicular(gravityDirection), heightObject + .2f, finalMask).normal;
         float angleLeft = Mathf.Atan2(left.y, left.x) * Mathf.Rad2Deg;
         float angleRight = Mathf.Atan2(right.y, right.x) * Mathf.Rad2Deg;
         if (angleLeft > 90 || angleLeft <0) //these need to be tweaked
@@ -185,6 +159,7 @@ public class CharacterController : ObjectController{
         //movement
         rotatedX = -gravityDirection.y;
         rotatedY = gravityDirection.x;
+        Debug.Log(horizontalInput);
         if (wallInFront() == (int)horizontalInput)
             horizontalInput = 0;
         moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
@@ -270,9 +245,9 @@ public class CharacterController : ObjectController{
         click = clickInput;
     }
 
-    public CircleCollider2D getCharacterCollider()
+    public Collider2D getCharacterCollider()
     {
-        return circleColliderPlayer;
+        return collider;
     }
 
     public Vector2 getGravityDirection()
