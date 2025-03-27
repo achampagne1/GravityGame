@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f0aa89934654d52459a14b02c502b235
+guid: 0f4090c33a3a0cb44b30f151481c886f
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4190780099909042120
-    second: spacestationwall_0
+      213: -7562786634732585781
+    second: beamCorner_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +46,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spacestationwall_0
+      name: beamCorner_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 3319
-        height: 1224
+        width: 335
+        height: 334
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 830452de3bb57d5c0800000000000000
-      internalID: -4190780099909042120
+      spriteID: bcc31b400a59b0790800000000000000
+      internalID: -7562786634732585781
       vertices: []
       indices: 
       edges: []
@@ -123,7 +123,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -131,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      spacestationwall_0: -4190780099909042120
+      beamCorner_0: -7562786634732585781
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

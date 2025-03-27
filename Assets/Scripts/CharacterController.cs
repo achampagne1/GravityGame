@@ -159,7 +159,6 @@ public class CharacterController : ObjectController{
         //movement
         rotatedX = -gravityDirection.y;
         rotatedY = gravityDirection.x;
-        Debug.Log(horizontalInput);
         if (wallInFront() == (int)horizontalInput)
             horizontalInput = 0;
         moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
