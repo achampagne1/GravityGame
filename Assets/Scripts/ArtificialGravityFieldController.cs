@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ArtificialGravityFieldController : MonoBehaviour
 {
-    public Vector2 fieldStrength = new Vector2(-20,0);
+    public float fieldStrength = 20f;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +20,15 @@ public class ArtificialGravityFieldController : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D trigger)
     {
-        trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength);
+        if(!trigger.isTrigger)
+        {
+            trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength* (Vector2)(transform.rotation * Vector2.down));
+        }
     }
 
     private void OnTriggerExit2D(Collider2D trigger)
     {
-        trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(Vector2.zero);
+        if (!trigger.isTrigger)
+            trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(Vector2.zero);
     }
 }

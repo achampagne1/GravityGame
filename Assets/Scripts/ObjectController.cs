@@ -45,6 +45,7 @@ public class ObjectController : MonoBehaviour
     protected void calculateUpdate()
     {
         isGrounded = IsGrounded();
+        Debug.Log(isGrounded);
         calculateGravity();
         if (gravityAffected)
         {
@@ -127,7 +128,8 @@ public class ObjectController : MonoBehaviour
 
     private float getHeight()
     {
-        collider = GetComponent<Collider2D>();
+        Collider2D collider = GetComponent<Collider2D>();
+
         if (collider is CircleCollider2D circle)
         {
             return collider.bounds.extents.y; // Diameter = 2 * radius
@@ -136,10 +138,25 @@ public class ObjectController : MonoBehaviour
         {
             return box.size.y * Mathf.Abs(box.transform.lossyScale.y); // Adjust for scale
         }
+        else if (collider is PolygonCollider2D poly)
+        {
+            float minY = float.MaxValue;
+            float maxY = float.MinValue;
 
-        Debug.LogError("no attached collider");
+            foreach (Vector2 point in poly.points)
+            {
+                float worldY = poly.transform.TransformPoint(point).y;
+                minY = Mathf.Min(minY, worldY);
+                maxY = Mathf.Max(maxY, worldY);
+            }
+
+            return maxY - minY;
+        }
+
+        Debug.LogError("No attached collider");
         return 0f;
     }
+
 
     public void setGravityOverride(Vector2 newGravity)
     {

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: f0aa89934654d52459a14b02c502b235
+guid: af1c601e43df5d04496573d50c8b01fe
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4190780099909042120
-    second: spacestationwall_0
+      213: 1975953294823501539
+    second: overheadLight_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: spacestationwall_0
+      name: overheadLight_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 3319
-        height: 1224
+        width: 1094
+        height: 1223
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 830452de3bb57d5c0800000000000000
-      internalID: -4190780099909042120
+      spriteID: 3eea7b67d0ffb6b10800000000000000
+      internalID: 1975953294823501539
       vertices: []
       indices: 
       edges: []
@@ -130,8 +130,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      spacestationwall_0: -4190780099909042120
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -8,6 +8,7 @@ using static Unity.Collections.AllocatorManager;
 public class CharacterController : ObjectController{
     //object creation
     private Animator animator;
+    protected Timer hoverTimer;
 
     //public game variables
     public float moveSpeed = 20f;
@@ -22,6 +23,8 @@ public class CharacterController : ObjectController{
     private float jumpMagnitude = 0;
     private float maxHealth = 3f; //default max health is 3
     private float health = 0f;
+    private float maxFuel = 100f; // Maximum fuel capacity
+    private float currentFuel = 100f;
     private bool space = false;
     private bool facingLeft = false;
     private bool timerFlag = false;
@@ -145,13 +148,25 @@ public class CharacterController : ObjectController{
     {
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
-        if (space && groundTimer.checkTimer())
+        if (space && groundTimer.checkTimer() && currentFuel > 0)
+        {
             hoverFlag = true;
+            useFuel();
+        }
 
         if (!space)
             hoverFlag = false;
 
         hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero;
+    }
+
+    private void useFuel()
+    {
+        float fuelConsumptionRate = 10f; // Fuel units per second
+        currentFuel -= fuelConsumptionRate * Time.deltaTime; // Decrease fuel over time
+
+        if (currentFuel < 0)
+            currentFuel = 0; // Prevent negative fuel
     }
 
     private void calculateMovement()
