@@ -9,6 +9,7 @@ public class UIHandler : MonoBehaviour
     public static UIHandler instance { get; private set; }
     float fadeCounter = 180f;
     VisualElement fullBar;
+    VisualElement fullFuelBar;
     VisualElement warningBar;
 
     private void Awake()
@@ -21,6 +22,7 @@ public class UIHandler : MonoBehaviour
     {
         UIDocument uiDocument = GetComponent<UIDocument>();
         fullBar = uiDocument.rootVisualElement.Q<VisualElement>("healthBar");
+        fullFuelBar = uiDocument.rootVisualElement.Q<VisualElement>("fuelBar");
         warningBar = uiDocument.rootVisualElement.Q<VisualElement>("warningBar");
         warningBar.style.opacity = 0f;
 
@@ -39,6 +41,11 @@ public class UIHandler : MonoBehaviour
     {
         currentHealth = health / 10f;
         fullBar.style.width = Length.Percent(currentHealth * 100.0f);
+    }
+
+    public void setFuelValue(float fuelLevel)
+    {
+        fullFuelBar.style.width = Length.Percent(fuelLevel);
     }
 
     void warningBarFunction()

@@ -22,15 +22,17 @@ public class CharacterController : ObjectController{
     private float rotatedY = 0;
     private float jumpMagnitude = 0;
     private float maxHealth = 3f; //default max health is 3
-    private float health = 0f;
     private float maxFuel = 100f; // Maximum fuel capacity
-    private float currentFuel = 100f;
     private bool space = false;
     private bool facingLeft = false;
     private bool timerFlag = false;
     private bool throwItem = false;
     private bool click = false;
     private bool hoverFlag = false;
+
+    //protected game variables
+    protected float currentFuel = 100f;
+    protected float health = 0f;
 
     //vectors
     private Vector2 moveDirection = new Vector2(0, 0);
@@ -41,6 +43,7 @@ public class CharacterController : ObjectController{
     private Vector2 previousMove = new Vector2(0, 0);
     private Vector2 jumpExtraction = new Vector2(0, 0);
     private Vector2 additionalForce = new Vector2(0, 0);
+
 
 
     public void calculateCharacterStart()
@@ -152,6 +155,7 @@ public class CharacterController : ObjectController{
         {
             hoverFlag = true;
             useFuel();
+            Debug.Log(currentFuel);
         }
 
         if (!space)
@@ -162,8 +166,8 @@ public class CharacterController : ObjectController{
 
     private void useFuel()
     {
-        float fuelConsumptionRate = 10f; // Fuel units per second
-        currentFuel -= fuelConsumptionRate * Time.deltaTime; // Decrease fuel over time
+        float fuelConsumptionRate = 100f; // Fuel units per second
+          currentFuel -= fuelConsumptionRate * Time.deltaTime; // Decrease fuel over time
 
         if (currentFuel < 0)
             currentFuel = 0; // Prevent negative fuel

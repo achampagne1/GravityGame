@@ -45,7 +45,6 @@ public class ObjectController : MonoBehaviour
     protected void calculateUpdate()
     {
         isGrounded = IsGrounded();
-        Debug.Log(isGrounded);
         calculateGravity();
         if (gravityAffected)
         {
