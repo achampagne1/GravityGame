@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Timer
+public struct Timer
 {
     private float totalTime;   // Total time the timer will run
     private float currentTime; // Time left in the timer

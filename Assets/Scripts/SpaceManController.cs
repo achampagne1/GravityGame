@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Diagnostics;
 
 public class SpaceManController : CharacterController
 {
@@ -13,11 +14,11 @@ public class SpaceManController : CharacterController
     {
         calculateCharacterStart();
         setMaxHealth(10f);
-
     }
 
     public void FixedUpdate()
     {
+        float fuelBuffer = currentFuel;
         setMovement(inputSystemToGetAxis());
         setOrientation(lookLeftOrRight());
         setJump(Keyboard.current.spaceKey.isPressed);
@@ -25,7 +26,8 @@ public class SpaceManController : CharacterController
         setClick(Mouse.current.leftButton.wasPressedThisFrame);
         calculateCharacterUpdate();
 
-        UIHandler.instance.setFuelValue(currentFuel);
+        if(fuelBuffer!=currentFuel)
+            UIHandler.instance.setFuelValue(currentFuel);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

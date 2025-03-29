@@ -2,15 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
+using UnityEngine.InputSystem;
 
 public class UIHandler : MonoBehaviour
 {
     public float currentHealth =1f;
     public static UIHandler instance { get; private set; }
-    float fadeCounter = 180f;
+    private float fadeCounter = 180f;
+    private bool escapeClicked = false;
+    private float lastEscapePress = 0f;
     VisualElement fullBar;
     VisualElement fullFuelBar;
     VisualElement warningBar;
+    VisualElement pauseMenu;
 
     private void Awake()
     {
@@ -24,6 +28,7 @@ public class UIHandler : MonoBehaviour
         fullBar = uiDocument.rootVisualElement.Q<VisualElement>("healthBar");
         fullFuelBar = uiDocument.rootVisualElement.Q<VisualElement>("fuelBar");
         warningBar = uiDocument.rootVisualElement.Q<VisualElement>("warningBar");
+        pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
         warningBar.style.opacity = 0f;
 
     }
@@ -34,6 +39,13 @@ public class UIHandler : MonoBehaviour
         if (currentHealth <= .3f)
         {
             warningBarFunction();
+        }
+
+        if (Keyboard.current.escapeKey.wasPressedThisFrame || Keyboard.current.escapeKey.isPressed && Time.unscaledTime - lastEscapePress > 0.15f)
+        {
+            lastEscapePress = Time.unscaledTime;
+            escapeClicked = !escapeClicked;
+            pauseMenu.style.top = escapeClicked ? Length.Percent(-10) : Length.Percent(110);
         }
     }
 

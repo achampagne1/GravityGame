@@ -155,10 +155,9 @@ public class CharacterController : ObjectController{
         {
             hoverFlag = true;
             useFuel();
-            Debug.Log(currentFuel);
         }
 
-        if (!space)
+        if (!space || currentFuel == 0)
             hoverFlag = false;
 
         hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero;

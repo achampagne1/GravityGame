@@ -7,4 +7,15 @@
         <ui:VisualElement name="warningBar" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/warningBar.png?fileID=6196391837041233233&amp;guid=c7540cba415df4945af45f114352c68a&amp;type=3#warningBar_0&apos;); width: 30%; height: 100%; position: absolute;" />
         <ui:VisualElement name="verticalBars" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/emptyBar.png?fileID=246303161595536057&amp;guid=42dc777a247eb6f4dbb73d2eba628b3f&amp;type=3#emptyBar_0&apos;); height: 100%; width: 100%; position: absolute; display: flex;" />
     </ui:VisualElement>
+    <ui:VisualElement name="outline" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/healthBarOutline.png?fileID=2800000&amp;guid=1c3602bd493c21d42a89286be39be0cf&amp;type=3#healthBarOutline&apos;); width: 40%; height: 4%;">
+        <ui:VisualElement name="greyBackground" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/backgroundColor.png?fileID=8143267297263155204&amp;guid=b746a05249d47d14aa6161c067b4bc8c&amp;type=3#backgroundColor_0&apos;); opacity: 0.4; display: flex;" />
+        <ui:VisualElement name="fuelBarContainer" picking-mode="Ignore" style="flex-grow: 1; height: 100%; width: 100%; display: flex; overflow: visible; visibility: visible; position: absolute;">
+            <ui:VisualElement name="fuelBar" picking-mode="Ignore" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/fullFuelBar.png?fileID=-6911541724942115019&amp;guid=a2e4470d414502a40a17279b3ccf3aa4&amp;type=3#fullFuelBar_0&apos;); width: 100%; height: 100%;" />
+        </ui:VisualElement>
+        <ui:VisualElement name="verticalBars" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/emptyBar.png?fileID=246303161595536057&amp;guid=42dc777a247eb6f4dbb73d2eba628b3f&amp;type=3#emptyBar_0&apos;); height: 100%; width: 100%; position: absolute; display: flex;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="pause" style="flex-grow: 1; top: 100%;">
+        <ui:VisualElement name="background" style="flex-grow: 1; background-color: rgb(0, 0, 0); width: 50%; height: 100%; top: -5%; left: 25%;" />
+        <ui:VisualElement name="outline" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/pause.png?fileID=2800000&amp;guid=b49ee157d9dd4a74b91e626cd85e9829&amp;type=3#pause&apos;); width: 50%; height: 100%; position: absolute; top: -5%; left: 25%;" />
+    </ui:VisualElement>
 </ui:UXML>
