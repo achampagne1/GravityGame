@@ -30,6 +30,8 @@ public class UIHandler : MonoBehaviour
         warningBar = uiDocument.rootVisualElement.Q<VisualElement>("warningBar");
         pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
         warningBar.style.opacity = 0f;
+        pauseMenu.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
+        pauseMenu.style.top = Length.Percent(110);
 
     }
 
@@ -45,7 +47,7 @@ public class UIHandler : MonoBehaviour
         {
             lastEscapePress = Time.unscaledTime;
             escapeClicked = !escapeClicked;
-            pauseMenu.style.top = escapeClicked ? Length.Percent(-10) : Length.Percent(110);
+            pauseMenu.style.top = escapeClicked ? Length.Percent(0) : Length.Percent(110);
         }
     }
 
