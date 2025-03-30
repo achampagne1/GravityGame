@@ -14,13 +14,16 @@ public class UIHandler : MonoBehaviour
     private float fadeCounter = 180f;
     private bool escapeClicked = false;
     private float lastEscapePress = 0f;
-    private float parentHeight = 0f;
+    private float parentTop = 0f;
+    public float speed = .05f;
+    public int shiftNum = 4;
     private VisualElement fullBar;
     private VisualElement fullFuelBar;
     private VisualElement warningBar;
     private VisualElement pauseMenu;
     private VisualElement darken;
     private VisualElement overlay;
+    VisualElement overlayContainer;
     private VisualElement[] overlayArray = new VisualElement[25];
     private Coroutine moveScanLinesCoroutine;
 
@@ -39,9 +42,8 @@ public class UIHandler : MonoBehaviour
         pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
         darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
 
-        VisualElement overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
+        overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
         overlayArray = overlayContainer.Query<VisualElement>("overlay").ToList().ToArray();
-        parentHeight = overlayContainer.resolvedStyle.height;
 
         overlay = uiDocument.rootVisualElement.Q<VisualElement>("overlay");
         warningBar.style.opacity = 0f;
@@ -86,16 +88,16 @@ public class UIHandler : MonoBehaviour
         {
             for(int i = 0; i < 25; i++)
             {
+                parentTop = overlayContainer.resolvedStyle.height;
                 float topInPixels = overlayArray[i].resolvedStyle.top;
-                float topPercent = (topInPixels / parentHeight) * 100f;
-                float shiftPixels = 100;
-                float currentTop = overlayArray[i].resolvedStyle.top;
-                if (topPercent > 100)
-                    overlayArray[i].style.top = new Length(parentHeight, LengthUnit.Pixel);
+                float topPercent = (topInPixels / parentTop) * 100f;
+                float shiftPixels = (shiftNum/ 100f) * parentTop;
+                if (topPercent > 90)
+                    overlayArray[i].style.top = new Length(0, LengthUnit.Pixel);
                 else
-                    overlayArray[i].style.top = new Length(currentTop + shiftPixels, LengthUnit.Pixel);
+                    overlayArray[i].style.top = new Length(topInPixels + shiftPixels, LengthUnit.Pixel);
             }
-            yield return new WaitForSeconds(.05f);// Adjust delay for smoother shifting
+            yield return new WaitForSeconds(speed);// Adjust delay for smoother shifting
         }
     }
 
