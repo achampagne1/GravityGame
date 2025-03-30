@@ -7,22 +7,18 @@ using UnityEngine.InputSystem;
 public class UIHandler : MonoBehaviour
 {
     public float currentHealth =1f;
-    private StyleLength startTop;
-    private float shift = 0;
-    public float totalShift = 5f;
     public static UIHandler instance { get; private set; }
     private float fadeCounter = 180f;
     private bool escapeClicked = false;
     private float lastEscapePress = 0f;
     private float parentTop = 0f;
     public float speed = .05f;
-    public int shiftNum = 4;
+    public float shiftNum = 4f;
     private VisualElement fullBar;
     private VisualElement fullFuelBar;
     private VisualElement warningBar;
     private VisualElement pauseMenu;
     private VisualElement darken;
-    private VisualElement overlay;
     VisualElement overlayContainer;
     private VisualElement[] overlayArray = new VisualElement[25];
     private Coroutine moveScanLinesCoroutine;
@@ -45,11 +41,9 @@ public class UIHandler : MonoBehaviour
         overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
         overlayArray = overlayContainer.Query<VisualElement>("overlay").ToList().ToArray();
 
-        overlay = uiDocument.rootVisualElement.Q<VisualElement>("overlay");
         warningBar.style.opacity = 0f;
         pauseMenu.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
         pauseMenu.style.top = Length.Percent(110);
-        startTop = overlay.resolvedStyle.top;
 
     }
 
@@ -100,25 +94,6 @@ public class UIHandler : MonoBehaviour
             yield return new WaitForSeconds(speed);// Adjust delay for smoother shifting
         }
     }
-
-
-    /**private IEnumerator shiftOverlay(VisualElement overlay, float shiftAmount, float duration)
-    {
-        float elapsedTime = 0f;
-        float startTop = overlay.resolvedStyle.top.value; // Get the initial position
-        float targetTop = startTop + shiftAmount;
-
-        while (elapsedTime < duration)
-        {
-            float newTop = Mathf.Lerp(startTop, targetTop, elapsedTime / duration);
-            overlay.style.top = new Length(newTop, LengthUnit.Percent); // Corrected
-            elapsedTime += Time.unscaledDeltaTime; // Use unscaled time in case the game is paused
-            yield return null;
-        }
-
-        // Snap back to original position
-        overlay.style.top = new Length(startTop, LengthUnit.Percent);
-    }**/
 
 
     public void setHealthValue(float health)
