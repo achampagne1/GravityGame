@@ -7,6 +7,9 @@ using UnityEngine.InputSystem;
 public class UIHandler : MonoBehaviour
 {
     public float currentHealth =1f;
+    private StyleLength startTop;
+    private float shift = 0;
+    public float totalShift = 5f;
     public static UIHandler instance { get; private set; }
     private float fadeCounter = 180f;
     private bool escapeClicked = false;
@@ -15,6 +18,9 @@ public class UIHandler : MonoBehaviour
     VisualElement fullFuelBar;
     VisualElement warningBar;
     VisualElement pauseMenu;
+    VisualElement darken;
+    VisualElement overlay;
+    private Coroutine moveScanLinesCoroutine;
 
     private void Awake()
     {
@@ -29,14 +35,17 @@ public class UIHandler : MonoBehaviour
         fullFuelBar = uiDocument.rootVisualElement.Q<VisualElement>("fuelBar");
         warningBar = uiDocument.rootVisualElement.Q<VisualElement>("warningBar");
         pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
+        darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
+        overlay = uiDocument.rootVisualElement.Q<VisualElement>("overlay");
         warningBar.style.opacity = 0f;
         pauseMenu.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
         pauseMenu.style.top = Length.Percent(110);
+        startTop = overlay.resolvedStyle.top;
 
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    void Update()
     {
         if (currentHealth <= .3f)
         {
@@ -45,11 +54,65 @@ public class UIHandler : MonoBehaviour
 
         if (Keyboard.current.escapeKey.wasPressedThisFrame || Keyboard.current.escapeKey.isPressed && Time.unscaledTime - lastEscapePress > 0.15f)
         {
-            lastEscapePress = Time.unscaledTime;
             escapeClicked = !escapeClicked;
-            pauseMenu.style.top = escapeClicked ? Length.Percent(0) : Length.Percent(110);
+            if (escapeClicked)
+            {
+                //Time.timeScale = 0;
+                pauseMenu.style.top = Length.Percent(0);
+                darken.style.backgroundColor = new Color(0, 0, 0, 0.7f);
+                moveScanLinesCoroutine = StartCoroutine(ShiftOverlayRoutine());
+            }
+            else
+            {
+                //Time.timeScale = 1;
+                pauseMenu.style.top = Length.Percent(110);
+                darken.style.backgroundColor = new Color(0, 0, 0, 0.0f);
+                StopCoroutine(moveScanLinesCoroutine);
+            }
+            lastEscapePress = Time.unscaledTime;
         }
     }
+
+    private IEnumerator ShiftOverlayRoutine()
+    {
+        while (true)
+        {
+            // Extract current top position
+            float currentTop = overlay.resolvedStyle.top;  // This is read-only, so we get it to calculate
+            float newTop = currentTop + 1f; // Move down by 1 pixel
+
+            // Apply the new position using a StyleLength object
+            overlay.style.top = new Length(newTop, LengthUnit.Pixel);
+            shift++;
+
+            if(shift == totalShift)
+            {
+                shift = 0;
+                overlay.style.top = startTop;
+            }
+            yield return new WaitForSeconds(.05f);// Adjust delay for smoother shifting
+        }
+    }
+
+
+    /**private IEnumerator shiftOverlay(VisualElement overlay, float shiftAmount, float duration)
+    {
+        float elapsedTime = 0f;
+        float startTop = overlay.resolvedStyle.top.value; // Get the initial position
+        float targetTop = startTop + shiftAmount;
+
+        while (elapsedTime < duration)
+        {
+            float newTop = Mathf.Lerp(startTop, targetTop, elapsedTime / duration);
+            overlay.style.top = new Length(newTop, LengthUnit.Percent); // Corrected
+            elapsedTime += Time.unscaledDeltaTime; // Use unscaled time in case the game is paused
+            yield return null;
+        }
+
+        // Snap back to original position
+        overlay.style.top = new Length(startTop, LengthUnit.Percent);
+    }**/
+
 
     public void setHealthValue(float health)
     {
@@ -62,7 +125,7 @@ public class UIHandler : MonoBehaviour
         fullFuelBar.style.width = Length.Percent(fuelLevel);
     }
 
-    void warningBarFunction()
+    private void warningBarFunction()
     {
         if(currentHealth == .3f)
             fadeCounter -= 2f;

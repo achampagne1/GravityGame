@@ -14,8 +14,12 @@
         </ui:VisualElement>
         <ui:VisualElement name="verticalBars" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/emptyBar.png?fileID=246303161595536057&amp;guid=42dc777a247eb6f4dbb73d2eba628b3f&amp;type=3#emptyBar_0&apos;); height: 100%; width: 100%; position: absolute; display: flex;" />
     </ui:VisualElement>
+    <ui:VisualElement name="darken" style="flex-grow: 1; position: absolute; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0);" />
     <ui:VisualElement name="pause" style="flex-grow: 1; top: 100%;">
         <ui:VisualElement name="background" style="flex-grow: 1; background-color: rgb(0, 0, 0); width: 50%; height: 100%; top: -5%; left: 25%;" />
-        <ui:VisualElement name="outline" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/pause.png?fileID=2800000&amp;guid=b49ee157d9dd4a74b91e626cd85e9829&amp;type=3#pause&apos;); width: 50%; height: 100%; position: absolute; top: -5%; left: 25%;" />
+        <ui:VisualElement name="outline" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/pause.png?fileID=2800000&amp;guid=b49ee157d9dd4a74b91e626cd85e9829&amp;type=3#pause&apos;); width: 50%; height: 100%; position: absolute; top: -5%; left: 25%;">
+            <ui:VisualElement name="exitGame" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/exitGame.png?fileID=2800000&amp;guid=b0e0138d4679c7849bbaa15c098099dc&amp;type=3#exitGame&apos;); position: absolute; width: 70%; height: 17%; top: 40%; left: 15%;" />
+            <ui:VisualElement name="overlay" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/menuOverlay.png?fileID=2800000&amp;guid=5a51c101f6a19d547a8b9f464074b6b5&amp;type=3#menuOverlay&apos;); position: absolute; height: 70%; width: 90%; left: 5%; top: 10%;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
