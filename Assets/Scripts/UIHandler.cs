@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class UIHandler : MonoBehaviour
 {
-    public float currentHealth =1f;
+    public float currentHealth = 1f;
     public static UIHandler instance { get; private set; }
     private float fadeCounter = 180f;
     private bool escapeClicked = false;
@@ -80,13 +80,13 @@ public class UIHandler : MonoBehaviour
     {
         while (true)
         {
-            for(int i = 0; i < 25; i++)
+            for (int i = 0; i < 25; i++)
             {
                 parentTop = overlayContainer.resolvedStyle.height;
                 float topInPixels = overlayArray[i].resolvedStyle.top;
                 float topPercent = (topInPixels / parentTop) * 100f;
-                float shiftPixels = (shiftNum/ 100f) * parentTop;
-                if (topPercent > 90)
+                float shiftPixels = (shiftNum / 100f) * parentTop;
+                if (topPercent > 85)
                     overlayArray[i].style.top = new Length(0, LengthUnit.Pixel);
                 else
                     overlayArray[i].style.top = new Length(topInPixels + shiftPixels, LengthUnit.Pixel);
@@ -109,14 +109,14 @@ public class UIHandler : MonoBehaviour
 
     private void warningBarFunction()
     {
-        if(currentHealth == .3f)
+        if (currentHealth == .3f)
             fadeCounter -= 2f;
         else if (currentHealth == .2f)
             fadeCounter -= 4f;
         else if (currentHealth == .1f)
             fadeCounter -= 8f;
 
-        warningBar.style.opacity = 1f - Mathf.Sin(fadeCounter * Mathf.Deg2Rad); 
+        warningBar.style.opacity = 1f - Mathf.Sin(fadeCounter * Mathf.Deg2Rad);
         warningBar.style.width = Length.Percent(currentHealth * 100.0f);
         if (fadeCounter <= 0)
             fadeCounter = 180;
