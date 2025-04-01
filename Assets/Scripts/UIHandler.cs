@@ -19,8 +19,10 @@ public class UIHandler : MonoBehaviour
     private VisualElement warningBar;
     private VisualElement pauseMenu;
     private VisualElement darken;
-    VisualElement overlayContainer;
+    private VisualElement overlayContainer;
+    private VisualElement exitGameButton;
     private VisualElement[] overlayArray = new VisualElement[25];
+    private InputSystemHelper escapeKey;
     private Coroutine moveScanLinesCoroutine;
 
     private void Awake()
@@ -37,13 +39,17 @@ public class UIHandler : MonoBehaviour
         warningBar = uiDocument.rootVisualElement.Q<VisualElement>("warningBar");
         pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
         darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
+        exitGameButton = uiDocument.rootVisualElement.Q<Button>("exitGameButton");
 
         overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
         overlayArray = overlayContainer.Query<VisualElement>("overlay").ToList().ToArray();
 
         warningBar.style.opacity = 0f;
         pauseMenu.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
+        escapeKey = new InputSystemHelper(Keyboard.current.escapeKey);
         pauseMenu.style.top = Length.Percent(110);
+
+        exitGameButton.RegisterCallback<ClickEvent>(exitGame);
 
     }
 
@@ -54,29 +60,28 @@ public class UIHandler : MonoBehaviour
         {
             warningBarFunction();
         }
-
-        if (Keyboard.current.escapeKey.wasPressedThisFrame || Keyboard.current.escapeKey.isPressed && Time.unscaledTime - lastEscapePress > 0.15f)
+        if (escapeKey.wasPressedWithCooldown())
         {
+            lastEscapePress = Time.unscaledTime;
             escapeClicked = !escapeClicked;
             if (escapeClicked)
             {
-                //Time.timeScale = 0;
+                Time.timeScale = 0;
                 pauseMenu.style.top = Length.Percent(0);
                 darken.style.backgroundColor = new Color(0, 0, 0, 0.7f);
-                moveScanLinesCoroutine = StartCoroutine(ShiftOverlayRoutine());
+                moveScanLinesCoroutine = StartCoroutine(shiftOverlayRoutine());
             }
             else
             {
-                //Time.timeScale = 1;
+                Time.timeScale = 1;
                 pauseMenu.style.top = Length.Percent(110);
                 darken.style.backgroundColor = new Color(0, 0, 0, 0.0f);
                 StopCoroutine(moveScanLinesCoroutine);
             }
-            lastEscapePress = Time.unscaledTime;
         }
     }
 
-    private IEnumerator ShiftOverlayRoutine()
+    private IEnumerator shiftOverlayRoutine()
     {
         while (true)
         {
@@ -91,8 +96,14 @@ public class UIHandler : MonoBehaviour
                 else
                     overlayArray[i].style.top = new Length(topInPixels + shiftPixels, LengthUnit.Pixel);
             }
-            yield return new WaitForSeconds(speed);// Adjust delay for smoother shifting
+            yield return new WaitForSecondsRealtime(speed);// Adjust delay for smoother shifting
         }
+    }
+
+    private void exitGame(ClickEvent evt)
+    {
+        Debug.Log("here");
+        Application.Quit();
     }
 
 
