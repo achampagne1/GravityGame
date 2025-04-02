@@ -1,5 +1,4 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <ui:Button text="&#10;" name="exitGameButton" style="background-color: rgba(188, 188, 188, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; position: absolute; top: -21px; left: -37px; width: 1144px; height: 510px;" />
     <ui:VisualElement name="outline" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/healthBarOutline.png?fileID=2800000&amp;guid=1c3602bd493c21d42a89286be39be0cf&amp;type=3#healthBarOutline&apos;); width: 40%; height: 4%;">
         <ui:VisualElement name="greyBackground" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/backgroundColor.png?fileID=8143267297263155204&amp;guid=b746a05249d47d14aa6161c067b4bc8c&amp;type=3#backgroundColor_0&apos;); opacity: 0.4; display: flex;" />
         <ui:VisualElement name="healthBarContainer" picking-mode="Ignore" style="flex-grow: 1; height: 100%; width: 100%; display: flex; overflow: visible; visibility: visible; position: absolute;">
@@ -7,6 +6,10 @@
         </ui:VisualElement>
         <ui:VisualElement name="warningBar" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/warningBar.png?fileID=6196391837041233233&amp;guid=c7540cba415df4945af45f114352c68a&amp;type=3#warningBar_0&apos;); width: 30%; height: 100%; position: absolute;" />
         <ui:VisualElement name="verticalBars" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/emptyBar.png?fileID=246303161595536057&amp;guid=42dc777a247eb6f4dbb73d2eba628b3f&amp;type=3#emptyBar_0&apos;); height: 100%; width: 100%; position: absolute; display: flex;" />
+    </ui:VisualElement>
+    <ui:VisualElement name="offScreenObjectives" style="flex-grow: 1; position: absolute; height: -58px; top: 100%; width: -1164px; left: 100%;">
+        <ui:VisualElement name="getYourGun" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/WaypointText/getyourgun.png?fileID=2800000&amp;guid=abd9a8567eb2b64458f58aa12166aad5&amp;type=3#getyourgun&apos;); top: -15%; position: absolute; left: 8%; width: 85%; height: 45%;" />
+        <ui:VisualElement name="killEnemy" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/WaypointText/killenemy.png?fileID=2800000&amp;guid=89312216fde6ecc43a5e510489c912a0&amp;type=3#killenemy&apos;);" />
     </ui:VisualElement>
     <ui:VisualElement name="outline" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/healthBarOutline.png?fileID=2800000&amp;guid=1c3602bd493c21d42a89286be39be0cf&amp;type=3#healthBarOutline&apos;); width: 40%; height: 4%;">
         <ui:VisualElement name="greyBackground" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/backgroundColor.png?fileID=8143267297263155204&amp;guid=b746a05249d47d14aa6161c067b4bc8c&amp;type=3#backgroundColor_0&apos;); opacity: 0.4; display: flex;" />
@@ -19,8 +22,15 @@
     <ui:VisualElement name="pause" style="flex-grow: 1; top: 100%;">
         <ui:VisualElement name="background" style="flex-grow: 1; background-color: rgb(0, 0, 0); width: 42%; height: 90%; top: 0; left: 27%; position: absolute;" />
         <ui:VisualElement name="outline" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/pause.png?fileID=2800000&amp;guid=b49ee157d9dd4a74b91e626cd85e9829&amp;type=3#pause&apos;); width: 50%; height: 100%; position: absolute; top: -5%; left: 25%;">
-            <ui:VisualElement name="exitGame" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/exitGame.png?fileID=2800000&amp;guid=b0e0138d4679c7849bbaa15c098099dc&amp;type=3#exitGame&apos;); position: absolute; width: 70%; height: 27%; top: 45%; left: 11%;" />
-            <ui:VisualElement name="settings" style="flex-grow: 1; position: absolute; left: 11%; background-image: url(&apos;project://database/Assets/Art/UI/settings.png?fileID=2800000&amp;guid=b21c4c43e19791341be050a1873d5559&amp;type=3#settings&apos;); height: 30%; width: 70%; top: 27%;" />
+            <ui:VisualElement name="pauseContainer" style="flex-grow: 1; position: absolute; top: 7%; left: 7%; width: 78%; height: 85%;">
+                <ui:VisualElement name="exitGame" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/exitGame.png?fileID=2800000&amp;guid=b0e0138d4679c7849bbaa15c098099dc&amp;type=3#exitGame&apos;); position: absolute; width: 70%; height: 27%; top: 45%; left: 15%;">
+                    <ui:Button text="&#10;" name="exitGameButton" style="background-color: rgba(188, 188, 188, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; position: absolute; top: 30%; left: 10%; width: 78%; height: 35%;" />
+                </ui:VisualElement>
+                <ui:VisualElement name="settings" style="flex-grow: 1; position: absolute; left: 15%; background-image: url(&apos;project://database/Assets/Art/UI/settings.png?fileID=2800000&amp;guid=b21c4c43e19791341be050a1873d5559&amp;type=3#settings&apos;); height: 30%; width: 70%; top: 27%;" />
+            </ui:VisualElement>
+            <ui:VisualElement name="objectiveTextContainer" style="flex-grow: 1; top: 7%; left: 8%; width: 75%; height: 85%; position: absolute;">
+                <ui:VisualElement name="text" style="flex-grow: 1; background-image: none; top: -15%; position: absolute; left: 8%; width: 85%; height: 45%;" />
+            </ui:VisualElement>
             <ui:VisualElement name="overlayContainer" style="flex-grow: 1; position: absolute; height: 85%; width: 75%; top: 7%; left: 8%; display: flex; background-image: none; background-color: rgba(159, 50, 50, 0);">
                 <ui:VisualElement name="overlay" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/menuOverlay.png?fileID=2800000&amp;guid=5a51c101f6a19d547a8b9f464074b6b5&amp;type=3#menuOverlay&apos;); height: 3%; width: 100%; position: absolute; left: 0; top: 0;" />
                 <ui:VisualElement name="overlay" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/menuOverlay.png?fileID=2800000&amp;guid=5a51c101f6a19d547a8b9f464074b6b5&amp;type=3#menuOverlay&apos;); height: 3%; width: 100%; position: absolute; left: 0; top: 4%;" />

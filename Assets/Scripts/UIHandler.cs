@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
-using System.Linq;
 
 public class UIHandler : MonoBehaviour
 {
@@ -33,7 +32,7 @@ public class UIHandler : MonoBehaviour
     private VisualElement killEnemyObjective;
     private VisualElement exitGameButton;
     private VisualElement[] overlayArray = new VisualElement[25];
-    private List<VisualElement> objectivesList;
+    private IEnumerator<VisualElement> objectives;
 
     private InputSystemHelper escapeKey;
     private InputSystemHelper eKey;
@@ -62,9 +61,7 @@ public class UIHandler : MonoBehaviour
         overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
         offScreenObjectivesContainer = uiDocument.rootVisualElement.Q<VisualElement>("offScreenObjectives");
         overlayArray = overlayContainer.Query<VisualElement>("overlay").ToList().ToArray();
-        Debug.Log($"Number of children: {offScreenObjectivesContainer.Children().Count()}");
-        foreach (VisualElement child in offScreenObjectivesContainer.Children())
-            objectivesList.Add(child);
+        objectives = offScreenObjectivesContainer.Children().GetEnumerator(); 
         warningBar.style.opacity = 0f;
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
@@ -74,7 +71,8 @@ public class UIHandler : MonoBehaviour
         pauseMenu.style.top = Length.Percent(110);
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
-        objectiveContainer.style.backgroundImage = objectivesList[0].resolvedStyle.backgroundImage;
+        objectives.MoveNext();
+        objectiveContainer.style.backgroundImage = objectives.Current.resolvedStyle.backgroundImage;
     }
 
     // Update is called once per frame
