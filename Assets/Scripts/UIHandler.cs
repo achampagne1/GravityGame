@@ -32,8 +32,8 @@ public class UIHandler : MonoBehaviour
     private VisualElement killEnemyObjective;
     private VisualElement exitGameButton;
     private VisualElement[] overlayArray = new VisualElement[25];
-    private Objective[] objectives;
-    Objective objective1;
+
+    private ObjectiveWrapper objectiveWrapper;
 
     private InputSystemHelper escapeKey;
     private InputSystemHelper eKey;
@@ -63,6 +63,7 @@ public class UIHandler : MonoBehaviour
         offScreenObjectivesContainer = uiDocument.rootVisualElement.Q<VisualElement>("offScreenObjectives");
         overlayArray = overlayContainer.Query<VisualElement>("overlay").ToList().ToArray();
         IEnumerator objectivesEnumerator = offScreenObjectivesContainer.Children().GetEnumerator();
+        objectiveWrapper = new ObjectiveWrapper(objectivesEnumerator);
         warningBar.style.opacity = 0f;
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
@@ -72,16 +73,7 @@ public class UIHandler : MonoBehaviour
         pauseMenu.style.top = Length.Percent(110);
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
-        objectivesEnumerator.MoveNext();
-        objective1 = new Objective("get gun", () =>
-        {
-            GameObject hand = GameObject.Find("SpaceManHand");
-            if (hand.transform.childCount == 1)
-                return true;
-            return false;
-        }, (VisualElement)objectivesEnumerator.Current);
-
-        objectiveContainer.style.backgroundImage = objective1.visualElement.resolvedStyle.backgroundImage;
+        objectiveContainer.style.backgroundImage = objectiveWrapper.getCurrentObjective().visualElement.resolvedStyle.backgroundImage;
     }
 
     // Update is called once per frame
@@ -126,10 +118,6 @@ public class UIHandler : MonoBehaviour
                 StopCoroutine(moveScanLinesCoroutine);
                 objectiveContainer.style.opacity = 0;
             }
-        }
-        if (objective1.completionCondition())
-        {
-            Debug.Log("yay");
         }
     }
 
