@@ -74,7 +74,7 @@ public class ObjectController : MonoBehaviour
 
     private void findClosestField() //this might need to be revamped one day. maybe not check for a new gravity field every update
     {
-        GameObject temp = GameObject.Find("GravityPointsList"); //resuing temp might be a bad idea
+        GameObject temp = GameObject.Find("GravityPointsList"); //resuing temp might be a bad idea //this shouldnt be done every time
         GravityPointsList gravityPointsList = temp.GetComponent<GravityPointsList>();
         List<GameObject> gravityPoints = gravityPointsList.gravityPoints;
         float closestGravityField = 1000f;
