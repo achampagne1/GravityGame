@@ -29,12 +29,11 @@ public class UIHandler : MonoBehaviour
     private VisualElement pauseContainer;
     private VisualElement objectiveContainer;
     private VisualElement offScreenObjectivesContainer;
-    private VisualElement killEnemyObjective;
     private VisualElement exitGameButton;
     private VisualElement[] overlayArray = new VisualElement[25];
 
     private ObjectiveWrapper objectiveWrapper;
-
+    private Objective currentObjective;
     private InputSystemHelper escapeKey;
     private InputSystemHelper eKey;
 
@@ -58,12 +57,9 @@ public class UIHandler : MonoBehaviour
         darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
         exitGameButton = uiDocument.rootVisualElement.Q<Button>("exitGameButton");
         objectiveContainer = uiDocument.rootVisualElement.Q<VisualElement>("text");
-        killEnemyObjective = uiDocument.rootVisualElement.Q<VisualElement>("killEnemy");
-        overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
         offScreenObjectivesContainer = uiDocument.rootVisualElement.Q<VisualElement>("offScreenObjectives");
+        overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
         overlayArray = overlayContainer.Query<VisualElement>("overlay").ToList().ToArray();
-        IEnumerator objectivesEnumerator = offScreenObjectivesContainer.Children().GetEnumerator();
-        objectiveWrapper = new ObjectiveWrapper(objectivesEnumerator);
         warningBar.style.opacity = 0f;
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
@@ -73,7 +69,15 @@ public class UIHandler : MonoBehaviour
         pauseMenu.style.top = Length.Percent(110);
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
-        objectiveContainer.style.backgroundImage = objectiveWrapper.getCurrentObjective().visualElement.resolvedStyle.backgroundImage;
+        objectivesStart();   
+    }
+
+    void objectivesStart()
+    {
+        IEnumerator objectivesEnumerator = offScreenObjectivesContainer.Children().GetEnumerator();
+        objectiveWrapper = new ObjectiveWrapper(objectivesEnumerator);
+        currentObjective = objectiveWrapper.getNextObjective();
+        objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
     }
 
     // Update is called once per frame
@@ -118,6 +122,11 @@ public class UIHandler : MonoBehaviour
                 StopCoroutine(moveScanLinesCoroutine);
                 objectiveContainer.style.opacity = 0;
             }
+        }
+        if (currentObjective.completionCondition())
+        {
+            currentObjective = objectiveWrapper.getNextObjective();
+            objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
         }
     }
 
