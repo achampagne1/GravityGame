@@ -70,7 +70,7 @@ public class SpaceZombieController : CharacterController
 
     bool detectPlayer()
     {
-        for (int i = 0; i<60; i++)
+        /**for (int i = 0; i<60; i++)
         {
             float angle =  (getCharacterOrientation()+30 - i +(System.Convert.ToSingle(getFacingLeft()) *180)) % 360;
             Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));
@@ -78,7 +78,7 @@ public class SpaceZombieController : CharacterController
             RaycastHit2D lookForObstacles = Physics2D.Raycast(getCharacterCollider().bounds.center, temp, 100f, LayerMask.GetMask("Default"));
             if (lookForPlayer.collider != null&& lookForObstacles.collider == null)
                 return true;
-        }
+        }**/
         return false;
     }
 
