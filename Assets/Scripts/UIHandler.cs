@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
+using System.Threading.Tasks;
 
 public class UIHandler : MonoBehaviour
 {
@@ -69,13 +70,14 @@ public class UIHandler : MonoBehaviour
         pauseMenu.style.top = Length.Percent(110);
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
-        objectivesStart();   
+        StartCoroutine(objectivesStart());
     }
-
-    void objectivesStart()
+    private IEnumerator objectivesStart()
     {
-        IEnumerator objectivesEnumerator = offScreenObjectivesContainer.Children().GetEnumerator();
-        objectiveWrapper = new ObjectiveWrapper(objectivesEnumerator);
+        objectiveWrapper = new ObjectiveWrapper();
+        var initializeTask = objectiveWrapper.initializeObjectives();
+        while (!initializeTask.IsCompleted)
+            yield return null;
         currentObjective = objectiveWrapper.getNextObjective();
         objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
     }
@@ -123,11 +125,11 @@ public class UIHandler : MonoBehaviour
                 objectiveContainer.style.opacity = 0;
             }
         }
-        if (currentObjective.completionCondition())
-        {
-            currentObjective = objectiveWrapper.getNextObjective();
-            objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
-        }
+        //if (currentObjective.completionCondition())
+        //{
+        //    currentObjective = objectiveWrapper.getNextObjective();
+         //   objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
+       //}
     }
 
     private IEnumerator shiftOverlayRoutine()
