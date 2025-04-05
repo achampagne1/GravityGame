@@ -200,11 +200,11 @@ public class CharacterController : ObjectController{
         {
             if (isGrounded) 
             {
+                animator.SetBool("Airborn", false);
                 if (horizontalInput == 0)
                 {
                     animator.SetBool("Walk", false);
                     animator.SetBool("Backwards", false);
-                    animator.SetBool("Airborn Up", false);
                 }
                 else
                 {
@@ -217,32 +217,12 @@ public class CharacterController : ObjectController{
             }
             else
             {
-                animator.SetBool("Airborn Up", true);
-            }
-            /**
-            if (horizontalInput == 0 && isGrounded) //for idle
-            {
-                animator.SetBool("Walk", false);
-                animator.SetBool("Backwards", false);
-                animator.SetBool("Airborn Up", false);
-            }
-            else if (!isGrounded)
-            {
-                animator.SetBool("Airborn Up", true);
-            }
-            else //for walking
-            {
-                if ((facingLeft && horizontalInput == 1) || (!facingLeft && horizontalInput == -1))
-                {
-                    animator.SetBool("Walk", true);
-                    animator.SetBool("Backwards", true);
-                }
+                animator.SetBool("Airborn", true);
+                if (up)
+                    animator.SetBool("Up", true);
                 else
-                {
-                    animator.SetBool("Walk", true);
-                    animator.SetBool("Backwards", false);
-                }
-            }**/
+                    animator.SetBool("Up", false);
+            }
         }
         catch (Exception e)
         {

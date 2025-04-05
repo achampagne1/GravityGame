@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class GunController : ItemController
 {
@@ -53,7 +54,7 @@ public class GunController : ItemController
             gravityAffected = false;    
             orientToGravity = false;
             facingLeft = handController.getFacingLeft();
-            if (handController.getClick())
+            if (Mouse.current.leftButton.wasPressedThisFrame) //I would like to have it come from the hand controller but thats laggy
             {
                 Vector3 offset = new Vector3(.5f, .25f, 0);
                 offset.y = offset.y * (facingLeft ? -1 : 1);

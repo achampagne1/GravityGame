@@ -19,9 +19,11 @@ public class ObjectController : MonoBehaviour
 
     //game variables
     protected int layerMaskPlanet = 0;
-    protected float gravityForceMag = 20f;
+    protected bool up = false;
     protected bool isGrounded = false;
+    protected float gravityForceMag = 20f;
     protected float heightObject = 0;
+    private float distanceToSource = 0;
     private float groundAngle = 0f;
     private float steepestGrade = 135f;
 
@@ -88,7 +90,11 @@ public class ObjectController : MonoBehaviour
                 temp = gravityPoint;
             }
         }
-
+        if (distanceToSource - closestGravityField < 0)
+            up = true;
+        else
+            up = false;
+        distanceToSource = closestGravityField;
         planetCenter = temp.GetComponent<Transform>();
         gravityForceMag = temp.GetComponent<GravityPointController>().getFieldStrength();
     }
