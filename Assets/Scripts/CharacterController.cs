@@ -198,14 +198,37 @@ public class CharacterController : ObjectController{
     {
         try
         {
-            if (horizontalInput == 0 /*|| !isGrounded uncomment when is grounded is more robust*/) //for idle
+            if (isGrounded) 
+            {
+                if (horizontalInput == 0)
+                {
+                    animator.SetBool("Walk", false);
+                    animator.SetBool("Backwards", false);
+                    animator.SetBool("Airborn Up", false);
+                }
+                else
+                {
+                    animator.SetBool("Walk", true);
+                    if ((facingLeft && horizontalInput == 1) || (!facingLeft && horizontalInput == -1))
+                        animator.SetBool("Backwards", true);
+                    else
+                        animator.SetBool("Backwards", false);
+                }
+            }
+            else
+            {
+                animator.SetBool("Airborn Up", true);
+            }
+            /**
+            if (horizontalInput == 0 && isGrounded) //for idle
             {
                 animator.SetBool("Walk", false);
                 animator.SetBool("Backwards", false);
+                animator.SetBool("Airborn Up", false);
             }
-            else if (jump != Vector2.zero)
+            else if (!isGrounded)
             {
-                animator.SetBool("Jump", true);
+                animator.SetBool("Airborn Up", true);
             }
             else //for walking
             {
@@ -219,7 +242,7 @@ public class CharacterController : ObjectController{
                     animator.SetBool("Walk", true);
                     animator.SetBool("Backwards", false);
                 }
-            }
+            }**/
         }
         catch (Exception e)
         {

@@ -16,7 +16,22 @@ MonoBehaviour:
   m_Data:
     m_SerializedData: []
   m_GUID: ee87ba3fc32716246b49be3e400316e4
-  m_SerializeEntries: []
+  m_SerializeEntries:
+  - m_GUID: abd9a8567eb2b64458f58aa12166aad5
+    m_Address: Assets/Art/UI/WaypointText/getyourgun.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89312216fde6ecc43a5e510489c912a0
+    m_Address: Assets/Art/UI/WaypointText/killenemy.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c48912048598b14995f7c7cd12861aa
+    m_Address: Assets/Art/UI/WaypointText/missioncomplete.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a95ac6638e706cf4fb964d36ae198902, type: 2}
   m_SchemaSet:
