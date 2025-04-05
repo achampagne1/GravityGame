@@ -125,11 +125,17 @@ public class UIHandler : MonoBehaviour
                 objectiveContainer.style.opacity = 0;
             }
         }
-        //if (currentObjective.completionCondition())
-        //{
-        //    currentObjective = objectiveWrapper.getNextObjective();
-         //   objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
-       //}
+        try
+        {
+            if (currentObjective.completionCondition()) //this acounts for the async nature of the objective loading
+            {
+                currentObjective = objectiveWrapper.getNextObjective();
+                objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
+            }
+        }
+        catch{
+            int ham = 1;
+        }
     }
 
     private IEnumerator shiftOverlayRoutine()

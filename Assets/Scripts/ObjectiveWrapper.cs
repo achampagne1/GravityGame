@@ -19,45 +19,49 @@ public class ObjectiveWrapper : ScriptableObject
 
     public async Task initializeObjectives()
     {
-        Objective objective2 = new Objective("killenemy", () =>
+        string name = "killenemy";
+        VisualElement visualElement = await createVisualElement(name);
+        Objective objective = new Objective(name, () =>
         {
             return false; //temporary
-        }, null);
+        }, visualElement);
+        objectives.Push(objective);
 
-        await createVisualElement("killenemy", (VisualElement visualElement) =>
+        name = "getyourgun";
+        GameObject spaceManHand = GameObject.Find("SpaceManHand");
+        visualElement = await createVisualElement(name);
+        objective = new Objective(name, () =>
         {
-            if (visualElement != null)
+            if (spaceManHand.transform.childCount == 1)
             {
-                objective2.visualElement = visualElement;  // Update the Objective with the loaded VisualElement
-                objectives.Push(objective2);  // Push to the stack once the element is ready
+                return true;
+            }
+            return false;
+        }, visualElement);
+        objectives.Push(objective);
+    }
+
+
+    private Task<VisualElement> createVisualElement(string name)
+    {
+        var tcs = new TaskCompletionSource<VisualElement>();
+        VisualElement visualElement = new VisualElement();
+
+        Addressables.LoadAssetAsync<Texture2D>("Assets/Art/UI/WaypointText/" + name + ".png").Completed += handle =>
+        {
+            if (handle.Status == AsyncOperationStatus.Succeeded)
+            {
+                visualElement.style.backgroundImage = new StyleBackground(handle.Result);
+                tcs.SetResult(visualElement);
             }
             else
             {
-                Debug.LogError("Failed to create VisualElement for 'killenemy_0'.");
+                Debug.LogError("Failed to load Addressable texture.");
+                tcs.SetResult(null);
             }
-        });
-    }
+        };
 
-    private async Task createVisualElement(string name, Action<VisualElement> onComplete)
-    {
-        VisualElement visualElement = new VisualElement();
-
-        // Use await to asynchronously load the texture
-        var handle = Addressables.LoadAssetAsync<Texture2D>("Assets/Art/UI/WaypointText/" + name + ".png");
-
-        // Wait until the operation completes
-        await handle.Task;
-
-        if (handle.Status == AsyncOperationStatus.Succeeded)
-        {
-            visualElement.style.backgroundImage = new StyleBackground(handle.Result);
-            onComplete?.Invoke(visualElement);  // Return when image loads
-        }
-        else
-        {
-            Debug.LogError("Failed to load Addressable texture.");
-            onComplete?.Invoke(null);  // Return null if loading fails
-        }
+        return tcs.Task;
     }
 
 

@@ -10,6 +10,7 @@ public class ObjectController : MonoBehaviour
     protected Transform planetCenter;
     protected Timer groundTimer;
     protected Collider2D collider;
+    private List<GameObject> gravityPoints;
 
     //public game variables
     public float terminalVelocity = 30f;
@@ -36,6 +37,7 @@ public class ObjectController : MonoBehaviour
         layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
         groundTimer = new Timer(0.4f);
 
+        gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
         findClosestField();
         rb.velocity = new Vector2(0, 0); //this can be moifie to have a starting velocity*/
 
@@ -74,10 +76,8 @@ public class ObjectController : MonoBehaviour
 
     private void findClosestField() //this might need to be revamped one day. maybe not check for a new gravity field every update
     {
-        GameObject temp = GameObject.Find("GravityPointsList"); //resuing temp might be a bad idea //this shouldnt be done every time
-        GravityPointsList gravityPointsList = temp.GetComponent<GravityPointsList>();
-        List<GameObject> gravityPoints = gravityPointsList.gravityPoints;
         float closestGravityField = 1000f;
+        GameObject temp = gravityPoints[0];
         foreach (GameObject gravityPoint in gravityPoints)
         {
             GravityPointController gravityPointController = gravityPoint.GetComponent<GravityPointController>();
