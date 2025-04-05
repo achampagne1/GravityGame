@@ -9,6 +9,8 @@ public class SpaceManController : CharacterController
     
     //game variables
     bool enemyCollideFlag = false;
+    private bool clickPressed = false;
+
 
     public void Start()
     {
