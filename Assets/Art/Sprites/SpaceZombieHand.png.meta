@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      SpaceZombieHand_0: -5381782135455088729
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
