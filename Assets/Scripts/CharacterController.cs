@@ -8,6 +8,7 @@ using static Unity.Collections.AllocatorManager;
 public class CharacterController : ObjectController{
     //object creation
     private Animator animator;
+    private SpriteRenderer jetPackFlame;
     protected Timer hoverTimer;
 
     //public game variables
@@ -49,7 +50,15 @@ public class CharacterController : ObjectController{
     public void calculateCharacterStart()
     {
         health = maxHealth;
-        calculateStart();      
+        calculateStart();     
+        foreach(Transform child in transform)
+        {
+            if (child.name == "JetPackFlame")
+            {
+                jetPackFlame = child.gameObject.GetComponent<SpriteRenderer>();
+                break;
+            }
+        }
         try
         {
             animator = GetComponent<Animator>();
@@ -154,11 +163,19 @@ public class CharacterController : ObjectController{
         if (space && groundTimer.checkTimer() && currentFuel > 0)
         {
             hoverFlag = true;
+            Color color = jetPackFlame.color;
+            color.a = 1.0f; // Set alpha (0 = transparent, 1 = opaque)
+            jetPackFlame.color = color;
             useFuel();
         }
 
         if (!space || currentFuel == 0)
+        {
             hoverFlag = false;
+            Color color = jetPackFlame.color;
+            color.a = 0.0f; // Set alpha (0 = transparent, 1 = opaque)
+            jetPackFlame.color = color;
+        }
 
         hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero;
     }
