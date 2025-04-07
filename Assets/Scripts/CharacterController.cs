@@ -9,6 +9,7 @@ public class CharacterController : ObjectController{
     //object creation
     private Animator animator;
     private SpriteRenderer jetPackFlame;
+    protected HandController handController;
     protected Timer hoverTimer;
 
     //public game variables
@@ -49,15 +50,15 @@ public class CharacterController : ObjectController{
 
     public void calculateCharacterStart()
     {
+        Physics2D.IgnoreLayerCollision(9, 9, true);
         health = maxHealth;
         calculateStart();     
         foreach(Transform child in transform)
         {
             if (child.name == "JetPackFlame")
-            {
                 jetPackFlame = child.gameObject.GetComponent<SpriteRenderer>();
-                break;
-            }
+            if (child.name == "Hand")
+                handController = child.gameObject.GetComponent<HandController>();
         }
         try
         {
@@ -93,6 +94,12 @@ public class CharacterController : ObjectController{
 
         previousV = -rb.velocity;
         previousMove = -moveDirection;
+    }
+
+    public virtual void Update()
+    {
+        int ham = 0;
+        //basically an abstract funciton
     }
 
     public void addForceLocal(Vector2 force)
@@ -310,10 +317,5 @@ public class CharacterController : ObjectController{
     public bool getThrow()
     {
         return throwItem;
-    }
-
-    public bool getClick()
-    {
-        return click;
     }
 }

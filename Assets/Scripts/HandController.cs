@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -10,12 +9,14 @@ public class HandController : MonoBehaviour
     //object creation
     Transform playerBody;  // Assign the player's body transform
     CharacterController characterController;
+    GunController gunController;
 
     //game variables
     private Queue<Vector2> delay;
     private float smoothTime = .05f;
     private Vector2 velocity = Vector2.zero;
     private bool facingLeft = false;
+    private bool holdingLatch = false;
     private int holding = 0;
 
     // Start is called before the first frame update
@@ -31,6 +32,7 @@ public class HandController : MonoBehaviour
         if (holding != 0)
             setChild(transform.GetChild(0));
 
+        //NOTE: currently holding only fully works for guns
     }
 
     // Update is called once per frame
@@ -53,10 +55,21 @@ public class HandController : MonoBehaviour
             holdingSomething();
         else
             Debug.LogError("too many children in hand");
+
     }
+
+    public void useHand()
+    {
+        if (holding == 1)
+            gunController.shootWrapper(); //currently jsut guns
+    }
+
 
     private void emptyHand()
     {
+        if(holdingLatch)
+            gunController = null;
+
         facingLeft = characterController.getFacingLeft();
         Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
         float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
@@ -68,10 +81,15 @@ public class HandController : MonoBehaviour
         delay.Enqueue(targetPosition); //adds the target to a queue. this is so the hand follows a path that is sligthly behind the body
         Vector2 delayedTarget = delay.Dequeue(); //gets the old delay
         transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); //smoothly places the hand
+        holdingLatch = false;
     }
 
     private void holdingSomething()
     {
+        if (!holdingLatch)
+            setChild(transform.GetChild(0));
+
+
         Vector2 rotation = getMouseDirection(Input.mousePosition, playerBody.rotation);
         float angleRad = Mathf.Atan2(rotation.y, rotation.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;
@@ -84,6 +102,7 @@ public class HandController : MonoBehaviour
         }
         transform.position = (Vector2)playerBody.position + offset;
         transform.rotation = rotationQuaternion;
+        holdingLatch = true;
     }
 
     private static Vector3 getMouseDirection(Vector3 mousePosition, Quaternion playerRotation)
@@ -99,13 +118,8 @@ public class HandController : MonoBehaviour
 
     public void setChild(Transform child)
     {
-        GunController childController = child.gameObject.GetComponent<GunController>();
-        childController.setParent(gameObject);
-    }
-
-    public bool getClick()
-    {
-        return characterController.getClick();
+        gunController = child.gameObject.GetComponent<GunController>();
+        gunController.setParent(gameObject);
     }
 
     public bool getFacingLeft()

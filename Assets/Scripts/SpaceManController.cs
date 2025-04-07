@@ -32,9 +32,16 @@ public class SpaceManController : CharacterController
             UIHandler.instance.setFuelValue(currentFuel);
     }
 
+    public override void Update()
+    {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+            handController.useHand();
+
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if ((collision.gameObject.name == "SpaceZombie(Clone)" || collision.gameObject.name == "SpaceZombie") && enemyCollideFlag == false)
+        /**if ((collision.gameObject.name == "SpaceZombie(Clone)" || collision.gameObject.name == "SpaceZombie") && enemyCollideFlag == false)
         {
             //Vector2 forceVector = new Vector2(-5f,0f);
             //addForceLocal(forceVector);
@@ -44,7 +51,7 @@ public class SpaceManController : CharacterController
         }
         else if ((collision.gameObject.name != "SpaceZombie(Clone)" || collision.gameObject.name != "SpaceZombie") && enemyCollideFlag == true)
             enemyCollideFlag = false;
-
+        **/
         if (collision.gameObject.name == "MedPack")
         {
             setHealth(10f);

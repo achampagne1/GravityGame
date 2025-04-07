@@ -54,12 +54,10 @@ public class GunController : ItemController
             gravityAffected = false;    
             orientToGravity = false;
             facingLeft = handController.getFacingLeft();
-            if (Mouse.current.leftButton.wasPressedThisFrame) //I would like to have it come from the hand controller but thats laggy
+            /**if (Mouse.current.leftButton.wasPressedThisFrame) //I would like to have it come from the hand controller but thats laggy
             {
-                Vector3 offset = new Vector3(.5f, .25f, 0);
-                offset.y = offset.y * (facingLeft ? -1 : 1);
-                shoot(transform.position + transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
-            }
+                shootWrapper();
+            }**/
         }
         else
         {
@@ -79,7 +77,14 @@ public class GunController : ItemController
             Physics2D.IgnoreLayerCollision(13, 14, false);
     }
 
-    public void shoot(Vector3 location, Vector3 direction)
+    public void shootWrapper()
+    {
+        Vector3 offset = new Vector3(.5f, .25f, 0);
+        offset.y = offset.y * (facingLeft ? -1 : 1);
+        shoot(transform.position + transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
+    }
+
+    private void shoot(Vector3 location, Vector3 direction)
     {
         GameObject ShotBullet = Instantiate(bulletObject, location, Quaternion.identity);
         ShotBullet.transform.localScale = new Vector3(.075f, .075f, .075f);

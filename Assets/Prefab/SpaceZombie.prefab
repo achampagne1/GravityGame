@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6934056914047305271}
   - component: {fileID: 1916604699}
   - component: {fileID: 8501493087791118449}
-  m_Layer: 11
+  m_Layer: 9
   m_Name: SpaceZombie
   m_TagString: Untagged
   m_Icon: {fileID: 0}
