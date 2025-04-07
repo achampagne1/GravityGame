@@ -51,7 +51,10 @@ public class SpaceZombieController : CharacterController
     }
 
     public override void Update(){
-        handController.setInputDirection(new Vector3(1f, 1f, 0f));
+        if (getFacingLeft())
+            handController.setInputDirection(transform.rotation*new Vector3(-1f, 0f, 0f));
+        else
+            handController.setInputDirection(transform.rotation*new Vector3(1f, 0f, 0f));
     }
 
     void randomMovement()
@@ -97,5 +100,16 @@ public class SpaceZombieController : CharacterController
         {
             setHealth(getHealth() - 1f);
         }
+    }
+
+    private int lookLeftOrRight()
+    {
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Vector2 direction = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - screenCenter;
+
+        if (direction.x < 0)
+            return -1;
+        else
+            return 1;
     }
 }   

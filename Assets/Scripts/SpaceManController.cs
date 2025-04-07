@@ -35,8 +35,18 @@ public class SpaceManController : CharacterController
     {
         if (Mouse.current.leftButton.wasPressedThisFrame)
             handController.useHand();
-        handController.setInputDirection(Input.mousePosition);
+        handController.setInputDirection(mouseToDirection(Input.mousePosition, transform.rotation));
+    }
 
+    private Vector3 mouseToDirection(Vector3 inputDirection, Quaternion playerRotation)
+    {
+        //This function was written by chat GPT
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Vector2 direction = new Vector2(inputDirection.x, inputDirection.y) - screenCenter;
+        Vector2 normalizedDirection = direction.normalized;
+        Vector3 direction3D = new Vector3(normalizedDirection.x, normalizedDirection.y, 0f);
+        Vector3 rotatedDirection = playerRotation * direction3D;
+        return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -71,7 +81,7 @@ public class SpaceManController : CharacterController
             return 0;
     }
 
-    public int lookLeftOrRight()
+    private int lookLeftOrRight()
     {
         Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Vector2 direction = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - screenCenter;
