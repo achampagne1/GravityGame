@@ -53,7 +53,12 @@ public class ObjectController : MonoBehaviour
         if (gravityAffected)
         {
             //if (groundAngle < steepestGrade)  //figure out steepest grade later
-                rb.AddForce(gravityForce);
+            rb.AddForce(gravityForce);
+
+            if (isGrounded)//this is to sort of stick the polayer to the ground when moving
+            {
+                rb.AddForce(gravityForce * 5);
+            }
             rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
         }
 
