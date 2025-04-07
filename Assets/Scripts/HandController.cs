@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -15,6 +16,7 @@ public class HandController : MonoBehaviour
     private Queue<Vector2> delay;
     private float smoothTime = .05f;
     private Vector2 velocity = Vector2.zero;
+    private Vector3 inputDirection = Vector3.zero;
     private bool facingLeft = false;
     private bool holdingLatch = false;
     private int holding = 0;
@@ -64,7 +66,6 @@ public class HandController : MonoBehaviour
             gunController.shootWrapper(); //currently jsut guns
     }
 
-
     private void emptyHand()
     {
         if(holdingLatch)
@@ -89,8 +90,7 @@ public class HandController : MonoBehaviour
         if (!holdingLatch)
             setChild(transform.GetChild(0));
 
-
-        Vector2 rotation = getMouseDirection(Input.mousePosition, playerBody.rotation);
+        Vector2 rotation = getMouseDirection(inputDirection, playerBody.rotation);
         float angleRad = Mathf.Atan2(rotation.y, rotation.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;
         Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
@@ -120,6 +120,11 @@ public class HandController : MonoBehaviour
     {
         gunController = child.gameObject.GetComponent<GunController>();
         gunController.setParent(gameObject);
+    }
+
+    public void setInputDirection(Vector3 inputDirection)
+    {
+        this.inputDirection = inputDirection;
     }
 
     public bool getFacingLeft()

@@ -25,7 +25,6 @@ public class SpaceManController : CharacterController
         setOrientation(lookLeftOrRight());
         setJump(Keyboard.current.spaceKey.isPressed);
         setThrow(Keyboard.current.qKey.isPressed);
-        setClick(Mouse.current.leftButton.wasPressedThisFrame);
         calculateCharacterUpdate();
 
         if(fuelBuffer!=currentFuel)
@@ -36,6 +35,7 @@ public class SpaceManController : CharacterController
     {
         if (Mouse.current.leftButton.wasPressedThisFrame)
             handController.useHand();
+        handController.setInputDirection(Input.mousePosition);
 
     }
 
@@ -77,15 +77,8 @@ public class SpaceManController : CharacterController
         Vector2 direction = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - screenCenter;
 
         if (direction.x < 0)
-        {
             return -1;
-        }
-        if (direction.x >= 0)
-        {
-            return 1;
-        }
         else
-            return 0;
+            return 1;
     }
-
 }

@@ -50,6 +50,10 @@ public class SpaceZombieController : CharacterController
         }
     }
 
+    public override void Update(){
+        handController.setInputDirection(new Vector3(1f, 1f, 0f));
+    }
+
     void randomMovement()
     {
         if (moveDuration.checkTimer()&&pause) //move state
