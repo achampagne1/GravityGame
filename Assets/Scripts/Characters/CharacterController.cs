@@ -25,6 +25,7 @@ public class CharacterController : ObjectController{
     private float jumpMagnitude = 0;
     private float maxHealth = 3f; //default max health is 3
     private float maxFuel = 100f; // Maximum fuel capacity
+    protected int wallInFrontVar = 0;
     private bool space = false;
     private bool facingLeft = false;
     private bool timerFlag = false;
@@ -75,11 +76,12 @@ public class CharacterController : ObjectController{
     {
         turnLeftRight();
         determineAnimation();
-
+        wallInFrontVar = wallInFront();
         calculateJump();
         calculateJetPackHover();
         calculateMovement();
         calculateDrag();
+        detectLedge();
 
         rb.AddForce(jump, ForceMode2D.Impulse);
         rb.AddForce(hover);
@@ -123,6 +125,20 @@ public class CharacterController : ObjectController{
         if (angleRight > 90 || angleRight < 0)
             return 1;
         return 0;
+    }
+
+    protected bool detectLedge()
+    {
+        Vector2 localDirection = new Vector2(1, -1).normalized;
+        if (facingLeft)
+            localDirection.x = localDirection.x * -1;
+
+        int mask = (1 << 15);
+        Vector2 worldDirection = transform.TransformDirection(localDirection);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, worldDirection, heightObject + 100f, mask);
+        if (hit.collider == null)
+            return true;
+        return false;
     }
 
     private float CalculateMagnitude(Vector2 vector)
@@ -201,7 +217,7 @@ public class CharacterController : ObjectController{
         //movement
         rotatedX = -gravityDirection.y;
         rotatedY = gravityDirection.x;
-        if (wallInFront() == (int)horizontalInput)
+        if (wallInFrontVar == (int)horizontalInput)
             horizontalInput = 0;
         moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
     }

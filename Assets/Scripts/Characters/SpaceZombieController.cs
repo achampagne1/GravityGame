@@ -9,15 +9,16 @@ public class SpaceZombieController : CharacterController
     RandomTimer pauseDuration = new RandomTimer();
     RandomTimer moveDuration = new RandomTimer();
     Timer timer = new Timer(3f);
+    Timer shootTimer = new Timer(.5f);
 
     //public variables
     public bool first = false;
+    public bool movementToggle = true;
 
     //game variables
-    int moveInput = 0;
-    bool pause = false;
-    bool following = false;
-    public bool movementToggle = true;
+    private int moveInput = 0;
+    private bool pause = false;
+    private bool following = false;
 
     void Start()
     {
@@ -25,7 +26,6 @@ public class SpaceZombieController : CharacterController
         pauseDuration.create(.1f, 1f);
         moveDuration.create(1f, 4f);
 
-        moveInput = -1;
         timer.startTimer();
     }
 
@@ -35,7 +35,10 @@ public class SpaceZombieController : CharacterController
         {
             if (movementToggle) //for debugging purposes
             {
-                patrol();
+                if (detectPlayer())
+                    attackPlayer();
+                else
+                    patrol();
                 setMovement(moveInput);
                 setOrientation(moveInput);
             }
@@ -72,7 +75,13 @@ public class SpaceZombieController : CharacterController
 
     private void patrol()
     {
-        if (timer.checkTimer())
+        if(moveInput == 0)
+        {
+            Debug.Log("here");
+            moveInput = 1;
+        }
+
+        if (timer.checkTimer()||wallInFrontVar==moveInput)
         {
             moveInput = moveInput * -1;
             timer.startTimer();
@@ -80,17 +89,39 @@ public class SpaceZombieController : CharacterController
 
     }
 
-    bool detectPlayer()
+    private void attackPlayer()
     {
-        /**for (int i = 0; i<60; i++)
+        if (!shootTimer.getIsRunning())
+            shootTimer.startTimer();
+
+        if (shootTimer.checkTimer())
+        {
+            handController.useHand();
+            Debug.Log("pow");
+            shootTimer.startTimer();
+        }
+        moveInput = 0;
+    }
+
+    private bool detectPlayer()
+    {
+        /**int layerMask = ~((1 << LayerMask.NameToLayer("items"))
+                 | (1 << LayerMask.NameToLayer("bullet"))
+                 | (1 << LayerMask.NameToLayer("Ignore Raycast")));
+        add this later**/
+        for (int i = 0; i<60; i++)
         {
             float angle =  (getCharacterOrientation()+30 - i +(System.Convert.ToSingle(getFacingLeft()) *180)) % 360;
             Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));
-            RaycastHit2D lookForPlayer = Physics2D.Raycast(getCharacterCollider().bounds.center,temp, 100f, LayerMask.GetMask("player"));
-            RaycastHit2D lookForObstacles = Physics2D.Raycast(getCharacterCollider().bounds.center, temp, 100f, LayerMask.GetMask("Default"));
-            if (lookForPlayer.collider != null&& lookForObstacles.collider == null)
-                return true;
-        }**/
+            RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(transform.position,temp, 100f);
+            foreach (RaycastHit2D hit in lookForPlayer)
+            {
+                if (hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 15)
+                    break;
+                if (hit.collider.gameObject != gameObject&& hit.collider.gameObject.layer == 9)
+                    return true;
+            }
+        }
         return false;
     }
 

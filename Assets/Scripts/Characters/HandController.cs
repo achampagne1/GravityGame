@@ -61,6 +61,7 @@ public class HandController : MonoBehaviour
     public void useHand()
     {
         if (holding == 1)
+            gunController.setShootDirection(inputDirection);
             gunController.shootWrapper(); //currently jsut guns
     }
 

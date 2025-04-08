@@ -8,6 +8,7 @@ public class GunController : ItemController
 
     //vectors
     private Vector2 forceBuffer = new Vector2(0, 0);
+    private Vector3 shootDirection = Vector3.zero;
 
     //object creation
     private GameObject bulletObject;
@@ -81,7 +82,7 @@ public class GunController : ItemController
     {
         Vector3 offset = new Vector3(.5f, .25f, 0);
         offset.y = offset.y * (facingLeft ? -1 : 1);
-        shoot(transform.position + transform.rotation * offset, getMouseDirection(Input.mousePosition, playerBody.rotation));
+        shoot(transform.position + transform.rotation * offset, shootDirection);
     }
 
     private void shoot(Vector3 location, Vector3 direction)
@@ -136,6 +137,11 @@ public class GunController : ItemController
     public bool getParented()
     {
         return parented;
+    }
+
+    public void setShootDirection(Vector3 input)
+    {
+        shootDirection = input;
     }
 
 

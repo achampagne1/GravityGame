@@ -29,6 +29,7 @@ public class BulletController : ObjectController
         Physics2D.IgnoreLayerCollision(9, 12, true);
         Physics2D.IgnoreLayerCollision(12, 13, true);
         Physics2D.IgnoreLayerCollision(12, 12, true);
+        Physics2D.IgnoreLayerCollision(2, 12, true);
         rb.AddForce(initialForce*bulletForce, ForceMode2D.Impulse);
         if(first)
             gunController = transform.parent.GetComponent<GunController>();
