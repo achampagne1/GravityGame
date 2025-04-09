@@ -29,13 +29,13 @@ public class TriggerBoundaryCotroller : MonoBehaviour
         if (trigger.gameObject.name == "MedPack")
         {
             character.setHealth(character.getMaxHealth());
-            if(gameObject.name == "SpaceMan")
+            if(gameObject.name == "TriggerBoundarySpaceMan")
                 UIHandler.instance.setHealthValue(character.getHealth());
         }
         if (trigger.gameObject.name == "Bullet(Clone)")
         {
             character.setHealth(character.getHealth() - 1f);
-            if (gameObject.name == "SpaceMan")
+            if (gameObject.name == "TriggerBoundarySpaceMan")
                 UIHandler.instance.setHealthValue(character.getHealth());
         }
     }

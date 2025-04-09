@@ -16,6 +16,7 @@ public class CharacterController : ObjectController{
     public float moveSpeed = 20f;
     public float jumpForce = 11f;
     public float jetPackForce = 30f;
+    public float maxHealth = 3f; //default max health is 3
 
     //private game variables
     private float horizontalInput = 0;
@@ -23,7 +24,6 @@ public class CharacterController : ObjectController{
     private float rotatedX = 0;
     private float rotatedY = 0;
     private float jumpMagnitude = 0;
-    private float maxHealth = 3f; //default max health is 3
     private float maxFuel = 100f; // Maximum fuel capacity
     protected int wallInFrontVar = 0;
     private bool space = false;
@@ -133,9 +133,9 @@ public class CharacterController : ObjectController{
         if (facingLeft)
             localDirection.x = localDirection.x * -1;
 
-        int mask = (1 << 15);
+        int mask = (1 << 15 | 1 << 0);
         Vector2 worldDirection = transform.TransformDirection(localDirection);
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, worldDirection, heightObject + 100f, mask);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, worldDirection, heightObject + 1f, mask);
         if (hit.collider == null)
             return true;
         return false;

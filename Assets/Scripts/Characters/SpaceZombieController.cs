@@ -81,7 +81,7 @@ public class SpaceZombieController : CharacterController
             moveInput = 1;
         }
 
-        if (timer.checkTimer()||wallInFrontVar==moveInput)
+        if (timer.checkTimer()||detectLedge()||wallInFrontVar==moveInput)
         {
             moveInput = moveInput * -1;
             timer.startTimer();
@@ -97,7 +97,6 @@ public class SpaceZombieController : CharacterController
         if (shootTimer.checkTimer())
         {
             handController.useHand();
-            Debug.Log("pow");
             shootTimer.startTimer();
         }
         moveInput = 0;
