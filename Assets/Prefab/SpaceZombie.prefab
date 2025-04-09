@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8382338555531473137}
   - component: {fileID: 3229234746511182653}
   m_Layer: 14
-  m_Name: TriggerBoundary
+  m_Name: TriggerBoundaryGreenTeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ SpriteRenderer:
   m_SortingOrder: -100
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b,
     type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0, g: 0, b: 0, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -308,11 +308,13 @@ MonoBehaviour:
   terminalVelocity: 30
   gravityAffected: 1
   orientToGravity: 1
-  moveSpeed: 10
+  moveSpeed: 5
   jumpForce: 11
   jetPackForce: 30
+  maxHealth: 3
   first: 0
   movementToggle: 1
+  normalState: 1
 --- !u!95 &8501493087791118449
 Animator:
   serializedVersion: 7

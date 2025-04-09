@@ -14,11 +14,13 @@ public class SpaceZombieController : CharacterController
     //public variables
     public bool first = false;
     public bool movementToggle = true;
+    public int normalState = 0;
 
     //game variables
     private int moveInput = 0;
     private bool pause = false;
     private bool following = false;
+    private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
 
     void Start()
     {
@@ -38,7 +40,14 @@ public class SpaceZombieController : CharacterController
                 if (detectPlayer())
                     attackPlayer();
                 else
-                    patrol();
+                {
+                    if (normalState == 0)
+                        moveInput = 0;
+                    else if (normalState == 1)
+                        patrol();
+                    else
+                        randomMovement();
+                }
                 setMovement(moveInput);
                 setOrientation(moveInput);
             }
@@ -46,13 +55,6 @@ public class SpaceZombieController : CharacterController
             if (getHealth() == 0)
                 Destroy(this.gameObject);
         }
-    }
-
-    public override void Update(){
-        if (getFacingLeft())
-            handController.setInputDirection(transform.rotation*new Vector3(-1f, 0f, 0f));
-        else
-            handController.setInputDirection(transform.rotation*new Vector3(1f, 0f, 0f));
     }
 
     private void randomMovement()
@@ -77,9 +79,11 @@ public class SpaceZombieController : CharacterController
     {
         if(moveInput == 0)
         {
-            Debug.Log("here");
             moveInput = 1;
         }
+
+        handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
+
 
         if (timer.checkTimer()||detectLedge()||wallInFrontVar==moveInput)
         {
@@ -96,6 +100,7 @@ public class SpaceZombieController : CharacterController
 
         if (shootTimer.checkTimer())
         {
+            handController.setInputDirection(playerDirection);
             handController.useHand();
             shootTimer.startTimer();
         }
@@ -118,7 +123,10 @@ public class SpaceZombieController : CharacterController
                 if (hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 15)
                     break;
                 if (hit.collider.gameObject != gameObject&& hit.collider.gameObject.layer == 9)
+                {
+                    playerDirection = new Vector3(temp.x, temp.y, 0f);
                     return true;
+                }
             }
         }
         return false;

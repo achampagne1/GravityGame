@@ -1,7 +1,9 @@
+using Microsoft.Win32.SafeHandles;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using static Unity.Collections.AllocatorManager;
 
 public class GunController : ItemController
 {
@@ -15,6 +17,7 @@ public class GunController : ItemController
     private Transform playerBody;
     private HandController handController;
     private Timer throwTimer;
+    private Animator animator;
 
 
     //private variables
@@ -26,6 +29,7 @@ public class GunController : ItemController
     {
         throwTimer = new Timer(.25f); //this is to make sure the player doesnt immidietly grab the item when it is thrown
         Physics2D.IgnoreLayerCollision(9, 13, true);
+        Physics2D.IgnoreLayerCollision(11, 13, true);
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
         bulletObject = transform.GetChild(0).gameObject; //the bullet is the first child object of the gun
         if (parented)
@@ -34,13 +38,22 @@ public class GunController : ItemController
             handController = transform.parent.GetComponent<HandController>();
             playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
         }
+
+        try
+        {
+            animator = GetComponent<Animator>();
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+
         calculateItemStart();   
     }
 
     public void Update()
     {
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
-
         calculateItemUpdate();
         if (parented)
         {
@@ -82,6 +95,7 @@ public class GunController : ItemController
     {
         Vector3 offset = new Vector3(.5f, .25f, 0);
         offset.y = offset.y * (facingLeft ? -1 : 1);
+        animator.SetTrigger("Shoot");
         shoot(transform.position + transform.rotation * offset, shootDirection);
     }
 
@@ -122,11 +136,11 @@ public class GunController : ItemController
         if (parent.gameObject.GetComponent<HandController>().getFacingLeft()!=facingLeft)
         {
             transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
-            transform.localPosition = new Vector3(-1.5f, -1f, 0f);
+            transform.localPosition = new Vector3(-2.5f, -1f, 0f); //for setting location of gun in hand
             facingLeft = !facingLeft;
         }
         else
-            transform.localPosition = new Vector3(1.5f, 1f, 0f);
+            transform.localPosition = new Vector3(2.5f, 1f, 0f);
     }
 
     public bool getFacingLeft()

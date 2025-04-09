@@ -17,6 +17,7 @@ public class CharacterController : ObjectController{
     public float jumpForce = 11f;
     public float jetPackForce = 30f;
     public float maxHealth = 3f; //default max health is 3
+    public bool invincibleFlag = false;
 
     //private game variables
     private float horizontalInput = 0;
@@ -287,7 +288,8 @@ public class CharacterController : ObjectController{
 
     public void setHealth(float newHealth)
     {
-        health = newHealth;
+        if(!invincibleFlag)
+            health = newHealth;
     }
 
     public void setMaxHealth(float newMaxHealth)
