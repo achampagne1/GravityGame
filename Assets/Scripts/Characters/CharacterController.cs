@@ -97,6 +97,9 @@ public class CharacterController : ObjectController{
 
         previousV = -rb.velocity;
         previousMove = -moveDirection;
+
+        if (health == 0)
+            die();
     }
 
     public virtual void Update()
@@ -235,6 +238,13 @@ public class CharacterController : ObjectController{
 
     }
 
+    private void die()
+    {
+        forceLocal = new Vector2(5,0 );
+        forceLocal = transform.TransformDirection(forceLocal);
+        animator.SetTrigger("Killed");
+    }
+
     private void determineAnimation()
     {
         try
@@ -309,7 +319,7 @@ public class CharacterController : ObjectController{
 
     public Collider2D getCharacterCollider()
     {
-        return collider;
+        return GetComponent<Collider2D>();
     }
 
     public Vector2 getGravityDirection()

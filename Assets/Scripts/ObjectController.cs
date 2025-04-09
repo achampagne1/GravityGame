@@ -9,7 +9,6 @@ public class ObjectController : MonoBehaviour
     protected Rigidbody2D rb;
     protected Transform planetCenter;
     protected Timer groundTimer;
-    protected Collider2D collider;
     private List<GameObject> gravityPoints;
 
     //public game variables
@@ -31,6 +30,7 @@ public class ObjectController : MonoBehaviour
     //vectors
     protected Vector2 gravityDirection = new Vector2(0, 0);
     protected Vector2 gravityForce = new Vector2(0, 0);
+    protected Vector2 forceLocal = new Vector2(0, 0);
     private Vector2 gravityOverride = new Vector2(0, 0);
 
     protected void calculateStart()
@@ -55,14 +55,17 @@ public class ObjectController : MonoBehaviour
             //if (groundAngle < steepestGrade)  //figure out steepest grade later
             rb.AddForce(gravityForce);
 
-            if (isGrounded)//this is to sort of stick the polayer to the ground when moving
-            {
-                rb.AddForce(gravityForce * 5);
-            }
+            //if (isGrounded)//this is to sort of stick the polayer to the ground when moving
+            //{
+            //    rb.AddForce(gravityForce * 5);
+            //}
             rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
         }
 
-        if(orientToGravity) calculateRotation();
+        if(orientToGravity) 
+            calculateRotation();
+        rb.AddForce(forceLocal, ForceMode2D.Impulse);
+        forceLocal= new Vector2(0, 0);
     }
 
     protected virtual void calculateGravity() //why is this virtual
