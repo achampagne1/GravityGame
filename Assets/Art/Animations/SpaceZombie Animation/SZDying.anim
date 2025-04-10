@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SMDying
+  m_Name: SZDying
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,13 +21,13 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: -1705465622, guid: 9cece6ac32182eb40aa7905fc54ab52f, type: 3}
+      value: {fileID: -1469911, guid: 3a28508d07950c44db8f972828354310, type: 3}
     - time: 0.083333336
-      value: {fileID: -805118168, guid: 9cece6ac32182eb40aa7905fc54ab52f, type: 3}
+      value: {fileID: 792544345, guid: 3a28508d07950c44db8f972828354310, type: 3}
     - time: 0.16666667
-      value: {fileID: 1431068053, guid: 9cece6ac32182eb40aa7905fc54ab52f, type: 3}
+      value: {fileID: -1277902463, guid: 3a28508d07950c44db8f972828354310, type: 3}
     - time: 0.25
-      value: {fileID: 32226360, guid: 9cece6ac32182eb40aa7905fc54ab52f, type: 3}
+      value: {fileID: -1910504684, guid: 3a28508d07950c44db8f972828354310, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -50,10 +50,10 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: -1705465622, guid: 9cece6ac32182eb40aa7905fc54ab52f, type: 3}
-    - {fileID: -805118168, guid: 9cece6ac32182eb40aa7905fc54ab52f, type: 3}
-    - {fileID: 1431068053, guid: 9cece6ac32182eb40aa7905fc54ab52f, type: 3}
-    - {fileID: 32226360, guid: 9cece6ac32182eb40aa7905fc54ab52f, type: 3}
+    - {fileID: -1469911, guid: 3a28508d07950c44db8f972828354310, type: 3}
+    - {fileID: 792544345, guid: 3a28508d07950c44db8f972828354310, type: 3}
+    - {fileID: -1277902463, guid: 3a28508d07950c44db8f972828354310, type: 3}
+    - {fileID: -1910504684, guid: 3a28508d07950c44db8f972828354310, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}

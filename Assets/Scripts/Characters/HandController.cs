@@ -22,6 +22,7 @@ public class HandController : MonoBehaviour
     // Start is called before the first frame update
     public void Start()
     {
+
         GameObject temp = transform.parent.gameObject; //hand will always have a character parent
         playerBody = temp.GetComponent<Transform>();
         characterController = temp.GetComponent<CharacterController>();
@@ -61,8 +62,10 @@ public class HandController : MonoBehaviour
     public void useHand()
     {
         if (holding == 1)
+        {
             gunController.setShootDirection(inputDirection);
             gunController.shootWrapper(); //currently jsut guns
+        }
     }
 
     private void emptyHand()

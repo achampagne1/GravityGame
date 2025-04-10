@@ -38,12 +38,9 @@ public class ObjectController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
         groundTimer = new Timer(0.4f);
-
+        heightObject = getHeight() + .3f; //the .3 is to allow ground detection even on a slope
         gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
         findClosestField();
-        rb.velocity = new Vector2(0, 0); //this can be moifie to have a starting velocity*/
-
-        heightObject = getHeight() + .3f; //the .3 is to allow ground detection even on a slope
     }
 
     protected void calculateUpdate()
@@ -55,20 +52,21 @@ public class ObjectController : MonoBehaviour
             //if (groundAngle < steepestGrade)  //figure out steepest grade later
             rb.AddForce(gravityForce);
 
-            //if (isGrounded)//this is to sort of stick the polayer to the ground when moving
-            //{
-            //    rb.AddForce(gravityForce * 5);
-            //}
+            if (isGrounded)//this is to sort of stick the polayer to the ground when moving
+            {
+                rb.AddForce(gravityForce * 5);
+            }
             rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
         }
 
         if(orientToGravity) 
             calculateRotation();
-        rb.AddForce(forceLocal, ForceMode2D.Impulse);
+
+        rb.AddForce(forceLocal);
         forceLocal= new Vector2(0, 0);
     }
 
-    protected virtual void calculateGravity() //why is this virtual
+    protected virtual void calculateGravity() 
     {
         if (gravityOverride != Vector2.zero)
         {

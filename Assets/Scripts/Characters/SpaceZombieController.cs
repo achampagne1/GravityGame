@@ -31,11 +31,11 @@ public class SpaceZombieController : CharacterController
         timer.startTimer();
     }
 
-    void FixedUpdate()
+    public void FixedUpdate()
     {
         if (!first)
         {
-            if (movementToggle) //for debugging purposes
+            if (movementToggle && !dead)
             {
                 if (detectPlayer())
                     attackPlayer();
@@ -52,8 +52,6 @@ public class SpaceZombieController : CharacterController
                 setOrientation(moveInput);
             }
             calculateCharacterUpdate();
-            if (getHealth() == 0)
-                Destroy(this.gameObject);
         }
     }
 
@@ -154,5 +152,13 @@ public class SpaceZombieController : CharacterController
             return -1;
         else
             return 1;
+    }
+
+    protected override void die()
+    {
+        base.die();
+        moveInput = 0;
+        setMovement(moveInput);
+        throwItem = true;
     }
 }   

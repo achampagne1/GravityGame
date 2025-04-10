@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 507273502032372736}
   - component: {fileID: 2667448509233387349}
   m_Layer: 9
-  m_Name: SpaceManHand
+  m_Name: Hand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -399,9 +399,11 @@ MonoBehaviour:
   terminalVelocity: 30
   gravityAffected: 1
   orientToGravity: 1
-  moveSpeed: 20
+  moveSpeed: 10
   jumpForce: 11
   jetPackForce: 30
+  maxHealth: 10
+  invincibleFlag: 0
 --- !u!1 &7388870892404204327
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +417,7 @@ GameObject:
   - component: {fileID: 9025898114710739492}
   m_Layer: 2
   m_Name: CM vcam1
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -429,7 +431,7 @@ Transform:
   m_GameObject: {fileID: 7388870892404204327}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 20, z: -50}
+  m_LocalPosition: {x: 0, y: 0, z: -50}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -502,7 +504,7 @@ GameObject:
   - component: {fileID: 2941480577480914171}
   - component: {fileID: 8917270774845933381}
   m_Layer: 14
-  m_Name: TriggerBoundary
+  m_Name: TriggerBoundarySpaceMan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -568,7 +570,7 @@ SpriteRenderer:
   m_SortingOrder: -100
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b,
     type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -761,8 +763,40 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1237553992379659236, guid: 93e9b81787c15c841bb7b9edb4f86552,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8585309430802726637}
   m_SourcePrefab: {fileID: 100100000, guid: 93e9b81787c15c841bb7b9edb4f86552, type: 3}
+--- !u!1 &366702538121149334 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1237553992379659236, guid: 93e9b81787c15c841bb7b9edb4f86552,
+    type: 3}
+  m_PrefabInstance: {fileID: 1457590470276679794}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &8585309430802726637
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 366702538121149334}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c2d636c6b4f32e84b9e066af43a2898e, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!4 &6193845266655384670 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4741889890116738092, guid: 93e9b81787c15c841bb7b9edb4f86552,

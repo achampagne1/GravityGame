@@ -5,14 +5,20 @@ using UnityEngine;
 public class TriggerBoundaryCotroller : MonoBehaviour
 {
     //object creation
-    private HandController characterHand;
-    private CharacterController character;
+    private GameObject parent;
+    private HandController handController;
+    private CharacterController characterController;
 
     // Start is called before the first frame update
     void Start()
     {
-        characterHand = GameObject.Find("Hand").GetComponent<HandController>();
-        character = GetComponentInParent<CharacterController>();
+        parent = transform.parent.gameObject;
+        characterController = parent.GetComponent<CharacterController>();
+        foreach (Transform child in parent.transform)
+        {
+            if (child.name == "Hand")
+                handController = child.gameObject.GetComponent<HandController>();
+        }
         Physics2D.IgnoreLayerCollision(9, 14, true);
     }
 
@@ -25,18 +31,18 @@ public class TriggerBoundaryCotroller : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D trigger)
     {
         if (trigger.gameObject.name == "Gun" && !trigger.gameObject.GetComponent<GunController>().getParented())//will need to change to item controller once parenting is moved to item
-            characterHand.setChild(trigger.transform);
+            handController.setChild(trigger.transform);
         if (trigger.gameObject.name == "MedPack")
         {
-            character.setHealth(character.getMaxHealth());
+            characterController.setHealth(characterController.getMaxHealth());
             if(gameObject.name == "TriggerBoundarySpaceMan")
-                UIHandler.instance.setHealthValue(character.getHealth());
+                UIHandler.instance.setHealthValue(characterController.getHealth());
         }
         if (trigger.gameObject.name == "Bullet(Clone)")
         {
-            character.setHealth(character.getHealth() - 1f);
+            characterController.setHealth(characterController.getHealth() - 1f);
             if (gameObject.name == "TriggerBoundarySpaceMan")
-                UIHandler.instance.setHealthValue(character.getHealth());
+                UIHandler.instance.setHealthValue(characterController.getHealth());
         }
     }
 }

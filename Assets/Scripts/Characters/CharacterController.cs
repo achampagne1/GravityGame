@@ -30,9 +30,10 @@ public class CharacterController : ObjectController{
     private bool space = false;
     private bool facingLeft = false;
     private bool timerFlag = false;
-    private bool throwItem = false;
+    protected bool throwItem = false;
     private bool click = false;
     private bool hoverFlag = false;
+    protected bool dead = false;
 
     //protected game variables
     protected float currentFuel = 100f;
@@ -53,6 +54,9 @@ public class CharacterController : ObjectController{
     public void calculateCharacterStart()
     {
         Physics2D.IgnoreLayerCollision(9, 9, true);
+        Physics2D.IgnoreLayerCollision(9, 11, true);
+        Physics2D.IgnoreLayerCollision(11, 11, true);
+
         health = maxHealth;
         calculateStart();     
         foreach(Transform child in transform)
@@ -98,8 +102,11 @@ public class CharacterController : ObjectController{
         previousV = -rb.velocity;
         previousMove = -moveDirection;
 
-        if (health == 0)
+        if (health == 0 && !dead)
+        {
             die();
+            dead = true;
+        }
     }
 
     public virtual void Update()
@@ -116,7 +123,7 @@ public class CharacterController : ObjectController{
 
     private int wallInFront()
     {
-        int layerMask = LayerMask.GetMask("Default", "enemy", "player","Platforms"); //how can this be done better
+        int layerMask = LayerMask.GetMask("Default","Platforms"); //how can this be done better
         int currentLayer = gameObject.layer;
         int finalMask = layerMask & ~(1 << currentLayer);
 
@@ -238,9 +245,9 @@ public class CharacterController : ObjectController{
 
     }
 
-    private void die()
+    protected virtual void die()
     {
-        forceLocal = new Vector2(5,0 );
+        forceLocal = new Vector2(600*(facingLeft? -1:1),0 );
         forceLocal = transform.TransformDirection(forceLocal);
         animator.SetTrigger("Killed");
     }
@@ -306,12 +313,6 @@ public class CharacterController : ObjectController{
     {
         maxHealth = newMaxHealth;
     }
-
-    public void setThrow(bool throwInput)
-    {
-        throwItem = throwInput;
-    }
-
     public void setClick(bool clickInput)
     {
         click = clickInput;
