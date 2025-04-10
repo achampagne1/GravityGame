@@ -41,9 +41,6 @@ public class BulletController : ObjectController
     {
         if (!first)
         {
-            if (timer.checkTimer()) //currently the player layer is 9 and the bullet layer is 12
-                Physics2D.IgnoreLayerCollision(9, 12, false);
-
             calculateRotation();
             calculateUpdate();
             rb.velocity = calculateDrag(rb.velocity);

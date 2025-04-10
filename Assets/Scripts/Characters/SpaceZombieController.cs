@@ -159,6 +159,6 @@ public class SpaceZombieController : CharacterController
         base.die();
         moveInput = 0;
         setMovement(moveInput);
-        throwItem = true;
+        handController.throwItem();
     }
 }   

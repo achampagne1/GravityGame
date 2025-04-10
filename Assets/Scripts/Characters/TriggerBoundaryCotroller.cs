@@ -30,7 +30,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.gameObject.name == "Gun" && !trigger.gameObject.GetComponent<GunController>().getParented())//will need to change to item controller once parenting is moved to item
+        if (trigger.gameObject.name == "Gun" && !trigger.gameObject.GetComponent<GunController>().getParented() && handController.getHolding()!=1)//will need to change to item controller once parenting is moved to item
             handController.setChild(trigger.transform);
         if (trigger.gameObject.name == "MedPack")
         {

@@ -39,14 +39,6 @@ public class HandController : MonoBehaviour
     // Update is called once per frame
     public void FixedUpdate()
     {
-        //this is just for the throwing action
-        if (characterController.getThrow()&& transform.childCount!=0)
-        {
-            Transform child = transform.GetChild(0); // Get first child
-            GunController childController = child.gameObject.GetComponent<GunController>(); //will be chagned to item controller
-            childController.setForceBuffer(new Vector2(15f, 6f));
-            child.SetParent(null); //using transform.SetParent not Item.SetParent
-        }
 
         //this is for handling if youre holding an item or not
         holding = transform.childCount;
@@ -57,6 +49,18 @@ public class HandController : MonoBehaviour
         else
             Debug.LogError("too many children in hand");
 
+    }
+
+    public void throwItem()
+    {
+        if (transform.childCount == 0) //theres nothing to throw
+            return;
+        Transform child = transform.GetChild(0); // Get first child
+        child.position = transform.parent.transform.position;
+        GunController childController = child.gameObject.GetComponent<GunController>(); //will be chagned to item controller
+        Vector2 forceLocal = transform.parent.transform.TransformDirection(new Vector2(10f * (facingLeft ? -1 : 1), 18f));
+        childController.setForceBuffer(forceLocal);
+        child.SetParent(null); //using transform.SetParent not Item.SetParent
     }
 
     public void useHand()
@@ -120,6 +124,11 @@ public class HandController : MonoBehaviour
     public bool getFacingLeft()
     {
         return facingLeft;
+    }
+
+    public int getHolding()
+    {
+        return holding;
     }
 
 

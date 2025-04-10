@@ -81,10 +81,13 @@ public class GunController : ItemController
             if (parentLatch)
             {
                 rb.AddForce(forceBuffer, ForceMode2D.Impulse);
+                forceBuffer = new Vector2(0, 0);
                 handController = null;
                 playerBody = null;
+                gravityAffected = true;
+                orientToGravity = true;
             }
-            floatFlag=true; 
+            //floatFlag=true; 
 
         }
         parentLatch = parented;
@@ -106,13 +109,9 @@ public class GunController : ItemController
 
     public void setForceBuffer(Vector2 force)
     {
-        calculateGravity();
         Physics2D.IgnoreLayerCollision(13, 14, true);
         throwTimer.startTimer();
-        float rotatedX = -gravityDirection.x;
-        float rotatedY = -gravityDirection.y;
-
-        forceBuffer = new Vector2(rotatedX * force.x, rotatedY * force.y);
+        forceBuffer = force;
     }
 
     public void setParent(GameObject parent)

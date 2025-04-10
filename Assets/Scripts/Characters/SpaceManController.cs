@@ -23,7 +23,8 @@ public class SpaceManController : CharacterController
         setMovement(inputSystemToGetAxis());
         setOrientation(lookLeftOrRight());
         setJump(Keyboard.current.spaceKey.isPressed);
-        throwItem = Keyboard.current.qKey.isPressed;
+        if (Keyboard.current.qKey.isPressed)
+            handController.throwItem();
         calculateCharacterUpdate();
 
         if(fuelBuffer!=currentFuel)
