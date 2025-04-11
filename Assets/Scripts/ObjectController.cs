@@ -40,7 +40,7 @@ public class ObjectController : MonoBehaviour
         groundTimer = new Timer(0.4f);
         heightObject = getHeight() + .3f; //the .3 is to allow ground detection even on a slope
         gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
-        findClosestField();
+        StartCoroutine(findClosestField());
     }
 
     protected void calculateUpdate()
@@ -75,34 +75,38 @@ public class ObjectController : MonoBehaviour
         }
         else
         {
-            findClosestField();
             //Calculate gravitational force towards the planet
             gravityDirection = (planetCenter.position - transform.position).normalized;
             gravityForce = gravityDirection * gravityForceMag;
         }
     }
 
-    private void findClosestField() //this might need to be revamped one day. maybe not check for a new gravity field every update
+    private IEnumerator findClosestField() //this checks for a new gravity field every 10th of a second
     {
-        float closestGravityField = 1000f;
-        GameObject temp = gravityPoints[0];
-        foreach (GameObject gravityPoint in gravityPoints)
+        while (true)
         {
-            GravityPointController gravityPointController = gravityPoint.GetComponent<GravityPointController>();
-            float adjustedDistance = (float)(transform.position - gravityPoint.transform.position).magnitude / gravityPointController.getFieldSize();
-            if (adjustedDistance < closestGravityField)
+            float closestGravityField = 1000f;
+            GameObject temp = gravityPoints[0];
+            foreach (GameObject gravityPoint in gravityPoints)
             {
-                closestGravityField = adjustedDistance;
-                temp = gravityPoint;
+                GravityPointController gravityPointController = gravityPoint.GetComponent<GravityPointController>();
+                float adjustedDistance = (float)(transform.position - gravityPoint.transform.position).magnitude / gravityPointController.getFieldSize();
+                if (adjustedDistance < closestGravityField)
+                {
+                    closestGravityField = adjustedDistance;
+                    temp = gravityPoint;
+                }
             }
+            if (distanceToSource - closestGravityField < 0)
+                up = true;
+            else
+                up = false;
+            distanceToSource = closestGravityField;
+            planetCenter = temp.GetComponent<Transform>();
+            gravityForceMag = temp.GetComponent<GravityPointController>().getFieldStrength();
+
+            yield return new WaitForSeconds(0.1f);
         }
-        if (distanceToSource - closestGravityField < 0)
-            up = true;
-        else
-            up = false;
-        distanceToSource = closestGravityField;
-        planetCenter = temp.GetComponent<Transform>();
-        gravityForceMag = temp.GetComponent<GravityPointController>().getFieldStrength();
     }
 
     protected virtual void calculateRotation()

@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 490096820176868143}
   - component: {fileID: 4622401280902540694}
   - component: {fileID: 9093555100603836331}
-  - component: {fileID: 7200657744619183238}
+  - component: {fileID: 1978416043871644636}
   m_Layer: 13
   m_Name: Gun
   m_TagString: Untagged
@@ -109,6 +109,7 @@ MonoBehaviour:
   gravityAffected: 0
   orientToGravity: 0
   floatFlag: 0
+  gunshotClip: {fileID: 8300000, guid: f531f1bba93abff4d8eeca4e65344fac, type: 3}
 --- !u!50 &490096820176868143
 Rigidbody2D:
   serializedVersion: 4
@@ -204,7 +205,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!82 &7200657744619183238
+--- !u!82 &1978416043871644636
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -214,11 +215,11 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: e2306a13e491b65488da837fe76c8dd7, type: 3}
-  m_Resource: {fileID: 8300000, guid: e2306a13e491b65488da837fe76c8dd7, type: 3}
+  m_audioClip: {fileID: 8300000, guid: f531f1bba93abff4d8eeca4e65344fac, type: 3}
+  m_Resource: {fileID: 8300000, guid: f531f1bba93abff4d8eeca4e65344fac, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
-  m_Pitch: 1
+  m_Volume: 0.502
+  m_Pitch: 0.75
   Loop: 0
   Mute: 0
   Spatialize: 0
@@ -261,7 +262,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
