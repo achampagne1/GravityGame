@@ -19,6 +19,8 @@ public class GunController : ItemController
     private HandController handController;
     private Timer throwTimer;
     private Animator animator;
+    private AudioSource audioSource;
+    [SerializeField] private AudioClip gunshotClip;
 
 
     //private variables
@@ -34,6 +36,7 @@ public class GunController : ItemController
         throwTimer = new Timer(.25f); //this is to make sure the player doesnt immidietly grab the item when it is thrown
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
         bulletObject = transform.GetChild(0).gameObject; //the bullet is the first child object of the gun
+        audioSource = GetComponent<AudioSource>();
         if (parented)
         {
             GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
@@ -105,6 +108,8 @@ public class GunController : ItemController
         ShotBullet.transform.localScale = new Vector3(.075f, .075f, .075f);
         ShotBullet.GetComponent<BulletController>().newInstance(shootDirection);
         ShotBullet.GetComponent<BulletController>().Start();
+        audioSource.PlayOneShot(gunshotClip);
+
     }
 
     public void setForceBuffer(Vector2 force)

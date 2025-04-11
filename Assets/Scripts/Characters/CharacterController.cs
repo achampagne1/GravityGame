@@ -11,6 +11,7 @@ public class CharacterController : ObjectController{
     private SpriteRenderer jetPackFlame;
     protected HandController handController;
     protected Timer hoverTimer;
+    protected AudioController audioController;
 
     //public game variables
     public float moveSpeed = 20f;
@@ -56,6 +57,8 @@ public class CharacterController : ObjectController{
         Physics2D.IgnoreLayerCollision(9, 9, true);
         Physics2D.IgnoreLayerCollision(9, 11, true);
         Physics2D.IgnoreLayerCollision(11, 11, true);
+
+        audioController = GetComponent<AudioController>();
 
         health = maxHealth;
         calculateStart();     
