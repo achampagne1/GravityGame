@@ -9,7 +9,7 @@ public class SpaceZombieController : CharacterController
     RandomTimer pauseDuration = new RandomTimer();
     RandomTimer moveDuration = new RandomTimer();
     Timer timer = new Timer(3f);
-    Timer shootTimer = new Timer(.5f);
+    Timer shootTimer = new Timer(3f);
 
     //public variables
     public bool first = false;
@@ -20,6 +20,7 @@ public class SpaceZombieController : CharacterController
     private int moveInput = 0;
     private bool pause = false;
     private bool following = false;
+    private bool attackLatch = false;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
 
     void Start()
@@ -29,6 +30,7 @@ public class SpaceZombieController : CharacterController
         moveDuration.create(1f, 4f);
 
         timer.startTimer();
+        shootTimer.startTimer(); //shoot timer must be started so that the enemey is ready when it first sees the player
     }
 
     public void FixedUpdate()
@@ -38,7 +40,9 @@ public class SpaceZombieController : CharacterController
             if (movementToggle && !dead)
             {
                 if (detectPlayer())
+                {
                     attackPlayer();
+                }
                 else
                 {
                     if (normalState == 0)
@@ -91,18 +95,24 @@ public class SpaceZombieController : CharacterController
 
     }
 
-    private void attackPlayer()
+    private void attackPlayer() //TODO: have the timer automatically reset if the player gets out of detection range
     {
-        if (!shootTimer.getIsRunning())
-            shootTimer.startTimer();
-
         if (shootTimer.checkTimer())
         {
             handController.setInputDirection(playerDirection);
-            handController.useHand();
+            StartCoroutine(clusterShot());
             shootTimer.startTimer();
         }
         moveInput = 0;
+    }
+
+    private IEnumerator clusterShot()
+    {
+        for (int i = 0; i < 3; i++)
+        {
+            handController.useHand();
+            yield return new WaitForSeconds(0.2f);
+        }
     }
 
     private bool detectPlayer()
@@ -160,5 +170,11 @@ public class SpaceZombieController : CharacterController
         moveInput = 0;
         setMovement(moveInput);
         handController.throwItem();
+        explodeController.trigger(); //this will need to get moved to character controller once art for spaceman is done
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Color c = sr.color;
+        c.a = 0.0f; // Opacity from 0 (transparent) to 1 (fully opaque)
+        sr.color = c;
+
     }
 }   

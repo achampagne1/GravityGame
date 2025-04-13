@@ -1,53 +1,52 @@
 using UnityEngine;
+using System;
 
 public struct Timer
 {
-    private float totalTime;   // Total time the timer will run
-    private float currentTime; // Time left in the timer
-    private bool isRunning;    // Flag to check if the timer is running
+    private float totalTime;         // Total duration of the timer in seconds
+    private DateTime targetTime;     // When the timer should end
+    private bool isRunning;          // Is the timer currently running
 
-    // Constructor to initialize the total time
+    // Constructor to initialize the timer
     public Timer(float totalTime)
     {
         this.totalTime = totalTime;
-        currentTime = 0f;
-        isRunning = false;
+        this.targetTime = DateTime.MinValue;
+        this.isRunning = false;
     }
 
-    // Start the timer
+    // Start the timer by setting the target end time
     public void startTimer()
     {
+        targetTime = DateTime.Now.AddSeconds(totalTime);
         isRunning = true;
-        currentTime = totalTime; // Reset the current time to the total time
     }
 
-    // Check if the timer has ended
+    // Check if the timer has expired
     public bool checkTimer()
     {
-        if (isRunning)
+        if (isRunning && DateTime.Now >= targetTime)
         {
-            currentTime -= Time.deltaTime; // Decrease the timer based on time passed
-            if (currentTime <= 0)
-            {
-                isRunning = false;
-                currentTime = 0f;
-                return true; // Timer has ended
-            }
+            isRunning = false;
+            return true;
         }
-        return false; // Timer is still running
+        return false;
     }
 
-    // Reset the timer to its initial state
+    // Reset the timer without starting it
     public void resetTimer()
     {
         isRunning = false;
-        currentTime = totalTime;
+        targetTime = DateTime.MinValue;
     }
 
-    // Optional: You can add a function to check how much time is left
+    // Time left in seconds
     public float getTimeRemaining()
     {
-        return currentTime;
+        if (!isRunning) return 0f;
+
+        TimeSpan remaining = targetTime - DateTime.Now;
+        return Mathf.Max(0f, (float)remaining.TotalSeconds);
     }
 
     public bool getIsRunning()

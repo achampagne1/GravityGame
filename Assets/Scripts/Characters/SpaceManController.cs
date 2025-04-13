@@ -7,8 +7,10 @@ public class SpaceManController : CharacterController
 {
     
     //game variables
-    bool enemyCollideFlag = false;
+    private bool enemyCollideFlag = false;
     private bool clickPressed = false;
+    [SerializeField] float[] playArea = { 50, 50 }; //generic play area 
+
 
 
     public void Start()
@@ -29,6 +31,11 @@ public class SpaceManController : CharacterController
 
         if(fuelBuffer!=currentFuel)
             UIHandler.instance.setFuelValue(currentFuel);
+
+        if (Mathf.Abs(transform.position.x) > playArea[0]|| Mathf.Abs(transform.position.y) > playArea[1])
+        {
+            Debug.Log("dead");
+        }
     }
 
     public override void Update()

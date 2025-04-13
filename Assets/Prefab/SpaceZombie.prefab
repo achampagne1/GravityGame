@@ -308,6 +308,8 @@ MonoBehaviour:
   terminalVelocity: 30
   gravityAffected: 1
   orientToGravity: 1
+  updateGravityField: 0
+  calculateIsGrounded: 1
   moveSpeed: 5
   jumpForce: 11
   jetPackForce: 30
@@ -315,7 +317,7 @@ MonoBehaviour:
   invincibleFlag: 0
   first: 0
   movementToggle: 0
-  normalState: 0
+  normalState: 1
 --- !u!95 &8501493087791118449
 Animator:
   serializedVersion: 7

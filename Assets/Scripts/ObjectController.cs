@@ -15,6 +15,8 @@ public class ObjectController : MonoBehaviour
     public float terminalVelocity = 30f;
     public bool gravityAffected = true;
     public bool orientToGravity = true;
+    [SerializeField] bool updateGravityField = false;
+    [SerializeField] bool calculateIsGrounded = false;
 
     //game variables
     protected int layerMaskPlanet = 0;
@@ -37,7 +39,8 @@ public class ObjectController : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
-        groundTimer = new Timer(0.4f);
+        if (calculateIsGrounded)
+            groundTimer = new Timer(0.4f);
         heightObject = getHeight() + .3f; //the .3 is to allow ground detection even on a slope
         gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
         StartCoroutine(findClosestField());
@@ -45,7 +48,9 @@ public class ObjectController : MonoBehaviour
 
     protected void calculateUpdate()
     {
-        isGrounded = IsGrounded();
+        if(calculateIsGrounded)
+            isGrounded = IsGrounded();
+
         calculateGravity();
         if (gravityAffected)
         {
@@ -83,7 +88,7 @@ public class ObjectController : MonoBehaviour
 
     private IEnumerator findClosestField() //this checks for a new gravity field every 10th of a second
     {
-        while (true)
+        do
         {
             float closestGravityField = 1000f;
             GameObject temp = gravityPoints[0];
@@ -107,6 +112,7 @@ public class ObjectController : MonoBehaviour
 
             yield return new WaitForSeconds(0.1f);
         }
+        while (updateGravityField);
     }
 
     protected virtual void calculateRotation()

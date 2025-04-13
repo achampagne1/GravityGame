@@ -12,6 +12,7 @@ public class CharacterController : ObjectController{
     protected HandController handController;
     protected Timer hoverTimer;
     protected AudioController audioController;
+    protected ExplodeController explodeController;
 
     //public game variables
     public float moveSpeed = 20f;
@@ -68,6 +69,8 @@ public class CharacterController : ObjectController{
                 jetPackFlame = child.gameObject.GetComponent<SpriteRenderer>();
             if (child.name == "Hand")
                 handController = child.gameObject.GetComponent<HandController>();
+            if (child.name == "Explode")
+                explodeController = child.gameObject.GetComponent<ExplodeController>();
         }
         try
         {
@@ -78,6 +81,8 @@ public class CharacterController : ObjectController{
             Debug.LogError(e);
         }
 
+        if (transform.localScale.x < 0)
+            facingLeft = true;
     }
 
     public void calculateCharacterUpdate()
