@@ -4,16 +4,13 @@ using UnityEngine;
 
 public class ExplodeController : MonoBehaviour
 {
+    [SerializeField] ParticleSystem particleSystem;
     public void trigger()
     {
         foreach(Transform fragment in transform)
         {
-            try
+            try //the try catch is needed because the first child of the controller isjust the center point
             {
-                SpriteRenderer sr = fragment.gameObject.GetComponent<SpriteRenderer>();
-                Color c = sr.color;
-                c.a = 1.0f; // Opacity from 0 (transparent) to 1 (fully opaque)
-                sr.color = c;
                 fragment.gameObject.GetComponent<FragmentController>().setExplode(true);
             }
             catch
@@ -21,6 +18,7 @@ public class ExplodeController : MonoBehaviour
                 int ham = 1;
             }
         }
+        particleSystem.Play();
     }
 
 

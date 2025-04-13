@@ -173,7 +173,7 @@ public class SpaceZombieController : CharacterController
         explodeController.trigger(); //this will need to get moved to character controller once art for spaceman is done
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         Color c = sr.color;
-        c.a = 0.0f; // Opacity from 0 (transparent) to 1 (fully opaque)
+        c.a = 0.0f; 
         sr.color = c;
 
     }

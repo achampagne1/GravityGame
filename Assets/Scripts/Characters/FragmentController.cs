@@ -8,7 +8,6 @@ public class FragmentController : ObjectController
     [SerializeField] bool explode = false;
     [SerializeField] GameObject center;
     [SerializeField] float explosionStrength = 1f;
-    private bool explodeLatch = false;
     Rigidbody2D rb;
     void Start()
     {
@@ -23,15 +22,14 @@ public class FragmentController : ObjectController
     // Update is called once per frame
     void Update()
     {
-       if (explodeLatch)
+       if (explode)
         {
             Vector2 fromCenter = (Vector2)(transform.position - center.transform.position);
             Vector2 explodeDirection = fromCenter.normalized * explosionStrength;
             rb.AddForce(explodeDirection, ForceMode2D.Impulse);
             gravityAffected = true;
-            explodeLatch = true;
             rb.simulated = true;
-            explodeLatch = false;
+            explode = false;
         }
 
         calculateUpdate();
@@ -40,6 +38,5 @@ public class FragmentController : ObjectController
     public void setExplode(bool explode)
     {
         this.explode = explode;
-        explodeLatch = explode;
     }
 }
