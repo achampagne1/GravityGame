@@ -103,7 +103,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terminalVelocity: 30
   gravityAffected: 0
-  orientToGravity: 1
+  orientToGravity: 0
+  updateGravityField: 0
+  calculateIsGrounded: 0
 --- !u!50 &7292113839338865188
 Rigidbody2D:
   serializedVersion: 4

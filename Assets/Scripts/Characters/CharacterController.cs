@@ -21,6 +21,7 @@ public class CharacterController : ObjectController{
     public float jetPackForce = 30f;
     public float maxHealth = 3f; //default max health is 3
     public bool invincibleFlag = false;
+    [SerializeField] float persistanceAfterDeath = 5f; 
 
     //private game variables
     private float horizontalInput = 0;
@@ -114,7 +115,7 @@ public class CharacterController : ObjectController{
 
         if (health == 0 && !dead)
         {
-            die();
+            StartCoroutine(die());
             dead = true;
         }
     }
@@ -255,11 +256,9 @@ public class CharacterController : ObjectController{
 
     }
 
-    protected virtual void die()
+    protected virtual IEnumerator die()
     {
         handController.throwItem();
-        forceLocal = new Vector2(600*(facingLeft? -1:1),0 );
-        forceLocal = transform.TransformDirection(forceLocal);
         try
         {
             explodeCenter.transform.position = bulletStrikeLocation;
@@ -273,6 +272,8 @@ public class CharacterController : ObjectController{
         Color c = sr.color;
         c.a = 0.0f;
         sr.color = c;
+        yield return new WaitForSeconds(persistanceAfterDeath);
+        Destroy(gameObject);
     }
 
     private void determineAnimation()

@@ -8,9 +8,16 @@ public class FragmentController : ObjectController
     [SerializeField] bool explode = false;
     [SerializeField] GameObject center;
     [SerializeField] float explosionStrength = 1f;
-    Rigidbody2D rb;
+    [SerializeField] float fadeTime = 1f;
+    private float fadeCounter = 360f;
+    private Timer fadeClock;
+    private Rigidbody2D rb;
+    private SpriteRenderer sr;
+    private bool fadeLatch = false;
     void Start()
     {
+        sr = GetComponent<SpriteRenderer>();
+        fadeClock = new Timer(fadeTime);
         rb = GetComponent<Rigidbody2D>();
         Physics2D.IgnoreLayerCollision(11, 11, true);
         rb.simulated = false;
@@ -30,11 +37,27 @@ public class FragmentController : ObjectController
             gravityAffected = true;
             rb.simulated = true;
             explode = false;
+            fadeClock.startTimer();
         }
+
+        if (fadeClock.getIsRunning()&&fadeClock.checkTimer())
+            fadeLatch = true;
+
+        if (fadeLatch)
+            fade();
 
         calculateUpdate();
     }
 
+    private void fade()
+        {
+        Color c = sr.color;
+        c.a = Mathf.Sin(fadeCounter);
+        sr.color = c;
+        fadeCounter -= .05f;
+        if (fadeCounter <= 0)
+            fadeCounter = 360;
+        }
     public void setExplode(bool explode)
     {
         this.explode = explode;

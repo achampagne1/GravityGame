@@ -18,7 +18,7 @@ public class ExplodeController : MonoBehaviour
                 int ham = 1;
             }
         }
-        particleSystem.Play();
+        particleSystem.Play(); //this needs to get done
     }
 
 

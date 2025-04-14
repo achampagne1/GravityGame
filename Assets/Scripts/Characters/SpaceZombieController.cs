@@ -164,11 +164,11 @@ public class SpaceZombieController : CharacterController
             return 1;
     }
 
-    protected override void die()
+    protected override IEnumerator die()
     {
-        base.die();
+        StartCoroutine(base.die());
         moveInput = 0;
         setMovement(moveInput);
-
+        yield return null;
     }
 }   
