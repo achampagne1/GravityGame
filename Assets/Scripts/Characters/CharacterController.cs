@@ -13,6 +13,7 @@ public class CharacterController : ObjectController{
     protected Timer hoverTimer;
     protected AudioController audioController;
     protected ExplodeController explodeController;
+    [SerializeField] GameObject explodeCenter;
 
     //public game variables
     public float moveSpeed = 20f;
@@ -50,6 +51,7 @@ public class CharacterController : ObjectController{
     private Vector2 previousMove = new Vector2(0, 0);
     private Vector2 jumpExtraction = new Vector2(0, 0);
     private Vector2 additionalForce = new Vector2(0, 0);
+    private Vector3 bulletStrikeLocation = new Vector3(0, 0, 0);
 
 
 
@@ -255,9 +257,22 @@ public class CharacterController : ObjectController{
 
     protected virtual void die()
     {
+        handController.throwItem();
         forceLocal = new Vector2(600*(facingLeft? -1:1),0 );
         forceLocal = transform.TransformDirection(forceLocal);
-        animator.SetTrigger("Killed");
+        try
+        {
+            explodeCenter.transform.position = bulletStrikeLocation;
+        }
+        catch
+        {
+            Debug.LogError("no center found");
+        }
+        explodeController.trigger(); //this will need to get moved to character controller once art for spaceman is done
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Color c = sr.color;
+        c.a = 0.0f;
+        sr.color = c;
     }
 
     private void determineAnimation()
@@ -359,5 +374,10 @@ public class CharacterController : ObjectController{
     public bool getThrow()
     {
         return throwItem;
+    }
+
+    public void setBulletStrikeLocation(Vector3 bulletStrikeLocation)
+    {
+        this.bulletStrikeLocation = bulletStrikeLocation;
     }
 }

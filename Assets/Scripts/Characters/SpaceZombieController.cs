@@ -169,12 +169,6 @@ public class SpaceZombieController : CharacterController
         base.die();
         moveInput = 0;
         setMovement(moveInput);
-        handController.throwItem();
-        explodeController.trigger(); //this will need to get moved to character controller once art for spaceman is done
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        Color c = sr.color;
-        c.a = 0.0f; 
-        sr.color = c;
 
     }
 }   

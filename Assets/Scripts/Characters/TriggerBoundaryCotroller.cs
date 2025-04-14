@@ -40,6 +40,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
         }
         if (trigger.gameObject.name == "Bullet(Clone)")
         {
+            characterController.setBulletStrikeLocation(trigger.gameObject.transform.position);
             characterController.setHealth(characterController.getHealth() - 1f);
             if (gameObject.name == "TriggerBoundarySpaceMan")
                 UIHandler.instance.setHealthValue(characterController.getHealth());
