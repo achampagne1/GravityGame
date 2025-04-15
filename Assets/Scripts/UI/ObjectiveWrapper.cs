@@ -14,26 +14,32 @@ public class ObjectiveWrapper : ScriptableObject
     private Stack<Objective> objectives;
     public ObjectiveWrapper()
     {
-        objectives = new Stack<Objective>(3); //I am only working with 2 objectives at the moment.
+        objectives = new Stack<Objective>(3);
     }
 
     public async Task initializeObjectives()
     {
-        string name = "missioncomplete";
+        string name = "gettoteleporter";
+        TeleporterController teleporterController = GameObject.Find("Teleporter").GetComponent<TeleporterController>();
+        bool toggleState = true;
         VisualElement visualElement = await createVisualElement(name);
         Objective objective = new Objective(name, () =>
         {
+            if (toggleState)
+            {
+                teleporterController.toggleStateFunc();
+                toggleState = false;
+            }
             return false;
         }, visualElement);
         objectives.Push(objective);
 
-        name = "killenemy";
-        GameObject enemy = GameObject.Find("SpaceZombie");
-        CharacterController zombieController = enemy.GetComponent<CharacterController>();
+        name = "killallenemies";
+        GameObject enemyList = GameObject.Find("Enemies");
         visualElement = await createVisualElement(name);
         objective = new Objective(name, () =>
         {
-            return zombieController.getHealth() == 0;
+            return enemyList.transform.childCount == 0;
         }, visualElement);
         objectives.Push(objective);
 

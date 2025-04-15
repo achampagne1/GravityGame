@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      overheadLight_0: 1975953294823501539
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

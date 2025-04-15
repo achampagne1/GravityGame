@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 65099f9c5432d1245b048fb00a23d181
+guid: cf3961d65c161d14385b8b95ca08f5f7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 8561141034431012800
-    second: Stars-02_0
+      213: -4623731741313018075
+    second: teleporterLine_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Stars-02_0
+      name: teleporterLine_0
       rect:
         serializedVersion: 2
-        x: 111
-        y: 111
-        width: 778
-        height: 778
+        x: 3
+        y: 1
+        width: 1126
+        height: 44
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 0cfd74579684fc670800000000000000
-      internalID: 8561141034431012800
+      spriteID: 527d6569a7435dfb0800000000000000
+      internalID: -4623731741313018075
       vertices: []
       indices: 
       edges: []
@@ -131,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Stars-02_0: 8561141034431012800
+      teleporterLine_0: -4623731741313018075
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
