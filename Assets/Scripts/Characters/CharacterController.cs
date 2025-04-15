@@ -21,7 +21,6 @@ public class CharacterController : ObjectController{
     public float jetPackForce = 30f;
     public float maxHealth = 3f; //default max health is 3
     public bool invincibleFlag = false;
-    [SerializeField] float persistanceAfterDeath = 5f; 
 
     //private game variables
     private float horizontalInput = 0;
@@ -41,7 +40,7 @@ public class CharacterController : ObjectController{
 
     //protected game variables
     protected float currentFuel = 100f;
-    protected float health = 0f;
+    [SerializeField] protected float health = 0f;
 
     //vectors
     private Vector2 moveDirection = new Vector2(0, 0);
@@ -259,6 +258,7 @@ public class CharacterController : ObjectController{
     protected virtual IEnumerator die()
     {
         handController.throwItem();
+        handController.destroyWrapper();
         try
         {
             explodeCenter.transform.position = bulletStrikeLocation;
@@ -267,13 +267,13 @@ public class CharacterController : ObjectController{
         {
             Debug.LogError("no center found");
         }
-        explodeController.trigger(); //this will need to get moved to character controller once art for spaceman is done
+
+        explodeController.trigger();
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         Color c = sr.color;
         c.a = 0.0f;
         sr.color = c;
-        yield return new WaitForSeconds(persistanceAfterDeath);
-        Destroy(gameObject);
+        yield return null;
     }
 
     private void determineAnimation()

@@ -797,7 +797,8 @@ PrefabInstance:
       propertyPath: orientToGravity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7292113839338865188, guid: 09636036d1e2f0a43a3dfedf92000c51, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -876,7 +877,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: BeamCorner
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7649933174018236472, guid: dd1b87967428aaf47b0a55a20740bba0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -970,7 +972,8 @@ PrefabInstance:
       propertyPath: orientToGravity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7292113839338865188, guid: 09636036d1e2f0a43a3dfedf92000c51, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1054,7 +1057,8 @@ PrefabInstance:
       propertyPath: orientToGravity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7292113839338865188, guid: 09636036d1e2f0a43a3dfedf92000c51, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1148,7 +1152,8 @@ PrefabInstance:
       propertyPath: orientToGravity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7292113839338865188, guid: 09636036d1e2f0a43a3dfedf92000c51, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1227,7 +1232,8 @@ PrefabInstance:
       propertyPath: m_Name
       value: BeamCorner (1)
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7649933174018236472, guid: dd1b87967428aaf47b0a55a20740bba0, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1311,7 +1317,8 @@ PrefabInstance:
       propertyPath: orientToGravity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7292113839338865188, guid: 09636036d1e2f0a43a3dfedf92000c51, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1395,7 +1402,8 @@ PrefabInstance:
       propertyPath: orientToGravity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7292113839338865188, guid: 09636036d1e2f0a43a3dfedf92000c51, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -1489,7 +1497,8 @@ PrefabInstance:
       propertyPath: orientToGravity
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7292113839338865188, guid: 09636036d1e2f0a43a3dfedf92000c51, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

@@ -131,5 +131,10 @@ public class HandController : MonoBehaviour
         return holding;
     }
 
+    public void destroyWrapper()
+    {
+        Destroy(gameObject);
+    }
+
 
 }

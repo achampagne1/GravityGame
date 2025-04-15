@@ -17,6 +17,7 @@ public class ObjectController : MonoBehaviour
     public bool orientToGravity = true;
     [SerializeField] bool updateGravityField = false;
     [SerializeField] bool calculateIsGrounded = false;
+    [SerializeField] bool simulated = false;
 
     //game variables
     protected int layerMaskPlanet = 0;
@@ -37,38 +38,44 @@ public class ObjectController : MonoBehaviour
 
     protected void calculateStart()
     {
-        rb = GetComponent<Rigidbody2D>();
-        layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
-        if (calculateIsGrounded)
-            groundTimer = new Timer(0.4f);
-        heightObject = getHeight() + .3f; //the .3 is to allow ground detection even on a slope
-        gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
-        StartCoroutine(findClosestField());
+        if (simulated)
+        {
+            rb = GetComponent<Rigidbody2D>();
+            layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
+            if (calculateIsGrounded)
+                groundTimer = new Timer(0.4f);
+            heightObject = getHeight() + .3f; //the .3 is to allow ground detection even on a slope
+            gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
+            StartCoroutine(findClosestField());
+        }
     }
 
     protected void calculateUpdate()
     {
-        if(calculateIsGrounded)
-            isGrounded = IsGrounded();
-
-        calculateGravity();
-        if (gravityAffected)
+        if (simulated)
         {
-            //if (groundAngle < steepestGrade)  //figure out steepest grade later
-            rb.AddForce(gravityForce);
+            if (calculateIsGrounded)
+                isGrounded = IsGrounded();
 
-            if (isGrounded)//this is to sort of stick the polayer to the ground when moving
+            calculateGravity();
+            if (gravityAffected)
             {
-                rb.AddForce(gravityForce * 5);
+                //if (groundAngle < steepestGrade)  //figure out steepest grade later
+                rb.AddForce(gravityForce);
+
+                if (isGrounded)//this is to sort of stick the polayer to the ground when moving
+                {
+                    rb.AddForce(gravityForce * 5);
+                }
+                rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
             }
-            rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
+
+            if (orientToGravity)
+                calculateRotation();
+
+            rb.AddForce(forceLocal);
+            forceLocal = new Vector2(0, 0);
         }
-
-        if(orientToGravity) 
-            calculateRotation();
-
-        rb.AddForce(forceLocal);
-        forceLocal= new Vector2(0, 0);
     }
 
     protected virtual void calculateGravity() 

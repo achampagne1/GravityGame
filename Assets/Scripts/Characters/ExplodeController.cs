@@ -5,6 +5,7 @@ using UnityEngine;
 public class ExplodeController : MonoBehaviour
 {
     [SerializeField] ParticleSystem particleSystem;
+    [SerializeField] GameObject center;
     public void trigger()
     {
         foreach(Transform fragment in transform)
@@ -18,7 +19,11 @@ public class ExplodeController : MonoBehaviour
                 int ham = 1;
             }
         }
-        particleSystem.Play(); //this needs to get done
+        Vector3 direction = (transform.position - center.transform.position).normalized;
+        Quaternion rotation = Quaternion.LookRotation(direction);
+        var shape = particleSystem.shape;
+        shape.rotation = rotation.eulerAngles;
+        particleSystem.Play(); 
     }
 
 

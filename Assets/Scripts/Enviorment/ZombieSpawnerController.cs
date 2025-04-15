@@ -23,10 +23,10 @@ public class ZombieSpawner : ObjectController
     void Update()
     {
         calculateUpdate();
-        print(GameObject.FindGameObjectsWithTag("SpaceZombie").Length);
+
         if (timer.checkTimer())
         {
-            if (GameObject.FindGameObjectsWithTag("SpaceZombie").Length <= 10)
+            if (GameObject.FindGameObjectsWithTag("SpaceZombie(Clone").Length <= 10)
             {
                 GameObject newZombie = Instantiate(zombieObject, transform.position, Quaternion.identity);
                 newZombie.GetComponent<SpaceZombieController>().newInstance();

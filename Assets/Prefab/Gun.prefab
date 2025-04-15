@@ -107,9 +107,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   terminalVelocity: 30
   gravityAffected: 1
-  orientToGravity: 0
-  updateGravityField: 0
+  orientToGravity: 1
+  updateGravityField: 1
   calculateIsGrounded: 0
+  simulated: 1
   floatFlag: 0
   gunshotClip: {fileID: 8300000, guid: f531f1bba93abff4d8eeca4e65344fac, type: 3}
 --- !u!50 &490096820176868143
@@ -314,8 +315,18 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2598932830481760950, guid: 2f8c39ffa4da29044a624623649d42ed,
         type: 3}
+      propertyPath: simulated
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2598932830481760950, guid: 2f8c39ffa4da29044a624623649d42ed,
+        type: 3}
       propertyPath: terminalVelocity
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 2598932830481760950, guid: 2f8c39ffa4da29044a624623649d42ed,
+        type: 3}
+      propertyPath: updateGravityField
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3801248723417531083, guid: 2f8c39ffa4da29044a624623649d42ed,
         type: 3}

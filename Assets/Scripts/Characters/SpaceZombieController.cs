@@ -15,6 +15,7 @@ public class SpaceZombieController : CharacterController
     public bool first = false;
     public bool movementToggle = true;
     public int normalState = 0;
+    [SerializeField] float persistanceAfterDeath = 5f;
 
     //game variables
     private int moveInput = 0;
@@ -166,9 +167,10 @@ public class SpaceZombieController : CharacterController
 
     protected override IEnumerator die()
     {
-        StartCoroutine(base.die());
         moveInput = 0;
         setMovement(moveInput);
-        yield return null;
+        yield return base.die();
+        yield return new WaitForSeconds(persistanceAfterDeath);
+        Destroy(gameObject);
     }
 }   

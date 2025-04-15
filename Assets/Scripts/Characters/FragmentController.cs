@@ -38,9 +38,12 @@ public class FragmentController : ObjectController
             rb.simulated = true;
             explode = false;
             fadeClock.startTimer();
+            Color c = sr.color;
+            c.a = 1f;
+            sr.color = c;
         }
 
-        if (fadeClock.getIsRunning()&&fadeClock.checkTimer())
+        if (fadeClock.checkTimer())
             fadeLatch = true;
 
         if (fadeLatch)
@@ -49,7 +52,7 @@ public class FragmentController : ObjectController
         calculateUpdate();
     }
 
-    private void fade()
+    private void fade() //fading may be tweaked in the future
         {
         Color c = sr.color;
         c.a = Mathf.Sin(fadeCounter);
