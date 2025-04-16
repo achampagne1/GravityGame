@@ -14,11 +14,14 @@ public class TeleporterController : MonoBehaviour
     [SerializeField] Sprite offSprite;
     [SerializeField] GameObject line;
     [SerializeField] GameObject transportBeam;
+    [SerializeField] ParticleSystem particleSystem;
+    [SerializeField] float beamDisplayTime = 2f;
     private SpriteRenderer sr;
     private List<SpriteRenderer> srLines = new List<SpriteRenderer>();
     private Coroutine moveLinesCoroutine;
     private bool trigger = false;
     private bool on = false;
+    private bool teleportLatch = true;
     // Start is called before the first frame update
     void Start()
     {
@@ -53,19 +56,30 @@ public class TeleporterController : MonoBehaviour
             {
                 sr.sprite = onSprite;
                 moveLinesCoroutine = StartCoroutine(moveLines());
-                on = true;
             }
             on = !on; //reverses the state of the teleporter on or off
             toggleState = false;
         }
 
-        if (trigger && on) //redo this get the "getcomponent" out
+        if (trigger && on && teleportLatch) //redo this get the "getcomponent" out
         {
-            SpriteRenderer transportBeammRenderer = transportBeam.GetComponent<SpriteRenderer>();
-            Color c = transportBeammRenderer.color;
-            c.a = 1f;
-            transportBeammRenderer.color = c;
+            StartCoroutine(teleportBeam());
+            teleportLatch = false;
         }
+    }
+
+    private IEnumerator teleportBeam()
+    {
+        SpriteRenderer transportBeammRenderer = transportBeam.GetComponent<SpriteRenderer>();
+        Color c = transportBeammRenderer.color;
+        c.a = 1f;
+        particleSystem.Play();
+        transportBeammRenderer.color = c;
+        yield return new WaitForSeconds(beamDisplayTime);
+        c.a = 0f;
+        transportBeammRenderer.color = c;
+        particleSystem.Stop();
+        teleportLatch = true;
     }
 
     private IEnumerator moveLines()

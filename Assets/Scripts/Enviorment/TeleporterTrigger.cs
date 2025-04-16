@@ -16,14 +16,17 @@ public class TeleporterTrigger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
     }
 
     private void OnTriggerEnter2D(Collider2D trigger)
     {
         if (trigger.gameObject.name == "SpaceMan")
             teleporterController.setTransportTrigger(true);
-        else
+    }
+
+    private void OnTriggerExit2D(Collider2D trigger)
+    {
+        if (trigger.gameObject.name == "SpaceMan")
             teleporterController.setTransportTrigger(false);
     }
 }

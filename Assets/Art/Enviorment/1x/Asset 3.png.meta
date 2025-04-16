@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 315be5811489fe947a778089bf5ab3a6
+guid: 71d325003f7506349bcc9f87893d6874
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8172235073821103534
-    second: transportBeam_0
+      213: 8302129328904623997
+    second: Asset 3_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: transportBeam_0
+      name: Asset 3_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1165
-        height: 1597
+        width: 37
+        height: 27
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 25aa7ebaf73669e80800000000000000
-      internalID: -8172235073821103534
+      spriteID: d7756b853a6173370800000000000000
+      internalID: 8302129328904623997
       vertices: []
       indices: 
       edges: []
