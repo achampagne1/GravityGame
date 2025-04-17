@@ -9,13 +9,15 @@ public class TeleporterController : MonoBehaviour
     [SerializeField] float loopTime = .1f;
     [SerializeField] float startPoint = 2.5f;
     [SerializeField] float lineCount = 5;
+    [SerializeField] float beamDisplayTime = 2f;
     [SerializeField] bool toggleState = false;
     [SerializeField] Sprite onSprite;
     [SerializeField] Sprite offSprite;
     [SerializeField] GameObject line;
     [SerializeField] GameObject transportBeam;
     [SerializeField] ParticleSystem particleSystem;
-    [SerializeField] float beamDisplayTime = 2f;
+    [SerializeField] AudioClip teleporterClip;
+    private AudioSource audioSource;
     private SpriteRenderer sr;
     private List<SpriteRenderer> srLines = new List<SpriteRenderer>();
     private SpriteRenderer transportBeamRenderer;
@@ -29,6 +31,8 @@ public class TeleporterController : MonoBehaviour
     {
         sr = GetComponent<SpriteRenderer>();
         srLines.Add(line.GetComponent<SpriteRenderer>());
+
+        //for creation of teleporter lines
         for (int i = 0; i < lineCount; i++)
         {
             Transform lineHolder = transform.GetChild(0);
@@ -37,8 +41,12 @@ public class TeleporterController : MonoBehaviour
             srLines.Add(newLine.GetComponent<SpriteRenderer>());
         }
 
+        //for getting transport beam stuff
         transportBeamRenderer = transportBeam.GetComponent<SpriteRenderer>();
         transportBreamTransform = transportBeam.GetComponent<Transform>();
+
+        //for sound clip
+        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -46,6 +54,7 @@ public class TeleporterController : MonoBehaviour
     {
         if (toggleState)
         {
+            //if the state chagnes from on to off
             if (sr.sprite == onSprite)
             {
                 sr.sprite = offSprite;
@@ -57,6 +66,7 @@ public class TeleporterController : MonoBehaviour
                     line.color = c;
                 }
             }
+            //vice versa
             else
             {
                 sr.sprite = onSprite;
@@ -75,6 +85,8 @@ public class TeleporterController : MonoBehaviour
 
     private IEnumerator teleportBeam()
     {
+        audioSource.clip = teleporterClip;
+        audioSource.Play();
         Color c = transportBeamRenderer.color;
         c.a = 1f;
         particleSystem.Play();
@@ -85,7 +97,8 @@ public class TeleporterController : MonoBehaviour
         transportBeamRenderer.color = c;
         particleSystem.Stop();
         StopCoroutine(shiftBeamCoroutine);
-        teleportLatch = true;
+        audioSource.Stop();
+        //teleportLatch = true;
     }
 
     private IEnumerator shiftBeam()
