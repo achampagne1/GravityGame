@@ -18,6 +18,8 @@ public class TeleporterController : MonoBehaviour
     [SerializeField] float beamDisplayTime = 2f;
     private SpriteRenderer sr;
     private List<SpriteRenderer> srLines = new List<SpriteRenderer>();
+    private SpriteRenderer transportBeamRenderer;
+    private Transform transportBreamTransform;
     private Coroutine moveLinesCoroutine;
     private bool trigger = false;
     private bool on = false;
@@ -34,6 +36,9 @@ public class TeleporterController : MonoBehaviour
             newLine.transform.localPosition = line.transform.localPosition + new Vector3(-0.3375332f, i * 0.5f, 0f);
             srLines.Add(newLine.GetComponent<SpriteRenderer>());
         }
+
+        transportBeamRenderer = transportBeam.GetComponent<SpriteRenderer>();
+        transportBreamTransform = transportBeam.GetComponent<Transform>();
     }
 
     // Update is called once per frame
@@ -70,16 +75,26 @@ public class TeleporterController : MonoBehaviour
 
     private IEnumerator teleportBeam()
     {
-        SpriteRenderer transportBeammRenderer = transportBeam.GetComponent<SpriteRenderer>();
-        Color c = transportBeammRenderer.color;
+        Color c = transportBeamRenderer.color;
         c.a = 1f;
         particleSystem.Play();
-        transportBeammRenderer.color = c;
+        Coroutine shiftBeamCoroutine = StartCoroutine(shiftBeam());
+        transportBeamRenderer.color = c;
         yield return new WaitForSeconds(beamDisplayTime);
         c.a = 0f;
-        transportBeammRenderer.color = c;
+        transportBeamRenderer.color = c;
         particleSystem.Stop();
+        StopCoroutine(shiftBeamCoroutine);
         teleportLatch = true;
+    }
+
+    private IEnumerator shiftBeam()
+    {
+        while (true)
+        {
+            transportBreamTransform.localScale = new Vector3(-transportBreamTransform.localScale.x, transportBreamTransform.localScale.y, 0);
+            yield return new WaitForSeconds(.075f);
+        }
     }
 
     private IEnumerator moveLines()

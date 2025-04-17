@@ -32,6 +32,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: eab624c268f00ad428ee74056f820b0d
+    m_Address: Assets/Art/UI/WaypointText/killallenemies.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bbb140a3fbaa8ea4aa6dacf81471c487
+    m_Address: Assets/Art/UI/WaypointText/gettoteleporter.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a95ac6638e706cf4fb964d36ae198902, type: 2}
   m_SchemaSet:
