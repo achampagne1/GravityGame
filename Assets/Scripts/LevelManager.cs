@@ -36,6 +36,9 @@ public class LevelManager : MonoBehaviour
 
         //turns on the transport beam
         teleporterController.setTransportTrigger(true);
+        //shakes camera
+        VCamController playerCamController = playerCam.GetComponent<VCamController>();
+        playerCamController.setShake(true);
         yield return new WaitForSeconds(.2f);
 
         //puts player on pad(spawnPoint)
@@ -43,14 +46,13 @@ public class LevelManager : MonoBehaviour
         //changes camera to player
         teleporterCam.Priority = 1;
         playerCam.Priority = 2;
-        //start simulation of player
-        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
-        playerRb.simulated = true;
-        //add camera shake
         yield return new WaitForSeconds(2f);
 
         //shuts off the beam
         teleporterController.setTransportTrigger(false);
+        //start simulation of player
+        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+        playerRb.simulated = true;
         yield return new WaitForSeconds(2f);
     }
 }
