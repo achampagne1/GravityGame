@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class SpaceManController : CharacterController
+public class SpaceManController : SpacePersonController
 {
     
     //game variables
@@ -15,7 +15,7 @@ public class SpaceManController : CharacterController
 
     public void Start()
     {
-        calculateCharacterStart();
+        calculateSpacePersonStart();
         setMaxHealth(10f);
     }
 
@@ -27,7 +27,7 @@ public class SpaceManController : CharacterController
         setJump(Keyboard.current.spaceKey.isPressed);
         if (Keyboard.current.qKey.isPressed)
             handController.throwItem();
-        calculateCharacterUpdate();
+        calculateSpacePersonUpdate();
 
         if(fuelBuffer!=currentFuel)
             UIHandler.instance.setFuelValue(currentFuel);

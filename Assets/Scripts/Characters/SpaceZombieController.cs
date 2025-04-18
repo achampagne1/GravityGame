@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpaceZombieController : CharacterController
+public class SpaceZombieController : SpacePersonController
 {
     //object creation
     RandomTimer pauseDuration = new RandomTimer();
@@ -26,7 +26,7 @@ public class SpaceZombieController : CharacterController
 
     void Start()
     {
-        calculateCharacterStart();
+        calculateSpacePersonStart();
         pauseDuration.create(.1f, 1f);
         moveDuration.create(1f, 4f);
 
@@ -56,7 +56,7 @@ public class SpaceZombieController : CharacterController
                 setMovement(moveInput);
                 setOrientation(moveInput);
             }
-            calculateCharacterUpdate();
+            calculateSpacePersonUpdate();
         }
     }
 

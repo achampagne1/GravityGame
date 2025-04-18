@@ -7,7 +7,7 @@ public class HandController : MonoBehaviour
 {
     //object creation
     Transform playerBody;  // Assign the player's body transform
-    CharacterController characterController;
+    SpacePersonController spacePersonController;
     GunController gunController;
 
     //game variables
@@ -25,7 +25,7 @@ public class HandController : MonoBehaviour
 
         GameObject temp = transform.parent.gameObject; //hand will always have a character parent
         playerBody = temp.GetComponent<Transform>();
-        characterController = temp.GetComponent<CharacterController>();
+        spacePersonController = temp.GetComponent<SpacePersonController>();
 
         delay = new Queue<Vector2>();
         delay.Enqueue(transform.position);
@@ -77,7 +77,7 @@ public class HandController : MonoBehaviour
         if(holdingLatch)
             gunController = null;
 
-        facingLeft = characterController.getFacingLeft();
+        facingLeft = spacePersonController.getFacingLeft();
         Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
         float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 offset = new Vector2(
@@ -100,7 +100,7 @@ public class HandController : MonoBehaviour
         float angleDeg = angleRad * Mathf.Rad2Deg;
         Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
         Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
-        if (characterController.getFacingLeft() != facingLeft)
+        if (spacePersonController.getFacingLeft() != facingLeft)
         {
             transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
             facingLeft = !facingLeft;

@@ -1,51 +1,40 @@
-﻿using Microsoft.Win32.SafeHandles;
+using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
 
-public class CharacterController : ObjectController{
+public class CharacterController : ObjectController
+{
     //object creation
     private Animator animator;
-    private SpriteRenderer jetPackFlame;
-    protected HandController handController;
-    protected Timer hoverTimer;
     protected AudioController audioController;
     protected ExplodeController explodeController;
-    [SerializeField] GameObject explodeCenter;
+    [SerializeField] protected GameObject explodeCenter;
 
     //public game variables
-    public float moveSpeed = 20f;
-    public float jumpForce = 11f;
-    public float jetPackForce = 30f;
-    public float maxHealth = 3f; //default max health is 3
-    public bool invincibleFlag = false;
+    [SerializeField] protected float jumpForce = 11f;
+    [SerializeField] protected float moveSpeed = 20f;
+    [SerializeField] protected float maxHealth = 3f; //default max health is 3
+    [SerializeField] protected  bool invincibleFlag = false;
+    [SerializeField] protected float health = 0f;
+    protected float rotatedX = 0;
+    protected float rotatedY = 0;
+    protected bool click = false;
 
     //private game variables
+    private float jumpMagnitude = 0;
     private float horizontalInput = 0;
     private float direcitonInput = 0;
-    private float rotatedX = 0;
-    private float rotatedY = 0;
-    private float jumpMagnitude = 0;
-    private float maxFuel = 100f; // Maximum fuel capacity
     protected int wallInFrontVar = 0;
-    private bool space = false;
+    protected bool space = false;
     private bool facingLeft = false;
-    private bool timerFlag = false;
-    protected bool throwItem = false;
-    private bool click = false;
-    private bool hoverFlag = false;
     protected bool dead = false;
-
-    //protected game variables
-    protected float currentFuel = 100f;
-    [SerializeField] protected float health = 0f;
 
     //vectors
     private Vector2 moveDirection = new Vector2(0, 0);
     private Vector2 jump = new Vector2(0, 0);
-    private Vector2 hover = new Vector2(0, 0);
     private Vector2 previousV = new Vector2(0, 0);
     private Vector2 drag = new Vector2(0, 0);
     private Vector2 previousMove = new Vector2(0, 0);
@@ -55,6 +44,7 @@ public class CharacterController : ObjectController{
 
 
 
+    // Start is called before the first frame update
     public void calculateCharacterStart()
     {
         Physics2D.IgnoreLayerCollision(9, 9, true);
@@ -64,50 +54,48 @@ public class CharacterController : ObjectController{
         audioController = GetComponent<AudioController>();
 
         health = maxHealth;
-        calculateStart();     
-        foreach(Transform child in transform)
+
+        foreach (Transform child in transform) //TODO: fiund a way to do only one loop for the spaceperson
         {
-            if (child.name == "JetPackFlame")
-                jetPackFlame = child.gameObject.GetComponent<SpriteRenderer>();
-            if (child.name == "Hand")
-                handController = child.gameObject.GetComponent<HandController>();
             if (child.name == "Explode")
                 explodeController = child.gameObject.GetComponent<ExplodeController>();
         }
+
         try
         {
             animator = GetComponent<Animator>();
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.LogError(e);
         }
 
         if (transform.localScale.x < 0)
             facingLeft = true;
+
+        calculateStart();
     }
 
+    // Update is called once per frame
     public void calculateCharacterUpdate()
     {
         turnLeftRight();
         determineAnimation();
         wallInFrontVar = wallInFront();
         calculateJump();
-        calculateJetPackHover();
         calculateMovement();
         calculateDrag();
         detectLedge();
 
         rb.AddForce(jump, ForceMode2D.Impulse);
-        rb.AddForce(hover);
-
         rb.AddForce(moveDirection, ForceMode2D.Impulse);
         rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
 
         //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravity
         if (!isGrounded)
-            rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; 
-        calculateUpdate();  
+            rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection;
+
+        calculateUpdate();
 
         previousV = -rb.velocity;
         previousMove = -moveDirection;
@@ -117,35 +105,38 @@ public class CharacterController : ObjectController{
             StartCoroutine(die());
             dead = true;
         }
+
     }
 
-    public virtual void Update()
+    protected virtual IEnumerator die()
     {
-        int ham = 0;
-        //basically an abstract funciton
+        try
+        {
+            explodeCenter.transform.position = bulletStrikeLocation;
+        }
+        catch
+        {
+            Debug.LogError("no center found");
+        }
+
+        if(explodeController!=null)
+            explodeController.trigger();
+        SpriteRenderer sr = GetComponent<SpriteRenderer>();
+        Color c = sr.color;
+        c.a = 0.0f;
+        sr.color = c;
+        yield return null;
     }
 
-    public void addForceLocal(Vector2 force)
+        public void addForceLocal(Vector2 force)
     {
         float angle = Vector2.SignedAngle(gravityDirection, force);
         additionalForce = force;
     }
 
-    private int wallInFront()
+    private float CalculateMagnitude(Vector2 vector)
     {
-        int layerMask = LayerMask.GetMask("Default","Platforms"); //how can this be done better
-        int currentLayer = gameObject.layer;
-        int finalMask = layerMask & ~(1 << currentLayer);
-
-        Vector2 left = Physics2D.Raycast(transform.position,-Vector2.Perpendicular(gravityDirection), heightObject + .2f, finalMask).normal;
-        Vector2 right = Physics2D.Raycast(transform.position,Vector2.Perpendicular(gravityDirection), heightObject + .2f, finalMask).normal;
-        float angleLeft = Mathf.Atan2(left.y, left.x) * Mathf.Rad2Deg;
-        float angleRight = Mathf.Atan2(right.y, right.x) * Mathf.Rad2Deg;
-        if (angleLeft > 90 || angleLeft <0) //these need to be tweaked
-            return -1;
-        if (angleRight > 90 || angleRight < 0)
-            return 1;
-        return 0;
+        return Mathf.Sqrt(vector.x * vector.x + vector.y * vector.y);
     }
 
     protected bool detectLedge()
@@ -162,23 +153,26 @@ public class CharacterController : ObjectController{
         return false;
     }
 
-    private float CalculateMagnitude(Vector2 vector)
+    private void calculateDrag()
     {
-        return Mathf.Sqrt(vector.x * vector.x + vector.y * vector.y);
+        //drag calculation
+        if (isGrounded)
+        {
+            drag = previousV;
+        }
+        else
+            drag = previousMove;
+
     }
 
-    private void turnLeftRight()
+    private void calculateMovement()
     {
-        if (direcitonInput == -1 && !facingLeft)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingLeft = true;
-        }
-        else if (direcitonInput == 1 && facingLeft)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
-            facingLeft = false;
-        }
+        //movement
+        rotatedX = -gravityDirection.y;
+        rotatedY = gravityDirection.x;
+        if (wallInFrontVar == (int)horizontalInput)
+            horizontalInput = 0;
+        moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
     }
 
     private void calculateJump()
@@ -200,87 +194,42 @@ public class CharacterController : ObjectController{
             jump = new Vector2(0, 0);
     }
 
-    private void calculateJetPackHover() //might change this to space man only
+    private int wallInFront()
     {
-        rotatedX = -gravityDirection.x;
-        rotatedY = -gravityDirection.y;
-        if (space && groundTimer.checkTimer() && currentFuel > 0)
-        {
-            hoverFlag = true;
-            Color color = jetPackFlame.color;
-            color.a = 1.0f; // Set alpha (0 = transparent, 1 = opaque)
-            jetPackFlame.color = color;
-            useFuel();
-        }
+        int layerMask = LayerMask.GetMask("Default", "Platforms"); //how can this be done better
+        int currentLayer = gameObject.layer;
+        int finalMask = layerMask & ~(1 << currentLayer);
 
-        if (!space || currentFuel == 0)
-        {
-            hoverFlag = false;
-            Color color = jetPackFlame.color;
-            color.a = 0.0f; // Set alpha (0 = transparent, 1 = opaque)
-            jetPackFlame.color = color;
-        }
-
-        hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero;
+        Vector2 left = Physics2D.Raycast(transform.position, -Vector2.Perpendicular(gravityDirection), heightObject + .2f, finalMask).normal;
+        Vector2 right = Physics2D.Raycast(transform.position, Vector2.Perpendicular(gravityDirection), heightObject + .2f, finalMask).normal;
+        float angleLeft = Mathf.Atan2(left.y, left.x) * Mathf.Rad2Deg;
+        float angleRight = Mathf.Atan2(right.y, right.x) * Mathf.Rad2Deg;
+        if (angleLeft > 90 || angleLeft < 0) //these need to be tweaked
+            return -1;
+        if (angleRight > 90 || angleRight < 0)
+            return 1;
+        return 0;
     }
 
-    private void useFuel()
+    private void turnLeftRight()
     {
-        float fuelConsumptionRate = 100f; // Fuel units per second
-          currentFuel -= fuelConsumptionRate * Time.deltaTime; // Decrease fuel over time
-
-        if (currentFuel < 0)
-            currentFuel = 0; // Prevent negative fuel
-    }
-
-    private void calculateMovement()
-    {
-        //movement
-        rotatedX = -gravityDirection.y;
-        rotatedY = gravityDirection.x;
-        if (wallInFrontVar == (int)horizontalInput)
-            horizontalInput = 0;
-        moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
-    }
-
-    private void calculateDrag()
-    {
-        //drag calculation
-        if (isGrounded)
+        if (direcitonInput == -1 && !facingLeft)
         {
-            drag = previousV;
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            facingLeft = true;
         }
-        else
-            drag = previousMove;
-
+        else if (direcitonInput == 1 && facingLeft)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            facingLeft = false;
+        }
     }
 
-    protected virtual IEnumerator die()
-    {
-        handController.throwItem();
-        handController.destroyWrapper();
-        try
-        {
-            explodeCenter.transform.position = bulletStrikeLocation;
-        }
-        catch
-        {
-            Debug.LogError("no center found");
-        }
-
-        explodeController.trigger();
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        Color c = sr.color;
-        c.a = 0.0f;
-        sr.color = c;
-        yield return null;
-    }
-
-    private void determineAnimation()
+    private void determineAnimation() //might need to be redone to allow for differences between space eprson and chgaracter
     {
         try
         {
-            if (isGrounded) 
+            if (isGrounded)
             {
                 animator.SetBool("Airborn", false);
                 if (horizontalInput == 0)
@@ -329,7 +278,7 @@ public class CharacterController : ObjectController{
 
     public void setHealth(float newHealth)
     {
-        if(!invincibleFlag)
+        if (!invincibleFlag)
             health = newHealth;
     }
 
@@ -372,13 +321,9 @@ public class CharacterController : ObjectController{
         return maxHealth;
     }
 
-    public bool getThrow()
-    {
-        return throwItem;
-    }
-
     public void setBulletStrikeLocation(Vector3 bulletStrikeLocation)
     {
         this.bulletStrikeLocation = bulletStrikeLocation;
     }
+
 }
