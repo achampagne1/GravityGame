@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 90ddf40bf0321394daebc76eda74f332
+guid: 2ac8e574819be1a4e8914e8846081dd0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -3354939508321377507
-    second: bug1Walking_0
+      213: 4130640169021434097
+    second: 5_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,85 +100,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: bug1Walking_0
+      name: 5_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1359
-        height: 725
+        width: 1360
+        height: 723
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 61be17112b6197e45b7e66ee15600d43
-      internalID: -835870300
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bug1Walking_1
-      rect:
-        serializedVersion: 2
-        x: 1359
-        y: 0
-        width: 1359
-        height: 725
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 3f49264d296f37e4baf59ab6106cd187
-      internalID: -1989814365
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bug1Walking_2
-      rect:
-        serializedVersion: 2
-        x: 2718
-        y: 0
-        width: 1359
-        height: 725
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 88fa729b98169364fb5975eb541b02e2
-      internalID: -600147473
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: bug1Walking_3
-      rect:
-        serializedVersion: 2
-        x: 4077
-        y: 0
-        width: 1359
-        height: 725
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: 9a4f40bd2094e28479bfa8a245bfb72e
-      internalID: 2129510744
+      spriteID: 1f86b71495bf25930800000000000000
+      internalID: 4130640169021434097
       vertices: []
       indices: 
       edges: []
@@ -186,18 +123,14 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: f82c71e4090cd2f499362b0a3534bc70
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      bug1Walking_0: -835870300
-      bug1Walking_1: -1989814365
-      bug1Walking_2: -600147473
-      bug1Walking_3: 2129510744
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
