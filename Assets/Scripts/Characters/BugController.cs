@@ -13,6 +13,8 @@ public class BugController : CharacterController
     // Update is called once per frame
     void Update()
     {
+        setMovement(1);
+        setOrientation(-1);
         calculateCharacterUpdate();
     }
 }

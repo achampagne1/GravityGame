@@ -5,6 +5,7 @@ using UnityEngine.Events;
 
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField] bool playScript = false;
     [SerializeField] GameObject teleporter;
     [SerializeField] GameObject player;
     [SerializeField] GameObject spawnPoint;
@@ -13,9 +14,10 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
         //start the script
-        StartCoroutine(gameScript());
+        if (playScript)
+            StartCoroutine(gameScript());
+        //gotta swap the camera priorities too
     }
 
     // Update is called once per frame
