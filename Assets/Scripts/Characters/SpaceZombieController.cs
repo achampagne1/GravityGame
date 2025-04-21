@@ -40,7 +40,8 @@ public class SpaceZombieController : SpacePersonController
         {
             if (movementToggle && !dead)
             {
-                if (detectPlayer())
+                playerDirection = EnemyAssistant.detectPlayer(getCharacterOrientation(), getFacingLeft(), transform, gameObject);
+                if (playerDirection !=new Vector3(0f,0f,1f))
                 {
                     attackPlayer();
                 }
@@ -116,12 +117,8 @@ public class SpaceZombieController : SpacePersonController
         }
     }
 
-    private bool detectPlayer()
-    {
-        /**int layerMask = ~((1 << LayerMask.NameToLayer("items"))
-                 | (1 << LayerMask.NameToLayer("bullet"))
-                 | (1 << LayerMask.NameToLayer("Ignore Raycast")));
-        add this later**/
+    /**private bool detectPlayer()
+    { //pass getcharacterOrientation, getfacingLeft, and transform.
         for (int i = 0; i<60; i++)
         {
             float angle =  (getCharacterOrientation()+30 - i +(System.Convert.ToSingle(getFacingLeft()) *180)) % 360;
@@ -139,7 +136,7 @@ public class SpaceZombieController : SpacePersonController
             }
         }
         return false;
-    }
+    }**/
 
     public void newInstance()
     {
