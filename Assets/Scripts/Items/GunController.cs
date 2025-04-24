@@ -27,6 +27,7 @@ public class GunController : ItemController
     private bool parented = false;
     private bool facingLeft = false;
     private bool parentLatch = true;
+    private int shotBy = 0;
 
     public void Start()
     {
@@ -40,8 +41,11 @@ public class GunController : ItemController
         if (parented)
         {
             GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
-            handController = transform.parent.GetComponent<HandController>();
+            GameObject hand = transform.parent.gameObject;
+            handController = hand.GetComponent<HandController>();
+            shotBy = hand.layer;
             playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
+
         }
 
         try
@@ -65,7 +69,9 @@ public class GunController : ItemController
             if (!parentLatch)
             {
                 GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
-                handController = transform.parent.GetComponent<HandController>();
+                GameObject hand = transform.parent.gameObject;
+                handController = hand.GetComponent<HandController>();
+                shotBy = hand.layer;
                 playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
             }
             rb.bodyType = RigidbodyType2D.Kinematic;
@@ -87,6 +93,7 @@ public class GunController : ItemController
                 forceBuffer = new Vector2(0, 0);
                 handController = null;
                 playerBody = null;
+                shotBy = 2; //ignore raycast layer
                 gravityAffected = true;
                 orientToGravity = true;
             }
@@ -106,8 +113,10 @@ public class GunController : ItemController
         animator.SetTrigger("Shoot");
         GameObject ShotBullet = Instantiate(bulletObject, transform.position + transform.rotation * offset, Quaternion.identity);
         ShotBullet.transform.localScale = new Vector3(.075f, .075f, .075f);
-        ShotBullet.GetComponent<BulletController>().newInstance(shootDirection);
-        ShotBullet.GetComponent<BulletController>().Start();
+        BulletController bulletController = ShotBullet.GetComponent<BulletController>();
+        bulletController.newInstance(shootDirection);
+        bulletController.setShotBy(shotBy);
+        bulletController.Start();
         audioSource.PlayOneShot(gunshotClip);
 
     }

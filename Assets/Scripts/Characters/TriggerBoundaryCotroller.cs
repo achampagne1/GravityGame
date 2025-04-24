@@ -8,11 +8,13 @@ public class TriggerBoundaryCotroller : MonoBehaviour
     private GameObject parent;
     private HandController handController;
     private CharacterController characterController;
+    private int layerConnectedTo = 2; //2 is ignore raycasr
 
     // Start is called before the first frame update
     void Start()
     {
         parent = transform.parent.gameObject;
+        layerConnectedTo = parent.layer;
         characterController = parent.GetComponent<CharacterController>();
         foreach (Transform child in parent.transform)
         {
@@ -40,10 +42,19 @@ public class TriggerBoundaryCotroller : MonoBehaviour
         }
         if (trigger.gameObject.name == "Bullet(Clone)")
         {
+            if (trigger.gameObject.GetComponent<BulletController>().getShotBy() == parent.layer)
+            {
+                return;
+            }
             characterController.setBulletStrikeLocation(trigger.gameObject.transform.position);
             characterController.setHealth(characterController.getHealth() - 1f);
             if (gameObject.name == "TriggerBoundarySpaceMan")
                 UIHandler.instance.setHealthValue(characterController.getHealth());
         }
+    }
+
+    public int getLayerConnectedTo()
+    {
+        return layerConnectedTo;
     }
 }

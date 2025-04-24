@@ -13,12 +13,14 @@ public class BulletController : ObjectController
     public float bulletForce = 50.0f;
 
     //game variables
-    float drag = .1f;
-    bool first = true;
-    bool playerInvulnerable = true;
+    private float drag = .1f;
+    private bool first = true;
+    private bool playerInvulnerable = true;
+    private int shotBy = 0;
+
 
     //vectors
-    Vector2 initialForce = new Vector2(0, 0);
+    private Vector2 initialForce = new Vector2(0, 0);
 
     // Start is called before the first frame update
     public void Start()
@@ -75,13 +77,13 @@ public class BulletController : ObjectController
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (!first)
+        if (collision.gameObject.layer != shotBy &&  !first)
             Destroy(this.gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (!first)
+        if (trigger.gameObject.GetComponent<TriggerBoundaryCotroller>().getLayerConnectedTo() != shotBy && !first)
             Destroy(this.gameObject);
     }
 
@@ -89,6 +91,16 @@ public class BulletController : ObjectController
     {
         initialForce = direction;
         first = false;
+    }
+
+    public void setShotBy(int shotBy)
+    {
+        this.shotBy = shotBy;
+    }
+
+    public int getShotBy()
+    {
+        return shotBy;
     }
 
 }
