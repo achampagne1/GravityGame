@@ -26,6 +26,7 @@ public class TeleporterController : MonoBehaviour
     private bool trigger = false;
     private bool on = false;
     private bool teleportLatch = true;
+    private bool playerOnPad = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -76,7 +77,7 @@ public class TeleporterController : MonoBehaviour
             toggleState = false;
         }
 
-        if (trigger && on && teleportLatch) //redo this get the "getcomponent" out
+        if (trigger && on && teleportLatch) //currentlty this can only be done once.
         {
             StartCoroutine(teleportBeam());
             teleportLatch = false;
@@ -144,5 +145,15 @@ public class TeleporterController : MonoBehaviour
     public void setTransportTrigger(bool trigger)
     {
         this.trigger = trigger;
+    }
+
+    public void setPlayerOnPad(bool playerOnPad)
+    {
+        this.playerOnPad = playerOnPad;
+    }
+
+    public bool getPlayerOnPad()
+    {
+        return playerOnPad;
     }
 }

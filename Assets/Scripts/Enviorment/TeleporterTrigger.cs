@@ -21,12 +21,12 @@ public class TeleporterTrigger : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D trigger)
     {
         if (trigger.gameObject.name == "SpaceMan")
-            teleporterController.setTransportTrigger(true);
+            teleporterController.setPlayerOnPad(true);
     }
 
     private void OnTriggerExit2D(Collider2D trigger)
     {
         if (trigger.gameObject.name == "SpaceMan")
-            teleporterController.setTransportTrigger(false);
+            teleporterController.setPlayerOnPad(false);
     }
 }

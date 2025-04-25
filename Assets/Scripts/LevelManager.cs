@@ -7,9 +7,12 @@ public class LevelManager : MonoBehaviour
 {
     [SerializeField] bool playScript = false;
     [SerializeField] GameObject teleporter;
+    [SerializeField] GameObject teleporter2;
     [SerializeField] GameObject player;
     [SerializeField] GameObject spawnPoint;
+    [SerializeField] GameObject uIDocument;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
+    [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
     // Start is called before the first frame update
     void Start()
@@ -31,10 +34,17 @@ public class LevelManager : MonoBehaviour
         //KEEP UP WITH THE COMMENTS!!!
         //Each action should have a comment
 
-        //activate teleporter first
+        //sets teleporter cam to main cam
+        VCamController teleporterCamController = teleporterCam.GetComponent<VCamController>();
+        teleporterCam.Priority = 2;
+        playerCam.Priority = 1;
+        //turns off player simulation
+        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
+        playerRb.simulated = false;
+        //activate teleporter
         TeleporterController teleporterController = teleporter.GetComponent<TeleporterController>();
         teleporterController.toggleStateFunc();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
 
         //turns on the transport beam
         teleporterController.setTransportTrigger(true);
@@ -48,13 +58,42 @@ public class LevelManager : MonoBehaviour
         //changes camera to player
         teleporterCam.Priority = 1;
         playerCam.Priority = 2;
+        //turns off teleporter
+        teleporterController.toggleStateFunc();
         yield return new WaitForSeconds(2f);
 
         //shuts off the beam
         teleporterController.setTransportTrigger(false);
         //start simulation of player
-        Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
         playerRb.simulated = true;
+
+        //everything above is for level start
+        //everything below is for end of level
+
+        //waits until the teleporter objective is completed
+        UIHandler uIHandler = uIDocument.GetComponent<UIHandler>();
+        yield return new WaitUntil(() => uIHandler.getCurrentObjective().name == "gettoteleporter");
+
+        //activate teleporter2
+        TeleporterController teleporterController2 = teleporter2.GetComponent<TeleporterController>();
+        teleporterController2.toggleStateFunc();
+        //waits until player is on the pad
+        yield return new WaitUntil(() => teleporterController2.getPlayerOnPad());
+
+        //waits an aditional half second for suspense
+        yield return new WaitForSeconds(.5f);
+
+        //turns on transport beam
+        teleporterController2.setTransportTrigger(true);
+        //moves player offScreen
+        player.transform.position = new Vector3(-100f, -100f, 0f);
+        //switches to teleporter2 cam
+        VCamController teleporterCamController2 = teleporterCam2.GetComponent<VCamController>();
+        teleporterCam2.Priority = 2;
+        playerCam.Priority = 1;
         yield return new WaitForSeconds(2f);
+
+        //shuts off the beam
+        teleporterController2.setTransportTrigger(false);
     }
 }

@@ -125,11 +125,13 @@ public class UIHandler : MonoBehaviour
                 objectiveContainer.style.opacity = 0;
             }
         }
+
         try
         {
             if (currentObjective.completionCondition()) //this acounts for the async nature of the objective loading
             {
                 currentObjective = objectiveWrapper.getNextObjective();
+
                 objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
             }
         }
@@ -189,5 +191,11 @@ public class UIHandler : MonoBehaviour
         warningBar.style.width = Length.Percent(currentHealth * 100.0f);
         if (fadeCounter <= 0)
             fadeCounter = 180;
+    }
+
+    public Objective getCurrentObjective()
+    {
+        //NOTE: should objectives be soley handled by the level manager and the ui is only responsible for setting the text?
+        return currentObjective;
     }
 }

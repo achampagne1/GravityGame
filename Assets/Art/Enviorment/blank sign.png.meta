@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 52670db52d9843a41991074096a60102
+guid: d9b1222888909d54eb323b98eba9ce86
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -833164383909932804
-    second: Asteroid1_0
+      213: -7373433299017692463
+    second: blank sign_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Asteroid1_0
+      name: blank sign_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 1510
-        height: 1518
+        width: 963
+        height: 1083
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: cf09a8938610074f0800000000000000
-      internalID: -833164383909932804
+      spriteID: 1da830d0b7d4ca990800000000000000
+      internalID: -7373433299017692463
       vertices: []
       indices: 
       edges: []

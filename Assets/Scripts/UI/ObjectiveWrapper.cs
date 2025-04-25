@@ -20,16 +20,9 @@ public class ObjectiveWrapper : ScriptableObject
     public async Task initializeObjectives()
     {
         string name = "gettoteleporter";
-        TeleporterController teleporterController = GameObject.Find("Teleporter").GetComponent<TeleporterController>();
-        bool toggleState = true;
         VisualElement visualElement = await createVisualElement(name);
         Objective objective = new Objective(name, () =>
         {
-            if (toggleState)
-            {
-                teleporterController.toggleStateFunc();
-                toggleState = false;
-            }
             return false;
         }, visualElement);
         objectives.Push(objective);

@@ -10,7 +10,7 @@ public struct EnemyAssistant
         {
             float angle = (characterOrientation + 30 - i + (System.Convert.ToSingle(facingLeft) * 180)) % 360;
             Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));
-            RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(transform.position, temp, 100f);
+            RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(transform.position, temp, 10f);
             foreach (RaycastHit2D hit in lookForPlayer)
             {
                 if (hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 15)
