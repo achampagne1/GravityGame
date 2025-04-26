@@ -27,13 +27,14 @@ public class UIHandler : MonoBehaviour
     private VisualElement warningBar;
     private VisualElement pauseMenu;
     private VisualElement darken;
-    private VisualElement overlayContainer;
     private VisualElement pauseContainer;
     private VisualElement objectiveContainer;
     private VisualElement exitGameButton;
-    private VisualElement endScreenOverlay;
-    private VisualElement[] overlayArray = new VisualElement[25];
+    private VisualElement overlayContainerPause;
+    private VisualElement overlayContainerEnd;
+    private VisualElement[] overlayArrayPause = new VisualElement[25];
     private VisualElement[] overlayArrayEnd = new VisualElement[25];
+    private VisualElement endScreen;
 
     private ObjectiveWrapper objectiveWrapper;
     private Objective currentObjective;
@@ -60,10 +61,11 @@ public class UIHandler : MonoBehaviour
         darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
         exitGameButton = uiDocument.rootVisualElement.Q<Button>("exitGameButton");
         objectiveContainer = uiDocument.rootVisualElement.Q<VisualElement>("text");
-        overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
-        overlayArray = overlayContainer.Query<VisualElement>("overlay").ToList().ToArray();
-        endScreenOverlay = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainerEnd");
-        overlayArrayEnd = endScreenOverlay.Query<VisualElement>("overlayEnd").ToList().ToArray();
+        overlayContainerPause = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
+        overlayArrayPause = overlayContainerPause.Query<VisualElement>("overlay").ToList().ToArray();
+        overlayContainerEnd = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainerEnd");
+        overlayArrayEnd = overlayContainerEnd.Query<VisualElement>("overlayEnd").ToList().ToArray();
+        endScreen = uiDocument.rootVisualElement.Q<VisualElement>("endScreen");
         warningBar.style.opacity = 0f;
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
@@ -74,7 +76,6 @@ public class UIHandler : MonoBehaviour
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
         StartCoroutine(objectivesStart());
-        StartCoroutine(shiftOverlayRoutineEnd());
     }
     private IEnumerator objectivesStart()
     {
@@ -101,7 +102,7 @@ public class UIHandler : MonoBehaviour
                 //Time.timeScale = 0; //this pauses the scan lines too for some reason
                 pauseMenu.style.top = Length.Percent(0);
                 darken.style.backgroundColor = new Color(0, 0, 0, 0.7f);
-                moveScanLinesCoroutine = StartCoroutine(shiftOverlayRoutine());
+                moveScanLinesCoroutine = StartCoroutine(shiftOverlayRoutine(overlayContainerPause.resolvedStyle.height,overlayArrayPause));
                 pauseContainer.style.opacity = 1;
             }
             else
@@ -119,7 +120,7 @@ public class UIHandler : MonoBehaviour
             if (eClicked)
             {
                 pauseMenu.style.top = Length.Percent(movePercent);
-                moveScanLinesCoroutine = StartCoroutine(shiftOverlayRoutine());
+                moveScanLinesCoroutine = StartCoroutine(shiftOverlayRoutine(overlayContainerPause.resolvedStyle.height, overlayArrayPause));
                 objectiveContainer.style.opacity = 1;
             }
             else
@@ -144,14 +145,13 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    private IEnumerator shiftOverlayRoutine()
+    private IEnumerator shiftOverlayRoutine(float parentTop,VisualElement[] overlayArray)
     {
+        yield return new WaitForSecondsRealtime(1f);
         while (true)
         {
-
             for (int i = 0; i < 25; i++)
             {
-                parentTop = overlayContainer.resolvedStyle.height;
                 float topInPixels = overlayArray[i].resolvedStyle.top;
                 float topPercent = (topInPixels / parentTop) * 100f;
                 float shiftPixels = (shiftNum / 100f) * parentTop;
@@ -163,44 +163,10 @@ public class UIHandler : MonoBehaviour
             yield return new WaitForSecondsRealtime(speed);// Adjust delay for smoother shifting
         }
     }
-
-       private IEnumerator shiftOverlayRoutineEnd()
-       {
-           yield return new WaitForSecondsRealtime(1);
-           while (true)
-           {
-
-               for (int j = 0; j < 25; j++)
-               {
-                   parentTopEnd = endScreenOverlay.resolvedStyle.height;
-                   float topInPixels = overlayArrayEnd[j].resolvedStyle.top;
-                   float topPercent = (topInPixels / parentTopEnd) * 100f;
-                   float shiftPixels = (shiftNum / 100f) * parentTopEnd;
-                   if (topPercent > 100)
-                       overlayArrayEnd[j].style.top = new Length(0, LengthUnit.Pixel);
-                   else
-                       overlayArrayEnd[j].style.top = new Length(overlayArrayEnd[j].resolvedStyle.top + shiftPixels, LengthUnit.Pixel);
-               }
-               yield return new WaitForSecondsRealtime(speed);// Adjust delay for smoother shifting
-           }
-       }
-
     private void exitGame(ClickEvent evt)
     {
         Debug.Log("here");
         Application.Quit();
-    }
-
-
-    public void setHealthValue(float health)
-    {
-        currentHealth = health / 10f;
-        fullBar.style.width = Length.Percent(currentHealth * 100.0f);
-    }
-
-    public void setFuelValue(float fuelLevel)
-    {
-        fullFuelBar.style.width = Length.Percent(fuelLevel);
     }
 
     private void warningBarFunction()
@@ -216,6 +182,23 @@ public class UIHandler : MonoBehaviour
         warningBar.style.width = Length.Percent(currentHealth * 100.0f);
         if (fadeCounter <= 0)
             fadeCounter = 180;
+    }
+
+    public void showLevelEnd() //maybe chnge this to a bool, however, level end should only be displayed once
+    {
+        endScreen.style.top = 0f;
+        StartCoroutine(shiftOverlayRoutine(overlayContainerEnd.resolvedStyle.height, overlayArrayEnd));
+    }
+
+    public void setHealthValue(float health)
+    {
+        currentHealth = health / 10f;
+        fullBar.style.width = Length.Percent(currentHealth * 100.0f);
+    }
+
+    public void setFuelValue(float fuelLevel)
+    {
+        fullFuelBar.style.width = Length.Percent(fuelLevel);
     }
 
     public Objective getCurrentObjective()
