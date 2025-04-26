@@ -12,6 +12,7 @@ public class UIHandler : MonoBehaviour
     public float movePercent = 0f;
     private float fadeCounter = 180f;
     private float parentTop = 0f;
+    private float parentTopEnd = 0f;
     private bool escapeClicked = false;
     private bool eClicked = false;
     private bool coroutineRunning = false;
@@ -29,9 +30,10 @@ public class UIHandler : MonoBehaviour
     private VisualElement overlayContainer;
     private VisualElement pauseContainer;
     private VisualElement objectiveContainer;
-    private VisualElement offScreenObjectivesContainer;
     private VisualElement exitGameButton;
+    private VisualElement endScreenOverlay;
     private VisualElement[] overlayArray = new VisualElement[25];
+    private VisualElement[] overlayArrayEnd = new VisualElement[25];
 
     private ObjectiveWrapper objectiveWrapper;
     private Objective currentObjective;
@@ -58,9 +60,10 @@ public class UIHandler : MonoBehaviour
         darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
         exitGameButton = uiDocument.rootVisualElement.Q<Button>("exitGameButton");
         objectiveContainer = uiDocument.rootVisualElement.Q<VisualElement>("text");
-        offScreenObjectivesContainer = uiDocument.rootVisualElement.Q<VisualElement>("offScreenObjectives");
         overlayContainer = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
         overlayArray = overlayContainer.Query<VisualElement>("overlay").ToList().ToArray();
+        endScreenOverlay = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainerEnd");
+        overlayArrayEnd = endScreenOverlay.Query<VisualElement>("overlayEnd").ToList().ToArray();
         warningBar.style.opacity = 0f;
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
@@ -71,6 +74,7 @@ public class UIHandler : MonoBehaviour
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
         StartCoroutine(objectivesStart());
+        StartCoroutine(shiftOverlayRoutineEnd());
     }
     private IEnumerator objectivesStart()
     {
@@ -159,6 +163,27 @@ public class UIHandler : MonoBehaviour
             yield return new WaitForSecondsRealtime(speed);// Adjust delay for smoother shifting
         }
     }
+
+       private IEnumerator shiftOverlayRoutineEnd()
+       {
+           yield return new WaitForSecondsRealtime(1);
+           while (true)
+           {
+
+               for (int j = 0; j < 25; j++)
+               {
+                   parentTopEnd = endScreenOverlay.resolvedStyle.height;
+                   float topInPixels = overlayArrayEnd[j].resolvedStyle.top;
+                   float topPercent = (topInPixels / parentTopEnd) * 100f;
+                   float shiftPixels = (shiftNum / 100f) * parentTopEnd;
+                   if (topPercent > 100)
+                       overlayArrayEnd[j].style.top = new Length(0, LengthUnit.Pixel);
+                   else
+                       overlayArrayEnd[j].style.top = new Length(overlayArrayEnd[j].resolvedStyle.top + shiftPixels, LengthUnit.Pixel);
+               }
+               yield return new WaitForSecondsRealtime(speed);// Adjust delay for smoother shifting
+           }
+       }
 
     private void exitGame(ClickEvent evt)
     {

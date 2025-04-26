@@ -48,7 +48,7 @@ public class SpaceManController : SpacePersonController
 
     private Vector3 mouseToDirection(Vector3 inputDirection, Quaternion playerRotation)
     {
-        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f+cameraShift);
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f+ (cameraShift * Screen.height));
         Vector2 direction = new Vector2(inputDirection.x, inputDirection.y) - screenCenter;
         Vector2 normalizedDirection = direction.normalized;
         Vector3 direction3D = new Vector3(normalizedDirection.x, normalizedDirection.y, 0f);

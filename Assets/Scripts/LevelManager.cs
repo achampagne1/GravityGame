@@ -49,21 +49,20 @@ public class LevelManager : MonoBehaviour
         //turns on the transport beam
         teleporterController.setTransportTrigger(true);
         //shakes camera
-        VCamController playerCamController = playerCam.GetComponent<VCamController>();
-        playerCamController.setShake(true);
+        //teleporterCamController.setShake(true);
         yield return new WaitForSeconds(.2f);
 
         //puts player on pad(spawnPoint)
         player.transform.position = spawnPoint.transform.position;
-        //changes camera to player
-        teleporterCam.Priority = 1;
-        playerCam.Priority = 2;
         //turns off teleporter
         teleporterController.toggleStateFunc();
         yield return new WaitForSeconds(2f);
 
         //shuts off the beam
         teleporterController.setTransportTrigger(false);
+        //changes camera to player
+        teleporterCam.Priority = 1;
+        playerCam.Priority = 2;
         //start simulation of player
         playerRb.simulated = true;
 
