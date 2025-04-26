@@ -147,7 +147,6 @@ public class UIHandler : MonoBehaviour
 
     private IEnumerator shiftOverlayRoutine(float parentTop,VisualElement[] overlayArray)
     {
-        yield return new WaitForSecondsRealtime(1f);
         while (true)
         {
             for (int i = 0; i < 25; i++)

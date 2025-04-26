@@ -90,9 +90,11 @@ public class LevelManager : MonoBehaviour
         VCamController teleporterCamController2 = teleporterCam2.GetComponent<VCamController>();
         teleporterCam2.Priority = 2;
         playerCam.Priority = 1;
+        yield return new WaitForSeconds(.1f);
+
         //shows level complete screen
         uIHandler.showLevelEnd();
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.9f);
 
         //shuts off the beam
         teleporterController2.setTransportTrigger(false);

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4228d002b02cb24498cfd24406f14720
+guid: deec90c3148ce604db39d51aeb5ab65b
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 2034388425840015058
-    second: TheGeneral_0
+      213: -6679967983394945974
+    second: TheGeneralClipped_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TheGeneral_0
+      name: TheGeneralClipped_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 1101
-        height: 1234
+        x: 327
+        y: 140
+        width: 1364
+        height: 1360
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 2d63c51ae799b3c10800000000000000
-      internalID: 2034388425840015058
+      spriteID: a4403c6d28cfb43a0800000000000000
+      internalID: -6679967983394945974
       vertices: []
       indices: 
       edges: []
@@ -130,8 +130,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      TheGeneral_0: 2034388425840015058
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
