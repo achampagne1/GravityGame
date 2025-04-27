@@ -313,12 +313,12 @@ MonoBehaviour:
   calculateIsGrounded: 1
   simulated: 1
   explodeCenter: {fileID: 9116706886509276700}
-  moveSpeed: 5
   jumpForce: 11
-  jetPackForce: 30
+  moveSpeed: 5
   maxHealth: 3
   invincibleFlag: 0
   health: 0
+  jetPackForce: 30
   first: 0
   movementToggle: 1
   normalState: 1
@@ -486,6 +486,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200657744619183238, guid: 023fe229542e21840a941de70cefc3f8,
+        type: 3}
+      propertyPath: MaxDistance
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200657744619183238, guid: 023fe229542e21840a941de70cefc3f8,
+        type: 3}
+      propertyPath: panLevelCustomCurve.m_Curve.Array.data[0].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7200657744619183238, guid: 023fe229542e21840a941de70cefc3f8,
+        type: 3}
+      propertyPath: reverbZoneMixCustomCurve.m_Curve.Array.data[0].value
+      value: 0.548
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

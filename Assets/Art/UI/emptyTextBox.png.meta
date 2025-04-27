@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: a91427f4d8bbd894f8cf0b46004a9a86
+guid: 562096f9698feaa47aff21bd9f053462
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6679967983394945974
-    second: TheGeneralClipped_0
+      213: 8561889400486968312
+    second: emptyTextBox_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: TheGeneralClipped_0
+      name: emptyTextBox_0
       rect:
         serializedVersion: 2
-        x: 327
-        y: 140
-        width: 1364
-        height: 1360
+        x: 0
+        y: 0
+        width: 5874
+        height: 1786
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: a4403c6d28cfb43a0800000000000000
-      internalID: -6679967983394945974
+      spriteID: 8fb35320c01f1d670800000000000000
+      internalID: 8561889400486968312
       vertices: []
       indices: 
       edges: []
@@ -131,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      TheGeneralClipped_0: -6679967983394945974
+      emptyTextBox_0: 8561889400486968312
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

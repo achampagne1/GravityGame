@@ -65,12 +65,14 @@ public class LevelManager : MonoBehaviour
         playerCam.Priority = 2;
         //start simulation of player
         playerRb.simulated = true;
-
+        //pulls up coms and displayes general text
+        UIHandler uIHandler = uIDocument.GetComponent<UIHandler>();
+        uIHandler.toggleComs();
+        uIHandler.setBubbleText("Hey kid, can you hear me?\nI'm in your ear piece");
         //everything above is for level start
         //everything below is for end of level
 
         //waits until the teleporter objective is completed
-        UIHandler uIHandler = uIDocument.GetComponent<UIHandler>();
         yield return new WaitUntil(() => uIHandler.getCurrentObjective().name == "gettoteleporter");
 
         //activate teleporter2

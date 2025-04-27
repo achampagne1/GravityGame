@@ -16,8 +16,9 @@ public class UIHandler : MonoBehaviour
     private bool escapeClicked = false;
     private bool eClicked = false;
     private bool coroutineRunning = false;
-    public float speed = .05f;
-    public float shiftNum = 4f;
+    [SerializeField] float speed = .05f;
+    [SerializeField] float shiftNum = 4f;
+    [SerializeField] float screenTextScaler = 100f;
     
     //object creation
     public static UIHandler instance { get; private set; }
@@ -35,6 +36,8 @@ public class UIHandler : MonoBehaviour
     private VisualElement[] overlayArrayPause = new VisualElement[25];
     private VisualElement[] overlayArrayEnd = new VisualElement[25];
     private VisualElement endScreen;
+    private VisualElement comsOverlay;
+    private Label bubbleText;
 
     private ObjectiveWrapper objectiveWrapper;
     private Objective currentObjective;
@@ -66,10 +69,13 @@ public class UIHandler : MonoBehaviour
         overlayContainerEnd = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainerEnd");
         overlayArrayEnd = overlayContainerEnd.Query<VisualElement>("overlayEnd").ToList().ToArray();
         endScreen = uiDocument.rootVisualElement.Q<VisualElement>("endScreen");
+        comsOverlay = uiDocument.rootVisualElement.Q<VisualElement>("coms");
+        bubbleText = uiDocument.rootVisualElement.Q<Label>("bubbleText");
         warningBar.style.opacity = 0f;
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
         pauseMenu.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
+        comsOverlay.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
         escapeKey = new InputSystemHelper(Keyboard.current.escapeKey);
         eKey = new InputSystemHelper(Keyboard.current.eKey);
         pauseMenu.style.top = Length.Percent(110);
@@ -90,6 +96,7 @@ public class UIHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        bubbleText.style.fontSize = Screen.width / screenTextScaler;
         if (currentHealth <= .3f)
         {
             warningBarFunction();
@@ -189,6 +196,16 @@ public class UIHandler : MonoBehaviour
         StartCoroutine(shiftOverlayRoutine(overlayContainerEnd.resolvedStyle.height, overlayArrayEnd));
     }
 
+    public void toggleComs()
+    {
+        if (comsOverlay.style.top == 0f)
+        {
+            comsOverlay.style.top = 100f;
+        }
+        else
+            comsOverlay.style.top = 0f;
+    }
+
     public void setHealthValue(float health)
     {
         currentHealth = health / 10f;
@@ -198,6 +215,11 @@ public class UIHandler : MonoBehaviour
     public void setFuelValue(float fuelLevel)
     {
         fullFuelBar.style.width = Length.Percent(fuelLevel);
+    }
+
+    public void setBubbleText(string text)
+    {
+        bubbleText.text = text;
     }
 
     public Objective getCurrentObjective()
