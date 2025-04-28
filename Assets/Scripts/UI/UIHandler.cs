@@ -19,7 +19,10 @@ public class UIHandler : MonoBehaviour
     [SerializeField] float speed = .05f;
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
-    
+    [SerializeField] float textRevealSpeed = 1f;
+    [SerializeField] AudioClip radioStaticClip;
+    [SerializeField] AudioClip tabletHum;
+
     //object creation
     public static UIHandler instance { get; private set; }
 
@@ -37,12 +40,15 @@ public class UIHandler : MonoBehaviour
     private VisualElement[] overlayArrayEnd = new VisualElement[25];
     private VisualElement endScreen;
     private VisualElement comsOverlay;
+    private VisualElement textBubble;
     private Label bubbleText;
 
     private ObjectiveWrapper objectiveWrapper;
     private Objective currentObjective;
     private InputSystemHelper escapeKey;
     private InputSystemHelper eKey;
+    private InputSystemHelper rKey;
+    private AudioSource audioSource;
 
     private Coroutine moveScanLinesCoroutine;
 
@@ -70,6 +76,7 @@ public class UIHandler : MonoBehaviour
         overlayArrayEnd = overlayContainerEnd.Query<VisualElement>("overlayEnd").ToList().ToArray();
         endScreen = uiDocument.rootVisualElement.Q<VisualElement>("endScreen");
         comsOverlay = uiDocument.rootVisualElement.Q<VisualElement>("coms");
+        textBubble = uiDocument.rootVisualElement.Q<VisualElement>("textBubble");
         bubbleText = uiDocument.rootVisualElement.Q<Label>("bubbleText");
         warningBar.style.opacity = 0f;
         pauseContainer.style.opacity = 0f;
@@ -79,6 +86,7 @@ public class UIHandler : MonoBehaviour
         escapeKey = new InputSystemHelper(Keyboard.current.escapeKey);
         eKey = new InputSystemHelper(Keyboard.current.eKey);
         pauseMenu.style.top = Length.Percent(110);
+        audioSource = GetComponent<AudioSource>();
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
         StartCoroutine(objectivesStart());
@@ -107,6 +115,7 @@ public class UIHandler : MonoBehaviour
             if (escapeClicked)
             {
                 //Time.timeScale = 0; //this pauses the scan lines too for some reason
+                StartCoroutine(fadeInHum());
                 pauseMenu.style.top = Length.Percent(0);
                 darken.style.backgroundColor = new Color(0, 0, 0, 0.7f);
                 moveScanLinesCoroutine = StartCoroutine(shiftOverlayRoutine(overlayContainerPause.resolvedStyle.height,overlayArrayPause));
@@ -115,6 +124,7 @@ public class UIHandler : MonoBehaviour
             else
             {
                 Time.timeScale = 1;
+                StartCoroutine(fadeOutHum());
                 pauseMenu.style.top = Length.Percent(110);
                 darken.style.backgroundColor = new Color(0, 0, 0, 0.0f);
                 StopCoroutine(moveScanLinesCoroutine);
@@ -137,7 +147,6 @@ public class UIHandler : MonoBehaviour
                 objectiveContainer.style.opacity = 0;
             }
         }
-
         try
         {
             if (currentObjective.completionCondition()) //this acounts for the async nature of the objective loading
@@ -196,11 +205,11 @@ public class UIHandler : MonoBehaviour
         StartCoroutine(shiftOverlayRoutine(overlayContainerEnd.resolvedStyle.height, overlayArrayEnd));
     }
 
-    public void toggleComs()
+    public void coms(bool up)
     {
-        if (comsOverlay.style.top == 0f)
+        if (!up)
         {
-            comsOverlay.style.top = 100f;
+            comsOverlay.style.top = Length.Percent(100f);
         }
         else
             comsOverlay.style.top = 0f;
@@ -217,9 +226,48 @@ public class UIHandler : MonoBehaviour
         fullFuelBar.style.width = Length.Percent(fuelLevel);
     }
 
-    public void setBubbleText(string text)
+    public void setBubbleText(string text,float width, float height) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73
     {
-        bubbleText.text = text;
+        textBubble.style.width = Length.Percent(width);
+        textBubble.style.left = Length.Percent(90-width);//this is to adjust for the end of the bubble
+        textBubble.style.height = Length.Percent(height);
+        textBubble.style.top = Length.Percent(88.336f - .667f * height);//this is to adjust the height of the bubble
+        bubbleText.text = ""; //resets the text bubble
+        StartCoroutine(bubbleTextReveal(text));
+    }
+
+    private IEnumerator bubbleTextReveal(string text)
+    {
+        audioSource.clip = radioStaticClip;
+        audioSource.Play();
+        foreach (char character in text)
+        {
+            bubbleText.text += character;
+            yield return new WaitForSecondsRealtime(textRevealSpeed);
+        }
+        audioSource.Stop();
+    }
+
+    private IEnumerator fadeInHum()
+    {
+        audioSource.clip = tabletHum;
+        audioSource.Play();
+        audioSource.volume = 0f;
+        while (audioSource.volume < .5f)
+        {
+            audioSource.volume += .1f;
+            yield return new WaitForSeconds(.00075f);
+        }
+    }
+
+    private IEnumerator fadeOutHum()
+    {
+        while (audioSource.volume > 0f)
+        {
+            audioSource.volume -= .1f;
+            yield return new WaitForSeconds(.00075f);
+        }
+        audioSource.Stop();
     }
 
     public Objective getCurrentObjective()

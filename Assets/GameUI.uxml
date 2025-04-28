@@ -14,9 +14,10 @@
         </ui:VisualElement>
         <ui:VisualElement name="verticalBars" style="flex-grow: 0; background-image: url(&apos;project://database/Assets/Art/UI/emptyBar.png?fileID=246303161595536057&amp;guid=42dc777a247eb6f4dbb73d2eba628b3f&amp;type=3#emptyBar_0&apos;); height: 100%; width: 100%; position: absolute; display: flex;" />
     </ui:VisualElement>
-    <ui:VisualElement name="pause" style="flex-grow: 1; top: 100%;">
+    <ui:VisualElement name="darken" style="flex-grow: 1; position: absolute; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0); top: 0;" />
+    <ui:VisualElement name="pause" style="flex-grow: 1; top: 100%; height: 100%; position: absolute; width: 100%;">
         <ui:VisualElement name="background" style="flex-grow: 1; background-color: rgb(6, 34, 44); width: 42%; height: 90%; top: 0; left: 27%; position: absolute;" />
-        <ui:VisualElement name="outline" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/pause.png?fileID=2800000&amp;guid=b49ee157d9dd4a74b91e626cd85e9829&amp;type=3#pause&apos;); width: 50%; height: 100%; position: absolute; top: -5%; left: 25%;">
+        <ui:VisualElement name="outline" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/pause.png?fileID=2800000&amp;guid=b49ee157d9dd4a74b91e626cd85e9829&amp;type=3#pause&apos;); width: 50%; height: 100%; position: absolute; top: 0; left: 25%;">
             <ui:VisualElement name="pauseContainer" style="flex-grow: 1; position: absolute; top: 7%; left: 7%; width: 78%; height: 85%;">
                 <ui:VisualElement name="exitGame" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/exitGame.png?fileID=2800000&amp;guid=b0e0138d4679c7849bbaa15c098099dc&amp;type=3#exitGame&apos;); position: absolute; width: 70%; height: 27%; top: 45%; left: 15%;">
                     <ui:Button text="&#10;" name="exitGameButton" style="background-color: rgba(188, 188, 188, 0); border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; position: absolute; top: 30%; left: 10%; width: 78%; height: 35%;" />
@@ -54,7 +55,6 @@
                 <ui:VisualElement name="overlay" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/menuOverlay.png?fileID=2800000&amp;guid=5a51c101f6a19d547a8b9f464074b6b5&amp;type=3#menuOverlay&apos;); height: 3%; width: 100%; position: absolute; left: 0; top: 96%;" />
             </ui:VisualElement>
         </ui:VisualElement>
-        <ui:VisualElement name="darken" style="flex-grow: 1; position: absolute; height: 100%; width: 100%; background-color: rgba(0, 0, 0, 0);" />
     </ui:VisualElement>
     <ui:VisualElement name="endScreen" style="flex-grow: 1; top: 100%; left: 0; position: absolute; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0);">
         <ui:VisualElement name="backgroundEnd" style="flex-grow: 1; position: absolute; background-color: rgba(6, 34, 44, 0.5); -unity-background-image-tint-color: rgb(255, 255, 255); width: 100%; height: 100%;" />
@@ -87,8 +87,10 @@
             <ui:VisualElement name="overlayEnd" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/UI/menuOverlay.png?fileID=2800000&amp;guid=5a51c101f6a19d547a8b9f464074b6b5&amp;type=3#menuOverlay&apos;); height: 3%; width: 100%; position: absolute; left: 0; top: 96%;" />
         </ui:VisualElement>
     </ui:VisualElement>
-    <ui:VisualElement name="comsOverlay" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/Sprites/TheGeneralClippedWBorder.png?fileID=2800000&amp;guid=504a4fd1fa93e4243b55524902844fe9&amp;type=3#TheGeneralClippedWBorder&apos;); position: absolute; width: 10%; height: 20%; top: 80%; left: 90%; -unity-background-scale-mode: scale-to-fit;" />
-    <ui:VisualElement name="textBubble" style="flex-grow: 1; position: absolute; background-image: url(&apos;project://database/Assets/Art/UI/emptyTextBox.png?fileID=2800000&amp;guid=562096f9698feaa47aff21bd9f053462&amp;type=3#emptyTextBox&apos;); width: 20%; height: 15%; top: 75%; left: 70%;">
-        <ui:Label text="Hey kid can you hear me?" style="-unity-font-definition: url(&apos;project://database/Assets/ShareTechMono-Regular.ttf?fileID=12800000&amp;guid=c4aed5f5ccf5d9240a9f6cec5b922e58&amp;type=3#ShareTechMono-Regular&apos;); height: 50%; width: 92%; top: 6%; left: 3%; padding-top: 0; padding-left: 0; padding-right: 0; padding-bottom: 0; font-size: 15%;" />
+    <ui:VisualElement name="coms" style="flex-grow: 1; position: absolute; width: 100%; height: 100%; top: 100%; transition-timing-function: ease;">
+        <ui:VisualElement name="characterBubble" style="flex-grow: 1; background-image: url(&apos;project://database/Assets/Art/Sprites/TheGeneralClippedWBorder.png?fileID=2800000&amp;guid=504a4fd1fa93e4243b55524902844fe9&amp;type=3#TheGeneralClippedWBorder&apos;); position: absolute; width: 10%; height: 20%; top: 80%; left: 90%; -unity-background-scale-mode: scale-to-fit;" />
+        <ui:VisualElement name="textBubble" style="flex-grow: 1; position: absolute; background-image: url(&apos;project://database/Assets/Art/UI/emptyTextBox.png?fileID=2800000&amp;guid=562096f9698feaa47aff21bd9f053462&amp;type=3#emptyTextBox&apos;); width: 25%; height: 15%; top: 75%; left: 70%;">
+            <ui:Label selectable="true" display-tooltip-when-elided="false" name="bubbleText" text="Coms check kid, can you hear me?" style="-unity-font-definition: url(&apos;project://database/Assets/ShareTechMono-Regular.ttf?fileID=12800000&amp;guid=c4aed5f5ccf5d9240a9f6cec5b922e58&amp;type=3#ShareTechMono-Regular&apos;); height: 50%; width: 92%; top: 6%; left: 3%; padding-top: 0; padding-left: 0; padding-right: 0; padding-bottom: 0; font-size: 15px; -unity-font-style: normal; white-space: nowrap;" />
+        </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>

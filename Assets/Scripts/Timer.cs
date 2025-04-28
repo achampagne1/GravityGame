@@ -53,4 +53,9 @@ public struct Timer
     {
         return isRunning;
     }
+    
+    public void setNewTime(float totalTime)
+    {
+        this.totalTime = totalTime;
+    }
 }
