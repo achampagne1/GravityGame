@@ -80,7 +80,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(.1f); //tiny delay for loading
 
         //waits for player to aknowledge or timer runs out
-        eventTimer.setNewTime(30f);
+        eventTimer.setNewTime(10f);
         yield return new WaitUntil(acknowledgeOrWait);
 
         if(eventChoice == 1)

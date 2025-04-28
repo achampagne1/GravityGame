@@ -136,12 +136,14 @@ public class UIHandler : MonoBehaviour
             eClicked = !eClicked;
             if (eClicked)
             {
+                StartCoroutine(fadeInHum());
                 pauseMenu.style.top = Length.Percent(movePercent);
                 moveScanLinesCoroutine = StartCoroutine(shiftOverlayRoutine(overlayContainerPause.resolvedStyle.height, overlayArrayPause));
                 objectiveContainer.style.opacity = 1;
             }
             else
             {
+                StartCoroutine(fadeOutHum());
                 pauseMenu.style.top = Length.Percent(110);
                 StopCoroutine(moveScanLinesCoroutine);
                 objectiveContainer.style.opacity = 0;
