@@ -29,6 +29,8 @@ public class ArtificialGravityFieldController : MonoBehaviour
     private void OnTriggerExit2D(Collider2D trigger)
     {
         if (!trigger.isTrigger)
+        {
             trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(Vector2.zero);
+        }
     }
 }

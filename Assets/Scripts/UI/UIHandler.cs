@@ -12,7 +12,6 @@ public class UIHandler : MonoBehaviour
     public float movePercent = 0f;
     private float fadeCounter = 180f;
     private float parentTop = 0f;
-    private float parentTopEnd = 0f;
     private bool escapeClicked = false;
     private bool eClicked = false;
     private bool coroutineRunning = false;
