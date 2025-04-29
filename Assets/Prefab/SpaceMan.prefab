@@ -336,8 +336,8 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.056013465, y: 0.39623618}
-  m_Radius: 4.8435006
+  m_Offset: {x: -0.059470244, y: 0.5990596}
+  m_Radius: 4.640647
 --- !u!50 &1239260081404318765
 Rigidbody2D:
   serializedVersion: 4
@@ -347,7 +347,7 @@ Rigidbody2D:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6531168470496589063}
   m_BodyType: 0
-  m_Simulated: 0
+  m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
@@ -409,12 +409,13 @@ MonoBehaviour:
   jumpForce: 11
   moveSpeed: 10
   maxHealth: 10
-  invincibleFlag: 0
+  invincibleFlag: 1
   health: 0
   jetPackForce: 30
   playArea:
-  - 50
-  - 50
+  - 100
+  - 100
+  cameraShift: -0.22
 --- !u!82 &817579411317516132
 AudioSource:
   m_ObjectHideFlags: 0
@@ -551,7 +552,7 @@ Transform:
   m_GameObject: {fileID: 7388870892404204327}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.5}
+  m_LocalPosition: {x: 0, y: 20, z: -0.5}
   m_LocalScale: {x: 5, y: 5, z: 5}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -574,13 +575,13 @@ MonoBehaviour:
   - m_Script
   m_LockStageInInspector: 
   m_StreamingVersion: 20170927
-  m_Priority: 8
+  m_Priority: 12
   m_StandbyUpdate: 2
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 0}
   m_Lens:
     FieldOfView: 40
-    OrthographicSize: 8
+    OrthographicSize: 10
     NearClipPlane: 0.1
     FarClipPlane: 5000
     Dutch: 0
@@ -610,9 +611,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vcam: {fileID: 3757223145137466355}
-  initialZoom: 8
+  initialZoom: 10
   duration: 1
-  magnitude: 10
+  magnitude: 2
   shake: 0
 --- !u!1 &8090840931437904777
 GameObject:

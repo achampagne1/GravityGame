@@ -13,6 +13,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject uIDocument;
     [SerializeField] GameObject asteroidTrigger1;
+    [SerializeField] GameObject starList;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
@@ -23,10 +24,12 @@ public class LevelManager : MonoBehaviour
     void Start()
     {
         rHelper = new InputSystemHelper(Keyboard.current.rKey);
-        //start the script
         if (playScript)
+        {
+            //set player body and hand to transparent
+            setPlayerOpacity(0f,player);
             StartCoroutine(gameScript());
-        //gotta swap the camera priorities too
+        }
     }
 
     // Update is called once per frame
@@ -39,7 +42,7 @@ public class LevelManager : MonoBehaviour
     {
         //KEEP UP WITH THE COMMENTS!!!
         //Each action should have a comment
-
+       
         //sets teleporter cam to main cam
         VCamController teleporterCamController = teleporterCam.GetComponent<VCamController>();
         teleporterCam.Priority = 2;
@@ -71,6 +74,8 @@ public class LevelManager : MonoBehaviour
         playerCam.Priority = 2;
         //start simulation of player
         playerRb.simulated = true;
+        //set player back to visible
+        setPlayerOpacity(1f,player);
         yield return new WaitForSeconds(1f);
 
         //pulls up coms and displayes general text
@@ -117,8 +122,8 @@ public class LevelManager : MonoBehaviour
 
         //turns on transport beam
         teleporterController2.setTransportTrigger(true);
-        //moves player offScreen
-        player.transform.position = new Vector3(-100f, -100f, 0f);
+        //sets player opacity to invisible
+        setPlayerOpacity(0f,player);
         //switches to teleporter2 cam
         VCamController teleporterCamController2 = teleporterCam2.GetComponent<VCamController>();
         teleporterCam2.Priority = 2;
@@ -149,5 +154,22 @@ public class LevelManager : MonoBehaviour
         }
         else
             return false;
+    }
+
+    private void setPlayerOpacity(float opacity,GameObject gameObject)
+    {
+        //recursivley sets all children of the player to an opacity. could be used for other things too
+        SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
+        if (sr != null)
+        {
+            Color color = sr.color;
+            color.a = opacity;
+            sr.color = color;
+        }
+        foreach(Transform child in gameObject.transform)
+        {
+            if(gameObject.name != "Explode")
+                setPlayerOpacity(opacity, child.gameObject);
+        }
     }
 }

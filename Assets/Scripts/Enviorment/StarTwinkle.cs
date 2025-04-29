@@ -8,12 +8,22 @@ using Random = UnityEngine.Random;
 public class StarTwinkle : MonoBehaviour
 {
     [SerializeField] float twinkleScale = 0.0025f; //This sets how big the stars grow to before shrinking back in size
-    float twinkleSpeed; //This is how fast the stars "twinkle", it's set in the Start function
+    [SerializeField] Transform followPoint;
+    private Vector3 lastPlayerPosition;
+    private float twinkleSpeed; //This is how fast the stars "twinkle", it's set in the Start function
 
     void Start()
     {
         twinkleSpeed = Random.Range(0.025f, 0.1f);
+        lastPlayerPosition = followPoint.position;
         StartCoroutine(Twinkle());
+    }
+
+    void Update()
+    {
+        Vector3 delta = followPoint.position - lastPlayerPosition;
+        transform.position += delta;
+        lastPlayerPosition = followPoint.position;
     }
 
     IEnumerator Twinkle()
@@ -34,5 +44,10 @@ public class StarTwinkle : MonoBehaviour
 
             yield return new WaitForSeconds(Random.Range(1f,3f));
         }
+    }
+
+    public void setFollowPoint(Transform followPoint)
+    {
+        this.followPoint=followPoint;
     }
 }

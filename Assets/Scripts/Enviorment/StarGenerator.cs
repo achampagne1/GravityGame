@@ -12,7 +12,9 @@ public class StarGenerator : MonoBehaviour
     [SerializeField] Vector2 _minMaxSize = new Vector2(0.05f, 1); //This sets how small/big the stars can be
     [SerializeField] Vector2 _mapSize = new Vector2(1000, 1000); //This sets the size of the background
     [SerializeField] int _count = 2000; //This sets how many stars you want to spawn
+    [SerializeField] Transform spawnPoint;
     private GameObject initialStar;
+    private bool starsGenerated = false;
 
     void Start()
     {
@@ -20,12 +22,12 @@ public class StarGenerator : MonoBehaviour
         CreateStars();
     }
 
-    private void CreateStars()
+    public void CreateStars()
     {
         for (int i = 0; i < _count; i++)
         {
             float alpha = Random.Range(0.25f, 1);
-            GameObject starObject = Instantiate(initialStar, new Vector3(Random.Range(-_mapSize.x, _mapSize.x), Random.Range(-_mapSize.y, _mapSize.y), 0), Quaternion.identity);
+            GameObject starObject = Instantiate(initialStar, new Vector3(Random.Range(spawnPoint.position.x-_mapSize.x, spawnPoint.position.x+_mapSize.x), Random.Range(spawnPoint.position.y - _mapSize.y, spawnPoint.position.y+_mapSize.y), 0), Quaternion.identity);
             SpriteRenderer spriteRenderer = starObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = _starSprites[Random.Range(0, _starSprites.Count)];
             spriteRenderer.sortingOrder = -100;
@@ -38,5 +40,16 @@ public class StarGenerator : MonoBehaviour
                 starObject.transform.localEulerAngles = new Vector3(0, 0, 45);
 
         }
+        starsGenerated = true;
+    }
+
+    public void setSpawnPoint(Transform spawnPoint)
+    {
+        this.spawnPoint = spawnPoint;
+    }
+
+    public bool getStarsGenerated()
+    {
+        return starsGenerated;
     }
 }
