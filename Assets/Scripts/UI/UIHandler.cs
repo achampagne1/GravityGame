@@ -16,6 +16,7 @@ public class UIHandler : MonoBehaviour
     private bool eClicked = false;
     private bool coroutineRunning = false;
     private bool comsLockOut = true;
+    private bool acknowledgeComs = false;
     [SerializeField] float speed = .05f;
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
@@ -154,8 +155,10 @@ public class UIHandler : MonoBehaviour
         //coms lokcout is needed so the player cant retract coms when new text is supposed to be displayed
         if (rKey.wasPressedWithCooldown()&&!comsLockOut&&revealBubbleTextCoroutine==null)
         {
+            acknowledgeComs = true;
             coms(false);
         }
+
         try
         {
             if (currentObjective.completionCondition()) //this acounts for the async nature of the objective loading
@@ -292,5 +295,12 @@ public class UIHandler : MonoBehaviour
     {
         //NOTE: should objectives be soley handled by the level manager and the ui is only responsible for setting the text?
         return currentObjective;
+    }
+
+    public bool getAcknowledgeComs()
+    {
+        bool temp = acknowledgeComs;
+        acknowledgeComs = false;
+        return temp;
     }
 }

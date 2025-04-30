@@ -17,13 +17,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
-    private InputSystemHelper rHelper;
     private Timer eventTimer = new Timer(30f);
     int eventChoice = 0; //0 is reserved for no choice being made or reset
     // Start is called before the first frame update
     void Start()
     {
-        rHelper = new InputSystemHelper(Keyboard.current.rKey);
         if (playScript)
         {
             //set player body and hand to transparent
@@ -85,7 +83,7 @@ public class LevelManager : MonoBehaviour
 
         //waits for player to aknowledge or timer runs out
         eventTimer.setNewTime(10f);
-        yield return new WaitUntil(acknowledgeOrWait);
+        yield return new WaitUntil(() => acknowledgeOrWait(uIHandler));
 
         if(eventChoice == 1)
             uIHandler.setBubbleText("Good. Welcome to the training course BE-7.\nGo ahead and take a look around.",33f,14f);
@@ -136,11 +134,11 @@ public class LevelManager : MonoBehaviour
         teleporterController2.setTransportTrigger(false);
     }
 
-    private bool acknowledgeOrWait()
+    private bool acknowledgeOrWait(UIHandler uIHandler)
     {
         if (!eventTimer.getIsRunning())
             eventTimer.startTimer();
-        if (rHelper.wasPressedWithCooldown())
+        if (uIHandler.getAcknowledgeComs())
         {
             eventChoice = 1;
             return true;
