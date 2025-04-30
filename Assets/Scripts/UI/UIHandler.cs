@@ -15,8 +15,8 @@ public class UIHandler : MonoBehaviour
     private bool escapeClicked = false;
     private bool eClicked = false;
     private bool coroutineRunning = false;
-    private bool comsLockOut = true;
     private bool acknowledgeComs = false;
+    private bool revealOverride = false;
     [SerializeField] float speed = .05f;
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
@@ -153,10 +153,18 @@ public class UIHandler : MonoBehaviour
             }
         }
         //coms lokcout is needed so the player cant retract coms when new text is supposed to be displayed
-        if (rKey.wasPressedWithCooldown()&&!comsLockOut&&revealBubbleTextCoroutine==null)
+        //it automatically "pulls it back down" however, if there is more text inconversation 
+        if (rKey.wasPressedWithCooldown())
         {
-            acknowledgeComs = true;
-            coms(false);
+            if(revealBubbleTextCoroutine == null)
+            {
+                acknowledgeComs = true;
+                coms(false);
+            }
+            else //meaning if reveal text is still running
+            {
+                revealOverride = true;
+            }
         }
 
         try
@@ -260,22 +268,15 @@ public class UIHandler : MonoBehaviour
         fullFuelBar.style.width = Length.Percent(fuelLevel);
     }
 
-    public void setComsLockOut(bool comsLockOut)
-    {
-        this.comsLockOut = comsLockOut;
-    }
-
     public void setBubbleText(string text,float width, float height) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73
     {
         coms(true); //pull up coms
-        comsLockOut = true; //lock it from user interference
         textBubble.style.width = Length.Percent(width);
         textBubble.style.left = Length.Percent(90-width);//this is to adjust for the end of the bubble
         textBubble.style.height = Length.Percent(height);
         textBubble.style.top = Length.Percent(88.336f - .667f * height);//this is to adjust the height of the bubble
         bubbleText.text = ""; //resets the text bubble
         revealBubbleTextCoroutine = StartCoroutine(bubbleTextReveal(text));
-        comsLockOut = false; //unlocks coms
     }
 
     private IEnumerator bubbleTextReveal(string text)
@@ -284,8 +285,17 @@ public class UIHandler : MonoBehaviour
         audioSource.Play();
         foreach (char character in text)
         {
-            bubbleText.text += character;
-            yield return new WaitForSecondsRealtime(textRevealSpeed);
+            if (!revealOverride)
+            {
+                bubbleText.text += character;
+                yield return new WaitForSecondsRealtime(textRevealSpeed);
+            }
+            else
+            {
+                bubbleText.text = text; //reveals all text
+                revealOverride = false;
+                break;
+            }
         }
         audioSource.Stop();
         revealBubbleTextCoroutine = null;
