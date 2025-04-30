@@ -15,6 +15,7 @@ public class UIHandler : MonoBehaviour
     private bool escapeClicked = false;
     private bool eClicked = false;
     private bool coroutineRunning = false;
+    private bool comsLockOut = true;
     [SerializeField] float speed = .05f;
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
@@ -50,6 +51,7 @@ public class UIHandler : MonoBehaviour
     private AudioSource audioSource;
 
     private Coroutine moveScanLinesCoroutine;
+    private Coroutine revealBubbleTextCoroutine;
 
     private void Awake()
     {
@@ -84,6 +86,7 @@ public class UIHandler : MonoBehaviour
         comsOverlay.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
         escapeKey = new InputSystemHelper(Keyboard.current.escapeKey);
         eKey = new InputSystemHelper(Keyboard.current.eKey);
+        rKey = new InputSystemHelper(Keyboard.current.rKey);
         pauseMenu.style.top = Length.Percent(110);
         audioSource = GetComponent<AudioSource>();
 
@@ -147,6 +150,11 @@ public class UIHandler : MonoBehaviour
                 StopCoroutine(moveScanLinesCoroutine);
                 objectiveContainer.style.opacity = 0;
             }
+        }
+        //coms lokcout is needed so the player cant retract coms when new text is supposed to be displayed
+        if (rKey.wasPressedWithCooldown()&&!comsLockOut&&revealBubbleTextCoroutine==null)
+        {
+            coms(false);
         }
         try
         {
@@ -216,39 +224,6 @@ public class UIHandler : MonoBehaviour
             comsOverlay.style.top = 0f;
     }
 
-    public void setHealthValue(float health)
-    {
-        currentHealth = health / 10f;
-        fullBar.style.width = Length.Percent(currentHealth * 100.0f);
-    }
-
-    public void setFuelValue(float fuelLevel)
-    {
-        fullFuelBar.style.width = Length.Percent(fuelLevel);
-    }
-
-    public void setBubbleText(string text,float width, float height) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73
-    {
-        textBubble.style.width = Length.Percent(width);
-        textBubble.style.left = Length.Percent(90-width);//this is to adjust for the end of the bubble
-        textBubble.style.height = Length.Percent(height);
-        textBubble.style.top = Length.Percent(88.336f - .667f * height);//this is to adjust the height of the bubble
-        bubbleText.text = ""; //resets the text bubble
-        StartCoroutine(bubbleTextReveal(text));
-    }
-
-    private IEnumerator bubbleTextReveal(string text)
-    {
-        audioSource.clip = radioStaticClip;
-        audioSource.Play();
-        foreach (char character in text)
-        {
-            bubbleText.text += character;
-            yield return new WaitForSecondsRealtime(textRevealSpeed);
-        }
-        audioSource.Stop();
-    }
-
     private IEnumerator fadeInHum()
     {
         audioSource.clip = tabletHum;
@@ -269,6 +244,48 @@ public class UIHandler : MonoBehaviour
             yield return new WaitForSeconds(.00075f);
         }
         audioSource.Stop();
+    }
+
+    public void setHealthValue(float health)
+    {
+        currentHealth = health / 10f;
+        fullBar.style.width = Length.Percent(currentHealth * 100.0f);
+    }
+
+    public void setFuelValue(float fuelLevel)
+    {
+        fullFuelBar.style.width = Length.Percent(fuelLevel);
+    }
+
+    public void setComsLockOut(bool comsLockOut)
+    {
+        this.comsLockOut = comsLockOut;
+    }
+
+    public void setBubbleText(string text,float width, float height) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73
+    {
+        coms(true); //pull up coms
+        comsLockOut = true; //lock it from user interference
+        textBubble.style.width = Length.Percent(width);
+        textBubble.style.left = Length.Percent(90-width);//this is to adjust for the end of the bubble
+        textBubble.style.height = Length.Percent(height);
+        textBubble.style.top = Length.Percent(88.336f - .667f * height);//this is to adjust the height of the bubble
+        bubbleText.text = ""; //resets the text bubble
+        revealBubbleTextCoroutine = StartCoroutine(bubbleTextReveal(text));
+        comsLockOut = false; //unlocks coms
+    }
+
+    private IEnumerator bubbleTextReveal(string text)
+    {
+        audioSource.clip = radioStaticClip;
+        audioSource.Play();
+        foreach (char character in text)
+        {
+            bubbleText.text += character;
+            yield return new WaitForSecondsRealtime(textRevealSpeed);
+        }
+        audioSource.Stop();
+        revealBubbleTextCoroutine = null;
     }
 
     public Objective getCurrentObjective()

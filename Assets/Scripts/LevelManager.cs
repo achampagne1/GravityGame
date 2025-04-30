@@ -80,7 +80,6 @@ public class LevelManager : MonoBehaviour
 
         //pulls up coms and displayes general text
         UIHandler uIHandler = uIDocument.GetComponent<UIHandler>();
-        uIHandler.coms(true);
         uIHandler.setBubbleText("Coms check kid, can you hear me?",26f,8f);
         yield return new WaitForSeconds(.1f); //tiny delay for loading
 
@@ -95,18 +94,17 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(.1f);  //tiny delay for loading
 
         //waits for player to aknowledge
-        yield return new WaitForSeconds(10f);
+        yield return new WaitForSeconds(10f); //do this better
 
+        //displayes orders
         uIHandler.setBubbleText("Time to use your jetpack.\nFly up to that asteroid but watch your fuel level.", 40f, 14f);
         //gets planet trigger and check if player is intersecting
         PlanetTrigger asteroidTrigger1Trigger = asteroidTrigger1.GetComponent<PlanetTrigger>(); 
         yield return new WaitUntil(() => asteroidTrigger1Trigger.checkIfOverlapping("SpaceMan"));
-        Debug.Log("done");
 
-
-        //everything above is for level start
-        //everything below is for end of level
-
+        //waits until getyourgun is complete. the code only continues when it is done
+        uIHandler.setBubbleText("Good work. There is a gun in the space station.\nGo ahead and pick it up.\nI added it as an objective", 38f, 20f);
+        yield return new WaitUntil(() => uIHandler.getCurrentObjective().name == "killallenemies");
 
         //waits until the teleporter objective is completed
         yield return new WaitUntil(() => uIHandler.getCurrentObjective().name == "gettoteleporter");
@@ -172,4 +170,5 @@ public class LevelManager : MonoBehaviour
                 setPlayerOpacity(opacity, child.gameObject);
         }
     }
+
 }
