@@ -18,10 +18,16 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
     private Timer eventTimer = new Timer(30f);
+    private UIHandler uIHandler;
+    private ObjectiveWrapper objectiveWrapper;
+    private Objective currentObjective;
     int eventChoice = 0; //0 is reserved for no choice being made or reset
     // Start is called before the first frame update
     void Start()
     {
+        uIHandler = uIDocument.GetComponent<UIHandler>();
+        objectiveWrapper = new ObjectiveWrapper();
+        StartCoroutine(objectivesStart());
         if (playScript)
         {
             //set player body and hand to transparent
@@ -77,13 +83,12 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         //pulls up coms and displayes general text
-        UIHandler uIHandler = uIDocument.GetComponent<UIHandler>();
         uIHandler.setBubbleText("Coms check kid, can you hear me?",26f,8f);
         yield return new WaitForSeconds(.1f); //tiny delay for loading
 
         //waits for player to aknowledge or timer runs out
         eventTimer.setNewTime(10f);
-        yield return new WaitUntil(() => acknowledgeOrWait(uIHandler));
+        yield return new WaitUntil(acknowledgeOrWait);
 
         if(eventChoice == 1)
             uIHandler.setBubbleText("Good. Welcome to the training course BE-7.\nGo ahead and take a look around.",33f,14f);
@@ -100,13 +105,17 @@ public class LevelManager : MonoBehaviour
         PlanetTrigger asteroidTrigger1Trigger = asteroidTrigger1.GetComponent<PlanetTrigger>(); 
         yield return new WaitUntil(() => asteroidTrigger1Trigger.checkIfOverlapping("SpaceMan"));
 
-        //waits until getyourgun is complete. the code only continues when it is done
-        uIHandler.setBubbleText("Good work. There is a gun in the space station.\nGo ahead and pick it up.\nI added it as an objective", 38f, 20f);
-        yield return new WaitUntil(() => uIHandler.getCurrentObjective().name == "killallenemies");
+        //sets objective as get your gun and waits until it is completed
+        uIHandler.setBubbleText("Good work. There is a gun in the space station.\nGo ahead and pick it up. I added it as an objective.", 42f, 14f);
+        yield return objectivesStuff();
+        //kill all bugs 
+        uIHandler.setBubbleText("Now for target practice. You see those bugs?\nTake em out!", 35f, 14f);
+        yield return objectivesStuff();
 
-        //waits until the teleporter objective is completed
-        yield return new WaitUntil(() => uIHandler.getCurrentObjective().name == "gettoteleporter");
+        //Level End Stuff
 
+        //get to teleporter
+        uIHandler.setBubbleText("Thats about it for training today.\nStart making your way to the teleporter.", 32f, 14f);
         //activate teleporter2
         TeleporterController teleporterController2 = teleporter2.GetComponent<TeleporterController>();
         teleporterController2.toggleStateFunc();
@@ -134,7 +143,7 @@ public class LevelManager : MonoBehaviour
         teleporterController2.setTransportTrigger(false);
     }
 
-    private bool acknowledgeOrWait(UIHandler uIHandler)
+    private bool acknowledgeOrWait()
     {
         if (!eventTimer.getIsRunning())
             eventTimer.startTimer();
@@ -150,6 +159,24 @@ public class LevelManager : MonoBehaviour
         }
         else
             return false;
+    }
+
+    //this is to abstract all the tiny stuff needed for objectives
+    private IEnumerator objectivesStuff()
+    {
+        currentObjective = objectiveWrapper.getNextObjective();
+        Debug.Log(currentObjective.name);
+        uIHandler.setCurrentObjective(currentObjective);
+        yield return new WaitUntil(() => currentObjective.completionCondition());
+    }
+
+    private IEnumerator objectivesStart()
+    {
+        var initializeTask = objectiveWrapper.initializeObjectives();
+        while (!initializeTask.IsCompleted)
+            yield return null;
+        currentObjective = objectiveWrapper.getNextObjective();
+        uIHandler.setCurrentObjective(currentObjective);
     }
 
     private void setPlayerOpacity(float opacity,GameObject gameObject)
@@ -168,5 +195,6 @@ public class LevelManager : MonoBehaviour
                 setPlayerOpacity(opacity, child.gameObject);
         }
     }
+
 
 }

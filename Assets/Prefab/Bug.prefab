@@ -297,12 +297,13 @@ MonoBehaviour:
   updateGravityField: 0
   calculateIsGrounded: 0
   simulated: 1
-  explodeCenter: {fileID: 0}
+  explodeCenter: {fileID: 6711657075253115331}
   jumpForce: 11
   moveSpeed: 2
   maxHealth: 3
   invincibleFlag: 0
   health: 0
+  persistanceAfterDeath: 5
 --- !u!1001 &1787040017343473388
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -973,6 +974,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e7a97997982fd8148b3da9c323a3719b, type: 3}
+--- !u!1 &6711657075253115331 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5037364013845487407, guid: e7a97997982fd8148b3da9c323a3719b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1787040017343473388}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8088247154282162395 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7562650448103411255, guid: e7a97997982fd8148b3da9c323a3719b,

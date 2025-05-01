@@ -42,6 +42,16 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b44409e9bf9aac4f9c1699c5f27a15c
+    m_Address: Assets/Art/UI/WaypointText/nocurrentobjective.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1a3daeb12b7248448bc8ff09ca0833e
+    m_Address: Assets/Art/UI/WaypointText/killallbugs.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a95ac6638e706cf4fb964d36ae198902, type: 2}
   m_SchemaSet:

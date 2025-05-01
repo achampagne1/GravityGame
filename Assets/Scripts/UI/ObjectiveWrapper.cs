@@ -27,7 +27,7 @@ public class ObjectiveWrapper : ScriptableObject
         }, visualElement);
         objectives.Push(objective);
 
-        name = "killallenemies";
+        name = "killallbugs";
         GameObject enemyList = GameObject.Find("Enemies");
         visualElement = await createVisualElement(name);
         objective = new Objective(name, () =>
@@ -39,7 +39,8 @@ public class ObjectiveWrapper : ScriptableObject
 
 
         name = "getyourgun";
-        GameObject spaceManHand = GameObject.Find("SpaceManHand");
+        GameObject spaceMan = GameObject.Find("SpaceMan");
+        GameObject spaceManHand = spaceMan.transform.Find("Hand").gameObject;
         visualElement = await createVisualElement(name);
         objective = new Objective(name, () =>
         {
@@ -47,6 +48,14 @@ public class ObjectiveWrapper : ScriptableObject
             {
                 return true;
             }
+            return false;
+        }, visualElement);
+        objectives.Push(objective);
+
+        name = "nocurrentobjective";
+        visualElement = await createVisualElement(name);
+        objective = new Objective(name, () =>
+        {
             return false;
         }, visualElement);
         objectives.Push(objective);

@@ -23,6 +23,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] float textRevealSpeed = 1f;
     [SerializeField] AudioClip radioStaticClip;
     [SerializeField] AudioClip tabletHum;
+    [SerializeField] AudioClip comsAcknowledge;
 
     //object creation
     public static UIHandler instance { get; private set; }
@@ -92,26 +93,18 @@ public class UIHandler : MonoBehaviour
         audioSource = GetComponent<AudioSource>();
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
-        StartCoroutine(objectivesStart());
-    }
-    private IEnumerator objectivesStart()
-    {
-        objectiveWrapper = new ObjectiveWrapper();
-        var initializeTask = objectiveWrapper.initializeObjectives();
-        while (!initializeTask.IsCompleted)
-            yield return null;
-        currentObjective = objectiveWrapper.getNextObjective();
-        objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
     }
 
     // Update is called once per frame
     void Update()
     {
         bubbleText.style.fontSize = Screen.width / screenTextScaler;
+
         if (currentHealth <= .3f)
         {
             warningBarFunction();
         }
+
         if (escapeKey.wasPressedWithCooldown()&&!eClicked)
         {
             escapeClicked = !escapeClicked;
@@ -156,6 +149,7 @@ public class UIHandler : MonoBehaviour
         //it automatically "pulls it back down" however, if there is more text inconversation 
         if (rKey.wasPressedWithCooldown())
         {
+            audioSource.PlayOneShot(comsAcknowledge);
             if(revealBubbleTextCoroutine == null)
             {
                 acknowledgeComs = true;
@@ -165,19 +159,6 @@ public class UIHandler : MonoBehaviour
             {
                 revealOverride = true;
             }
-        }
-
-        try
-        {
-            if (currentObjective.completionCondition()) //this acounts for the async nature of the objective loading
-            {
-                currentObjective = objectiveWrapper.getNextObjective();
-
-                objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
-            }
-        }
-        catch{
-            int ham = 1;
         }
     }
 
@@ -270,17 +251,21 @@ public class UIHandler : MonoBehaviour
 
     public void setBubbleText(string text,float width, float height) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73
     {
+        revealBubbleTextCoroutine = StartCoroutine(bubbleTextReveal(text, width, height));
+    }
+
+    private IEnumerator bubbleTextReveal(string text, float width, float height)
+    {
+        if (revealBubbleTextCoroutine != null)
+            StopCoroutine(revealBubbleTextCoroutine);
+
         coms(true); //pull up coms
         textBubble.style.width = Length.Percent(width);
-        textBubble.style.left = Length.Percent(90-width);//this is to adjust for the end of the bubble
+        textBubble.style.left = Length.Percent(90 - width);//this is to adjust for the end of the bubble
         textBubble.style.height = Length.Percent(height);
         textBubble.style.top = Length.Percent(88.336f - .667f * height);//this is to adjust the height of the bubble
         bubbleText.text = ""; //resets the text bubble
-        revealBubbleTextCoroutine = StartCoroutine(bubbleTextReveal(text));
-    }
 
-    private IEnumerator bubbleTextReveal(string text)
-    {
         audioSource.clip = radioStaticClip;
         audioSource.Play();
         foreach (char character in text)
@@ -305,6 +290,12 @@ public class UIHandler : MonoBehaviour
     {
         //NOTE: should objectives be soley handled by the level manager and the ui is only responsible for setting the text?
         return currentObjective;
+    }
+
+    public void setCurrentObjective(Objective currentObjective)
+    {
+        this.currentObjective = currentObjective;
+        objectiveContainer.style.backgroundImage = currentObjective.visualElement.resolvedStyle.backgroundImage;
     }
 
     public bool getAcknowledgeComs()
