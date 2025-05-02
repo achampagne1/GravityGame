@@ -93,8 +93,6 @@ public class HandController : MonoBehaviour
 
     private void holdingSomething()
     {
-        if (!holdingLatch)
-            setChild(transform.GetChild(0));
 
         float angleRad = Mathf.Atan2(inputDirection.y, inputDirection.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;

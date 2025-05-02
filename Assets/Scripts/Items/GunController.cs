@@ -31,6 +31,7 @@ public class GunController : ItemController
 
     public void Start()
     {
+        facingLeft = transform.localScale.x < 0;
         Physics2D.IgnoreLayerCollision(9, 13, true);
         Physics2D.IgnoreLayerCollision(11, 13, true);
         Physics2D.IgnoreLayerCollision(13, 13, true);
@@ -39,14 +40,7 @@ public class GunController : ItemController
         bulletObject = transform.GetChild(0).gameObject; //the bullet is the first child object of the gun
         audioSource = GetComponent<AudioSource>();
         if (parented)
-        {
-            GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
-            GameObject hand = transform.parent.gameObject;
-            handController = hand.GetComponent<HandController>();
-            shotBy = hand.layer;
-            playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
-
-        }
+            parentingHelper();
 
         try
         {
@@ -60,29 +54,21 @@ public class GunController : ItemController
         calculateItemStart();   
     }
 
-    public void Update()
+    public void FixedUpdate()
     {
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
+
         calculateItemUpdate();
         if (parented)
         {
             if (!parentLatch)
-            {
-                GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
-                GameObject hand = transform.parent.gameObject;
-                handController = hand.GetComponent<HandController>();
-                shotBy = hand.layer;
-                playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
-            }
+                parentingHelper();
+
             rb.bodyType = RigidbodyType2D.Kinematic;
             floatFlag = false;
             gravityAffected = false;    
             orientToGravity = false;
             facingLeft = handController.getFacingLeft();
-            /**if (Mouse.current.leftButton.wasPressedThisFrame) //I would like to have it come from the hand controller but thats laggy
-            {
-                shootWrapper();
-            }**/
         }
         else
         {
@@ -97,6 +83,7 @@ public class GunController : ItemController
                 gravityAffected = true;
                 orientToGravity = true;
             }
+
             //floatFlag=true; 
 
         }
@@ -128,14 +115,22 @@ public class GunController : ItemController
         forceBuffer = force;
     }
 
+    private void parentingHelper()
+    {
+        GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
+        GameObject hand = transform.parent.gameObject;
+        handController = hand.GetComponent<HandController>();
+        shotBy = hand.layer;
+        playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
+    }
     public void setParent(GameObject parent)
     {
         transform.SetParent(parent.transform); //slightly different method
-        transform.rotation = parent.transform.rotation;
+        transform.rotation = Quaternion.identity;
         if (parent.gameObject.GetComponent<HandController>().getFacingLeft()!=facingLeft)
         {
             transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
-            transform.localPosition = new Vector3(3f, -1f, 0f); //for setting location of gun in hand
+            transform.localPosition = new Vector3(-3f, -1f, 0f); //for setting location of gun in hand
             facingLeft = !facingLeft;
         }
         else
