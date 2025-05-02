@@ -11,6 +11,7 @@ public class SpaceManController : SpacePersonController
     private bool clickPressed = false;
     [SerializeField] float[] playArea = { 50, 50 }; //generic play area 
     [SerializeField] float cameraShift = -110f; //for some reason this corrects the camera shift when the camera is shifted 20
+    [SerializeField] VCamController camController;
 
 
 
@@ -41,9 +42,14 @@ public class SpaceManController : SpacePersonController
 
     public override void Update()
     {
+        Vector3 handDirection = mouseToDirection(Input.mousePosition, transform.rotation);
+        handController.setInputDirection(handDirection);
         if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            if (handController.getHoldingObject() != null && handController.getHoldingObject().name == "Gun") //will need to be updated wehn more guns are added
+                camController.setGunRecoil(handDirection);
             handController.useHand();
-        handController.setInputDirection(mouseToDirection(Input.mousePosition, transform.rotation));
+        }
     }
 
     private Vector3 mouseToDirection(Vector3 inputDirection, Quaternion playerRotation)

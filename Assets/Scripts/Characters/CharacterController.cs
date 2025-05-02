@@ -51,7 +51,8 @@ public class CharacterController : ObjectController
         Physics2D.IgnoreLayerCollision(9, 11, true);
         Physics2D.IgnoreLayerCollision(11, 11, true);
 
-        audioController = GetComponent<AudioController>();
+        if(GetComponent<AudioController>()!= null) //sorta temporary
+            audioController = GetComponents<AudioController>()[0];
 
         health = maxHealth;
 
@@ -319,6 +320,11 @@ public class CharacterController : ObjectController
     public float getMaxHealth()
     {
         return maxHealth;
+    }
+
+    public bool getDead()
+    {
+        return dead;
     }
 
     public void setBulletStrikeLocation(Vector3 bulletStrikeLocation)

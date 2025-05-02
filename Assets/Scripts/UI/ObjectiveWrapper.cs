@@ -29,10 +29,22 @@ public class ObjectiveWrapper : ScriptableObject
 
         name = "killallbugs";
         GameObject enemyList = GameObject.Find("Enemies");
+        List<CharacterController> enemyControllers = new List<CharacterController>();
+        foreach(Transform enemy in enemyList.transform)
+        {
+            enemyControllers.Add(enemy.gameObject.GetComponent<CharacterController>());
+        }
         visualElement = await createVisualElement(name);
         objective = new Objective(name, () =>
         {
-            return enemyList.transform.childCount == 0;
+            foreach(CharacterController enemy in enemyControllers)
+            {
+                if (enemy != null || !enemy.getDead())
+                {
+                    return false;
+                }
+            }
+            return true;
         }, visualElement);
         objectives.Push(objective);
 

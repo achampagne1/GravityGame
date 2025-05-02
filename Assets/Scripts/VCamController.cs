@@ -12,6 +12,7 @@ public class VCamController : MonoBehaviour
     [SerializeField] float duration = 1f;
     [SerializeField] float magnitude = 1f;
     [SerializeField] bool shake = false;
+    private Vector2 direction = new Vector2(0,0);
     // Start is called before the first frame update
     void Start()
     {
@@ -31,6 +32,12 @@ public class VCamController : MonoBehaviour
             StartCoroutine(shakeFunc());
             shake = false;
         }
+
+        if(direction != Vector2.zero)
+        {
+            StartCoroutine(gunRecoil(direction));
+            direction = Vector2.zero;
+        }
     }
 
     private IEnumerator shakeFunc()
@@ -42,7 +49,31 @@ public class VCamController : MonoBehaviour
             float xOffset = Random.Range(-.5f, .5f) * magnitude;
             float yOffset = Random.Range(-.5f, .5f) * magnitude;
 
-            transform.localPosition = new Vector3(xOffset, yOffset, originalPos.z);
+            transform.localPosition = new Vector3(xOffset, yOffset+20, originalPos.z);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+        transform.localPosition = originalPos;
+    }
+
+    private IEnumerator gunRecoil(Vector2 direction)
+    {
+        Vector3 originalPos = transform.localPosition;
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x+(-direction.x*magnitude), transform.localPosition.y + (-direction.y * magnitude), originalPos.z);
+
+            elapsedTime += Time.deltaTime;
+
+            yield return null;
+        }
+        elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            transform.localPosition = new Vector3(transform.localPosition.x + (+direction.x * magnitude), transform.localPosition.y + (+direction.y * magnitude), originalPos.z);
 
             elapsedTime += Time.deltaTime;
 
@@ -55,4 +86,10 @@ public class VCamController : MonoBehaviour
     {
         this.shake = shake;
     }
+
+    public void setGunRecoil(Vector2 direction)
+    {
+        this.direction = direction;
+    }
+
 }

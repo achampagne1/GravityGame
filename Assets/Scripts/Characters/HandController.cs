@@ -131,6 +131,14 @@ public class HandController : MonoBehaviour
         return holding;
     }
 
+    public GameObject getHoldingObject()
+    {
+        if (holding > 0)
+            return transform.GetChild(0).gameObject;
+        else
+            return null;
+    }
+
     public void destroyWrapper()
     {
         Destroy(gameObject);

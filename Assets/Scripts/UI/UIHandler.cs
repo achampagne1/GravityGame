@@ -17,13 +17,11 @@ public class UIHandler : MonoBehaviour
     private bool coroutineRunning = false;
     private bool acknowledgeComs = false;
     private bool revealOverride = false;
+    private bool up = false;
     [SerializeField] float speed = .05f;
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
     [SerializeField] float textRevealSpeed = 1f;
-    [SerializeField] AudioClip radioStaticClip;
-    [SerializeField] AudioClip tabletHum;
-    [SerializeField] AudioClip comsAcknowledge;
 
     //object creation
     public static UIHandler instance { get; private set; }
@@ -45,12 +43,14 @@ public class UIHandler : MonoBehaviour
     private VisualElement textBubble;
     private Label bubbleText;
 
-    private ObjectiveWrapper objectiveWrapper;
     private Objective currentObjective;
     private InputSystemHelper escapeKey;
     private InputSystemHelper eKey;
     private InputSystemHelper rKey;
-    private AudioSource audioSource;
+
+    private AudioSource comsStaticAudioSource;
+    private AudioSource comsAcknowledgeAudioSource;
+    private AudioSource tabletHumAudioSource;
 
     private Coroutine moveScanLinesCoroutine;
     private Coroutine revealBubbleTextCoroutine;
@@ -90,7 +90,9 @@ public class UIHandler : MonoBehaviour
         eKey = new InputSystemHelper(Keyboard.current.eKey);
         rKey = new InputSystemHelper(Keyboard.current.rKey);
         pauseMenu.style.top = Length.Percent(110);
-        audioSource = GetComponent<AudioSource>();
+        comsStaticAudioSource = (GetComponents<AudioSource>())[0];
+        comsAcknowledgeAudioSource = (GetComponents<AudioSource>())[1];
+        tabletHumAudioSource = (GetComponents<AudioSource>())[2];
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
     }
@@ -147,9 +149,9 @@ public class UIHandler : MonoBehaviour
         }
         //coms lokcout is needed so the player cant retract coms when new text is supposed to be displayed
         //it automatically "pulls it back down" however, if there is more text inconversation 
-        if (rKey.wasPressedWithCooldown())
+        if (rKey.wasPressedWithCooldown() && up)
         {
-            audioSource.PlayOneShot(comsAcknowledge);
+            comsAcknowledgeAudioSource.PlayOneShot(comsAcknowledgeAudioSource.clip);
             if(revealBubbleTextCoroutine == null)
             {
                 acknowledgeComs = true;
@@ -208,6 +210,7 @@ public class UIHandler : MonoBehaviour
 
     public void coms(bool up)
     {
+        this.up = up;
         if (!up)
         {
             comsOverlay.style.top = Length.Percent(100f);
@@ -218,24 +221,23 @@ public class UIHandler : MonoBehaviour
 
     private IEnumerator fadeInHum()
     {
-        audioSource.clip = tabletHum;
-        audioSource.Play();
-        audioSource.volume = 0f;
-        while (audioSource.volume < .5f)
+        tabletHumAudioSource.Play();
+        tabletHumAudioSource.volume = 0f;
+        while (tabletHumAudioSource.volume < .5f)
         {
-            audioSource.volume += .1f;
+            tabletHumAudioSource.volume += .1f;
             yield return new WaitForSeconds(.00075f);
         }
     }
 
     private IEnumerator fadeOutHum()
     {
-        while (audioSource.volume > 0f)
+        while (tabletHumAudioSource.volume > 0f)
         {
-            audioSource.volume -= .1f;
+            tabletHumAudioSource.volume -= .1f;
             yield return new WaitForSeconds(.00075f);
         }
-        audioSource.Stop();
+        tabletHumAudioSource.Stop();
     }
 
     public void setHealthValue(float health)
@@ -266,8 +268,7 @@ public class UIHandler : MonoBehaviour
         textBubble.style.top = Length.Percent(88.336f - .667f * height);//this is to adjust the height of the bubble
         bubbleText.text = ""; //resets the text bubble
 
-        audioSource.clip = radioStaticClip;
-        audioSource.Play();
+        comsStaticAudioSource.Play();
         foreach (char character in text)
         {
             if (!revealOverride)
@@ -282,7 +283,7 @@ public class UIHandler : MonoBehaviour
                 break;
             }
         }
-        audioSource.Stop();
+        comsStaticAudioSource.Stop();
         revealBubbleTextCoroutine = null;
     }
 

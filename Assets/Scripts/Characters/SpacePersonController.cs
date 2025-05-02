@@ -9,6 +9,7 @@ public class SpacePersonController : CharacterController
     private Animator animator; //movved
     private SpriteRenderer jetPackFlame;
     protected HandController handController;
+    private AudioSource jetPackAudioSource;
     protected Timer hoverTimer;
 
     //public game variables;
@@ -29,6 +30,7 @@ public class SpacePersonController : CharacterController
 
     public void calculateSpacePersonStart()
     {    
+        jetPackAudioSource = GetComponents<AudioSource>()[1];
         foreach(Transform child in transform)
         {
             if (child.name == "JetPackFlame")
@@ -60,6 +62,7 @@ public class SpacePersonController : CharacterController
         rotatedY = -gravityDirection.y;
         if (space && groundTimer.checkTimer() && currentFuel > 0)
         {
+            jetPackAudioSource.Play();
             hoverFlag = true;
             Color color = jetPackFlame.color;
             color.a = 1.0f; // Set alpha (0 = transparent, 1 = opaque)
@@ -69,6 +72,7 @@ public class SpacePersonController : CharacterController
 
         if (!space || currentFuel == 0)
         {
+            jetPackAudioSource.Stop();
             hoverFlag = false;
             Color color = jetPackFlame.color;
             color.a = 0.0f; // Set alpha (0 = transparent, 1 = opaque)
