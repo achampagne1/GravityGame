@@ -152,7 +152,7 @@ public class UIHandler : MonoBehaviour
         if (rKey.wasPressedWithCooldown() && up)
         {
             comsAcknowledgeAudioSource.PlayOneShot(comsAcknowledgeAudioSource.clip);
-            if(revealBubbleTextCoroutine == null)
+            if (revealBubbleTextCoroutine == null)
             {
                 acknowledgeComs = true;
                 coms(false);
@@ -162,6 +162,8 @@ public class UIHandler : MonoBehaviour
                 revealOverride = true;
             }
         }
+        else
+            acknowledgeComs = false;
     }
 
     private IEnumerator shiftOverlayRoutine(float parentTop,VisualElement[] overlayArray)

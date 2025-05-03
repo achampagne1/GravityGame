@@ -18,6 +18,7 @@ public class GunController : ItemController
     private Transform playerBody;
     private HandController handController;
     private Timer throwTimer;
+    private Timer throwTimer2;
     private Animator animator;
     private AudioSource audioSource;
     [SerializeField] private AudioClip gunshotClip;
@@ -62,29 +63,29 @@ public class GunController : ItemController
         if (parented)
         {
             if (!parentLatch)
+            {
                 parentingHelper();
-
-            rb.bodyType = RigidbodyType2D.Kinematic;
-            floatFlag = false;
-            gravityAffected = false;    
-            orientToGravity = false;
+                rb.bodyType = RigidbodyType2D.Kinematic;
+                floatFlag = false;
+                gravityAffected = false;
+                orientToGravity = false;
+            }
             facingLeft = handController.getFacingLeft();
         }
         else
         {
-            rb.bodyType = RigidbodyType2D.Dynamic;
             if (parentLatch)
             {
+                rb.bodyType = RigidbodyType2D.Dynamic;
                 rb.AddForce(forceBuffer, ForceMode2D.Impulse);
                 forceBuffer = new Vector2(0, 0);
                 handController = null;
                 playerBody = null;
                 shotBy = 2; //ignore raycast layer
-                gravityAffected = true;
+                gravityAffected = false;
                 orientToGravity = true;
+                floatFlag=true; 
             }
-
-            //floatFlag=true; 
 
         }
         parentLatch = parented;
@@ -126,7 +127,7 @@ public class GunController : ItemController
     public void setParent(GameObject parent)
     {
         transform.SetParent(parent.transform); //slightly different method
-        transform.rotation = Quaternion.identity;
+        transform.localRotation = Quaternion.identity;
         if (parent.gameObject.GetComponent<HandController>().getFacingLeft()!=facingLeft)
         {
             transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);

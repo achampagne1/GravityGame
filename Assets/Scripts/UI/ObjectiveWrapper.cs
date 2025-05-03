@@ -19,9 +19,30 @@ public class ObjectiveWrapper : ScriptableObject
 
     public async Task initializeObjectives()
     {
-        string name = "gettoteleporter";
+        string name = "defeatthegreenteam";
+        GameObject enemyList2 = GameObject.Find("Enemies");
+        List<CharacterController> enemyControllers2 = new List<CharacterController>();
+        foreach (Transform enemy in enemyList2.transform)
+        {
+            enemyControllers2.Add(enemy.gameObject.GetComponent<CharacterController>());
+        }
         VisualElement visualElement = await createVisualElement(name);
         Objective objective = new Objective(name, () =>
+        {
+            foreach (CharacterController enemy in enemyControllers2)
+            {
+                if (enemy != null || !enemy.getDead())
+                {
+                    return false;
+                }
+            }
+            return true;
+        }, visualElement);
+        objectives.Push(objective);
+
+        name = "gettoteleporter";
+        visualElement = await createVisualElement(name);
+        objective = new Objective(name, () =>
         {
             return false;
         }, visualElement);

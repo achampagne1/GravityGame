@@ -14,6 +14,7 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject uIDocument;
     [SerializeField] GameObject asteroidTrigger1;
     [SerializeField] GameObject starList;
+    [SerializeField] GameObject enemySpawnTrigger;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
@@ -88,6 +89,7 @@ public class LevelManager : MonoBehaviour
 
         //waits for player to aknowledge or timer runs out
         eventTimer.setNewTime(10f);
+        eventTimer.resetTimer();
         yield return new WaitUntil(acknowledgeOrWait);
 
         if(eventChoice == 1)
@@ -107,18 +109,33 @@ public class LevelManager : MonoBehaviour
 
         //sets objective as get your gun and waits until it is completed
         uIHandler.setBubbleText("Good work. There is a gun in the space station.\nGo ahead and pick it up. I added it as an objective.", 42f, 14f);
-        yield return objectivesStuff();
+        yield return objectivesStuff(true);
         //kill all bugs 
         uIHandler.setBubbleText("Now for target practice. You see those bugs?\nTake em out!", 35f, 14f);
-        yield return objectivesStuff();
+        yield return objectivesStuff(true);
 
-        //Level End Stuff
+        //sets next objective to get to teleporter
+        yield return objectivesStuff(false);
 
         //get to teleporter
         uIHandler.setBubbleText("Thats about it for training today.\nStart making your way to the teleporter.", 32f, 14f);
         //activate teleporter2
         TeleporterController teleporterController2 = teleporter2.GetComponent<TeleporterController>();
         teleporterController2.toggleStateFunc();
+        //waits for player to intersect with enemy trigger
+        PlanetTrigger trigger = enemySpawnTrigger.GetComponent<PlanetTrigger>();
+        yield return new WaitUntil(() => trigger.checkIfOverlapping("SpaceMan"));
+
+        //generals orders
+        uIHandler.setBubbleText("Uh oh, hang on kid! Looks like you've got company!", 40f, 8f);
+        //waits for player to aknowledge or timer runs out
+        eventTimer.setNewTime(10f);
+        yield return new WaitUntil(acknowledgeOrWait);
+        uIHandler.setBubbleText("Thats the Green Team! How'd they find this place?!\n We can't beam you up while they're here.", 40f, 14f);
+        teleporterController2.toggleStateFunc();
+        yield return objectivesStuff(true);
+        Debug.Log("done");
+
         //waits until player is on the pad
         yield return new WaitUntil(() => teleporterController2.getPlayerOnPad());
 
@@ -150,11 +167,13 @@ public class LevelManager : MonoBehaviour
         if (uIHandler.getAcknowledgeComs())
         {
             eventChoice = 1;
+            eventTimer.resetTimer();
             return true;
         }
         else if (eventTimer.checkTimer())
         {
             eventChoice = 2;
+            eventTimer.resetTimer();
             return true;
         }
         else
@@ -162,12 +181,15 @@ public class LevelManager : MonoBehaviour
     }
 
     //this is to abstract all the tiny stuff needed for objectives
-    private IEnumerator objectivesStuff()
+    private IEnumerator objectivesStuff(bool wait)
     {
         currentObjective = objectiveWrapper.getNextObjective();
         Debug.Log(currentObjective.name);
         uIHandler.setCurrentObjective(currentObjective);
-        yield return new WaitUntil(() => currentObjective.completionCondition());
+        if(wait)
+            yield return new WaitUntil(() => currentObjective.completionCondition());
+        else
+            yield return null;
     }
 
     private IEnumerator objectivesStart()
