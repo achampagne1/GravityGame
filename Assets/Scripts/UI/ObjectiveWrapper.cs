@@ -20,18 +20,13 @@ public class ObjectiveWrapper : ScriptableObject
     public async Task initializeObjectives()
     {
         string name = "defeatthegreenteam";
-        GameObject enemyList2 = GameObject.Find("Enemies");
-        List<CharacterController> enemyControllers2 = new List<CharacterController>();
-        foreach (Transform enemy in enemyList2.transform)
-        {
-            enemyControllers2.Add(enemy.gameObject.GetComponent<CharacterController>());
-        }
+        GameObject enemies = GameObject.Find("Enemies");
         VisualElement visualElement = await createVisualElement(name);
         Objective objective = new Objective(name, () =>
         {
-            foreach (CharacterController enemy in enemyControllers2)
+            foreach (Transform enemy in enemies.transform)
             {
-                if (enemy != null || !enemy.getDead())
+                if (enemy.gameObject.tag == "SpaceZombie")
                 {
                     return false;
                 }
@@ -49,18 +44,12 @@ public class ObjectiveWrapper : ScriptableObject
         objectives.Push(objective);
 
         name = "killallbugs";
-        GameObject enemyList = GameObject.Find("Enemies");
-        List<CharacterController> enemyControllers = new List<CharacterController>();
-        foreach(Transform enemy in enemyList.transform)
-        {
-            enemyControllers.Add(enemy.gameObject.GetComponent<CharacterController>());
-        }
         visualElement = await createVisualElement(name);
         objective = new Objective(name, () =>
         {
-            foreach(CharacterController enemy in enemyControllers)
+            foreach (Transform enemy in enemies.transform)
             {
-                if (enemy != null || !enemy.getDead())
+                if (enemy.gameObject.tag == "Bug")
                 {
                     return false;
                 }

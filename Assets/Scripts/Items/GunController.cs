@@ -84,7 +84,7 @@ public class GunController : ItemController
                 shotBy = 2; //ignore raycast layer
                 gravityAffected = false;
                 orientToGravity = true;
-                floatFlag=true; 
+                //floatFlag=true; 
             }
 
         }
@@ -124,6 +124,7 @@ public class GunController : ItemController
         shotBy = hand.layer;
         playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
     }
+
     public void setParent(GameObject parent)
     {
         transform.SetParent(parent.transform); //slightly different method

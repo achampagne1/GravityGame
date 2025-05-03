@@ -29,8 +29,16 @@ public class SpacePersonController : CharacterController
 
 
     public void calculateSpacePersonStart()
-    {    
-        jetPackAudioSource = GetComponents<AudioSource>()[1];
+    {
+        try
+        {
+            jetPackAudioSource = GetComponents<AudioSource>()[1];
+        }
+        catch
+        {
+            Debug.LogError("no attached audio source");
+        }
+
         foreach(Transform child in transform)
         {
             if (child.name == "JetPackFlame")

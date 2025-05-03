@@ -327,6 +327,11 @@ public class CharacterController : ObjectController
         return dead;
     }
 
+    public string getTag()
+    {
+        return gameObject.tag;
+    }
+
     public void setBulletStrikeLocation(Vector3 bulletStrikeLocation)
     {
         this.bulletStrikeLocation = bulletStrikeLocation;

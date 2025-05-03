@@ -10,10 +10,12 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject teleporter;
     [SerializeField] GameObject teleporter2;
     [SerializeField] GameObject player;
+    [SerializeField] GameObject greenTeamOriginal;
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject uIDocument;
     [SerializeField] GameObject asteroidTrigger1;
     [SerializeField] GameObject starList;
+    [SerializeField] GameObject enemies;
     [SerializeField] GameObject enemySpawnTrigger;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
@@ -126,16 +128,36 @@ public class LevelManager : MonoBehaviour
         PlanetTrigger trigger = enemySpawnTrigger.GetComponent<PlanetTrigger>();
         yield return new WaitUntil(() => trigger.checkIfOverlapping("SpaceMan"));
 
+
         //generals orders
         uIHandler.setBubbleText("Uh oh, hang on kid! Looks like you've got company!", 40f, 8f);
+        //spawns green team
+        GameObject one = Instantiate(greenTeamOriginal, new Vector3(-36f,-6f,0f), Quaternion.identity);
+        one.tag = "SpaceZombie";
+        one.transform.SetParent(enemies.transform);
+        one.GetComponent<Rigidbody2D>().simulated = true;
+        GameObject two = Instantiate(greenTeamOriginal, new Vector3(-53f, -25f, 0f), Quaternion.identity);
+        two.GetComponent<Rigidbody2D>().simulated = true;
+        two.tag = "SpaceZombie";
+        two.transform.SetParent(enemies.transform);
+        GameObject three = Instantiate(greenTeamOriginal, new Vector3(-36f, -36f, 0f), Quaternion.identity);
+        three.tag = "SpaceZombie";
+        three.GetComponent<Rigidbody2D>().simulated = true;
+        three.transform.SetParent(enemies.transform);
+        GameObject four = Instantiate(greenTeamOriginal, new Vector3(-22f, -22f, 0f), Quaternion.identity);
+        four.tag = "SpaceZombie";
+        four.GetComponent<Rigidbody2D>().simulated = true;
+        four.transform.SetParent(enemies.transform);
         //waits for player to aknowledge or timer runs out
         eventTimer.setNewTime(10f);
         yield return new WaitUntil(acknowledgeOrWait);
-        uIHandler.setBubbleText("Thats the Green Team! How'd they find this place?!\n We can't beam you up while they're here.", 40f, 14f);
+        uIHandler.setBubbleText("Thats the Green Team! How'd they find this place?!\nWe can't beam you up while they're here.", 40f, 14f);
         teleporterController2.toggleStateFunc();
         yield return objectivesStuff(true);
-        Debug.Log("done");
 
+        //green team defeated
+        uIHandler.setBubbleText("WOOOO you took care of those guys!\nNow we can get you. Get back to the teleporter.", 37f, 14f);
+        teleporterController2.toggleStateFunc();
         //waits until player is on the pad
         yield return new WaitUntil(() => teleporterController2.getPlayerOnPad());
 

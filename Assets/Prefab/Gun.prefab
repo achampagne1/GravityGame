@@ -33,7 +33,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 5.548, y: 7.935, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 1
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8781384286103118891}
   m_Father: {fileID: 0}
@@ -80,7 +80,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_Sprite: {fileID: -6628414004274166170, guid: 668d53b80a71d5b48a72d23585bc8892,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -106,12 +106,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   terminalVelocity: 30
-  gravityAffected: 1
-  orientToGravity: 1
-  updateGravityField: 1
+  gravityAffected: 0
+  orientToGravity: 0
+  updateGravityField: 0
   calculateIsGrounded: 0
   simulated: 1
   floatFlag: 0
+  magnitudeOfFloat: 0.1
+  flaotSpeed: 4
   gunshotClip: {fileID: 8300000, guid: f531f1bba93abff4d8eeca4e65344fac, type: 3}
 --- !u!50 &490096820176868143
 Rigidbody2D:
@@ -121,7 +123,7 @@ Rigidbody2D:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2956059173827187456}
-  m_BodyType: 0
+  m_BodyType: 1
   m_Simulated: 1
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
@@ -139,7 +141,7 @@ Rigidbody2D:
   m_Interpolate: 0
   m_SleepingMode: 1
   m_CollisionDetection: 0
-  m_Constraints: 0
+  m_Constraints: 4
 --- !u!61 &4622401280902540694
 BoxCollider2D:
   m_ObjectHideFlags: 0

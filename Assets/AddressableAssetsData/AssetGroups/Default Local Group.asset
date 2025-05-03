@@ -52,6 +52,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8303576dafea9c044b052eb7ceb7971e
+    m_Address: Assets/Art/UI/WaypointText/defeatthegreenteam.png
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   m_ReadOnly: 0
   m_Settings: {fileID: 11400000, guid: a95ac6638e706cf4fb964d36ae198902, type: 2}
   m_SchemaSet:
