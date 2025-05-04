@@ -39,6 +39,8 @@ public class UIHandler : MonoBehaviour
     private VisualElement[] overlayArrayPause = new VisualElement[25];
     private VisualElement[] overlayArrayEnd = new VisualElement[25];
     private VisualElement endScreen;
+    private VisualElement levelComplete;
+    private VisualElement levelFailed;
     private VisualElement comsOverlay;
     private VisualElement textBubble;
     private Label bubbleText;
@@ -78,6 +80,8 @@ public class UIHandler : MonoBehaviour
         overlayContainerEnd = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainerEnd");
         overlayArrayEnd = overlayContainerEnd.Query<VisualElement>("overlayEnd").ToList().ToArray();
         endScreen = uiDocument.rootVisualElement.Q<VisualElement>("endScreen");
+        levelComplete = uiDocument.rootVisualElement.Q<VisualElement>("levelComplete");
+        levelFailed = uiDocument.rootVisualElement.Q<VisualElement>("levelFailed");
         comsOverlay = uiDocument.rootVisualElement.Q<VisualElement>("coms");
         textBubble = uiDocument.rootVisualElement.Q<VisualElement>("textBubble");
         bubbleText = uiDocument.rootVisualElement.Q<Label>("bubbleText");
@@ -204,8 +208,19 @@ public class UIHandler : MonoBehaviour
             fadeCounter = 180;
     }
 
-    public void showLevelEnd() //maybe chnge this to a bool, however, level end should only be displayed once
+    //if complete is true then level complete show. if not then level failed
+    public void showLevelEnd(bool complete) //maybe chnge this to a bool, however, level end should only be displayed once
     {
+        if (complete)
+        {
+            levelComplete.style.opacity = 1f;
+            levelFailed.style.opacity = 0f;
+        }
+        else
+        {
+            levelComplete.style.opacity = 0f;
+            levelFailed.style.opacity = 1f;
+        }
         endScreen.style.top = 0f;
         StartCoroutine(shiftOverlayRoutine(overlayContainerEnd.resolvedStyle.height, overlayArrayEnd));
     }

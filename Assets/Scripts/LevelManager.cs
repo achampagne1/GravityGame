@@ -175,7 +175,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(.1f);
 
         //shows level complete screen
-        uIHandler.showLevelEnd();
+        uIHandler.showLevelEnd(true);
         yield return new WaitForSeconds(1.9f);
 
         //shuts off the beam

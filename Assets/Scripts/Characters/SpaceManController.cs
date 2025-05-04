@@ -12,6 +12,7 @@ public class SpaceManController : SpacePersonController
     [SerializeField] float[] playArea = { 50, 50 }; //generic play area 
     [SerializeField] float cameraShift = -110f; //for some reason this corrects the camera shift when the camera is shifted 20
     [SerializeField] VCamController camController;
+    [SerializeField] UIHandler uIHandler;
 
 
 
@@ -84,4 +85,10 @@ public class SpaceManController : SpacePersonController
         else
             return 1;
     }
+    protected override IEnumerator die()
+    {
+        uIHandler.showLevelEnd(false);
+        yield return base.die();
+    }
+
 }

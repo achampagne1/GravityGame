@@ -117,27 +117,6 @@ public class SpaceZombieController : SpacePersonController
         }
     }
 
-    /**private bool detectPlayer()
-    { //pass getcharacterOrientation, getfacingLeft, and transform.
-        for (int i = 0; i<60; i++)
-        {
-            float angle =  (getCharacterOrientation()+30 - i +(System.Convert.ToSingle(getFacingLeft()) *180)) % 360;
-            Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));
-            RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(transform.position,temp, 100f);
-            foreach (RaycastHit2D hit in lookForPlayer)
-            {
-                if (hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 15)
-                    break;
-                if (hit.collider.gameObject != gameObject&& hit.collider.gameObject.layer == 9)
-                {
-                    playerDirection = new Vector3(temp.x, temp.y, 0f);
-                    return true;
-                }
-            }
-        }
-        return false;
-    }**/
-
     public void newInstance()
     {
         first = false;
