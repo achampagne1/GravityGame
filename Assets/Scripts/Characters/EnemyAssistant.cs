@@ -4,13 +4,13 @@ using UnityEngine;
 
 public struct EnemyAssistant
 {
-    public static Vector3 detectPlayer(float characterOrientation, bool facingLeft, Transform transform, GameObject gameObject)
+    public static Vector3 detectPlayer(bool facingLeft,GameObject gameObject)
     {
         for (int i = 0; i < 60; i++)
         {
-            float angle = (characterOrientation + 30 - i + (System.Convert.ToSingle(facingLeft) * 180)) % 360;
+            float angle = (gameObject.transform.rotation.z + 30 - i + (System.Convert.ToSingle(facingLeft) * 180)) % 360;
             Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));
-            RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(transform.position, temp, 30f);
+            RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(gameObject.transform.position, temp, 30f);
             foreach (RaycastHit2D hit in lookForPlayer)
             {
                 if (hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 15)
