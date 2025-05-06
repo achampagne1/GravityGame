@@ -8,6 +8,7 @@ public class BugController : CharacterController
     [SerializeField] float jumpAngle = 20f;
     [SerializeField] float jumpMagnitude = 10f;
     private bool pounceRunning = false;
+    bool latch = true;
 
     // Start is called before the first frame update
     void Start()
@@ -19,13 +20,15 @@ public class BugController : CharacterController
     void FixedUpdate()
     {
         //BIG NOTE: the bug sprtie it facing left generically so we need the inverse of facing left to get the actual facing left
-        if(EnemyAssistant.detectPlayer(!getFacingLeft(), gameObject) != new Vector3(0f,0f,1f)&&!pounceRunning)
+        if(latch)
         {
-            StartCoroutine(pounce());
+            forceLocal = new Vector2(10f, 10f);
+            //StartCoroutine(pounce());
+            latch = false;
         }
         else
         {
-            setMovement(1);
+            //setMovement(1);
             setOrientation(-1);
         }
         calculateCharacterUpdate();

@@ -70,7 +70,7 @@ public class ObjectController : MonoBehaviour
                     rb.AddForce(gravityForce * 5);
                 }
                 **/
-                rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
+                //rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
             }
 
             if (orientToGravity)

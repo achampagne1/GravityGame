@@ -19,7 +19,7 @@ public class CharacterController : ObjectController
     [SerializeField] protected float maxHealth = 3f; //default max health is 3
     [SerializeField] protected  bool invincibleFlag = false;
     [SerializeField] protected float health = 0f;
-    [SerializeField] bool jumpCorectionOverride = false;
+    [SerializeField] bool forceLocalAdded = false;
     protected float rotatedX = 0;
     protected float rotatedY = 0;
     protected bool click = false;
@@ -89,13 +89,14 @@ public class CharacterController : ObjectController
         calculateDrag();
         detectLedge();
 
-        rb.AddForce(jump, ForceMode2D.Impulse);
-        rb.AddForce(moveDirection, ForceMode2D.Impulse);
-        rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
-
-        //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravity
-        if (!isGrounded && jumpCorectionOverride)
-            rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection;
+        //NOTE: when a force local is added, movement,jump, and drag are ignored. mioght redo in the future
+        if (!forceLocalAdded)
+        {
+            rb.AddForce(jump, ForceMode2D.Impulse);
+            rb.AddForce(moveDirection, ForceMode2D.Impulse);
+            rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
+            rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravit
+        }
 
         calculateUpdate();
 
