@@ -19,7 +19,7 @@ public class CharacterController : ObjectController
     [SerializeField] protected float maxHealth = 3f; //default max health is 3
     [SerializeField] protected  bool invincibleFlag = false;
     [SerializeField] protected float health = 0f;
-    [SerializeField] bool forceLocalAdded = false;
+    [SerializeField] protected bool forceLocalAdded = false;
     protected float rotatedX = 0;
     protected float rotatedY = 0;
     protected bool click = false;
@@ -30,7 +30,7 @@ public class CharacterController : ObjectController
     private float direcitonInput = 0;
     protected int wallInFrontVar = 0;
     protected bool space = false;
-    private bool facingLeft = false;
+    protected bool facingLeft = false;
     protected bool dead = false;
 
     //vectors

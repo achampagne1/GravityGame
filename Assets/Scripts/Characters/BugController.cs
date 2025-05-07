@@ -7,6 +7,7 @@ public class BugController : CharacterController
     [SerializeField] float persistanceAfterDeath = 5f;
     [SerializeField] float jumpAngle = 20f;
     [SerializeField] float jumpMagnitude = 10f;
+    [SerializeField] float pounceCooldownTime = 5f;
     private bool pounceRunning = false;
     bool latch = true;
 
@@ -20,15 +21,11 @@ public class BugController : CharacterController
     void FixedUpdate()
     {
         //BIG NOTE: the bug sprtie it facing left generically so we need the inverse of facing left to get the actual facing left
-        if(latch)
-        {
-            forceLocal = new Vector2(10f, 10f);
-            //StartCoroutine(pounce());
-            latch = false;
-        }
+        if(EnemyAssistant.detectPlayer(!facingLeft, gameObject)!=new Vector3(0f,0f,1f)&&!pounceRunning)
+            StartCoroutine(pounce());
         else
         {
-            //setMovement(1);
+            setMovement(1);
             setOrientation(-1);
         }
         calculateCharacterUpdate();
@@ -37,6 +34,8 @@ public class BugController : CharacterController
     private IEnumerator pounce()
     {
         pounceRunning = true;
+        setMovement(0);
+        forceLocalAdded = true;
         // Step 1: Your intended direction (local jump angle)
         Vector2 localDir = angleToDirection(jumpAngle);
 
@@ -52,8 +51,9 @@ public class BugController : CharacterController
         // Step 5: Scale by magnitude
         Vector2 finalJump = worldDir * jumpMagnitude;
         forceLocal = finalJump;
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(pounceCooldownTime);
         pounceRunning = false;
+        forceLocalAdded = false;
         yield return null;
     }
 
