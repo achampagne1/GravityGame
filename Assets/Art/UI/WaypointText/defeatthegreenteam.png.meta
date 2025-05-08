@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      defeatthegreenteam_0: -330288321122707652
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

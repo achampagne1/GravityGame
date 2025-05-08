@@ -103,10 +103,10 @@ TextureImporter:
       name: Planet2_0
       rect:
         serializedVersion: 2
-        x: 0
+        x: 1
         y: 0
         width: 1058
-        height: 1059
+        height: 1067
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}

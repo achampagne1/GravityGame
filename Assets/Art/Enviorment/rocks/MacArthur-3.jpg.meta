@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      MacArthur-3_0: -1513975134812932375
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

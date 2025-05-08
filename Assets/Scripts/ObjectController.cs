@@ -63,13 +63,13 @@ public class ObjectController : MonoBehaviour
                 //if (groundAngle < steepestGrade)  //figure out steepest grade later
                 rb.AddForce(gravityForce);
 
-                /**
+                
                 //this code breaks the bugs movement. dont know why
                 if (isGrounded)//this is to sort of stick the polayer to the ground when moving
                 {
-                    rb.AddForce(gravityForce * 5);
+                    rb.AddForce(gravityForce * 2);
                 }
-                **/
+                
                 //rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
             }
 

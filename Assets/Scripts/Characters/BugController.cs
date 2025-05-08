@@ -37,7 +37,7 @@ public class BugController : CharacterController
         setMovement(0);
         forceLocalAdded = true;
         // Step 1: Your intended direction (local jump angle)
-        Vector2 localDir = angleToDirection(jumpAngle);
+        Vector2 localDir = HelperFunctions.angleToDirection(jumpAngle);
 
         // Step 2: Get the GameObject's rotation angle (in degrees)
         float zRotation = transform.eulerAngles.z;
@@ -63,13 +63,5 @@ public class BugController : CharacterController
         yield return base.die();
         yield return new WaitForSeconds(persistanceAfterDeath);
         Destroy(gameObject);
-    }
-
-
-
-    private static Vector2 angleToDirection(float angleDegrees) //this needs to be mved to a helper class
-    {
-        float radians = angleDegrees * Mathf.Deg2Rad;
-        return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
     }
 }

@@ -178,7 +178,10 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Planet7_0: 2519772355537943749
+      Planet7_1: -5148930737222183683
+      Planet7_2: -6620197931396837749
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

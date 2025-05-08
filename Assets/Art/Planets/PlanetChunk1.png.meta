@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      PlanetChunk1_0: 283932676269996580
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

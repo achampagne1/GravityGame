@@ -34,20 +34,22 @@ public class TriggerBoundaryCotroller : MonoBehaviour
     {
         if (trigger.gameObject.name == "Gun" && !trigger.gameObject.GetComponent<GunController>().getParented() && handController.getHolding()!=1)//will need to change to item controller once parenting is moved to item
             handController.setChild(trigger.transform);
+
         if (trigger.gameObject.name == "MedPack")
         {
             characterController.setHealth(characterController.getMaxHealth());
             if(gameObject.name == "TriggerBoundarySpaceMan")
                 UIHandler.instance.setHealthValue(characterController.getHealth());
         }
+
         if (trigger.gameObject.name == "Bullet(Clone)")
         {
-            if (trigger.gameObject.GetComponent<BulletController>().getShotBy() == parent.layer)
+            if (trigger.gameObject.GetComponent<BulletController>().getShotBy() == parent.layer) //this ignores the layer of the person that shot it
             {
                 return;
             }
-            characterController.setBulletStrikeLocation(trigger.gameObject.transform.position);
-            characterController.setHealth(characterController.getHealth() - 1f);
+
+            characterController.hit(transform);
             if (gameObject.name == "TriggerBoundarySpaceMan")
                 UIHandler.instance.setHealthValue(characterController.getHealth());
         }

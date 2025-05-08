@@ -111,6 +111,38 @@ public class CharacterController : ObjectController
 
     }
 
+    public void hit(Transform transform)
+    {
+        setBulletStrikeLocation(transform.position);
+        setHealth(getHealth() - 1f);
+        StartCoroutine(changeColorWrapper());
+    }
+
+    private IEnumerator changeColorWrapper()
+    {
+        changeColorRecursive(gameObject, "#FF0000");
+        yield return new WaitForSeconds(.05f);
+        changeColorRecursive(gameObject, "#FFFFFF");
+        yield return null;
+    }
+
+    private void changeColorRecursive(GameObject gameObject, string color)
+    {
+        //recursivley sets all children of the player to an opacity. could be used for other things too
+        SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
+        if (sr != null && sr.color.a != 0f)
+        {
+            Color newColor;
+            ColorUtility.TryParseHtmlString(color, out newColor);
+            sr.color = newColor;
+        }
+
+        foreach (Transform child in gameObject.transform)
+        {
+            changeColorRecursive(child.gameObject, color);
+        }
+    }
+
     protected virtual IEnumerator die()
     {
         try
