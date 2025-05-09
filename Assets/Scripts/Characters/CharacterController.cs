@@ -113,33 +113,49 @@ public class CharacterController : ObjectController
 
     public void hit(Transform transform)
     {
-        setBulletStrikeLocation(transform.position);
-        setHealth(getHealth() - 1f);
+        //Note: transform is for the bullet, gameObject.transform is for the palyer
+        bulletStrikeLocation = transform.position;
+        health = health - 1f;
         StartCoroutine(changeColorWrapper());
-    }
+        StartCoroutine(knockBack(leftStrikeLocation(transform)));
 
-    private IEnumerator changeColorWrapper()
-    {
-        changeColorRecursive(gameObject, "#FF0000");
-        yield return new WaitForSeconds(.05f);
-        changeColorRecursive(gameObject, "#FFFFFF");
-        yield return null;
-    }
-
-    private void changeColorRecursive(GameObject gameObject, string color)
-    {
-        //recursivley sets all children of the player to an opacity. could be used for other things too
-        SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
-        if (sr != null && sr.color.a != 0f)
+        IEnumerator knockBack(bool strikeLeft)
         {
-            Color newColor;
-            ColorUtility.TryParseHtmlString(color, out newColor);
-            sr.color = newColor;
+            forceLocalAdded = true;
+            forceLocal = HelperFunctions.rotateVector(new Vector2(strikeLeft?3f:-3f, 3f), gameObject.transform.eulerAngles.z);
+            yield return new WaitForSeconds(1f);
+            forceLocalAdded = false;
+            yield return null;
         }
 
-        foreach (Transform child in gameObject.transform)
+        IEnumerator changeColorWrapper()
         {
-            changeColorRecursive(child.gameObject, color);
+            changeColorRecursive(gameObject, "#FF0000");
+            yield return new WaitForSeconds(.05f);
+            changeColorRecursive(gameObject, "#FFFFFF");
+            yield return null;
+        }
+
+        void changeColorRecursive(GameObject gameObjectChild, string color)
+        {
+            //recursivley sets all children of the player to an opacity. could be used for other things too
+            SpriteRenderer sr = gameObjectChild.GetComponent<SpriteRenderer>();
+            if (sr != null && sr.color.a != 0f)
+            {
+                Color newColor;
+                ColorUtility.TryParseHtmlString(color, out newColor);
+                sr.color = newColor;
+            }
+
+            foreach (Transform child in gameObjectChild.transform)
+            {
+                changeColorRecursive(child.gameObject, color);
+            }
+        }
+
+        bool leftStrikeLocation(Transform transform)
+        {
+            return gameObject.transform.position.x > transform.position.x;
         }
     }
 

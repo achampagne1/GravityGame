@@ -16,6 +16,18 @@ public struct HelperFunctions
         return new Vector2(newX, newY);
     }
 
+    public static Vector2 rotateVector(Vector2 input, float rotateBy)
+    {
+        float radians = rotateBy * Mathf.Deg2Rad;
+        float cos = Mathf.Cos(radians);
+        float sin = Mathf.Sin(radians);
+
+        float x = input.x * cos - input.y * sin;
+        float y = input.x * sin + input.y * cos;
+
+        return new Vector2(x, y);
+    }
+
     public static Vector2 angleToDirection(float angleDegrees) //this needs to be mved to a helper class
     {
         float radians = angleDegrees * Mathf.Deg2Rad;

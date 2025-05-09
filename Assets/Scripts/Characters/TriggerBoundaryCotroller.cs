@@ -49,7 +49,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
                 return;
             }
 
-            characterController.hit(transform);
+            characterController.hit(trigger.transform);
             if (gameObject.name == "TriggerBoundarySpaceMan")
                 UIHandler.instance.setHealthValue(characterController.getHealth());
         }
