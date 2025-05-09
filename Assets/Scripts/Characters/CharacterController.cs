@@ -155,7 +155,8 @@ public class CharacterController : ObjectController
 
         bool leftStrikeLocation(Transform transform)
         {
-            return gameObject.transform.position.x > transform.position.x;
+            Vector3 localPos = gameObject.transform.InverseTransformPoint(transform.position);
+            return localPos.x<0;
         }
     }
 
