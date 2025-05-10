@@ -43,10 +43,12 @@ public class SpaceZombieController : SpacePersonController
                 playerDirection = EnemyAssistant.detectPlayer(getFacingLeft(), gameObject);
                 if (playerDirection !=new Vector3(0f,0f,1f))
                 {
+                    handController.setInputDirection(playerDirection);
                     attackPlayer();
                 }
                 else
                 {
+                    handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
                     if (normalState == 0)
                         moveInput = 0;
                     else if (normalState == 1)
@@ -81,12 +83,10 @@ public class SpaceZombieController : SpacePersonController
 
     private void patrol()
     {
-        if(moveInput == 0)
+        if (moveInput == 0)
         {
             moveInput = 1;
         }
-
-        handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
 
 
         if (timer.checkTimer()||detectLedge()||wallInFrontVar==moveInput)
@@ -101,7 +101,6 @@ public class SpaceZombieController : SpacePersonController
     {
         if (shootTimer.checkTimer())
         {
-            handController.setInputDirection(playerDirection);
             StartCoroutine(clusterShot());
             shootTimer.startTimer();
         }

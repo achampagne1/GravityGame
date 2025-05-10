@@ -20,6 +20,7 @@ public class CharacterController : ObjectController
     [SerializeField] protected  bool invincibleFlag = false;
     [SerializeField] protected float health = 0f;
     [SerializeField] protected bool forceLocalAdded = false;
+    [SerializeField] float knockBackDuration = .1f;
     protected float rotatedX = 0;
     protected float rotatedY = 0;
     protected bool click = false;
@@ -113,17 +114,20 @@ public class CharacterController : ObjectController
 
     public void hit(Transform transform)
     {
-        //Note: transform is for the bullet, gameObject.transform is for the palyer
-        bulletStrikeLocation = transform.position;
-        health = health - 1f;
-        StartCoroutine(changeColorWrapper());
-        StartCoroutine(knockBack(leftStrikeLocation(transform)));
+        if (!invincibleFlag)
+        {
+            //Note: transform is for the bullet, gameObject.transform is for the palyer
+            bulletStrikeLocation = transform.position;
+            health = health - 1f;
+            StartCoroutine(changeColorWrapper());
+            StartCoroutine(knockBack(leftStrikeLocation(transform)));
+        }
 
         IEnumerator knockBack(bool strikeLeft)
         {
             forceLocalAdded = true;
             forceLocal = HelperFunctions.rotateVector(new Vector2(strikeLeft?3f:-3f, 3f), gameObject.transform.eulerAngles.z);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(knockBackDuration);
             forceLocalAdded = false;
             yield return null;
         }
@@ -155,7 +159,9 @@ public class CharacterController : ObjectController
 
         bool leftStrikeLocation(Transform transform)
         {
+            //determines if the bullet struck the characters left or right side
             Vector3 localPos = gameObject.transform.InverseTransformPoint(transform.position);
+            localPos.x = facingLeft ? localPos.x * -1 : localPos.x;
             return localPos.x<0;
         }
     }
