@@ -4,6 +4,8 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
+using UnityEngine.SceneManagement;
+using UnityEngine.UIElements;
 public class MainMenuUiHandler : MonoBehaviour
 {
     [SerializeField] float speed = .05f;
@@ -12,22 +14,30 @@ public class MainMenuUiHandler : MonoBehaviour
     private VisualElement overlayContainerEnd;
     private VisualElement[] overlayArrayEnd = new VisualElement[25];
     private VisualElement endScreen;
+    private Button tutorial;
+    private UIDocument uiDocument;
 
     // Start is called before the first frame update
     void Start()
     {
+        uiDocument = GetComponent<UIDocument>();
+        tutorial = uiDocument.rootVisualElement.Q<Button>("tutorial");
+        tutorial.clicked += () =>
+        {
+            Debug.Log("here");
+            SceneManager.LoadScene("Tutorial");
+        };
         StartCoroutine(delay());
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+   
     }
 
     private IEnumerator delay()
     {
-        UIDocument uiDocument = GetComponent<UIDocument>();
         overlayContainerEnd = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainerEnd");
         overlayArrayEnd = overlayContainerEnd.Query<VisualElement>("overlayEnd").ToList().ToArray();
         endScreen = uiDocument.rootVisualElement.Q<VisualElement>("endScreen");
