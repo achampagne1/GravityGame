@@ -12,6 +12,7 @@ public class CharacterController : ObjectController
     protected AudioController audioController;
     protected ExplodeController explodeController;
     [SerializeField] protected GameObject explodeCenter;
+    [SerializeField] Sprite hitSprite;
 
     //public game variables
     [SerializeField] protected float jumpForce = 11f;
@@ -134,9 +135,13 @@ public class CharacterController : ObjectController
 
         IEnumerator changeColorWrapper()
         {
+            animator.enabled = false;
+            spriteRenderer.sprite = hitSprite;
+
             changeColorRecursive(gameObject, "#FF0000");
             yield return new WaitForSeconds(.05f);
             changeColorRecursive(gameObject, "#FFFFFF");
+            animator.enabled = true;
             yield return null;
         }
 

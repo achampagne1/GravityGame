@@ -10,6 +10,7 @@ public class ObjectController : MonoBehaviour
     protected Transform planetCenter;
     protected Timer groundTimer;
     private List<GameObject> gravityPoints;
+    protected SpriteRenderer spriteRenderer;
 
     //public game variables
     public float terminalVelocity = 30f;
@@ -40,6 +41,7 @@ public class ObjectController : MonoBehaviour
     {
         if (simulated)
         {
+            spriteRenderer = GetComponent<SpriteRenderer>();
             rb = GetComponent<Rigidbody2D>();
             layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
             if (calculateIsGrounded)
