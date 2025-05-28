@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -180,6 +181,10 @@ public class LevelManager : MonoBehaviour
 
         //shuts off the beam
         teleporterController2.setTransportTrigger(false);
+        yield return new WaitForSeconds(2f);
+
+        //returns to main menu
+        SceneManager.LoadScene("MainMenu");
     }
 
     private bool acknowledgeOrWait()

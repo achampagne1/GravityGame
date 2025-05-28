@@ -24,7 +24,6 @@ public class MainMenuUiHandler : MonoBehaviour
         tutorial = uiDocument.rootVisualElement.Q<Button>("tutorial");
         tutorial.clicked += () =>
         {
-            Debug.Log("here");
             SceneManager.LoadScene("Tutorial");
         };
         StartCoroutine(delay());
