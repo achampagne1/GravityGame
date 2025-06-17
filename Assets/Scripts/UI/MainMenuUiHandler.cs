@@ -16,6 +16,9 @@ public class MainMenuUiHandler : MonoBehaviour
     private VisualElement[] overlayArrayEnd = new VisualElement[25];
     private VisualElement endScreen;
     private ButtonWrapper tutorial;
+    private ButtonWrapper endless;
+    private ButtonWrapper options;
+    private ButtonWrapper exit;
     private UIDocument uiDocument;
     private AudioSource tabletHumAudioSource;
 
@@ -24,8 +27,13 @@ public class MainMenuUiHandler : MonoBehaviour
     {
         uiDocument = GetComponent<UIDocument>();
         tutorial = new ButtonWrapper();
+        endless = new ButtonWrapper();
+        options = new ButtonWrapper();
+        exit = new ButtonWrapper();
         tutorial.setUpButton(uiDocument.rootVisualElement.Q<Button>("tutorial"), uiDocument.rootVisualElement.Q<Button>("tutorial2"), () => SceneManager.LoadScene("Tutorial"));
-
+        endless.setUpButton(uiDocument.rootVisualElement.Q<Button>("endless"), uiDocument.rootVisualElement.Q<Button>("endless2"), () => Debug.Log("Endless Clicked"));
+        options.setUpButton(uiDocument.rootVisualElement.Q<Button>("options"), uiDocument.rootVisualElement.Q<Button>("options2"), () => Debug.Log("Options Clicked"));
+        exit.setUpButton(uiDocument.rootVisualElement.Q<Button>("exit"), uiDocument.rootVisualElement.Q<Button>("exit2"), () => { Debug.Log("Options Clicked"); Application.Quit(); });
         tabletHumAudioSource = GetComponent<AudioSource>();
         tabletHumAudioSource.Play();
         StartCoroutine(delay());
