@@ -189,7 +189,6 @@ public class UIHandler : MonoBehaviour
     }
     private void exitGame(ClickEvent evt)
     {
-        Debug.Log("here");
         Application.Quit();
     }
 
@@ -240,9 +239,9 @@ public class UIHandler : MonoBehaviour
     {
         tabletHumAudioSource.Play();
         tabletHumAudioSource.volume = 0f;
-        while (tabletHumAudioSource.volume < .5f)
+        while (tabletHumAudioSource.volume < .1f)
         {
-            tabletHumAudioSource.volume += .1f;
+            tabletHumAudioSource.volume += .02f;
             yield return new WaitForSeconds(.00075f);
         }
     }
@@ -251,7 +250,7 @@ public class UIHandler : MonoBehaviour
     {
         while (tabletHumAudioSource.volume > 0f)
         {
-            tabletHumAudioSource.volume -= .1f;
+            tabletHumAudioSource.volume -= .02f;
             yield return new WaitForSeconds(.00075f);
         }
         tabletHumAudioSource.Stop();

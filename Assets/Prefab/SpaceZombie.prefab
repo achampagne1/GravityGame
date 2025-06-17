@@ -315,11 +315,15 @@ MonoBehaviour:
   calculateIsGrounded: 1
   simulated: 1
   explodeCenter: {fileID: 9116706886509276700}
+  hitSprite: {fileID: 4457663794195168306, guid: 146a39f1060fafd409ef0902d46dd224,
+    type: 3}
   jumpForce: 11
   moveSpeed: 5
   maxHealth: 3
   invincibleFlag: 0
   health: 0
+  forceLocalAdded: 0
+  knockBackDuration: 0.1
   jetPackForce: 30
   first: 0
   movementToggle: 1

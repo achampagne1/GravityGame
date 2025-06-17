@@ -21,13 +21,15 @@ public class BugController : CharacterController
     void FixedUpdate()
     {
         //BIG NOTE: the bug sprtie it facing left generically so we need the inverse of facing left to get the actual facing left
-        if(EnemyAssistant.detectPlayer(!facingLeft, gameObject)!=new Vector3(0f,0f,1f)&&!pounceRunning)
+        /**if(EnemyAssistant.detectPlayer(!facingLeft, gameObject)!=new Vector3(0f,0f,1f)&&!pounceRunning)
             StartCoroutine(pounce());
         else
         {
             setMovement(1);
             setOrientation(-1);
-        }
+        }**/
+        setMovement(1);
+        setOrientation(1);
         calculateCharacterUpdate();
     }
 
