@@ -21,20 +21,20 @@ public class MainMenuUiHandler : MonoBehaviour
     private ButtonWrapper exit;
     private UIDocument uiDocument;
     private AudioSource tabletHumAudioSource;
+    private AudioSource buttonClickAudioSource;
+    private AudioSource buttonHoverAudioSource;
 
     // Start is called before the first frame update
     void Start()
     {
         uiDocument = GetComponent<UIDocument>();
-        tutorial = new ButtonWrapper();
-        endless = new ButtonWrapper();
-        options = new ButtonWrapper();
-        exit = new ButtonWrapper();
-        tutorial.setUpButton(uiDocument.rootVisualElement.Q<Button>("tutorial"), uiDocument.rootVisualElement.Q<Button>("tutorial2"), () => SceneManager.LoadScene("Tutorial"));
-        endless.setUpButton(uiDocument.rootVisualElement.Q<Button>("endless"), uiDocument.rootVisualElement.Q<Button>("endless2"), () => Debug.Log("Endless Clicked"));
-        options.setUpButton(uiDocument.rootVisualElement.Q<Button>("options"), uiDocument.rootVisualElement.Q<Button>("options2"), () => Debug.Log("Options Clicked"));
-        exit.setUpButton(uiDocument.rootVisualElement.Q<Button>("exit"), uiDocument.rootVisualElement.Q<Button>("exit2"), () => { Debug.Log("Options Clicked"); Application.Quit(); });
-        tabletHumAudioSource = GetComponent<AudioSource>();
+        tabletHumAudioSource = GetComponents<AudioSource>()[0];
+        buttonClickAudioSource = GetComponents<AudioSource>()[1];
+        buttonHoverAudioSource = GetComponents<AudioSource>()[2];
+        tutorial = new ButtonWrapper(uiDocument.rootVisualElement.Q<Button>("tutorial"), uiDocument.rootVisualElement.Q<Button>("tutorial2"), () => SceneManager.LoadScene("Tutorial"),buttonClickAudioSource,buttonHoverAudioSource);
+        endless = new ButtonWrapper(uiDocument.rootVisualElement.Q<Button>("endless"), uiDocument.rootVisualElement.Q<Button>("endless2"), () => Debug.Log("Endless Clicked"), buttonClickAudioSource,buttonHoverAudioSource);
+        options = new ButtonWrapper(uiDocument.rootVisualElement.Q<Button>("options"), uiDocument.rootVisualElement.Q<Button>("options2"), () => Debug.Log("Options Clicked"), buttonClickAudioSource, buttonHoverAudioSource);
+        exit = new ButtonWrapper(uiDocument.rootVisualElement.Q<Button>("exit"), uiDocument.rootVisualElement.Q<Button>("exit2"), () => { Debug.Log("Options Clicked"); Application.Quit(); }, buttonClickAudioSource, buttonHoverAudioSource);
         tabletHumAudioSource.Play();
         StartCoroutine(delay());
     }

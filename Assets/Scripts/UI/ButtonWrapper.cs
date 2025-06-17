@@ -8,20 +8,25 @@ public class ButtonWrapper
     private Button button1;
     private Button button2;
     private System.Action func;
+    private AudioSource buttonClickAudioSource;
+    private AudioSource buttonHoverAudioSource;
     private float originalTop;
     private float originalLeft;
     private float originalWidth;
     private float originalHeight;
 
+
     [SerializeField] float hoverSize = 1.1f;
 
-    public void setUpButton(Button button1, Button button2, System.Action func)
+    public ButtonWrapper(Button button1, Button button2, System.Action func, AudioSource buttonClickAudioSource, AudioSource buttonHoverAudioSource)
     {
         originalTop = button2.resolvedStyle.top;
         originalLeft = button2.resolvedStyle.left;
         originalWidth = button2.resolvedStyle.width;
         originalHeight = button2.resolvedStyle.height;
 
+        this.buttonClickAudioSource = buttonClickAudioSource;
+        this.buttonHoverAudioSource = buttonHoverAudioSource;
         setButtons(button1, button2);
         setClickEvent(func);
         registerCallBacks();
@@ -40,7 +45,11 @@ public class ButtonWrapper
 
     public void registerCallBacks()
     {
-        button1.clicked += func;
+        button1.clicked += () =>
+        {
+            buttonClickAudioSource?.Play();
+            func?.Invoke();
+        };
 
         button1.RegisterCallback<PointerEnterEvent>(evt => { buttonHoverEnter(); });
 
@@ -49,6 +58,7 @@ public class ButtonWrapper
 
     private void buttonHoverEnter()
     {
+        buttonHoverAudioSource?.Play();
         originalTop = button2.resolvedStyle.top;
         originalLeft = button2.resolvedStyle.left;
         originalWidth = button2.resolvedStyle.width;
