@@ -46,7 +46,7 @@ public class ObjectController : MonoBehaviour
             layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
             if (calculateIsGrounded)
                 groundTimer = new Timer(0.4f);
-            heightObject = getHeight() + .3f; //the .3 is to allow ground detection even on a slope
+            heightObject = getHeight(); //the .3 is to allow ground detection even on a slope
             gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
             StartCoroutine(findClosestField());
         }

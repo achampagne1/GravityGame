@@ -115,14 +115,14 @@ public class CharacterController : ObjectController
 
     public void hit(Transform transform)
     {
-        if (!invincibleFlag)
-        {
-            //Note: transform is for the bullet, gameObject.transform is for the palyer
-            bulletStrikeLocation = transform.position;
-            health = health - 1f;
-            StartCoroutine(changeColorWrapper());
-            StartCoroutine(knockBack(leftStrikeLocation(transform)));
-        }
+        if (invincibleFlag)
+            return;
+
+        //Note: transform is for the bullet, gameObject.transform is for the palyer
+        bulletStrikeLocation = transform.position;
+        health = health - 1f;
+        StartCoroutine(changeColorWrapper());
+        StartCoroutine(knockBack(leftStrikeLocation(transform)));
 
         IEnumerator knockBack(bool strikeLeft)
         {
@@ -290,6 +290,7 @@ public class CharacterController : ObjectController
 
     private void determineAnimation() //might need to be redone to allow for differences between space eprson and chgaracter
     {
+        Debug.Log(isGrounded);
         try
         {
             if (isGrounded)
@@ -312,10 +313,7 @@ public class CharacterController : ObjectController
             else
             {
                 animator.SetBool("Airborn", true);
-                if (up)
-                    animator.SetBool("Up", true);
-                else
-                    animator.SetBool("Up", false);
+                animator.SetBool("Up", up);
             }
         }
         catch (Exception e)

@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e367420e1795546408193ac3450d7514
+guid: 4ceacd638d08fe74b8249b7ba53c9ce7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -59066101396820148
-    second: hit_0
+      213: -932326948639797378
+    second: HalfBlink_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,22 +100,106 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: hit_0
+      name: HalfBlink_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 883
-        height: 779
+        width: 882
+        height: 781
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: c4fa9f791b72e2ff0800000000000000
-      internalID: -59066101396820148
+      spriteID: af52c5176e131f842aaea822c6f6c5b5
+      internalID: -1055873342
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HalfBlink_1
+      rect:
+        serializedVersion: 2
+        x: 882
+        y: 0
+        width: 882
+        height: 781
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 0b74476fc739d5941a747c1cb05cc868
+      internalID: -1532762606
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HalfBlink_2
+      rect:
+        serializedVersion: 2
+        x: 1764
+        y: 0
+        width: 882
+        height: 781
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 942fc85ff36908d4993a894d6d270f11
+      internalID: -94201335
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HalfBlink_3
+      rect:
+        serializedVersion: 2
+        x: 2646
+        y: 0
+        width: 882
+        height: 781
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: af4203d0555170748883e2aa32b9d93c
+      internalID: -1788528972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: HalfBlink_4
+      rect:
+        serializedVersion: 2
+        x: 3528
+        y: 0
+        width: 882
+        height: 781
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: e1ba0b693b482ae418c2fb7c9e9212b2
+      internalID: -80255463
       vertices: []
       indices: 
       edges: []
@@ -123,7 +207,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 83b54d0bee6b1a94380ca0872e30e339
+    spriteID: 14b0201a98fd68a41863dcea2f61a072
     internalID: 0
     vertices: []
     indices: 
@@ -131,7 +215,11 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      hit_0: -59066101396820148
+      HalfBlink_0: -1055873342
+      HalfBlink_1: -1532762606
+      HalfBlink_2: -94201335
+      HalfBlink_3: -1788528972
+      HalfBlink_4: -80255463
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
