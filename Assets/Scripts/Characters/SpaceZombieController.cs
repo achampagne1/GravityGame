@@ -6,8 +6,8 @@ using UnityEngine;
 public class SpaceZombieController : SpacePersonController
 {
     //object creation
-    RandomTimer pauseDuration = new RandomTimer();
-    RandomTimer moveDuration = new RandomTimer();
+    RandomTimer pauseDuration;
+    RandomTimer moveDuration;
     Timer timer = new Timer(3f);
     Timer shootTimer = new Timer(3f);
 
@@ -27,8 +27,8 @@ public class SpaceZombieController : SpacePersonController
     void Start()
     {
         calculateSpacePersonStart();
-        pauseDuration.create(.1f, 1f);
-        moveDuration.create(1f, 4f);
+        pauseDuration = new RandomTimer(.1f, 1f);
+        moveDuration = new RandomTimer(1f,4f);
 
         timer.startTimer();
         shootTimer.startTimer(); //shoot timer must be started so that the enemey is ready when it first sees the player

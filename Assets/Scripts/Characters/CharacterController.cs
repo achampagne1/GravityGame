@@ -8,7 +8,7 @@ using static Unity.Collections.AllocatorManager;
 public class CharacterController : ObjectController
 {
     //object creation
-    private Animator animator;
+    protected Animator animator;
     protected AudioController audioController;
     protected ExplodeController explodeController;
     [SerializeField] protected GameObject explodeCenter;
@@ -288,9 +288,8 @@ public class CharacterController : ObjectController
         }
     }
 
-    private void determineAnimation() //might need to be redone to allow for differences between space eprson and chgaracter
+    protected virtual void determineAnimation() //might need to be redone to allow for differences between space eprson and chgaracter
     {
-        Debug.Log(isGrounded);
         try
         {
             if (isGrounded)

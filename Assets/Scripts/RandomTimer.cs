@@ -6,11 +6,16 @@ public class RandomTimer
 {
     private float timer = 0f;
     private float timerDuration = 1000f;
-    public void create(float min, float max)
+    private float min;
+    private float max;
+    public RandomTimer(float min, float max)
     {
+        this.min = min;
+        this.max = max;
         timerDuration = UnityEngine.Random.Range(min, max);
         timer = timerDuration;
     }
+
     public bool checkTimer()
     {
         timer -= Time.deltaTime;        
@@ -29,6 +34,7 @@ public class RandomTimer
     }
     public void resetTimer()
     {
+        timerDuration = UnityEngine.Random.Range(min, max);
         timer = timerDuration;
     }
 }
