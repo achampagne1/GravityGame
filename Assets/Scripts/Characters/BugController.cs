@@ -22,8 +22,8 @@ public class BugController : CharacterController
     // Update is called once per frame
     void FixedUpdate()
     {
-        //if(!pounceRunning)
-        //    StartCoroutine(jump());
+        if(!pounceRunning)
+            StartCoroutine(jump());
         calculateCharacterUpdate();
     }
 
