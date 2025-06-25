@@ -13,7 +13,6 @@ public class SpaceZombieController : SpacePersonController
 
     //public variables
     public bool first = false;
-    public bool movementToggle = true;
     public int normalState = 0;
     [SerializeField] float persistanceAfterDeath = 5f;
 

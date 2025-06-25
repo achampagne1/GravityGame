@@ -22,6 +22,7 @@ public class CharacterController : ObjectController
     [SerializeField] protected float health = 0f;
     [SerializeField] protected bool forceLocalAdded = false;
     [SerializeField] float knockBackDuration = .1f;
+    [SerializeField] protected bool movementToggle = true;
     protected float rotatedX = 0;
     protected float rotatedY = 0;
     protected bool click = false;

@@ -10,29 +10,64 @@ public class BugController : CharacterController
     [SerializeField] float jumpMagnitude = 10f;
     [SerializeField] float pounceCooldownTime = 5f;
     private bool pounceRunning = false;
+    private bool pause = false;
+    private int moveInput = 0;
+
+    //object creation
+    private RandomTimer pauseDuration;
+    private RandomTimer moveDuration;
     private RandomTimer blinkTimer;
 
     // Start is called before the first frame update
     void Start()
     {
         blinkTimer = new RandomTimer(3, 5);
+        pauseDuration = new RandomTimer(.1f, 1f);
+        moveDuration = new RandomTimer(1f, 4f);
         calculateCharacterStart();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        if(!pounceRunning)
-            StartCoroutine(jump());
+        if (movementToggle && !dead)
+        {
+            randomMovement();
+            setOrientation(moveInput);
+        }
         calculateCharacterUpdate();
     }
 
-    private IEnumerator jump()
+    private void randomMovement()
+    {
+        if (moveDuration.checkTimer() && pause) //move state
+        {
+            pause = false;
+            moveInput = UnityEngine.Random.Range(-1, 2);
+            moveDuration.resetTimer();
+            pauseDuration.resetTimer();
+        }
+        else if (pauseDuration.checkTimer() && !pause) //!move state
+        {
+            pause = true;
+            moveInput = 0;
+            moveDuration.resetTimer();
+            pauseDuration.resetTimer();
+        }
+
+        if (!pounceRunning&&moveInput!=0)
+        {
+            StartCoroutine(jump(moveInput==-1));
+        }
+
+    }
+
+    private IEnumerator jump(bool facingLeft)
     {
         pounceRunning = true;       
         forceLocalAdded = true;
-
-        Vector2 localDir = HelperFunctions.angleToDirection(jumpAngle);
+        //th ternary operation allows for jumping left
+        Vector2 localDir = HelperFunctions.angleToDirection(facingLeft? 180-jumpAngle:jumpAngle);
         float zRotation = transform.eulerAngles.z;
         Quaternion rotation = Quaternion.Euler(0, 0, zRotation);
         Vector2 worldDir = rotation * localDir;
