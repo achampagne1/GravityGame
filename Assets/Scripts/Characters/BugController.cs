@@ -9,7 +9,7 @@ public class BugController : CharacterController
     [SerializeField] float persistanceAfterDeath = 5f;
     [SerializeField] float jumpAngle = 20f;
     [SerializeField] float jumpMagnitude = 10f;
-    [SerializeField] float pounceCooldownTime = 5f;
+    [SerializeField] float pounceCooldownTime =.1f;
     private bool pounceRunning = false;
     private bool pause = false;
     private int moveInput = 0;
@@ -38,7 +38,6 @@ public class BugController : CharacterController
             if (playerDirection != new Vector3(0f, 0f, 1f))
             {
                 Vector2 temp = HelperFunctions.rotateVector(new Vector2(playerDirection.x,playerDirection.y),-transform.eulerAngles.z);
-                Debug.Log(temp.ToString());
                 if (!pounceRunning)
                 {
                     StartCoroutine(jump(temp.x<0));
@@ -89,8 +88,8 @@ public class BugController : CharacterController
         Vector2 finalJump = worldDir * jumpMagnitude;
         forceLocal = finalJump;
         //the timing of this might need to be redone one day
-        yield return new WaitUntil(()=>isGrounded);
         yield return new WaitForSeconds(pounceCooldownTime);
+        yield return new WaitUntil(()=>isGrounded);
         pounceRunning = false;
         forceLocalAdded = false;
         yield return null;

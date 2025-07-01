@@ -46,7 +46,7 @@ public class ObjectController : MonoBehaviour
             layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
             if (calculateIsGrounded)
                 groundTimer = new Timer(0.4f);
-            heightObject = getHeight(); //the .3 is to allow ground detection even on a slope
+            heightObject = getHeight();
             gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
             StartCoroutine(findClosestField());
         }
@@ -141,7 +141,7 @@ public class ObjectController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, gravityDirection, heightObject, layerMaskPlanet);
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, gravityDirection, heightObject/2+.5f, layerMaskPlanet);//the .5 is to allow for a bit of wiggle room
         bool ground = hit.collider != null;
         if (!ground)
         {
@@ -158,6 +158,7 @@ public class ObjectController : MonoBehaviour
         }
         return ground;
     }
+
 
     private float getHeight()
     {
