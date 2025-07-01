@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class BugController : CharacterController
 {
@@ -12,6 +13,7 @@ public class BugController : CharacterController
     private bool pounceRunning = false;
     private bool pause = false;
     private int moveInput = 0;
+    private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
 
     //object creation
     private RandomTimer pauseDuration;
@@ -32,7 +34,20 @@ public class BugController : CharacterController
     {
         if (movementToggle && !dead)
         {
-            randomMovement();
+            playerDirection = EnemyAssistant.detectPlayer(getFacingLeft(), gameObject);
+            if (playerDirection != new Vector3(0f, 0f, 1f))
+            {
+                Vector2 temp = HelperFunctions.rotateVector(new Vector2(playerDirection.x,playerDirection.y),-transform.eulerAngles.z);
+                Debug.Log(temp.ToString());
+                if (!pounceRunning)
+                {
+                    StartCoroutine(jump(temp.x<0));
+                }
+            }
+            else
+            {
+                randomMovement();
+            }
             setOrientation(moveInput);
         }
         calculateCharacterUpdate();

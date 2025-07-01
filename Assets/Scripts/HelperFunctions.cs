@@ -28,7 +28,7 @@ public struct HelperFunctions
         return new Vector2(x, y);
     }
 
-    public static Vector2 angleToDirection(float angleDegrees) //this needs to be mved to a helper class
+    public static Vector2 angleToDirection(float angleDegrees)
     {
         float radians = angleDegrees * Mathf.Deg2Rad;
         return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
