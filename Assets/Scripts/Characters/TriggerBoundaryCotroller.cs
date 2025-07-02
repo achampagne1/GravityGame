@@ -11,7 +11,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
     private int layerConnectedTo = 2; //2 is ignore raycasr
 
     // Start is called before the first frame update
-    void Start()
+    public virtual void Start()
     {
         parent = transform.parent.gameObject;
         layerConnectedTo = parent.layer;
@@ -24,14 +24,9 @@ public class TriggerBoundaryCotroller : MonoBehaviour
         Physics2D.IgnoreLayerCollision(9, 14, true);
     }
 
-    // Update is called once per frame
-    void Update()
+    protected virtual void OnTriggerEnter2D(Collider2D trigger)
     {
-        
-    }
-
-    private void OnTriggerEnter2D(Collider2D trigger)
-    {
+        //TODO: break this into classes for each one
         if (trigger.gameObject.name == "Gun" && !trigger.gameObject.GetComponent<GunController>().getParented() && handController.getHolding()!=1)//will need to change to item controller once parenting is moved to item
             handController.setChild(trigger.transform);
 

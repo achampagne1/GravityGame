@@ -11,7 +11,9 @@ public class BugController : CharacterController
     [SerializeField] float jumpMagnitude = 10f;
     [SerializeField] float pounceCooldownTime =.1f;
     private bool pounceRunning = false;
+    private bool knockBackRunning = false;
     private bool pause = false;
+    private bool playerHit = false;
     private int moveInput = 0;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
 
@@ -38,10 +40,12 @@ public class BugController : CharacterController
             if (playerDirection != new Vector3(0f, 0f, 1f))
             {
                 Vector2 temp = HelperFunctions.rotateVector(new Vector2(playerDirection.x,playerDirection.y),-transform.eulerAngles.z);
-                if (!pounceRunning)
+                if (!pounceRunning&&!knockBackRunning)
                 {
                     StartCoroutine(jump(temp.x<0));
                 }
+                if (playerHit)
+                    playerHitFunction();
             }
             else
             {
@@ -78,9 +82,13 @@ public class BugController : CharacterController
 
     private IEnumerator jump(bool facingLeft)
     {
+        if (!isGrounded)
+            yield return null;
+
         pounceRunning = true;       
         forceLocalAdded = true;
         //th ternary operation allows for jumping left
+        //this needs to be simplified using more helper funcitons. refer to the hit function in character controller
         Vector2 localDir = HelperFunctions.angleToDirection(facingLeft? 180-jumpAngle:jumpAngle);
         float zRotation = transform.eulerAngles.z;
         Quaternion rotation = Quaternion.Euler(0, 0, zRotation);
@@ -101,6 +109,23 @@ public class BugController : CharacterController
         yield return base.die();
         yield return new WaitForSeconds(persistanceAfterDeath);
         Destroy(gameObject);
+    }
+
+    private void playerHitFunction()
+    {
+        playerHit = false;
+        StartCoroutine(knockBack());
+        IEnumerator knockBack()
+        {
+            forceLocalAdded = true;
+            knockBackRunning = true;
+            forceLocal = HelperFunctions.rotateVector(new Vector2(facingLeft ? 10f : -10f, 4f), gameObject.transform.eulerAngles.z);
+            yield return new WaitForSeconds(2f);
+            yield return new WaitUntil(()=>isGrounded);
+            knockBackRunning = false;
+            forceLocalAdded = false;
+            yield return null;
+        }
     }
 
     protected override void determineAnimation()
@@ -140,5 +165,9 @@ public class BugController : CharacterController
             animator.SetTrigger("Blink");
             yield return null;
         }
+    }
+    public void triggerPlayerHit()
+    {
+        playerHit = true;
     }
 }
