@@ -21,6 +21,7 @@ public class BugController : CharacterController
     private RandomTimer pauseDuration;
     private RandomTimer moveDuration;
     private RandomTimer blinkTimer;
+    private Coroutine jumpCoroutine;
 
     // Start is called before the first frame update
     void Start()
@@ -42,7 +43,7 @@ public class BugController : CharacterController
                 Vector2 temp = HelperFunctions.rotateVector(new Vector2(playerDirection.x,playerDirection.y),-transform.eulerAngles.z);
                 if (!pounceRunning&&!knockBackRunning)
                 {
-                    StartCoroutine(jump(temp.x<0));
+                    jumpCoroutine = StartCoroutine(jump(temp.x<0));
                 }
                 if (playerHit)
                     playerHitFunction();
@@ -83,8 +84,8 @@ public class BugController : CharacterController
     private IEnumerator jump(bool facingLeft)
     {
         if (!isGrounded)
-            yield return null;
-
+            yield break;
+        
         pounceRunning = true;       
         forceLocalAdded = true;
         //th ternary operation allows for jumping left
@@ -117,10 +118,12 @@ public class BugController : CharacterController
         StartCoroutine(knockBack());
         IEnumerator knockBack()
         {
-            forceLocalAdded = true;
-            knockBackRunning = true;
+            forceLocalAdded = true; //this turns off some of the normal physics
+            knockBackRunning = true; //marks knockback as running
+            pounceRunning = false; //must stop everything with pounce coroutine and mark it as not running
+            StopCoroutine(jumpCoroutine);
             forceLocal = HelperFunctions.rotateVector(new Vector2(facingLeft ? 10f : -10f, 4f), gameObject.transform.eulerAngles.z);
-            yield return new WaitForSeconds(2f);
+            yield return new WaitForSeconds(1f);
             yield return new WaitUntil(()=>isGrounded);
             knockBackRunning = false;
             forceLocalAdded = false;

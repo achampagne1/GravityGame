@@ -7,7 +7,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
     //object creation
     private GameObject parent;
     private HandController handController;
-    private CharacterController characterController;
+    protected CharacterController characterController;
     private int layerConnectedTo = 2; //2 is ignore raycasr
 
     // Start is called before the first frame update
