@@ -189,6 +189,7 @@ public class CharacterController : ObjectController
         Color c = sr.color;
         c.a = 0.0f;
         sr.color = c;
+        gameObject.tag = "Dead";
         yield return null;
     }
 

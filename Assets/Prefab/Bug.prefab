@@ -564,8 +564,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3492333885195585570}
-  - component: {fileID: 2647454605206550216}
   - component: {fileID: 8907137313520545481}
+  - component: {fileID: 8341158892540713604}
   - component: {fileID: 2747752325061903103}
   m_Layer: 14
   m_Name: TriggerBoundarySlime
@@ -589,18 +589,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 1130049324385308652}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2647454605206550216
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3817103644573230694}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a8fe03e35007db3449eb102241eba4db, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &8907137313520545481
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -635,8 +623,20 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0.037873656, y: -0.12536013}
-  m_Radius: 0.34027243
+  m_Offset: {x: 0.03157639, y: -0.024958761}
+  m_Radius: 0.3402737
+--- !u!114 &8341158892540713604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3817103644573230694}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a82f07957bbb61d46935f80e5d14c9e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &2747752325061903103
 Animator:
   serializedVersion: 7
@@ -875,7 +875,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -20.55, y: -10.75, z: 0}
-  m_LocalScale: {x: 0.2, y: 0.2, z: 0.99999994}
+  m_LocalScale: {x: 0.2, y: 0.2, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 3492333885195585570}
@@ -979,7 +979,7 @@ MonoBehaviour:
   terminalVelocity: 30
   gravityAffected: 1
   orientToGravity: 1
-  updateGravityField: 0
+  updateGravityField: 1
   calculateIsGrounded: 1
   simulated: 1
   explodeCenter: {fileID: 6711657075253115331}
@@ -992,10 +992,11 @@ MonoBehaviour:
   health: 0
   forceLocalAdded: 1
   knockBackDuration: 0.1
+  movementToggle: 1
   persistanceAfterDeath: 5
   jumpAngle: 45
   jumpMagnitude: 10
-  pounceCooldownTime: 2
+  pounceCooldownTime: 1
 --- !u!61 &729466459161594441
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -1030,17 +1031,17 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.27348518, y: -0.26609612}
+  m_Offset: {x: -0.27348518, y: 0.92369366}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 8.84, y: 6.46}
+    oldSize: {x: 8.83, y: 7.79}
     newSize: {x: 5.28, y: 2.75}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 6.88303, y: 4.409828}
+  m_Size: {x: 6.88303, y: 4.3532085}
   m_EdgeRadius: 0
 --- !u!95 &3077860967130509046
 Animator:

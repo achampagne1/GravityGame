@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SpaceManTriggerBoundaryController : TriggerBoundaryCotroller
 {
-
+    [SerializeField] VCamController vCamController;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -19,8 +19,8 @@ public class SpaceManTriggerBoundaryController : TriggerBoundaryCotroller
 
     protected override void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.gameObject.tag == "Bug")
-        {
+        if (trigger.gameObject.tag == "Bug") {
+            vCamController.setShake(true);
             characterController.hit(trigger.transform);
             UIHandler.instance.setHealthValue(characterController.getHealth());
         }

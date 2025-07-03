@@ -10,7 +10,8 @@ public class VCamController : MonoBehaviour
     public CinemachineVirtualCamera vcam;
     public float initialZoom = 5f;
     [SerializeField] float duration = 1f;
-    [SerializeField] float magnitude = 1f;
+    [SerializeField] float shakeMagnitude = .2f;
+    [SerializeField] float shootMagnitude = 2f;
     [SerializeField] bool shake = false;
     private Vector2 direction = new Vector2(0,0);
     // Start is called before the first frame update
@@ -46,8 +47,8 @@ public class VCamController : MonoBehaviour
         float elapsedTime = 0f;
         while(elapsedTime < duration)
         {
-            float xOffset = Random.Range(-.5f, .5f) * magnitude;
-            float yOffset = Random.Range(-.5f, .5f) * magnitude;
+            float xOffset = Random.Range(-.5f, .5f) * shakeMagnitude;
+            float yOffset = Random.Range(-.5f, .5f) * shakeMagnitude;
 
             transform.localPosition = new Vector3(xOffset, yOffset+20, originalPos.z);
 
@@ -64,7 +65,7 @@ public class VCamController : MonoBehaviour
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x+(-direction.x*magnitude), transform.localPosition.y + (-direction.y * magnitude), originalPos.z);
+            transform.localPosition = new Vector3(transform.localPosition.x+(-direction.x*shootMagnitude), transform.localPosition.y + (-direction.y * shootMagnitude), originalPos.z);
 
             elapsedTime += Time.deltaTime;
 
@@ -73,7 +74,7 @@ public class VCamController : MonoBehaviour
         elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x + (+direction.x * magnitude), transform.localPosition.y + (+direction.y * magnitude), originalPos.z);
+            transform.localPosition = new Vector3(transform.localPosition.x + (+direction.x * shootMagnitude), transform.localPosition.y + (+direction.y * shootMagnitude), originalPos.z);
 
             elapsedTime += Time.deltaTime;
 

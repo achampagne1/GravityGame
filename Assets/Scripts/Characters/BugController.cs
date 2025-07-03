@@ -120,8 +120,11 @@ public class BugController : CharacterController
         {
             forceLocalAdded = true; //this turns off some of the normal physics
             knockBackRunning = true; //marks knockback as running
-            pounceRunning = false; //must stop everything with pounce coroutine and mark it as not running
-            StopCoroutine(jumpCoroutine);
+            if (pounceRunning)
+            {
+                pounceRunning = false; //must stop everything with pounce coroutine and mark it as not running
+                StopCoroutine(jumpCoroutine);
+            }
             forceLocal = HelperFunctions.rotateVector(new Vector2(facingLeft ? 10f : -10f, 4f), gameObject.transform.eulerAngles.z);
             yield return new WaitForSeconds(1f);
             yield return new WaitUntil(()=>isGrounded);
