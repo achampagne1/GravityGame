@@ -13,11 +13,12 @@ public class VCamController : MonoBehaviour
     [SerializeField] float shakeMagnitude = .2f;
     [SerializeField] float shootMagnitude = 2f;
     [SerializeField] bool shake = false;
+    private Vector3 originalLocal;
     private Vector2 direction = new Vector2(0,0);
     // Start is called before the first frame update
     void Start()
     {
-
+        originalLocal = new Vector3(transform.localPosition.x,transform.localPosition.y,transform.localPosition.z);
     }
 
     // Update is called once per frame
@@ -43,24 +44,25 @@ public class VCamController : MonoBehaviour
 
     private IEnumerator shakeFunc()
     {
-        Vector3 originalPos = transform.localPosition;
+        transform.localPosition = new Vector3(originalLocal.x,originalLocal.y,originalLocal.z);
         float elapsedTime = 0f;
         while(elapsedTime < duration)
         {
             float xOffset = Random.Range(-.5f, .5f) * shakeMagnitude;
             float yOffset = Random.Range(-.5f, .5f) * shakeMagnitude;
 
-            transform.localPosition = new Vector3(xOffset, yOffset+20, originalPos.z);
+            transform.localPosition = new Vector3(xOffset, yOffset+20, transform.localPosition.z);
 
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
-        transform.localPosition = originalPos;
+        transform.localPosition = new Vector3(originalLocal.x, originalLocal.y, originalLocal.z);
     }
 
     private IEnumerator gunRecoil(Vector2 direction)
     {
+        transform.localPosition = new Vector3(originalLocal.x, originalLocal.y, originalLocal.z);
         direction = HelperFunctions.rotateVector(direction, -transform.eulerAngles.z); //this is to account for the rotation of the player
         Vector3 originalPos = transform.localPosition;
         float elapsedTime = 0f;
@@ -81,7 +83,7 @@ public class VCamController : MonoBehaviour
 
             yield return null;
         }
-        transform.localPosition = originalPos;
+        transform.localPosition = new Vector3(originalLocal.x, originalLocal.y, originalLocal.z);
     }
 
     public void setShake(bool shake)
