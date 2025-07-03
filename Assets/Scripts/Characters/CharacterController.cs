@@ -114,7 +114,7 @@ public class CharacterController : ObjectController
 
     }
 
-    public void hit(Transform transform)
+    public virtual void hit(Transform transform)
     {
         if (invincibleFlag)
             return;

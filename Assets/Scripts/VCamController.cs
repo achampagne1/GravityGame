@@ -61,11 +61,12 @@ public class VCamController : MonoBehaviour
 
     private IEnumerator gunRecoil(Vector2 direction)
     {
+        direction = HelperFunctions.rotateVector(direction, -transform.eulerAngles.z); //this is to account for the rotation of the player
         Vector3 originalPos = transform.localPosition;
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x+(-direction.x*shootMagnitude), transform.localPosition.y + (-direction.y * shootMagnitude), originalPos.z);
+            transform.localPosition = new Vector3(transform.localPosition.x+(direction.x*shootMagnitude), transform.localPosition.y + (direction.y * shootMagnitude), originalPos.z);
 
             elapsedTime += Time.deltaTime;
 

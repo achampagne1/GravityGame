@@ -26,7 +26,6 @@ public class TriggerBoundaryCotroller : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D trigger)
     {
-        //TODO: break this into classes for each one
         if (trigger.gameObject.name == "Gun" && !trigger.gameObject.GetComponent<GunController>().getParented() && handController.getHolding()!=1)//will need to change to item controller once parenting is moved to item
             handController.setChild(trigger.transform);
 
@@ -45,8 +44,6 @@ public class TriggerBoundaryCotroller : MonoBehaviour
             }
 
             characterController.hit(trigger.transform);
-            if (gameObject.name == "TriggerBoundarySpaceMan")
-                UIHandler.instance.setHealthValue(characterController.getHealth());
         }
     }
 

@@ -85,6 +85,13 @@ public class SpaceManController : SpacePersonController
         else
             return 1;
     }
+
+    public override void hit(Transform transform)
+    {
+        camController.setShake(true);
+        UIHandler.instance.setHealthValue(health);
+        base.hit(transform);
+    }
     protected override IEnumerator die()
     {
         uIHandler.showLevelEnd(false);
