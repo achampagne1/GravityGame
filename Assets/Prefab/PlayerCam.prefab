@@ -191,5 +191,5 @@ MonoBehaviour:
   initialZoom: 10
   duration: 0.05
   shakeMagnitude: 0.2
-  shootMagnitude: 2
+  shootMagnitude: 0.05
   shake: 0

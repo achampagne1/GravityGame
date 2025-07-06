@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ArtificialGravityFieldController : MonoBehaviour
 {
-    public float fieldStrength = 20f;
+    [SerializeField] private float fieldStrength = 20f;
+    [SerializeField] private Vector2 direction = new Vector2(0, -1);
 
     // Start is called before the first frame update
     void Start()
@@ -22,7 +23,7 @@ public class ArtificialGravityFieldController : MonoBehaviour
     {
         if(!trigger.isTrigger)
         {
-            trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength* (Vector2)(transform.rotation * Vector2.down));
+            trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength* (Vector2)(transform.rotation * direction));
         }
     }
 
