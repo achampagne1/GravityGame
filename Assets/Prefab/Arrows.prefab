@@ -106,7 +106,7 @@ MonoBehaviour:
   glow: {fileID: 4576385575988276371, guid: e530383d5925be14496c02b82d42b708, type: 3}
   onState: 0
   glowState: 0
-  fadeSpeed: 1
+  fadeSpeed: 0.1
 --- !u!1 &6982177271621422711
 GameObject:
   m_ObjectHideFlags: 0

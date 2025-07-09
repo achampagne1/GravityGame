@@ -13,6 +13,7 @@ public class ArrowController : MonoBehaviour
     private Coroutine fadeRoutine;
     private float fadeStepSize = .1f;
     private float fadeSize = 0;
+    private float startValue = 0.0f;
 
     private SpriteRenderer sr;
     private SpriteRenderer glowSr;
@@ -26,8 +27,11 @@ public class ArrowController : MonoBehaviour
     {
         if (!onState)
         {
-            if(fadeRoutine!=null) 
+            if (fadeRoutine != null)
+            {
                 StopCoroutine(fadeRoutine);
+                fadeRoutine = null;
+            }
             sr.sprite = off; //changes the main sprite to off
             Color glowColor = glowSr.color; //changes alpha channle for glow
             glowColor.a = 0;
@@ -37,8 +41,11 @@ public class ArrowController : MonoBehaviour
         {
             if (!glowState)
             {
-                if (fadeRoutine != null)  
+                if (fadeRoutine != null)
+                {
                     StopCoroutine(fadeRoutine);
+                    fadeRoutine = null;
+                }
                 sr.sprite = on; //changes main sprite to on
                 Color glowColor = glowSr.color; //changes alpha channle for glow
                 glowColor.a = 0;
@@ -47,14 +54,19 @@ public class ArrowController : MonoBehaviour
             else
             {
                 sr.sprite = off; //changes main sprite to off
-                if(fadeRoutine==null)
+                if (fadeRoutine == null)
+                {
+                    Debug.Log("here");
                     fadeRoutine = StartCoroutine(glowFunc());
+                }
             }
         }
     }
 
     private IEnumerator glowFunc()
     {
+        fadeSize = startValue; 
+
         while (true)
         {
             Color glowColor = glowSr.color;
@@ -67,5 +79,21 @@ public class ArrowController : MonoBehaviour
 
             yield return new WaitForSeconds(fadeSpeed);
         }
+    }
+
+    public void setState(bool state)
+    {
+        onState = state;
+        glowState = state;//changes it form on to glowing
+    }
+
+    public void setStartValue(float offset)
+    {
+        startValue = offset % (2f * Mathf.PI);
+    }
+
+    public void setFadeSpeed(float fadeSpeed)
+    {
+        this.fadeSpeed = fadeSpeed;
     }
 }
