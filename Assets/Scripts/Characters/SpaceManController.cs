@@ -39,6 +39,15 @@ public class SpaceManController : SpacePersonController
         {
             Debug.Log("dead");
         }
+
+        if (rb.velocity.magnitude > 20)
+        {
+            camController.setShakeContinuously(true);
+            camController.setShake(true); //setshake is a latch and automatically goes back to false
+            camController.setShakeMagnitude(rb.velocity.magnitude/10);
+        }
+        else
+            camController.setShakeContinuously(false);
     }
 
     public override void Update()

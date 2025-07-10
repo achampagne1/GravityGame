@@ -13,6 +13,7 @@ public class VCamController : MonoBehaviour
     [SerializeField] float shakeMagnitude = .2f;
     [SerializeField] float shootMagnitude = 2f;
     [SerializeField] bool shake = false;
+    [SerializeField] bool shakeContinuously = false;
     private Vector3 originalLocal;
     private Vector2 direction = new Vector2(0,0);
     // Start is called before the first frame update
@@ -46,7 +47,7 @@ public class VCamController : MonoBehaviour
     {
         transform.localPosition = new Vector3(originalLocal.x,originalLocal.y,originalLocal.z);
         float elapsedTime = 0f;
-        while(elapsedTime < duration)
+        while(elapsedTime < duration||shakeContinuously) //shake continuously is for keping the camera shaking at high velocities
         {
             float xOffset = Random.Range(-.5f, .5f) * shakeMagnitude;
             float yOffset = Random.Range(-.5f, .5f) * shakeMagnitude;
@@ -89,6 +90,16 @@ public class VCamController : MonoBehaviour
     public void setShake(bool shake)
     {
         this.shake = shake;
+    }
+
+    public void setShakeContinuously(bool shakeContinuously)
+    {
+        this.shakeContinuously = shakeContinuously;
+    }
+
+    public void setShakeMagnitude(float shakeMagnitude)
+    {
+        this.shakeMagnitude = shakeMagnitude;
     }
 
     public void setGunRecoil(Vector2 direction)
