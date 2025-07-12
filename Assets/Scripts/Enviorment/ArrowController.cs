@@ -56,7 +56,6 @@ public class ArrowController : MonoBehaviour
                 sr.sprite = off; //changes main sprite to off
                 if (fadeRoutine == null)
                 {
-                    Debug.Log("here");
                     fadeRoutine = StartCoroutine(glowFunc());
                 }
             }

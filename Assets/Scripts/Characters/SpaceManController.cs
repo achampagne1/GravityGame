@@ -40,11 +40,11 @@ public class SpaceManController : SpacePersonController
             Debug.Log("dead");
         }
 
-        if (rb.velocity.magnitude > 20)
+        if (rb.velocity.magnitude > 15)
         {
             camController.setShakeContinuously(true);
             camController.setShake(true); //setshake is a latch and automatically goes back to false
-            camController.setShakeMagnitude(rb.velocity.magnitude/10);
+            camController.setShakeMagnitude(rb.velocity.magnitude/40);
         }
         else
             camController.setShakeContinuously(false);

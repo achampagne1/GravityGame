@@ -1852,6 +1852,7 @@ MonoBehaviour:
   shakeMagnitude: 0.2
   shootMagnitude: 2
   shake: 0
+  shakeContinuously: 0
 --- !u!1001 &644942382
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4469,7 +4470,7 @@ PrefabInstance:
     - target: {fileID: 2556291986462569329, guid: c0d8afac0c638394c8276f1436c91b64,
         type: 3}
       propertyPath: fieldStrength
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4906519143337695274, guid: c0d8afac0c638394c8276f1436c91b64,
         type: 3}
@@ -5310,7 +5311,7 @@ PrefabInstance:
     - target: {fileID: 2556291986462569329, guid: c0d8afac0c638394c8276f1436c91b64,
         type: 3}
       propertyPath: fieldStrength
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 4906519143337695274, guid: c0d8afac0c638394c8276f1436c91b64,
         type: 3}
@@ -5490,6 +5491,7 @@ MonoBehaviour:
   shakeMagnitude: 0.2
   shootMagnitude: 2
   shake: 0
+  shakeContinuously: 0
 --- !u!4 &2101649208 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1130049324385308652, guid: 8c86f36fdc78c844ebe6b289a23fa494,
