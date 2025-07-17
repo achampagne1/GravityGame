@@ -6,7 +6,6 @@ using UnityEngine;
 public class SpacePersonController : CharacterController
 {
     //object creation
-    private Animator animator; //movved
     private SpriteRenderer jetPackFlame;
     protected HandController handController;
     private AudioSource jetPackAudioSource;
