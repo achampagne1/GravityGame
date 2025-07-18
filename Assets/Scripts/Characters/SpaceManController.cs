@@ -31,8 +31,7 @@ public class SpaceManController : SpacePersonController
         if (Keyboard.current.qKey.isPressed)
             handController.throwItem();
         calculateSpacePersonUpdate();
-
-        if(fuelBuffer!=currentFuel)
+        if (fuelBuffer != currentFuel) { }
             UIHandler.instance.setFuelValue(currentFuel);
 
         if (Mathf.Abs(transform.position.x) > playArea[0]|| Mathf.Abs(transform.position.y) > playArea[1])

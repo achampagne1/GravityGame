@@ -21,6 +21,7 @@ public class SpacePersonController : CharacterController
     private float maxFuel = 100f; // Maximum fuel capacity
     protected bool throwItem = false;
     private bool hoverFlag = false;
+    private bool smokeLatch = false;
 
     //protected game variables
     protected float currentFuel = 100f;
@@ -53,16 +54,18 @@ public class SpacePersonController : CharacterController
 
     public void calculateSpacePersonUpdate()
     {
+        smokeLatch = groundStopWatch.getElapsedTime() > groundSmokeTime;
+
         calculateJetPackHover();
-        if (isGrounded)
-            Debug.Log(groundStopWatch.getElapsedTime());
-        if (isGrounded && groundStopWatch.getElapsedTime() > groundSmokeTime)
-            StartCoroutine(playLandingSmoke());
 
         rb.AddForce(hover);
 
         calculateCharacterUpdate();
-
+        if (isGrounded && smokeLatch)
+        {
+            GameObject smoke = Instantiate(landingSmoke, transform.position, transform.rotation);
+        }
+        smokeLatch = false;
     }
 
     public virtual void Update()
@@ -71,24 +74,17 @@ public class SpacePersonController : CharacterController
         //basically an abstract funciton
     }
 
-    private IEnumerator playLandingSmoke()
-    {
-        Instantiate(landingSmoke, transform.position, Quaternion.identity);
-        yield return null;
-    }
-
     private void calculateJetPackHover() //might change this to space man only
     {
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
-        if (space /** come back to && groundTimer.checkTimer() **/&& currentFuel > 0)
+        if (space && groundStopWatch.getElapsedTime()>0.4f && !hoverFlag&& currentFuel > 0)
         {
             jetPackAudioSource.Play();
             hoverFlag = true;
             Color color = jetPackFlame.color;
             color.a = 1.0f; // Set alpha (0 = transparent, 1 = opaque)
             jetPackFlame.color = color;
-            useFuel();
         }
 
         if (!space || currentFuel == 0)
@@ -100,12 +96,14 @@ public class SpacePersonController : CharacterController
             jetPackFlame.color = color;
         }
 
+        if (hoverFlag)
+            useFuel();
         hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero;
     }
 
     private void useFuel()
     {
-        float fuelConsumptionRate = 100f; // Fuel units per second
+        float fuelConsumptionRate = 10f; // Fuel units per second
           currentFuel -= fuelConsumptionRate * Time.deltaTime; // Decrease fuel over time
 
         if (currentFuel < 0)

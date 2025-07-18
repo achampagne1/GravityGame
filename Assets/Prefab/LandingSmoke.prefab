@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 8054297714700484303}
   - component: {fileID: 4796974745672682893}
   - component: {fileID: 8872762841493830502}
+  - component: {fileID: 8908070566290656829}
   m_Layer: 0
   m_Name: LandingSmoke
   m_TagString: Untagged
@@ -109,3 +110,15 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &8908070566290656829
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8098803252328287543}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c337f796a19ea4e4586bf7fed1f44b95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
