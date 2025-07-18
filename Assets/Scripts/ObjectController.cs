@@ -8,7 +8,7 @@ public class ObjectController : MonoBehaviour
     //object creation
     protected Rigidbody2D rb;
     protected Transform planetCenter;
-    protected Timer groundTimer;
+    protected StopWatch groundStopWatch;
     private List<GameObject> gravityPoints;
     protected SpriteRenderer spriteRenderer;
 
@@ -39,13 +39,12 @@ public class ObjectController : MonoBehaviour
 
     protected void calculateStart()
     {
+        groundStopWatch = new StopWatch();
         if (simulated)
         {
             spriteRenderer = GetComponent<SpriteRenderer>();
             rb = GetComponent<Rigidbody2D>();
             layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
-            if (calculateIsGrounded)
-                groundTimer = new Timer(0.4f);
             heightObject = getHeight();
             gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
             StartCoroutine(findClosestField());
@@ -146,13 +145,12 @@ public class ObjectController : MonoBehaviour
         if (!ground)
         {
             groundAngle = 0f;
-            if(!groundTimer.getIsRunning())
-                groundTimer.startTimer();
+            groundStopWatch.start(); //groundstop watch checks if the timer is already running
         }
 
         else
         {
-            groundTimer.resetTimer();
+            groundStopWatch.reset();
             Vector2 groundNormal = hit.normal;
             groundAngle = Vector2.Angle(gravityDirection, groundNormal);
         }

@@ -12,7 +12,10 @@ public class SpacePersonController : CharacterController
     protected Timer hoverTimer;
 
     //public game variables;
-    public float jetPackForce = 30f;
+    [SerializeField] private float jetPackForce = 30f;
+    [SerializeField] private float groundSmokeTime = 2f;
+    [SerializeField] private GameObject landingSmoke;
+
 
     //private game variables
     private float maxFuel = 100f; // Maximum fuel capacity
@@ -51,10 +54,15 @@ public class SpacePersonController : CharacterController
     public void calculateSpacePersonUpdate()
     {
         calculateJetPackHover();
+        if (isGrounded)
+            Debug.Log(groundStopWatch.getElapsedTime());
+        if (isGrounded && groundStopWatch.getElapsedTime() > groundSmokeTime)
+            StartCoroutine(playLandingSmoke());
 
         rb.AddForce(hover);
 
-        calculateCharacterUpdate();  
+        calculateCharacterUpdate();
+
     }
 
     public virtual void Update()
@@ -63,11 +71,17 @@ public class SpacePersonController : CharacterController
         //basically an abstract funciton
     }
 
+    private IEnumerator playLandingSmoke()
+    {
+        Instantiate(landingSmoke, transform.position, Quaternion.identity);
+        yield return null;
+    }
+
     private void calculateJetPackHover() //might change this to space man only
     {
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
-        if (space && groundTimer.checkTimer() && currentFuel > 0)
+        if (space /** come back to && groundTimer.checkTimer() **/&& currentFuel > 0)
         {
             jetPackAudioSource.Play();
             hoverFlag = true;
