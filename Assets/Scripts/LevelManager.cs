@@ -87,7 +87,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(1f);
 
         //pulls up coms and displayes general text
-        uIHandler.setBubbleText("Coms check kid, can you hear me?",26f,8f);
+        uIHandler.setBubbleText("Coms check kid, can you hear me?");
         yield return new WaitForSeconds(.1f); //tiny delay for loading
 
         //waits for player to aknowledge or timer runs out
@@ -96,32 +96,32 @@ public class LevelManager : MonoBehaviour
         yield return new WaitUntil(acknowledgeOrWait);
 
         if(eventChoice == 1)
-            uIHandler.setBubbleText("Good. Welcome to the training course BE-7.\nGo ahead and take a look around.",33f,14f);
+            uIHandler.setBubbleText("Good. Welcome to the training course BE-7.\nGo ahead and take a look around.");
         else
-            uIHandler.setBubbleText("I'll take that as a yes.\nAnyway, welcome to the training course BE-7.\nGo ahead and take a look around.", 35f,20f);
+            uIHandler.setBubbleText("I'll take that as a yes.\nAnyway, welcome to the training course BE-7.\nGo ahead and take a look around.");
         yield return new WaitForSeconds(.1f);  //tiny delay for loading
 
         //waits for player to aknowledge
         yield return new WaitForSeconds(10f); //do this better
 
         //displayes orders
-        uIHandler.setBubbleText("Time to use your jetpack.\nFly up to that asteroid but watch your fuel level.", 40f, 14f);
+        uIHandler.setBubbleText("Time to use your jetpack.\nFly up to that asteroid but watch your fuel level.");
         //gets planet trigger and check if player is intersecting
         PlanetTrigger asteroidTrigger1Trigger = asteroidTrigger1.GetComponent<PlanetTrigger>(); 
         yield return new WaitUntil(() => asteroidTrigger1Trigger.checkIfOverlapping("SpaceMan"));
 
         //sets objective as get your gun and waits until it is completed
-        uIHandler.setBubbleText("Good work. There is a gun in the space station.\nGo ahead and pick it up. I added it as an objective.", 42f, 14f);
+        uIHandler.setBubbleText("Good work. There is a gun in the space station.\nGo ahead and pick it up. I added it as an objective.");
         yield return objectivesStuff(true);
         //kill all bugs 
-        uIHandler.setBubbleText("Now for target practice. You see those bugs?\nTake em out!", 35f, 14f);
+        uIHandler.setBubbleText("Now for target practice. You see those bugs?\nTake em out!");
         yield return objectivesStuff(true);
 
         //sets next objective to get to teleporter
         yield return objectivesStuff(false);
 
         //get to teleporter
-        uIHandler.setBubbleText("Thats about it for training today.\nStart making your way to the teleporter.", 32f, 14f);
+        uIHandler.setBubbleText("Thats about it for training today.\nStart making your way to the teleporter.");
         //activate teleporter2
         TeleporterController teleporterController2 = teleporter2.GetComponent<TeleporterController>();
         teleporterController2.toggleStateFunc();
@@ -131,7 +131,7 @@ public class LevelManager : MonoBehaviour
 
 
         //generals orders
-        uIHandler.setBubbleText("Uh oh, hang on kid! Looks like you've got company!", 40f, 8f);
+        uIHandler.setBubbleText("Uh oh, hang on kid! Looks like you've got company!");
         //spawns green team
         GameObject one = Instantiate(greenTeamOriginal, new Vector3(-36f,-6f,0f), Quaternion.identity);
         one.tag = "SpaceZombie";
@@ -152,12 +152,12 @@ public class LevelManager : MonoBehaviour
         //waits for player to aknowledge or timer runs out
         eventTimer.setNewTime(10f);
         yield return new WaitUntil(acknowledgeOrWait);
-        uIHandler.setBubbleText("Thats the Green Team! How'd they find this place?!\nWe can't beam you up while they're here.", 40f, 14f);
+        uIHandler.setBubbleText("Thats the Green Team! How'd they find this place?!\nWe can't beam you up while they're here.");
         teleporterController2.toggleStateFunc();
         yield return objectivesStuff(true);
 
         //green team defeated
-        uIHandler.setBubbleText("WOOOO you took care of those guys!\nNow we can get you. Get back to the teleporter.", 37f, 14f);
+        uIHandler.setBubbleText("WOOOO you took care of those guys!\nNow we can get you. Get back to the teleporter.");
         teleporterController2.toggleStateFunc();
         //waits until player is on the pad
         yield return new WaitUntil(() => teleporterController2.getPlayerOnPad());

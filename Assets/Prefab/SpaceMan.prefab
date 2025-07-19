@@ -315,6 +315,9 @@ MonoBehaviour:
   knockBackDuration: 0.1
   movementToggle: 1
   jetPackForce: 30
+  groundSmokeTime: 1
+  landingSmoke: {fileID: 8098803252328287543, guid: 9e37d826df48111448919318eaf8a42f,
+    type: 3}
   playArea:
   - 100
   - 100

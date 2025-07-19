@@ -5831,17 +5831,6 @@ PrefabInstance:
       propertyPath: uIHandler
       value: 
       objectReference: {fileID: 485643197}
-    - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      propertyPath: landingSmoke
-      value: 
-      objectReference: {fileID: 8098803252328287543, guid: 9e37d826df48111448919318eaf8a42f,
-        type: 3}
-    - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      propertyPath: groundSmokeTime
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1751013654571615547, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
       propertyPath: vCamController

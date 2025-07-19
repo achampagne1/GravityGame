@@ -63,7 +63,8 @@ public class SpacePersonController : CharacterController
         calculateCharacterUpdate();
         if (isGrounded && smokeLatch)
         {
-            GameObject smoke = Instantiate(landingSmoke, transform.position, transform.rotation);
+            Vector3 footPosition = transform.position - transform.up * (heightObject / 2f);
+            GameObject smoke = Instantiate(landingSmoke, footPosition, transform.rotation);
         }
         smokeLatch = false;
     }

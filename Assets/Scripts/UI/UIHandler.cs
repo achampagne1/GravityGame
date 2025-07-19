@@ -278,10 +278,6 @@ public class UIHandler : MonoBehaviour
             StopCoroutine(revealBubbleTextCoroutine);
 
         coms(true); //pull up coms
-        textBubble.style.width = Length.Percent(width);
-        textBubble.style.left = Length.Percent(90 - width);//this is to adjust for the end of the bubble
-        textBubble.style.height = Length.Percent(height);
-        textBubble.style.top = Length.Percent(88.336f - .667f * height);//this is to adjust the height of the bubble
         bubbleText.text = ""; //resets the text bubble
 
         comsStaticAudioSource.Play();
@@ -301,12 +297,6 @@ public class UIHandler : MonoBehaviour
         }
         comsStaticAudioSource.Stop();
         revealBubbleTextCoroutine = null;
-    }
-
-    public Objective getCurrentObjective()
-    {
-        //NOTE: should objectives be soley handled by the level manager and the ui is only responsible for setting the text?
-        return currentObjective;
     }
 
     public void setCurrentObjective(Objective currentObjective)
