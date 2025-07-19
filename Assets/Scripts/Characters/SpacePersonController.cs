@@ -118,6 +118,11 @@ public class SpacePersonController : CharacterController
         yield return base.die();
     }
 
+    public float getCurrentFuel()
+    {
+        return currentFuel;
+    }
+
     public bool getThrow()
     {
         return throwItem;

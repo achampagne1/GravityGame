@@ -267,12 +267,12 @@ public class UIHandler : MonoBehaviour
         fullFuelBar.style.width = Length.Percent(fuelLevel);
     }
 
-    public void setBubbleText(string text,float width, float height) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73
+    public void setBubbleText(string text) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73
     {
-        revealBubbleTextCoroutine = StartCoroutine(bubbleTextReveal(text, width, height));
+        revealBubbleTextCoroutine = StartCoroutine(bubbleTextReveal(text));
     }
 
-    private IEnumerator bubbleTextReveal(string text, float width, float height)
+    private IEnumerator bubbleTextReveal(string text)
     {
         if (revealBubbleTextCoroutine != null)
             StopCoroutine(revealBubbleTextCoroutine);

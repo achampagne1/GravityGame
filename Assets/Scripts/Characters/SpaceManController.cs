@@ -34,11 +34,6 @@ public class SpaceManController : SpacePersonController
         if (fuelBuffer != currentFuel) { }
             UIHandler.instance.setFuelValue(currentFuel);
 
-        if (Mathf.Abs(transform.position.x) > playArea[0]|| Mathf.Abs(transform.position.y) > playArea[1])
-        {
-            Debug.Log("dead");
-        }
-
         if (rb.velocity.magnitude > 15)
         {
             camController.setShakeContinuously(true);
@@ -102,7 +97,7 @@ public class SpaceManController : SpacePersonController
     }
     protected override IEnumerator die()
     {
-        uIHandler.showLevelEnd(false);
+        //uIHandler.showLevelEnd(false); //moved to level manager
         yield return base.die();
     }
 

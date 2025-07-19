@@ -21,6 +21,8 @@ public class LevelManager : MonoBehaviour
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
+    [SerializeField] float[] playArea = { 50, 50 }; //generic play area 
+    private SpaceManController spaceManController;
     private Timer eventTimer = new Timer(30f);
     private UIHandler uIHandler;
     private ObjectiveWrapper objectiveWrapper;
@@ -31,12 +33,14 @@ public class LevelManager : MonoBehaviour
     {
         uIHandler = uIDocument.GetComponent<UIHandler>();
         objectiveWrapper = new ObjectiveWrapper();
+        spaceManController = player.GetComponent<SpaceManController>();
         StartCoroutine(objectivesStart());
         if (playScript)
         {
             //set player body and hand to transparent
             setPlayerOpacity(0f,player);
             StartCoroutine(gameScript());
+            StartCoroutine(failConditions());
         }
     }
 
@@ -185,6 +189,23 @@ public class LevelManager : MonoBehaviour
 
         //returns to main menu
         SceneManager.LoadScene("MainMenu");
+    }
+
+    private IEnumerator failConditions()
+    {
+        while (true)
+        {
+            //for all the failure conditions
+            if(spaceManController.getDead()|| 
+                (Mathf.Abs(player.transform.position.x) > playArea[0] || Mathf.Abs(player.transform.position.y) > playArea[1])||
+                spaceManController.getCurrentFuel()==0)
+            {
+                uIHandler.showLevelEnd(false);
+                yield return new WaitForSeconds(5f);
+                SceneManager.LoadScene("MainMenu");
+            }
+            yield return new WaitForSeconds(.2f);
+        }
     }
 
     private bool acknowledgeOrWait()
