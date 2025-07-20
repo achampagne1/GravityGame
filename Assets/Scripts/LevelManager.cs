@@ -255,9 +255,7 @@ public class LevelManager : MonoBehaviour
         SpriteRenderer sr = gameObject.GetComponent<SpriteRenderer>();
         if (sr != null)
         {
-            Color color = sr.color;
-            color.a = opacity;
-            sr.color = color;
+            HelperFunctions.changeOpacity(sr, opacity);
         }
         foreach(Transform child in gameObject.transform)
         {

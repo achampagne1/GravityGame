@@ -33,4 +33,11 @@ public struct HelperFunctions
         float radians = angleDegrees * Mathf.Deg2Rad;
         return new Vector2(Mathf.Cos(radians), Mathf.Sin(radians));
     }
+
+    public static void changeOpacity(SpriteRenderer sr,float opacity)
+    {
+        Color color = sr.color;
+        color.a = opacity;
+        sr.color = color;
+    }
 }

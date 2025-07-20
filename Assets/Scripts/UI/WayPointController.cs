@@ -5,11 +5,13 @@ using UnityEngine;
 public class WayPointController : MonoBehaviour
 {
     [SerializeField] Transform player;
+    [SerializeField] float arrowPadding = 0.5f;
+    private SpriteRenderer sr;
     private Vector2 objective = new Vector2(-8f, -8f);
     // Start is called before the first frame update
     void Start()
     {
-        
+        sr = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -24,22 +26,35 @@ public class WayPointController : MonoBehaviour
         corners[3] = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, z));
 
         Vector2 intersectionPoint = new Vector2();
+        bool intersects = false;
         for(int i = 0; i < 4; i++)
         {
             Vector2 intersectionPointLocal;
-            bool intersects = GetLineSegmentIntersection(corners[i], corners[(i+1)%4], (Vector2)player.position, objective, out intersectionPointLocal);
-            Debug.Log(corners[i]+" "+ corners[(i + 1) % 4]+" "+ (Vector2)transform.position+" "+objective);
-            if (intersects)
+            bool intersectsLocal = GetLineSegmentIntersection(corners[i], corners[(i+1)%4], (Vector2)player.position, objective, out intersectionPointLocal);
+            if (intersectsLocal)
             {
                 intersectionPoint = intersectionPointLocal;
+                intersects = true;
+                HelperFunctions.changeOpacity(sr, 1);
                 break;
             }
         }
-        transform.position = new Vector3(intersectionPoint[0], intersectionPoint[1],player.position.z);
+
+        if (!intersects)
+        {
+            HelperFunctions.changeOpacity(sr, 0);
+        }
+
+        Vector2 direction = ((Vector2)player.position - intersectionPoint).normalized;
+        intersectionPoint += direction * arrowPadding;
+
+        transform.position = new Vector3(intersectionPoint.x, intersectionPoint.y, player.position.z);
+
         float angle = Mathf.Atan2(objective.y- transform.position.y,objective.x-transform.position.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle-90);
     }
 
+    //written by chat gpt
     private bool GetLineSegmentIntersection(
     Vector2 A, Vector2 B, Vector2 C, Vector2 D, out Vector2 intersection)
     {
