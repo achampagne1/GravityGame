@@ -7,7 +7,7 @@ public class WayPointController : MonoBehaviour
     [SerializeField] Transform player;
     [SerializeField] float arrowPadding = 0.5f;
     private SpriteRenderer sr;
-    private Vector2 objective = new Vector2(-8f, -8f);
+    private Vector2 pointLocation;
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +30,7 @@ public class WayPointController : MonoBehaviour
         for(int i = 0; i < 4; i++)
         {
             Vector2 intersectionPointLocal;
-            bool intersectsLocal = GetLineSegmentIntersection(corners[i], corners[(i+1)%4], (Vector2)player.position, objective, out intersectionPointLocal);
+            bool intersectsLocal = GetLineSegmentIntersection(corners[i], corners[(i+1)%4], (Vector2)player.position, pointLocation, out intersectionPointLocal);
             if (intersectsLocal)
             {
                 intersectionPoint = intersectionPointLocal;
@@ -50,7 +50,7 @@ public class WayPointController : MonoBehaviour
 
         transform.position = new Vector3(intersectionPoint.x, intersectionPoint.y, player.position.z);
 
-        float angle = Mathf.Atan2(objective.y- transform.position.y,objective.x-transform.position.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(pointLocation.y- transform.position.y,pointLocation.x-transform.position.x) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0, 0, angle-90);
     }
 
@@ -90,6 +90,16 @@ public class WayPointController : MonoBehaviour
     private float Cross(Vector2 v, Vector2 w)
     {
         return v.x * w.y - v.y * w.x;
+    }
+
+    public void setPointLocation(Vector2 pointLocation)
+    {
+        this.pointLocation = pointLocation;
+    }
+
+    public void setPlayerTransform(Transform player)
+    {
+        this.player = player;
     }
 }
 

@@ -5,6 +5,11 @@ using UnityEngine.Events;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
+/**
+ ****Level mangment rules****
+ *all wait until events must be wrapped in as an objective. they dont need to have text ascociated but must be wrapped
+ *the only exception is aknowledge or wait
+ **/
 public class LevelManager : MonoBehaviour
 {
     [SerializeField] bool playScript = false;
@@ -14,34 +19,25 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject greenTeamOriginal;
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject uIDocument;
-    [SerializeField] GameObject asteroidTrigger1;
     [SerializeField] GameObject starList;
     [SerializeField] GameObject enemies;
-    [SerializeField] GameObject enemySpawnTrigger;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
+    [SerializeField] GameObject wayPoint;
     [SerializeField] float[] playArea = { 50, 50 }; //generic play area 
     private SpaceManController spaceManController;
     private Timer eventTimer = new Timer(30f);
     private UIHandler uIHandler;
-    private ObjectiveWrapper objectiveWrapper;
+    private ObjectiveLoader objectiveLoader;
+    private Dictionary<string, Objective> objectives;
     private Objective currentObjective;
+    private bool objectivesLoading = true;
     int eventChoice = 0; //0 is reserved for no choice being made or reset
     // Start is called before the first frame update
     void Start()
     {
-        uIHandler = uIDocument.GetComponent<UIHandler>();
-        objectiveWrapper = new ObjectiveWrapper();
-        spaceManController = player.GetComponent<SpaceManController>();
-        StartCoroutine(objectivesStart());
-        if (playScript)
-        {
-            //set player body and hand to transparent
-            setPlayerOpacity(0f,player);
-            StartCoroutine(gameScript());
-            StartCoroutine(failConditions());
-        }
+        StartCoroutine(initialCoroutine());
     }
 
     // Update is called once per frame
@@ -50,15 +46,35 @@ public class LevelManager : MonoBehaviour
 
     }
 
+    private IEnumerator initialCoroutine()
+    {
+        uIHandler = uIDocument.GetComponent<UIHandler>();
+        objectiveLoader = new ObjectiveLoader();
+        spaceManController = player.GetComponent<SpaceManController>();
+        if (playScript)
+        {
+            teleporterCam.Priority = 2; //just so the camera is set up at start
+            playerCam.Priority = 1;
+
+            StartCoroutine(loadObjectives());
+            yield return new WaitUntil(() => !objectivesLoading); //waits for the loading of the objectives to complete
+
+            //set player body and hand to transparent
+            setPlayerOpacity(0f, player);
+            StartCoroutine(gameScript());
+            StartCoroutine(failConditions());
+        }
+    }
+
     private IEnumerator gameScript()
     {
         //KEEP UP WITH THE COMMENTS!!!
         //Each action should have a comment
-       
+
+        //Sets initial objective
+        changeObjective("nocurrentobjective");
         //sets teleporter cam to main cam
         VCamController teleporterCamController = teleporterCam.GetComponent<VCamController>();
-        teleporterCam.Priority = 2;
-        playerCam.Priority = 1;
         //turns off player simulation
         Rigidbody2D playerRb = player.GetComponent<Rigidbody2D>();
         playerRb.simulated = false;
@@ -110,19 +126,29 @@ public class LevelManager : MonoBehaviour
 
         //displayes orders
         uIHandler.setBubbleText("Time to use your jetpack.\nFly up to that asteroid but watch your fuel level.");
+        //changes objective
+        changeObjective("flytoasteroid");
+        GameObject arrow = Instantiate(wayPoint, Vector3.zero, Quaternion.identity);
+        WayPointController wayPointController = arrow.GetComponent<WayPointController>();
+        wayPointController.setPlayerTransform(player.transform);
+        wayPointController.setPointLocation(currentObjective.wayPointLocations()[0]);
         //gets planet trigger and check if player is intersecting
-        PlanetTrigger asteroidTrigger1Trigger = asteroidTrigger1.GetComponent<PlanetTrigger>(); 
-        yield return new WaitUntil(() => asteroidTrigger1Trigger.checkIfOverlapping("SpaceMan"));
+        yield return new WaitUntil(currentObjective.completionCondition);
 
         //sets objective as get your gun and waits until it is completed
         uIHandler.setBubbleText("Good work. There is a gun in the space station.\nGo ahead and pick it up. I added it as an objective.");
-        yield return objectivesStuff(true);
+        //changes objective
+        changeObjective("getyourgun");
+        yield return new WaitUntil(currentObjective.completionCondition);
         //kill all bugs 
         uIHandler.setBubbleText("Now for target practice. You see those bugs?\nTake em out!");
-        yield return objectivesStuff(true);
+        //changes objective
+        changeObjective("killallbugs");
+        yield return new WaitUntil(currentObjective.completionCondition);
 
         //sets next objective to get to teleporter
-        yield return objectivesStuff(false);
+        //changes objective
+        changeObjective("gettoteleporter");
 
         //get to teleporter
         uIHandler.setBubbleText("Thats about it for training today.\nStart making your way to the teleporter.");
@@ -130,11 +156,11 @@ public class LevelManager : MonoBehaviour
         TeleporterController teleporterController2 = teleporter2.GetComponent<TeleporterController>();
         teleporterController2.toggleStateFunc();
         //waits for player to intersect with enemy trigger
-        PlanetTrigger trigger = enemySpawnTrigger.GetComponent<PlanetTrigger>();
-        yield return new WaitUntil(() => trigger.checkIfOverlapping("SpaceMan"));
+        yield return new WaitUntil(currentObjective.completionCondition);
 
 
         //generals orders
+        teleporterController2.toggleStateFunc();
         uIHandler.setBubbleText("Uh oh, hang on kid! Looks like you've got company!");
         //spawns green team
         GameObject one = Instantiate(greenTeamOriginal, new Vector3(-36f,-6f,0f), Quaternion.identity);
@@ -157,8 +183,8 @@ public class LevelManager : MonoBehaviour
         eventTimer.setNewTime(10f);
         yield return new WaitUntil(acknowledgeOrWait);
         uIHandler.setBubbleText("Thats the Green Team! How'd they find this place?!\nWe can't beam you up while they're here.");
-        teleporterController2.toggleStateFunc();
-        yield return objectivesStuff(true);
+        changeObjective("defeatthegreenteam");
+        yield return new WaitUntil(currentObjective.completionCondition);
 
         //green team defeated
         uIHandler.setBubbleText("WOOOO you took care of those guys!\nNow we can get you. Get back to the teleporter.");
@@ -228,25 +254,19 @@ public class LevelManager : MonoBehaviour
             return false;
     }
 
-    //this is to abstract all the tiny stuff needed for objectives
-    private IEnumerator objectivesStuff(bool wait)
+    private void changeObjective(string name)
     {
-        currentObjective = objectiveWrapper.getNextObjective();
-        Debug.Log(currentObjective.name);
+        currentObjective = objectives[name];
         uIHandler.setCurrentObjective(currentObjective);
-        if(wait)
-            yield return new WaitUntil(() => currentObjective.completionCondition());
-        else
-            yield return null;
     }
 
-    private IEnumerator objectivesStart()
+    private IEnumerator loadObjectives()
     {
-        var initializeTask = objectiveWrapper.initializeObjectives();
-        while (!initializeTask.IsCompleted)
+        var initializeTask = objectiveLoader.initializeObjectives(); //calls the initialize function that returns a task
+        while (!initializeTask.IsCompleted) //waits for task to complete
             yield return null;
-        currentObjective = objectiveWrapper.getNextObjective();
-        uIHandler.setCurrentObjective(currentObjective);
+        objectives = objectiveLoader.getObjectives();
+        objectivesLoading = false;
     }
 
     private void setPlayerOpacity(float opacity,GameObject gameObject)

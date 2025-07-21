@@ -8,13 +8,13 @@ using UnityEngine.ResourceManagement.AsyncOperations;
 using System.Threading.Tasks;
 
 
-
-public class ObjectiveWrapper : ScriptableObject
+//this should only be used for setting up the objectives
+public class ObjectiveLoader : ScriptableObject
 {
-    private Stack<Objective> objectives;
-    public ObjectiveWrapper()
+    private Dictionary<string, Objective> objectives = new Dictionary<string, Objective>();
+    public ObjectiveLoader()
     {
-        objectives = new Stack<Objective>(3);
+
     }
 
     public async Task initializeObjectives()
@@ -22,7 +22,7 @@ public class ObjectiveWrapper : ScriptableObject
         string name = "defeatthegreenteam";
         GameObject enemies = GameObject.Find("Enemies");
         VisualElement visualElement = await createVisualElement(name);
-        Objective objective = new Objective(name, () =>
+        objectives[name] = new Objective(name, () =>
         {
             foreach (Transform enemy in enemies.transform)
             {
@@ -32,20 +32,38 @@ public class ObjectiveWrapper : ScriptableObject
                 }
             }
             return true;
+        }, () =>
+        {
+            List<Vector2> outputs = new List<Vector2>();
+            foreach (Transform enemy in enemies.transform)
+            {
+                if (enemy.gameObject.tag == "SpaceZombie")
+                {
+                    outputs.Add((Vector2)enemy.transform.position);
+                }
+            }
+            return outputs;
         }, visualElement);
-        objectives.Push(objective);
+
 
         name = "gettoteleporter";
+        GameObject enemySpawnTrigger = GameObject.Find("EnemySpawnTrigger");
+        PlanetTrigger enemySpawnTriggerScript = enemySpawnTrigger.GetComponent<PlanetTrigger>();
         visualElement = await createVisualElement(name);
-        objective = new Objective(name, () =>
+        objectives[name] = new Objective(name, () =>
         {
-            return false;
+            return enemySpawnTriggerScript.checkIfOverlapping("SpaceMan");
+        }, () =>
+        {
+            List<Vector2> outputs = new List<Vector2>();
+            outputs.Add(new Vector2(44.85f, -2.66f));
+            return outputs;
         }, visualElement);
-        objectives.Push(objective);
+
 
         name = "killallbugs";
         visualElement = await createVisualElement(name);
-        objective = new Objective(name, () =>
+        objectives[name] = new Objective(name, () =>
         {
             foreach (Transform enemy in enemies.transform)
             {
@@ -55,32 +73,61 @@ public class ObjectiveWrapper : ScriptableObject
                 }
             }
             return true;
+        }, () =>
+        {
+            List<Vector2> outputs = new List<Vector2>();
+            foreach (Transform enemy in enemies.transform)
+            {
+                if (enemy.gameObject.tag == "Bug")
+                {
+                    outputs.Add((Vector2)enemy.transform.position);
+                }
+            }
+            return outputs;
         }, visualElement);
-        objectives.Push(objective);
-
 
 
         name = "getyourgun";
         GameObject spaceMan = GameObject.Find("SpaceMan");
         GameObject spaceManHand = spaceMan.transform.Find("Hand").gameObject;
+        GameObject gun = GameObject.Find("Gun");
         visualElement = await createVisualElement(name);
-        objective = new Objective(name, () =>
+        objectives[name] = new Objective(name, () =>
         {
             if (spaceManHand.transform.childCount == 1)
             {
                 return true;
             }
             return false;
+        }, () =>
+        {
+            List<Vector2> outputs = new List<Vector2>();
+            outputs.Add((Vector2)gun.transform.position);
+            return outputs;
         }, visualElement);
-        objectives.Push(objective);
+
 
         name = "nocurrentobjective";
         visualElement = await createVisualElement(name);
-        objective = new Objective(name, () =>
+        objectives[name] = new Objective(name, () =>
         {
             return false;
+        },null, visualElement);
+
+
+        name = "flytoasteroid";
+        GameObject asteroid1Trigger = GameObject.Find("Asteroid1Trigger");
+        PlanetTrigger asteroid1TriggerScript = asteroid1Trigger.GetComponent<PlanetTrigger>();
+        visualElement = await createVisualElement(name);
+        objectives[name] = new Objective(name, () =>
+        {
+            return asteroid1TriggerScript.checkIfOverlapping("SpaceMan");
+        }, () =>
+        {
+            List<Vector2> outputs = new List<Vector2>();
+            outputs.Add(new Vector2(-8f, -16f));
+            return outputs;
         }, visualElement);
-        objectives.Push(objective);
     }
 
 
@@ -107,8 +154,8 @@ public class ObjectiveWrapper : ScriptableObject
     }
 
 
-    public Objective getNextObjective()
+    public Dictionary<string,Objective> getObjectives()
     {
-        return objectives.Pop();
+        return objectives;
     }
 }
