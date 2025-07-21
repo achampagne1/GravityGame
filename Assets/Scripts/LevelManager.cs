@@ -21,10 +21,11 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject uIDocument;
     [SerializeField] GameObject starList;
     [SerializeField] GameObject enemies;
+    [SerializeField] GameObject wayPoint;
+    [SerializeField] GameObject wayPoints;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
-    [SerializeField] GameObject wayPoint;
     [SerializeField] float[] playArea = { 50, 50 }; //generic play area 
     private SpaceManController spaceManController;
     private Timer eventTimer = new Timer(30f);
@@ -128,10 +129,6 @@ public class LevelManager : MonoBehaviour
         uIHandler.setBubbleText("Time to use your jetpack.\nFly up to that asteroid but watch your fuel level.");
         //changes objective
         changeObjective("flytoasteroid");
-        GameObject arrow = Instantiate(wayPoint, Vector3.zero, Quaternion.identity);
-        WayPointController wayPointController = arrow.GetComponent<WayPointController>();
-        wayPointController.setPlayerTransform(player.transform);
-        wayPointController.setPointLocation(currentObjective.wayPointLocations()[0]);
         //gets planet trigger and check if player is intersecting
         yield return new WaitUntil(currentObjective.completionCondition);
 
@@ -258,6 +255,7 @@ public class LevelManager : MonoBehaviour
     {
         currentObjective = objectives[name];
         uIHandler.setCurrentObjective(currentObjective);
+        wayPointAbstraction();
     }
 
     private IEnumerator loadObjectives()
@@ -267,6 +265,26 @@ public class LevelManager : MonoBehaviour
             yield return null;
         objectives = objectiveLoader.getObjectives();
         objectivesLoading = false;
+    }
+
+    private void wayPointAbstraction()
+    {
+        foreach (Transform child in wayPoints.transform) //clears all previous waypoints
+            GameObject.Destroy(child.gameObject);
+
+        if (currentObjective.wayPointLocations == null)
+            return;
+
+        List<Vector2> wayPointLocations = currentObjective.wayPointLocations();
+        
+        foreach(Vector2 wayPointLocation in wayPointLocations)
+        {
+            GameObject arrow = Instantiate(wayPoint, Vector3.zero, Quaternion.identity);
+            arrow.transform.SetParent(wayPoints.transform);
+            WayPointController wayPointController = arrow.GetComponent<WayPointController>();
+            wayPointController.setPlayerTransform(player.transform);
+            wayPointController.setPointLocation(wayPointLocation);
+        }
     }
 
     private void setPlayerOpacity(float opacity,GameObject gameObject)
