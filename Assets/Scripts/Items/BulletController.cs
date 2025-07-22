@@ -85,6 +85,7 @@ public class BulletController : ObjectController
     {
         if (trigger.gameObject.GetComponent<TriggerBoundaryCotroller>().getLayerConnectedTo() != shotBy && !first)
             Destroy(this.gameObject);
+        //maybe have it so if the player and shield colliders are hit, that that doesnt count as a hit
     }
 
     public void newInstance(Vector2 direction)

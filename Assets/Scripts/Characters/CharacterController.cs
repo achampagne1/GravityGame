@@ -353,6 +353,11 @@ public class CharacterController : ObjectController
         click = clickInput;
     }
 
+    public void setInvincible(bool invincibleFlag)
+    {
+        this.invincibleFlag = invincibleFlag;
+    }
+
     public Collider2D getCharacterCollider()
     {
         return GetComponent<Collider2D>();

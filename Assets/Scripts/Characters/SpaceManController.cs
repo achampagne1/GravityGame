@@ -91,9 +91,11 @@ public class SpaceManController : SpacePersonController
 
     public override void hit(Transform transform)
     {
-        //camController.setShake(true);
-        //UIHandler.instance.setHealthValue(health);
-        //base.hit(transform); commented out cuz im working on shield stuff
+        if (invincibleFlag) //NOTE: when the shields are up, you are "invincible"
+            return;
+        camController.setShake(true);
+        UIHandler.instance.setHealthValue(health);
+        base.hit(transform);
     }
     protected override IEnumerator die()
     {

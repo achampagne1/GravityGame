@@ -162,7 +162,7 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 0
 --- !u!114 &2598932830481760950
 MonoBehaviour:
@@ -176,6 +176,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f57f727a0aca2842be59d1f10e563b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  terminalVelocity: 30
+  gravityAffected: 1
+  orientToGravity: 1
+  updateGravityField: 0
+  calculateIsGrounded: 0
+  simulated: 0
   bulletForce: 35
 --- !u!95 &2029616018101744954
 Animator:
