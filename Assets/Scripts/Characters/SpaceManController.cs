@@ -91,9 +91,9 @@ public class SpaceManController : SpacePersonController
 
     public override void hit(Transform transform)
     {
-        camController.setShake(true);
-        UIHandler.instance.setHealthValue(health);
-        base.hit(transform);
+        //camController.setShake(true);
+        //UIHandler.instance.setHealthValue(health);
+        //base.hit(transform); commented out cuz im working on shield stuff
     }
     protected override IEnumerator die()
     {

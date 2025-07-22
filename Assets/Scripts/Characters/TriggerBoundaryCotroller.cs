@@ -5,7 +5,7 @@ using UnityEngine;
 public class TriggerBoundaryCotroller : MonoBehaviour
 {
     //object creation
-    private GameObject parent;
+    protected GameObject parent;
     private HandController handController;
     protected CharacterController characterController;
     private int layerConnectedTo = 2; //2 is ignore raycasr
