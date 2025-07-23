@@ -3,8 +3,8 @@ guid: 0035fa977f1e16243bdbb9b6e3963181
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8899887810412640920
-    second: sheildHit_0
+      213: 7149627160471658223
+    second: shieldHit_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,22 +100,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: sheildHit_0
+      name: shieldHit_0
       rect:
         serializedVersion: 2
         x: 0
-        y: 0
-        width: 632
-        height: 618
-      alignment: 0
-      pivot: {x: 0, y: 0}
+        y: 27
+        width: 620
+        height: 635
+      alignment: 9
+      pivot: {x: 0.85988426, y: 0.49471605}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 8658687a03f3d7480800000000000000
-      internalID: -8899887810412640920
+      spriteID: feed568a504983360800000000000000
+      internalID: 7149627160471658223
       vertices: []
       indices: 
       edges: []
@@ -123,7 +123,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 97b8b067d3ace7641888f597337a3aaa
     internalID: 0
     vertices: []
     indices: 
@@ -131,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      sheildHit_0: -8899887810412640920
+      shieldHit_0: 7149627160471658223
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
