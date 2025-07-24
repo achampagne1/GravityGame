@@ -28,6 +28,8 @@ public class UIHandler : MonoBehaviour
 
     private VisualElement fuelBar;
     private VisualElement shieldBar;
+    private VisualElement heartContainer;
+    private VisualElement[] hearts = new VisualElement[10];
     private VisualElement pauseMenu;
     private VisualElement darken;
     private VisualElement pauseContainer;
@@ -68,6 +70,8 @@ public class UIHandler : MonoBehaviour
 
         fuelBar = uiDocument.rootVisualElement.Q<VisualElement>("fuel");
         shieldBar = uiDocument.rootVisualElement.Q<VisualElement>("shield");
+        heartContainer = uiDocument.rootVisualElement.Q<VisualElement>("heartContainer");
+        hearts = heartContainer.Query<VisualElement>("heart").ToList().ToArray();
         pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
         pauseContainer = uiDocument.rootVisualElement.Q<VisualElement>("pauseContainer");
         darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
@@ -94,6 +98,11 @@ public class UIHandler : MonoBehaviour
         comsStaticAudioSource = (GetComponents<AudioSource>())[0];
         comsAcknowledgeAudioSource = (GetComponents<AudioSource>())[1];
         tabletHumAudioSource = (GetComponents<AudioSource>())[2];
+
+        for(int i = 0; i < 10; i++)
+        {
+            hearts[i].style.left = Length.Percent(i*10.1); //10.1 is the amount each heart is shifted by
+        }
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
     }

@@ -2183,6 +2183,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 789602150793835578, guid: 475f7c1040520e14ca84332724842bc1,
         type: 3}
+      propertyPath: heartUXML
+      value: 
+      objectReference: {fileID: 9197481963319205126, guid: 4d282bdfa84e1b34799ef4d84333b7ad,
+        type: 3}
+    - target: {fileID: 789602150793835578, guid: 475f7c1040520e14ca84332724842bc1,
+        type: 3}
       propertyPath: tabletHum
       value: 
       objectReference: {fileID: 8300000, guid: 12f8351c2b640c240842425a02ea3bc3, type: 3}
