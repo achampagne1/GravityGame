@@ -26,9 +26,8 @@ public class UIHandler : MonoBehaviour
     //object creation
     public static UIHandler instance { get; private set; }
 
-    private VisualElement fullBar;
-    private VisualElement fullFuelBar;
-    private VisualElement warningBar;
+    private VisualElement fuelBar;
+    private VisualElement shieldBar;
     private VisualElement pauseMenu;
     private VisualElement darken;
     private VisualElement pauseContainer;
@@ -67,9 +66,8 @@ public class UIHandler : MonoBehaviour
     {
         UIDocument uiDocument = GetComponent<UIDocument>();
 
-        fullBar = uiDocument.rootVisualElement.Q<VisualElement>("healthBar");
-        fullFuelBar = uiDocument.rootVisualElement.Q<VisualElement>("fuelBar");
-        warningBar = uiDocument.rootVisualElement.Q<VisualElement>("warningBar");
+        fuelBar = uiDocument.rootVisualElement.Q<VisualElement>("fuel");
+        shieldBar = uiDocument.rootVisualElement.Q<VisualElement>("shield");
         pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
         pauseContainer = uiDocument.rootVisualElement.Q<VisualElement>("pauseContainer");
         darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
@@ -85,7 +83,6 @@ public class UIHandler : MonoBehaviour
         comsOverlay = uiDocument.rootVisualElement.Q<VisualElement>("coms");
         textBubble = uiDocument.rootVisualElement.Q<VisualElement>("textBubble");
         bubbleText = uiDocument.rootVisualElement.Q<Label>("bubbleText");
-        warningBar.style.opacity = 0f;
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
         pauseMenu.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
@@ -105,11 +102,6 @@ public class UIHandler : MonoBehaviour
     void Update()
     {
         bubbleText.style.fontSize = Screen.width / screenTextScaler;
-
-        if (currentHealth <= .3f)
-        {
-            warningBarFunction();
-        }
 
         if (escapeKey.wasPressedWithCooldown()&&!eClicked)
         {
@@ -192,21 +184,6 @@ public class UIHandler : MonoBehaviour
         Application.Quit();
     }
 
-    private void warningBarFunction()
-    {
-        if (currentHealth == .3f)
-            fadeCounter -= 2f;
-        else if (currentHealth == .2f)
-            fadeCounter -= 4f;
-        else if (currentHealth == .1f)
-            fadeCounter -= 8f;
-
-        warningBar.style.opacity = 1f - Mathf.Sin(fadeCounter * Mathf.Deg2Rad);
-        warningBar.style.width = Length.Percent(currentHealth * 100.0f);
-        if (fadeCounter <= 0)
-            fadeCounter = 180;
-    }
-
     //if complete is true then level complete show. if not then level failed
     public void showLevelEnd(bool complete) //maybe chnge this to a bool, however, level end should only be displayed once
     {
@@ -259,12 +236,26 @@ public class UIHandler : MonoBehaviour
     public void setHealthValue(float health)
     {
         currentHealth = health / 10f;
-        fullBar.style.width = Length.Percent(currentHealth * 100.0f);
+        //fullBar.style.width = Length.Percent(currentHealth * 100.0f); //change to ne system
     }
 
     public void setFuelValue(float fuelLevel)
     {
-        fullFuelBar.style.width = Length.Percent(fuelLevel);
+        float initialOffset = 42f; //I dont know why its this number
+        float finalOffset = 54f;
+        float fuelScaler = .6f;
+        fuelLevel *= fuelScaler;
+        fuelBar.style.width = Length.Percent(fuelLevel);
+        fuelBar.style.left = Length.Percent(finalOffset - (fuelLevel / 100f) * (finalOffset - initialOffset));
+    }
+    public void setShieldValue(float shieldLevel)
+    {
+        float initialOffset = -41f; //I dont know why its this number
+        float finalOffset = 46f;
+        float shieldScaler = .6f;
+        shieldLevel *= shieldScaler;
+        shieldBar.style.width = Length.Percent(shieldLevel);
+        shieldBar.style.left = Length.Percent(finalOffset - (shieldLevel / 100f) * (finalOffset - initialOffset));
     }
 
     public void setBubbleText(string text) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73

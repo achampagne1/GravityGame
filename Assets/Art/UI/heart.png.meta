@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 88895c8e15f754f4b9301b55e8ea3d60
+guid: a6bbfdb8d52b10c44b7fe73e65491973
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4242422487539517804
-    second: RoughUI_0
+      213: -205270267638800340
+    second: heart_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RoughUI_0
+      name: heart_0
       rect:
         serializedVersion: 2
-        x: 16
-        y: 10
-        width: 1452
-        height: 225
+        x: 0
+        y: 0
+        width: 61
+        height: 57
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -114,8 +114,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: c690cec66cc10ea30800000000000000
-      internalID: 4242422487539517804
+      spriteID: c20a07677cbb62df0800000000000000
+      internalID: -205270267638800340
       vertices: []
       indices: 
       edges: []
@@ -130,8 +130,7 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable:
-      RoughUI_0: 4242422487539517804
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
