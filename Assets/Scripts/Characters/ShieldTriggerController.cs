@@ -6,9 +6,12 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
 {
     [SerializeField] GameObject shieldHit;
     [SerializeField] float fadeSize = .1f;
+    [SerializeField] float shieldRebuildTime = 5f;
+    [SerializeField] float shieldRechargeRate = 2.0f;
     private CharacterController parentController;
     private CircleCollider2D collider;
-    private float shieldStrength = 10f;
+    private float shieldStrength = 100f;
+    private bool regenerateRunning = false;
     // Start is called before the first frame update
     public override void Start()
     {
@@ -23,6 +26,10 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
             parentController.setInvincible(false);
         else
             parentController.setInvincible(true); //maybe add a latch
+
+        if(shieldStrength<100&&!regenerateRunning)
+            StartCoroutine(regenerateShield());
+        UIHandler.instance.setShieldValue(shieldStrength);
     }
 
     protected override void OnTriggerEnter2D(Collider2D trigger)
@@ -32,14 +39,25 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
             if (shieldStrength > 0)
             {
                 StartCoroutine(spawnShieldHit(trigger.gameObject));
-                //shieldStrength -= 1; uncomment later
+                shieldStrength -= 10;
                 if (shieldStrength < 0)
                     shieldStrength = 0;
             }
-           // UIHandler.instance.setHealthValue(characterController.getHealth()); change to shield when you make the ui
         }
     }
 
+    private IEnumerator regenerateShield()
+    {
+        regenerateRunning = true;
+        while (shieldStrength < 100)
+        {
+            if (shieldStrength == 0)
+                yield return new WaitForSeconds(shieldRebuildTime);
+            shieldStrength += .1f;
+            yield return new WaitForSeconds(1/shieldRechargeRate);
+        }
+        regenerateRunning = false;
+    }
     private IEnumerator spawnShieldHit(GameObject trigger)
     {
         var (strikeLocation,rotation) = determineStrikeLocation(trigger);

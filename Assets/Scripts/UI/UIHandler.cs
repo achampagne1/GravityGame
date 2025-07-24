@@ -22,6 +22,8 @@ public class UIHandler : MonoBehaviour
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
     [SerializeField] float textRevealSpeed = 1f;
+    [SerializeField] Texture2D heartTexture;
+    [SerializeField] Texture2D heartBrokenTexture;
 
     //object creation
     public static UIHandler instance { get; private set; }
@@ -101,7 +103,7 @@ public class UIHandler : MonoBehaviour
 
         for(int i = 0; i < 10; i++)
         {
-            hearts[i].style.left = Length.Percent(i*10.1); //10.1 is the amount each heart is shifted by
+            hearts[i].style.left = Length.Percent(i*10.1f); //10.1 is the amount each heart is shifted by
         }
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
@@ -244,8 +246,12 @@ public class UIHandler : MonoBehaviour
 
     public void setHealthValue(float health)
     {
-        currentHealth = health / 10f;
-        //fullBar.style.width = Length.Percent(currentHealth * 100.0f); //change to ne system
+        Debug.Log(health);
+        health -= 1;
+        for(int i = 9; i >= health; i--)
+        {
+            hearts[i].style.backgroundImage = new StyleBackground(heartBrokenTexture);
+        }
     }
 
     public void setFuelValue(float fuelLevel)
