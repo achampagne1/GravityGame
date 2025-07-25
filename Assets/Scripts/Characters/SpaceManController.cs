@@ -91,10 +91,15 @@ public class SpaceManController : SpacePersonController
 
     public override void hit(Transform transform)
     {
-        if (invincibleFlag) //NOTE: when the shields are up, you are "invincible"
+        if (invincibleFlag)
+        {
+            camController.setShakeMagnitude(1f);
+            camController.setShake(true);
             return;
+        }//NOTE: when the shields are up, you are "invincible"
+        camController.setShakeMagnitude(3f);
         camController.setShake(true);
-        UIHandler.instance.setHealthValue(health);
+        UIHandler.instance.setHealthValue(health); //Decouplethis 
         base.hit(transform);
     }
     protected override IEnumerator die()

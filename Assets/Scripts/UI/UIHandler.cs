@@ -8,9 +8,7 @@ using System.Threading.Tasks;
 public class UIHandler : MonoBehaviour
 {
     //game variables
-    public float currentHealth = 1f;
     public float movePercent = 0f;
-    private float fadeCounter = 180f;
     private float parentTop = 0f;
     private bool escapeClicked = false;
     private bool eClicked = false;
@@ -18,10 +16,13 @@ public class UIHandler : MonoBehaviour
     private bool acknowledgeComs = false;
     private bool revealOverride = false;
     private bool up = false;
+    private float healthLevel=100f;
+    private float shieldLevel=100f;
     [SerializeField] float speed = .05f;
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
     [SerializeField] float textRevealSpeed = 1f;
+    [SerializeField] float fadeSpeed = 2f;
     [SerializeField] Texture2D heartTexture;
     [SerializeField] Texture2D heartBrokenTexture;
 
@@ -32,6 +33,7 @@ public class UIHandler : MonoBehaviour
     private VisualElement shieldBar;
     private VisualElement heartContainer;
     private VisualElement[] hearts = new VisualElement[10];
+    private VisualElement warning;
     private VisualElement pauseMenu;
     private VisualElement darken;
     private VisualElement pauseContainer;
@@ -57,8 +59,9 @@ public class UIHandler : MonoBehaviour
     private AudioSource comsAcknowledgeAudioSource;
     private AudioSource tabletHumAudioSource;
 
-    private Coroutine moveScanLinesCoroutine;
-    private Coroutine revealBubbleTextCoroutine;
+    private Coroutine moveScanLinesCoroutine = null;
+    private Coroutine revealBubbleTextCoroutine = null;
+    private Coroutine warningCoroutineVariable = null;
 
     private void Awake()
     {
@@ -74,6 +77,7 @@ public class UIHandler : MonoBehaviour
         shieldBar = uiDocument.rootVisualElement.Q<VisualElement>("shield");
         heartContainer = uiDocument.rootVisualElement.Q<VisualElement>("heartContainer");
         hearts = heartContainer.Query<VisualElement>("heart").ToList().ToArray();
+        warning = uiDocument.rootVisualElement.Q<VisualElement>("warning");
         pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
         pauseContainer = uiDocument.rootVisualElement.Q<VisualElement>("pauseContainer");
         darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
@@ -106,6 +110,8 @@ public class UIHandler : MonoBehaviour
             hearts[i].style.left = Length.Percent(i*10.1f); //10.1 is the amount each heart is shifted by
         }
 
+        warning.style.opacity = 0f;
+
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
     }
 
@@ -113,6 +119,14 @@ public class UIHandler : MonoBehaviour
     void Update()
     {
         bubbleText.style.fontSize = Screen.width / screenTextScaler;
+        if (shieldLevel == 0 && warningCoroutineVariable == null)
+            warningCoroutineVariable = StartCoroutine(warningCoroutine());
+        else if(shieldLevel!=0&& warningCoroutineVariable != null)
+        {
+            warning.style.opacity = 0f;
+            StopCoroutine(warningCoroutineVariable);
+            warningCoroutineVariable = null;
+        }
 
         if (escapeKey.wasPressedWithCooldown()&&!eClicked)
         {
@@ -244,14 +258,24 @@ public class UIHandler : MonoBehaviour
         tabletHumAudioSource.Stop();
     }
 
+    private IEnumerator warningCoroutine()
+    {
+        while (true)
+        {
+            float opacity = (Mathf.Sin(Time.time*fadeSpeed) + 1f) / 2f;
+            warning.style.opacity = opacity;
+            yield return new WaitForSeconds(.05f);
+        }
+    }
+
     public void setHealthValue(float health)
     {
-        Debug.Log(health);
         health -= 1;
         for(int i = 9; i >= health; i--)
         {
             hearts[i].style.backgroundImage = new StyleBackground(heartBrokenTexture);
         }
+        healthLevel = health;
     }
 
     public void setFuelValue(float fuelLevel)
@@ -271,6 +295,7 @@ public class UIHandler : MonoBehaviour
         shieldLevel *= shieldScaler;
         shieldBar.style.width = Length.Percent(shieldLevel);
         shieldBar.style.left = Length.Percent(finalOffset - (shieldLevel / 100f) * (finalOffset - initialOffset));
+        this.shieldLevel= shieldLevel;
     }
 
     public void setBubbleText(string text) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73

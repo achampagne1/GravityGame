@@ -187,6 +187,8 @@ MonoBehaviour:
   shieldHit: {fileID: 1428036716659431160, guid: 8180189f212a7704799895c1f7568d8e,
     type: 3}
   fadeSize: 0.1
+  shieldRebuildTime: 5
+  shieldRechargeRate: 100
 --- !u!1 &6531168470496589063
 GameObject:
   m_ObjectHideFlags: 0
