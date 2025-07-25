@@ -108,6 +108,8 @@ public class BugController : CharacterController
     {
         setMovement(0);
         yield return base.die();
+        CircleCollider2D collider = GetComponent<CircleCollider2D>();
+        Destroy(collider);
         yield return new WaitForSeconds(persistanceAfterDeath);
         Destroy(gameObject);
     }

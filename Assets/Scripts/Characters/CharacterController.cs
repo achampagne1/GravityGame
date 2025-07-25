@@ -11,8 +11,10 @@ public class CharacterController : ObjectController
     protected Animator animator;
     protected AudioController audioController;
     protected ExplodeController explodeController;
+    protected AudioSource soundFX;
     [SerializeField] protected GameObject explodeCenter;
     [SerializeField] Sprite hitSprite;
+    [SerializeField] AudioClip hitSound;
 
     //public game variables
     [SerializeField] protected float jumpForce = 11f;
@@ -58,6 +60,7 @@ public class CharacterController : ObjectController
         if(GetComponent<AudioController>()!= null) //sorta temporary
             audioController = GetComponents<AudioController>()[0];
 
+        soundFX = GetComponents<AudioSource>()[0];
         health = maxHealth;
 
         foreach (Transform child in transform) //TODO: fiund a way to do only one loop for the spaceperson
@@ -122,6 +125,7 @@ public class CharacterController : ObjectController
         //Note: transform is for the bullet, gameObject.transform is for the palyer
         bulletStrikeLocation = transform.position;
         health = health - 1f;
+        soundFX.PlayOneShot(hitSound);
         StartCoroutine(changeColorWrapper());
         StartCoroutine(knockBack(leftStrikeLocation(transform)));
 
@@ -186,9 +190,7 @@ public class CharacterController : ObjectController
         if(explodeController!=null)
             explodeController.trigger();
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        Color c = sr.color;
-        c.a = 0.0f;
-        sr.color = c;
+        HelperFunctions.changeOpacity(sr, 0);
         gameObject.tag = "Dead";
         yield return null;
     }

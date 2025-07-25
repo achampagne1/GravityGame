@@ -1691,7 +1691,7 @@ Camera:
   far clip plane: 5000
   field of view: 40
   orthographic: 1
-  orthographic size: 10
+  orthographic size: 15
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1847,7 +1847,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vcam: {fileID: 642363451}
-  initialZoom: 10
+  initialZoom: 15
   duration: 1
   shakeMagnitude: 0.2
   shootMagnitude: 2
@@ -2142,7 +2142,7 @@ PrefabInstance:
     - target: {fileID: 4997169215660771135, guid: 89f568cce49b83949b1bcb1498c98ec7,
         type: 3}
       propertyPath: m_Lens.OrthographicSize
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7839425064105643738, guid: 89f568cce49b83949b1bcb1498c98ec7,
         type: 3}
@@ -5479,7 +5479,7 @@ PrefabInstance:
     - target: {fileID: 4997169215660771135, guid: 89f568cce49b83949b1bcb1498c98ec7,
         type: 3}
       propertyPath: m_Lens.OrthographicSize
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5515,7 +5515,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   vcam: {fileID: 2077159298}
-  initialZoom: 10
+  initialZoom: 15
   duration: 1
   shakeMagnitude: 0.2
   shootMagnitude: 2

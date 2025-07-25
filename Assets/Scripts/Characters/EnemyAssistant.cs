@@ -6,9 +6,9 @@ public struct EnemyAssistant
 {
     public static Vector3 detectPlayer(bool facingLeft,GameObject gameObject)
     {
-        for (int i = 0; i < 60; i++)
+        for (int i = 0; i < 180; i++)
         {
-            float angle = (gameObject.transform.eulerAngles.z + 30 - i + (System.Convert.ToSingle(facingLeft) * 180)) % 360;
+            float angle = (gameObject.transform.eulerAngles.z + 90 - i + (System.Convert.ToSingle(facingLeft) * 180)) % 360;
             Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));
             RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(gameObject.transform.position, temp, 30f);
             foreach (RaycastHit2D hit in lookForPlayer)

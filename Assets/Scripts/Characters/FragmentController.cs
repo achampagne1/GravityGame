@@ -38,9 +38,7 @@ public class FragmentController : ObjectController
             rb.simulated = true;
             explode = false;
             fadeClock.startTimer();
-            Color c = sr.color;
-            c.a = 1f;
-            sr.color = c;
+            HelperFunctions.changeOpacity(sr, 1f);
         }
 
         if (fadeClock.checkTimer())
