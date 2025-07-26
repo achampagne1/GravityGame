@@ -15,7 +15,6 @@ public class BulletController : ObjectController
     //game variables
     private float drag = .1f;
     private bool first = true;
-    private bool playerInvulnerable = true;
     private int shotBy = 0;
 
 

@@ -96,12 +96,14 @@ public class GunController : ItemController
 
     public void shootWrapper()
     {
+        //This needds to be redone
         Vector3 offset = new Vector3(.5f, .25f, 0);
         offset.y = offset.y * (facingLeft ? -1 : 1);
         animator.SetTrigger("Shoot");
         GameObject ShotBullet = Instantiate(bulletObject, transform.position + transform.rotation * offset, Quaternion.identity);
         ShotBullet.transform.localScale = new Vector3(.075f, .075f, .075f);
         BulletController bulletController = ShotBullet.GetComponent<BulletController>();
+        Debug.Log(shootDirection);
         bulletController.newInstance(shootDirection);
         bulletController.setShotBy(shotBy);
         bulletController.Start();

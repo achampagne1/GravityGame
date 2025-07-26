@@ -6,7 +6,7 @@ public struct EnemyAssistant
 {
     public static Vector3 detectPlayer(bool facingLeft,GameObject gameObject)
     {
-        for (int i = 0; i < 180; i++)
+        for (int i = 0; i < 180; i++) //probably overkill
         {
             float angle = (gameObject.transform.eulerAngles.z + 90 - i + (System.Convert.ToSingle(facingLeft) * 180)) % 360;
             Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));

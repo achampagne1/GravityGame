@@ -57,9 +57,6 @@ public class CharacterController : ObjectController
         Physics2D.IgnoreLayerCollision(9, 11, true);
         Physics2D.IgnoreLayerCollision(11, 11, true);
 
-        if(GetComponent<AudioController>()!= null) //sorta temporary
-            audioController = GetComponents<AudioController>()[0];
-
         soundFX = GetComponents<AudioSource>()[0];
         health = maxHealth;
 
