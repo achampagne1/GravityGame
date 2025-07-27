@@ -23,6 +23,7 @@ public class SparkTrigger : MonoBehaviour
     {
         audioSource = GetComponent<AudioSource>();
         sparkBurst.Play();
-        audioSource.PlayOneShot(audioClip, 0.2f);
+        audioSource.clip = audioClip;
+        audioSource.Play();
     }
 }

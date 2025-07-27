@@ -8,15 +8,18 @@ public class DroneGunController : MonoBehaviour
     [SerializeField] float bulletForce = 35.0f;
     [SerializeField] float shootInterval = 2f;
     [SerializeField] GameObject laser;
+    [SerializeField] AudioClip gunShot;
+    private AudioSource soundFx;
     private Coroutine shootCoroutine = null;
     private Timer playerSeenTimer = new Timer(.5f);
     private Vector3 locationBuffer = new Vector3(0f,0f,0f);
     private int angleOffset = 0;
+    private bool playerSeen = false;
 
     // Start is called before the first frame update
     void Start()
     {
-
+        soundFx = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -27,7 +30,6 @@ public class DroneGunController : MonoBehaviour
 
         bool playerSeen;
         (playerSeen,playerPos) = calculatePlayerSeen(playerPos);
-
         Vector3 dir = playerPos - transform.position;
         float angleRad = Mathf.Atan2(dir.y, dir.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;
@@ -45,6 +47,9 @@ public class DroneGunController : MonoBehaviour
 
         if (shoot)
         {
+            soundFx.clip = gunShot;
+            soundFx.Play();
+            //soundFx.Play(gunShot);
             GameObject laserClone = Instantiate(laser, transform.position, transform.rotation);
             laserClone.GetComponent<LaserController>().init(gameObject.layer);
             laserClone.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * bulletForce, ForceMode2D.Impulse);
@@ -86,21 +91,17 @@ public class DroneGunController : MonoBehaviour
 
     private (bool,Vector3) calculatePlayerSeen(Vector3 input)
     {
-        bool playerSeen;
         if (input == Vector3.zero)
         {
             input = locationBuffer;
             if (!playerSeenTimer.getIsRunning())
             {
                 playerSeenTimer.startTimer();
-                playerSeen = true;
             }
             else
             {
                 if (playerSeenTimer.checkTimer())
                     playerSeen = false;
-                else
-                    playerSeen = true;
             }
         }
         else
