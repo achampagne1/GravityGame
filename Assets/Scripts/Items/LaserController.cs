@@ -7,7 +7,7 @@ public class LaserController : MonoBehaviour
 
     //object creation
     Timer lifetime = new Timer(5f);
-    ProjectileHelper helper;
+    ProjectileHelper projectileHelper;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +18,7 @@ public class LaserController : MonoBehaviour
     public void init(int shotBy)
     {
         lifetime.startTimer();
-        helper = new ProjectileHelper(shotBy,gameObject);
+        projectileHelper = new ProjectileHelper(shotBy,gameObject);
     }
 
     // Update is called once per frame
@@ -30,16 +30,16 @@ public class LaserController : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
-        helper.OnCollisionEnter2D(collision);
+        projectileHelper.OnCollisionEnter2D(collision);
     }
 
     void OnTriggerEnter2D(Collider2D trigger)
     {
-        helper.OnTriggerEnter2D(trigger);
+        projectileHelper.OnTriggerEnter2D(trigger);
     }
 
     public int getShotBy()
     {
-        return helper.getShotBy();
+        return projectileHelper.getShotBy();
     }
 }

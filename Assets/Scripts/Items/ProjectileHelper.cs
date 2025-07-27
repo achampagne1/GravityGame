@@ -16,6 +16,7 @@ public struct ProjectileHelper
 
     public ProjectileHelper(int shotBy, GameObject gameObject)
     {
+        gameObject.tag = "Projectile";
         this.shotBy = shotBy;
         this.gameObject = gameObject;
     }

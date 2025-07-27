@@ -36,9 +36,15 @@ public class TriggerBoundaryCotroller : MonoBehaviour
                 UIHandler.instance.setHealthValue(characterController.getHealth());
         }
 
-        if (trigger.gameObject.name == "Bullet(Clone)")
+        if (trigger.gameObject.tag == "Projectile")
         {
-            if (trigger.gameObject.GetComponent<BulletController>().getShotBy() == parent.layer) //this ignores the layer of the person that shot it
+            Debug.Log("here");
+            //consult with sean to see if there a better way to get around this
+            var bullet = trigger.gameObject.GetComponent<BulletController>();
+            var laser = trigger.gameObject.GetComponent<LaserController>();
+
+            if ((bullet != null && bullet.getShotBy() == parent.layer) ||
+                (laser != null && laser.getShotBy() == parent.layer))
             {
                 return;
             }

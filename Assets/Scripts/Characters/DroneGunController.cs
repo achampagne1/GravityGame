@@ -24,6 +24,7 @@ public class DroneGunController : MonoBehaviour
     {
 
         Vector3 playerPos = detectPlayer();
+
         bool playerSeen;
         (playerSeen,playerPos) = calculatePlayerSeen(playerPos);
 
@@ -67,7 +68,7 @@ public class DroneGunController : MonoBehaviour
 
         for (int i = 0; i < 36; i++)
         {
-            float angle = i*10f+angleOffset;
+            float angle = i*10f+angleOffset; //the angle offset it to ensure there are no blind spots
             Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));
             RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(transform.position, temp, 30f);
             foreach (RaycastHit2D hit in lookForPlayer)
