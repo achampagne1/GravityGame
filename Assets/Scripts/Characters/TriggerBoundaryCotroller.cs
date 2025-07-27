@@ -38,7 +38,6 @@ public class TriggerBoundaryCotroller : MonoBehaviour
 
         if (trigger.gameObject.tag == "Projectile")
         {
-            Debug.Log("here");
             //consult with sean to see if there a better way to get around this
             var bullet = trigger.gameObject.GetComponent<BulletController>();
             var laser = trigger.gameObject.GetComponent<LaserController>();

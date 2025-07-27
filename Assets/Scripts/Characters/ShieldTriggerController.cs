@@ -34,14 +34,23 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
 
     protected override void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.gameObject.name == "Bullet(Clone)"&& trigger.gameObject.GetComponent<BulletController>().getShotBy() != parent.layer)
+        if (trigger.gameObject.tag == "Projectile")
         {
-            if (shieldStrength > 0)
+            //consult with sean to see if there a better way to get around this
+            var bullet = trigger.gameObject.GetComponent<BulletController>();
+            var laser = trigger.gameObject.GetComponent<LaserController>();
+
+            if ((bullet != null && bullet.getShotBy() != parent.layer) ||
+                (laser != null && laser.getShotBy() != parent.layer))
             {
-                StartCoroutine(spawnShieldHit(trigger.gameObject));
-                shieldStrength -= 10;
-                if (shieldStrength < 0)
-                    shieldStrength = 0;
+
+                if (shieldStrength > 0)
+                {
+                    StartCoroutine(spawnShieldHit(trigger.gameObject));
+                    shieldStrength -= 10;
+                    if (shieldStrength < 0)
+                        shieldStrength = 0;
+                }
             }
         }
     }

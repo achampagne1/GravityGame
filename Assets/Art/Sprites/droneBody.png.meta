@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      droneBody_0: 4992849655539753833
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

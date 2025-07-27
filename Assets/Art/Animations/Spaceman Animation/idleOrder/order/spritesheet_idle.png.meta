@@ -1450,7 +1450,63 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      spritesheet_idle_0: 1589731118729664104
+      spritesheet_idle_1: 2612472378212518448
+      spritesheet_idle_10: -507649598734345580
+      spritesheet_idle_11: 5521507206953999939
+      spritesheet_idle_12: -8389242684250371541
+      spritesheet_idle_13: -3879198475546569659
+      spritesheet_idle_14: 1336293097021710154
+      spritesheet_idle_15: 6579083433565946280
+      spritesheet_idle_16: -6775331095791423139
+      spritesheet_idle_17: -4148429397894848882
+      spritesheet_idle_18: -6371536812457080114
+      spritesheet_idle_19: 1969802341722821594
+      spritesheet_idle_2: 3842762866851252949
+      spritesheet_idle_20: -3675614910566787821
+      spritesheet_idle_21: 5175207979736548475
+      spritesheet_idle_22: 4838036977377156206
+      spritesheet_idle_23: 6953052899255695100
+      spritesheet_idle_24: 4926725202157129681
+      spritesheet_idle_25: 3132499370612602255
+      spritesheet_idle_26: -3738837045823750861
+      spritesheet_idle_27: -3577177124699336870
+      spritesheet_idle_28: 4373246167075842745
+      spritesheet_idle_29: 7114536400378506411
+      spritesheet_idle_3: 6220017590884649809
+      spritesheet_idle_30: -7091458892214216021
+      spritesheet_idle_31: -1890123907604673673
+      spritesheet_idle_32: -474783442857254760
+      spritesheet_idle_33: 1351787008752859289
+      spritesheet_idle_34: -6684020143445304934
+      spritesheet_idle_35: -2832086758254908141
+      spritesheet_idle_36: 4926434248507495435
+      spritesheet_idle_37: -2901110158885733831
+      spritesheet_idle_38: 3308978428092608501
+      spritesheet_idle_39: 7948572659788952377
+      spritesheet_idle_4: 2765817681980467700
+      spritesheet_idle_40: -9200971625099844797
+      spritesheet_idle_41: 7605769809124406883
+      spritesheet_idle_42: -5809469903714498889
+      spritesheet_idle_43: -7348230753802805897
+      spritesheet_idle_44: -3402153517491671409
+      spritesheet_idle_45: -3666057396224418174
+      spritesheet_idle_46: 9064911640313113768
+      spritesheet_idle_47: 1018581624932036009
+      spritesheet_idle_48: -1474579574578883817
+      spritesheet_idle_49: 4000423550165121089
+      spritesheet_idle_5: -3137299840230039217
+      spritesheet_idle_50: 7543129379827590134
+      spritesheet_idle_51: 3136659800190737046
+      spritesheet_idle_52: -9106936195431761079
+      spritesheet_idle_53: -3247232365241609095
+      spritesheet_idle_54: -2068347055703954047
+      spritesheet_idle_55: -1461463165991243548
+      spritesheet_idle_6: 4347369804937911105
+      spritesheet_idle_7: 8682362005518828530
+      spritesheet_idle_8: 2017617121223324073
+      spritesheet_idle_9: 1316095325619810892
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
