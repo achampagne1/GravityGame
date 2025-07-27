@@ -57,7 +57,15 @@ public class CharacterController : ObjectController
         Physics2D.IgnoreLayerCollision(9, 11, true);
         Physics2D.IgnoreLayerCollision(11, 11, true);
 
-        soundFX = GetComponents<AudioSource>()[0];
+        try
+        {
+            soundFX = GetComponents<AudioSource>()[0];
+        }
+        catch (Exception e)
+        {
+            Debug.LogError(e);
+        }
+
         health = maxHealth;
 
         foreach (Transform child in transform) //TODO: fiund a way to do only one loop for the spaceperson

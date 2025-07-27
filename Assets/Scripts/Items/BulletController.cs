@@ -3,56 +3,32 @@ using System.Collections.Generic;
 using UnityEngine;
 public class BulletController : ObjectController
 {
-    //object creation
-    CircleCollider2D circleColliderPlayer;
-    CharacterController characterController;
-    Timer timer;
-    GunController gunController;
-
-    //public variables
-    public float bulletForce = 50.0f;
 
     //game variables
-    private float drag = .1f;
-    private bool first = true;
     private int shotBy = 0;
+    private float drag = .1f;
 
-
-    //vectors
-    private Vector2 initialForce = new Vector2(0, 0);
+    //objects
+    ProjectileHelper projectileHelper;
 
     // Start is called before the first frame update
     public void Start()
     {
+        simulated = true;
         calculateStart();
-        timer = new Timer(.5f);
-        timer.startTimer();
-        Physics2D.IgnoreLayerCollision(9, 12, true);
-        Physics2D.IgnoreLayerCollision(12, 13, true);
-        Physics2D.IgnoreLayerCollision(12, 12, true);
-        Physics2D.IgnoreLayerCollision(2, 12, true);
-        Physics2D.IgnoreLayerCollision(11, 12, true);
-        rb.AddForce(initialForce*bulletForce, ForceMode2D.Impulse);
-        if(first)
-            gunController = transform.parent.GetComponent<GunController>();
+    }
+
+    public void init(int shotBy)
+    {
+        projectileHelper = new ProjectileHelper(shotBy, gameObject);
     }
 
     // Update is called once per frame
     public void Update()
     {
-        if (!first)
-        {
-            calculateRotation();
-            calculateUpdate();
-            rb.velocity = calculateDrag(rb.velocity);
-        }
-        else //this seciton is for the original bullet
-        {
-            Vector3 offset = new Vector3(0, .3f, 0);
-            offset.y = offset.y * (gunController.getFacingLeft() ? -1 : 1);
-            transform.position = transform.parent.position + transform.rotation * offset;
-            transform.rotation = transform.parent.rotation;
-        }
+        calculateRotation();
+        calculateUpdate();
+        rb.velocity = calculateDrag(rb.velocity);  //drag prevent bullets from infinitly orbiting
     }
 
     protected override void calculateRotation()
@@ -76,31 +52,18 @@ public class BulletController : ObjectController
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.layer != shotBy &&  !first)
-            Destroy(this.gameObject);
+        projectileHelper.OnCollisionEnter2D(collision);
     }
 
     private void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.gameObject.GetComponent<TriggerBoundaryCotroller>().getLayerConnectedTo() != shotBy && !first)
-            Destroy(this.gameObject);
+        projectileHelper.OnTriggerEnter2D(trigger);
         //maybe have it so if the player and shield colliders are hit, that that doesnt count as a hit
-    }
-
-    public void newInstance(Vector2 direction)
-    {
-        initialForce = direction;
-        first = false;
-    }
-
-    public void setShotBy(int shotBy)
-    {
-        this.shotBy = shotBy;
     }
 
     public int getShotBy()
     {
-        return shotBy;
+        return projectileHelper.getShotBy();
     }
 
 }

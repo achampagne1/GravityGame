@@ -18,7 +18,7 @@ public class ObjectController : MonoBehaviour
     public bool orientToGravity = true;
     [SerializeField] bool updateGravityField = false;
     [SerializeField] bool calculateIsGrounded = false;
-    [SerializeField] bool simulated = false;
+    [SerializeField] protected bool simulated = false;
 
     //game variables
     protected int layerMaskPlanet = 0;

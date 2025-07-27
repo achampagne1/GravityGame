@@ -18,6 +18,11 @@ public class SpaceManController : SpacePersonController
 
     public void Start()
     {
+        Physics2D.IgnoreLayerCollision(9, 12, true); //for bullets. I know its a dumb placement but it needs to be somewhere with every level
+        Physics2D.IgnoreLayerCollision(13, 12, true);
+        Physics2D.IgnoreLayerCollision(12, 12, true);
+        Physics2D.IgnoreLayerCollision(2, 12, true);
+        Physics2D.IgnoreLayerCollision(11, 12, true);
         calculateSpacePersonStart();
         setMaxHealth(10f);
     }
