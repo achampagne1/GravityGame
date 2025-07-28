@@ -6,9 +6,9 @@ public class FragmentController : ObjectController
 {
     // Start is called before the first frame update
     [SerializeField] bool explode = false;
-    [SerializeField] GameObject center;
     [SerializeField] float explosionStrength = 1f;
     [SerializeField] float fadeTime = 1f;
+    private Vector2 center;
     private float fadeCounter = 360f;
     private Timer fadeClock;
     private Rigidbody2D rb;
@@ -19,11 +19,7 @@ public class FragmentController : ObjectController
         sr = GetComponent<SpriteRenderer>();
         fadeClock = new Timer(fadeTime);
         rb = GetComponent<Rigidbody2D>();
-        Physics2D.IgnoreLayerCollision(11, 11, true);
-        rb.simulated = false;
         calculateStart();
-        if (center == null)
-            Debug.LogError("no center point found");
     }
 
     // Update is called once per frame
@@ -31,7 +27,7 @@ public class FragmentController : ObjectController
     {
        if (explode)
         {
-            Vector2 fromCenter = (Vector2)(transform.position - center.transform.position);
+            Vector2 fromCenter = (Vector2)(transform.position) - center;
             Vector2 explodeDirection = fromCenter.normalized * explosionStrength;
             rb.AddForce(explodeDirection, ForceMode2D.Impulse);
             gravityAffected = true;
@@ -59,8 +55,9 @@ public class FragmentController : ObjectController
         if (fadeCounter <= 0)
             fadeCounter = 360;
         }
-    public void setExplode(bool explode)
+    public void setExplode(Vector2 center)
     {
-        this.explode = explode;
+        explode = true;
+        this.center = center;
     }
 }

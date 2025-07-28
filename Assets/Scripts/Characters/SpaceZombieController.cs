@@ -141,12 +141,12 @@ public class SpaceZombieController : SpacePersonController
 
     protected override IEnumerator die()
     {
-        moveInput = 0;
-        setMovement(moveInput);
         yield return base.die();
+        /*moveInput = 0;
+        setMovement(moveInput);
         CircleCollider2D collider = GetComponent<CircleCollider2D>();
         Destroy(collider);
         yield return new WaitForSeconds(persistanceAfterDeath);
-        Destroy(gameObject);
+        Destroy(gameObject);*/
     }
 }   

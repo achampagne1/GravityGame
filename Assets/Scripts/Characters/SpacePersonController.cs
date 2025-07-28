@@ -113,8 +113,8 @@ public class SpacePersonController : CharacterController
 
     protected override IEnumerator die()
     {
-        handController.throwItem();
-        handController.destroyWrapper();
+        //handController.throwItem(); //redo this
+        /*handController.destroyWrapper();*/
         yield return base.die();
     }
 

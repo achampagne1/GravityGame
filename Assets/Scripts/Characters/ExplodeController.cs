@@ -5,26 +5,17 @@ using UnityEngine;
 public class ExplodeController : MonoBehaviour
 {
     [SerializeField] ParticleSystem particleSystem;
-    [SerializeField] GameObject center;
-    public void trigger()
+    private Transform center;
+    public void trigger(Vector2 center)
     {
-        foreach(Transform fragment in transform)
-        {
-            try //the try catch is needed because the first child of the controller isjust the center point
-            {
-                fragment.gameObject.GetComponent<FragmentController>().setExplode(true);
-            }
-            catch
-            {
-                int ham = 1;
-            }
-        }
-        Vector3 direction = (transform.position - center.transform.position).normalized;
+        Transform chunks = transform.Find("Chunks");
+        foreach (Transform chunk in chunks)
+            chunk.gameObject.GetComponent<FragmentController>().setExplode(center);
+        Vector3 direction = (transform.position - new Vector3(center.x,center.y,0f)).normalized;
         Quaternion rotation = Quaternion.LookRotation(direction);
         var shape = particleSystem.shape;
         shape.rotation = rotation.eulerAngles;
         particleSystem.Play(); 
     }
-
 
 }

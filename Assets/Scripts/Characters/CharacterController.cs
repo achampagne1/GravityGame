@@ -9,10 +9,10 @@ public class CharacterController : ObjectController
 {
     //object creation
     protected Animator animator;
-    protected ExplodeController explodeController;
-    [SerializeField] protected GameObject explodeCenter;
+    [SerializeField] private GameObject explodeObject;
     [SerializeField] protected Sprite hitSprite;
     [SerializeField] protected AudioClip hitSound;
+    [SerializeField] protected GameObject explodeTemplate;
 
     //public game variables
     [SerializeField] protected float jumpForce = 11f;
@@ -44,7 +44,7 @@ public class CharacterController : ObjectController
     private Vector2 previousMove = new Vector2(0, 0);
     private Vector2 jumpExtraction = new Vector2(0, 0);
     private Vector2 additionalForce = new Vector2(0, 0);
-    protected Vector3 bulletStrikeLocation = new Vector3(0, 0, 0);
+    protected Vector2 bulletStrikeLocation;
 
 
 
@@ -56,12 +56,6 @@ public class CharacterController : ObjectController
         Physics2D.IgnoreLayerCollision(11, 11, true);
 
         health = maxHealth;
-
-        foreach (Transform child in transform) //TODO: fiund a way to do only one loop for the spaceperson
-        {
-            if (child.name == "Explode")
-                explodeController = child.gameObject.GetComponent<ExplodeController>();
-        }
 
         try
         {
@@ -116,9 +110,8 @@ public class CharacterController : ObjectController
         if (invincibleFlag)
             return;
 
-        //Note: transform is for the bullet, gameObject.transform is for the palyer
-        bulletStrikeLocation = transform.position;
         health = health - 1f;
+        bulletStrikeLocation = transform.position;
         SoundManager.instance.playSound(hitSound, transform, 1f);
         StartCoroutine(changeColorWrapper());
         StartCoroutine(knockBack(leftStrikeLocation(transform)));
@@ -172,7 +165,7 @@ public class CharacterController : ObjectController
 
     protected virtual IEnumerator die()
     {
-        try
+        /*try
         {
             explodeCenter.transform.position = bulletStrikeLocation;
         }
@@ -185,11 +178,15 @@ public class CharacterController : ObjectController
             explodeController.trigger();
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
         Destroy(sr);
-        gameObject.tag = "Dead";
+        gameObject.tag = "Dead";*/
+        GameObject explodeClone = Instantiate(explodeTemplate, transform.position, Quaternion.identity);
+        ExplodeController explodeController = explodeClone.GetComponent<ExplodeController>();
+        explodeController.trigger(bulletStrikeLocation);
+        Destroy(gameObject);
         yield return null;
     }
 
-        public void addForceLocal(Vector2 force)
+    public void addForceLocal(Vector2 force)
     {
         float angle = Vector2.SignedAngle(gravityDirection, force);
         additionalForce = force;
@@ -392,11 +389,6 @@ public class CharacterController : ObjectController
     public string getTag()
     {
         return gameObject.tag;
-    }
-
-    public void setBulletStrikeLocation(Vector3 bulletStrikeLocation)
-    {
-        this.bulletStrikeLocation = bulletStrikeLocation;
     }
 
 }
