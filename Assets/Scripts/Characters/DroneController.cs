@@ -36,7 +36,7 @@ public class DroneController : CharacterController
             yield return new WaitForSeconds(knockBackDuration);
             forceLocalAdded = false;
             yield return null;
-        }*/ 
+        }*/
 
         IEnumerator changeColorWrapper()
         {
@@ -74,5 +74,12 @@ public class DroneController : CharacterController
             localPos.x = facingLeft ? localPos.x * -1 : localPos.x;
             return localPos.x < 0;
         }*/
+    }
+    protected override IEnumerator die()
+    {
+        Transform gun = transform.Find("Gun");
+        Destroy(gun.gameObject);
+        base.die();
+        yield return null;
     }
 }

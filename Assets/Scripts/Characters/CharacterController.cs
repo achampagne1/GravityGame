@@ -184,7 +184,7 @@ public class CharacterController : ObjectController
         if(explodeController!=null)
             explodeController.trigger();
         SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        HelperFunctions.changeOpacity(sr, 0);
+        Destroy(sr);
         gameObject.tag = "Dead";
         yield return null;
     }
