@@ -8,6 +8,7 @@ TagManager:
   - Bug
   - twinkle
   - Dead
+  - Projectile
   layers:
   - Default
   - TransparentFX

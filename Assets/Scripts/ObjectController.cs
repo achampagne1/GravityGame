@@ -16,8 +16,8 @@ public class ObjectController : MonoBehaviour
     public float terminalVelocity = 30f;
     public bool gravityAffected = true;
     public bool orientToGravity = true;
-    [SerializeField] bool updateGravityField = false;
-    [SerializeField] bool calculateIsGrounded = false;
+    [SerializeField] protected bool updateGravityField = false;
+    [SerializeField] protected bool calculateIsGrounded = false;
     [SerializeField] protected bool simulated = false;
 
     //game variables

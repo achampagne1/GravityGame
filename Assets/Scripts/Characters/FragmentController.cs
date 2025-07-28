@@ -16,6 +16,10 @@ public class FragmentController : ObjectController
     private bool fadeLatch = false;
     void Start()
     {
+        gravityAffected = true;
+        updateGravityField = true;
+        simulated = true;
+
         sr = GetComponent<SpriteRenderer>();
         fadeClock = new Timer(fadeTime);
         rb = GetComponent<Rigidbody2D>();

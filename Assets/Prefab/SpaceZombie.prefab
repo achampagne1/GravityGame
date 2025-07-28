@@ -315,10 +315,11 @@ MonoBehaviour:
   updateGravityField: 0
   calculateIsGrounded: 1
   simulated: 1
-  explodeCenter: {fileID: 9116706886509276700}
   hitSprite: {fileID: 4457663794195168306, guid: 146a39f1060fafd409ef0902d46dd224,
     type: 3}
   hitSound: {fileID: 8300000, guid: 31e4f915dcf6e1c43b4fd822b1968560, type: 3}
+  explodeTemplate: {fileID: 3005083615111220362, guid: e7a97997982fd8148b3da9c323a3719b,
+    type: 3}
   jumpForce: 11
   moveSpeed: 5
   maxHealth: 3
@@ -329,7 +330,8 @@ MonoBehaviour:
   movementToggle: 1
   jetPackForce: 30
   groundSmokeTime: 2
-  landingSmoke: {fileID: 0}
+  landingSmoke: {fileID: 8098803252328287543, guid: 9e37d826df48111448919318eaf8a42f,
+    type: 3}
   first: 0
   normalState: 1
   persistanceAfterDeath: 5
@@ -737,6 +739,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Gun
+      objectReference: {fileID: 0}
+    - target: {fileID: 4945104207804468768, guid: 023fe229542e21840a941de70cefc3f8,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4945104207804468768, guid: 023fe229542e21840a941de70cefc3f8,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4945104207804468768, guid: 023fe229542e21840a941de70cefc3f8,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4945104207804468768, guid: 023fe229542e21840a941de70cefc3f8,
         type: 3}
@@ -1200,12 +1217,6 @@ PrefabInstance:
 --- !u!4 &6025444659067731716 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7562650448103411255, guid: e7a97997982fd8148b3da9c323a3719b,
-    type: 3}
-  m_PrefabInstance: {fileID: 4282153028240716083}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &9116706886509276700 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5037364013845487407, guid: e7a97997982fd8148b3da9c323a3719b,
     type: 3}
   m_PrefabInstance: {fileID: 4282153028240716083}
   m_PrefabAsset: {fileID: 0}

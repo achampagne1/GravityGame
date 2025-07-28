@@ -9,7 +9,6 @@ public class CharacterController : ObjectController
 {
     //object creation
     protected Animator animator;
-    [SerializeField] private GameObject explodeObject;
     [SerializeField] protected Sprite hitSprite;
     [SerializeField] protected AudioClip hitSound;
     [SerializeField] protected GameObject explodeTemplate;
@@ -165,23 +164,13 @@ public class CharacterController : ObjectController
 
     protected virtual IEnumerator die()
     {
-        /*try
+        if(explodeTemplate != null)
         {
-            explodeCenter.transform.position = bulletStrikeLocation;
-        }
-        catch
-        {
-            Debug.LogError("no center found");
+            GameObject explodeClone = Instantiate(explodeTemplate, transform.position, Quaternion.identity);
+            ExplodeController explodeController = explodeClone.GetComponent<ExplodeController>();
+            explodeController.trigger(bulletStrikeLocation);
         }
 
-        if(explodeController!=null)
-            explodeController.trigger();
-        SpriteRenderer sr = GetComponent<SpriteRenderer>();
-        Destroy(sr);
-        gameObject.tag = "Dead";*/
-        GameObject explodeClone = Instantiate(explodeTemplate, transform.position, Quaternion.identity);
-        ExplodeController explodeController = explodeClone.GetComponent<ExplodeController>();
-        explodeController.trigger(bulletStrikeLocation);
         Destroy(gameObject);
         yield return null;
     }

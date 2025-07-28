@@ -5,6 +5,7 @@ using UnityEngine;
 public class ExplodeController : MonoBehaviour
 {
     [SerializeField] ParticleSystem particleSystem;
+    [SerializeField] float persistanceAfterDeath = 5f;
     private Transform center;
     public void trigger(Vector2 center)
     {
@@ -15,7 +16,8 @@ public class ExplodeController : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(direction);
         var shape = particleSystem.shape;
         shape.rotation = rotation.eulerAngles;
-        particleSystem.Play(); 
+        particleSystem.Play();
+        Destroy(gameObject, persistanceAfterDeath);
     }
 
 }

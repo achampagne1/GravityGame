@@ -39,9 +39,18 @@ public class GunController : ItemController
         Physics2D.IgnoreLayerCollision(11, 13, true);
         Physics2D.IgnoreLayerCollision(13, 13, true);
         throwTimer = new Timer(.25f); //this is to make sure the player doesnt immidietly grab the item when it is thrown
+
+        calculateItemStart();
+
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
         if (parented)
-            parentingHelper();
+        {
+            parentedFlags();
+        }
+        else
+        {
+            notParentedFlags();
+        }
 
         try
         {
@@ -52,23 +61,17 @@ public class GunController : ItemController
             Debug.LogError(e);
         }
 
-        calculateItemStart();   
     }
 
     public void FixedUpdate()
     {
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
-
-        calculateItemUpdate();
+        
         if (parented)
         {
             if (!parentLatch)
             {
-                parentingHelper();
-                rb.bodyType = RigidbodyType2D.Kinematic;
-                floatFlag = false;
-                gravityAffected = false;
-                orientToGravity = false;
+                parentedFlags();
             }
             facingLeft = handController.getFacingLeft();
         }
@@ -76,17 +79,9 @@ public class GunController : ItemController
         {
             if (parentLatch)
             {
-                rb.bodyType = RigidbodyType2D.Dynamic;
-                rb.AddForce(forceBuffer, ForceMode2D.Impulse);
-                forceBuffer = new Vector2(0, 0);
-                handController = null;
-                playerBody = null;
-                shotBy = 2; //ignore raycast layer
-                gravityAffected = false;
-                orientToGravity = true;
-                //floatFlag=true; 
+                notParentedFlags();
             }
-
+            calculateItemUpdate();
         }
         parentLatch = parented;
 
@@ -96,7 +91,6 @@ public class GunController : ItemController
 
     public void shootWrapper()
     {
-        //This needds to be redone
         Vector3 offset = new Vector3(.5f, .25f, 0);
         offset.y = offset.y * (facingLeft ? -1 : 1);
         animator.SetTrigger("Shoot");
@@ -135,6 +129,27 @@ public class GunController : ItemController
         }
         else
             transform.localPosition = new Vector3(3f, 1f, 0f);
+    }
+
+    private void parentedFlags() {
+        parentingHelper();
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        floatFlag = false;
+        gravityAffected = false;
+        orientToGravity = false;
+    }
+
+    private void notParentedFlags()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        rb.AddForce(forceBuffer, ForceMode2D.Impulse);
+        forceBuffer = new Vector2(0, 0);
+        handController = null;
+        playerBody = null;
+        shotBy = 2; //ignore raycast layer
+        gravityAffected = false;
+        orientToGravity = true;
+        //floatFlag=true; 
     }
 
     public bool getFacingLeft()

@@ -24,12 +24,15 @@ public class SoundManager : MonoBehaviour
 
     private IEnumerator checkForNewCenter()
     {
-        yield return new WaitForSeconds(0.5f);
-
-        CinemachineBrain brain = Camera.main.GetComponent<CinemachineBrain>();
-        if (brain != null && brain.ActiveVirtualCamera != null)
+        while (true)
         {
-            center = brain.ActiveVirtualCamera.VirtualCameraGameObject.transform;
+            yield return new WaitForSeconds(0.5f);
+
+            CinemachineBrain brain = Camera.main.GetComponent<CinemachineBrain>();
+            if (brain != null && brain.ActiveVirtualCamera != null)
+            {
+                center = brain.ActiveVirtualCamera.VirtualCameraGameObject.transform;
+            }
         }
     }
 

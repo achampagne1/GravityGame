@@ -75,11 +75,4 @@ public class DroneController : CharacterController
             return localPos.x < 0;
         }*/
     }
-    protected override IEnumerator die()
-    {
-        Transform gun = transform.Find("Gun");
-        Destroy(gun.gameObject);
-        base.die();
-        yield return null;
-    }
 }

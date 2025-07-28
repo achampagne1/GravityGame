@@ -14,7 +14,6 @@ public class SpaceZombieController : SpacePersonController
     //public variables
     public bool first = false;
     public int normalState = 0;
-    [SerializeField] float persistanceAfterDeath = 5f;
 
     //game variables
     private int moveInput = 0;
