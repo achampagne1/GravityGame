@@ -47,9 +47,7 @@ public class DroneGunController : MonoBehaviour
 
         if (shoot)
         {
-            soundFx.clip = gunShot;
-            soundFx.Play();
-            //soundFx.Play(gunShot);
+            SoundManager.instance.playSound(gunShot, transform, .8f);
             GameObject laserClone = Instantiate(laser, transform.position, transform.rotation);
             laserClone.GetComponent<LaserController>().init(gameObject.layer);
             laserClone.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * bulletForce, ForceMode2D.Impulse);

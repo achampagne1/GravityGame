@@ -9,12 +9,10 @@ public class CharacterController : ObjectController
 {
     //object creation
     protected Animator animator;
-    protected AudioController audioController;
     protected ExplodeController explodeController;
-    protected AudioSource soundFX;
     [SerializeField] protected GameObject explodeCenter;
-    [SerializeField] Sprite hitSprite;
-    [SerializeField] AudioClip hitSound;
+    [SerializeField] protected Sprite hitSprite;
+    [SerializeField] protected AudioClip hitSound;
 
     //public game variables
     [SerializeField] protected float jumpForce = 11f;
@@ -46,7 +44,7 @@ public class CharacterController : ObjectController
     private Vector2 previousMove = new Vector2(0, 0);
     private Vector2 jumpExtraction = new Vector2(0, 0);
     private Vector2 additionalForce = new Vector2(0, 0);
-    private Vector3 bulletStrikeLocation = new Vector3(0, 0, 0);
+    protected Vector3 bulletStrikeLocation = new Vector3(0, 0, 0);
 
 
 
@@ -56,15 +54,6 @@ public class CharacterController : ObjectController
         Physics2D.IgnoreLayerCollision(9, 9, true);
         Physics2D.IgnoreLayerCollision(9, 11, true);
         Physics2D.IgnoreLayerCollision(11, 11, true);
-
-        try
-        {
-            soundFX = GetComponents<AudioSource>()[0];
-        }
-        catch (Exception e)
-        {
-            Debug.LogError(e);
-        }
 
         health = maxHealth;
 
@@ -130,7 +119,7 @@ public class CharacterController : ObjectController
         //Note: transform is for the bullet, gameObject.transform is for the palyer
         bulletStrikeLocation = transform.position;
         health = health - 1f;
-        soundFX.PlayOneShot(hitSound);
+        SoundManager.instance.playSound(hitSound, transform, 1f);
         StartCoroutine(changeColorWrapper());
         StartCoroutine(knockBack(leftStrikeLocation(transform)));
 

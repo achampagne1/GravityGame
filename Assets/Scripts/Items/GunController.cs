@@ -22,8 +22,7 @@ public class GunController : ItemController
     private Timer throwTimer;
     private Timer throwTimer2;
     private Animator animator;
-    private AudioSource audioSource;
-    [SerializeField] private AudioClip gunshotClip;
+    [SerializeField] AudioClip gunshotClip;
     [SerializeField] GameObject bullet;
 
 
@@ -41,7 +40,6 @@ public class GunController : ItemController
         Physics2D.IgnoreLayerCollision(13, 13, true);
         throwTimer = new Timer(.25f); //this is to make sure the player doesnt immidietly grab the item when it is thrown
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
-        audioSource = GetComponent<AudioSource>();
         if (parented)
             parentingHelper();
 
@@ -105,7 +103,7 @@ public class GunController : ItemController
         GameObject bulletClone= Instantiate(bullet, transform.position + transform.rotation * offset, transform.rotation);
         bulletClone.GetComponent<BulletController>().init(transform.parent.gameObject.layer);
         bulletClone.GetComponent<Rigidbody2D>().AddForce(shootDirection * bulletForce, ForceMode2D.Impulse);
-        audioSource.PlayOneShot(gunshotClip);
+        SoundManager.instance.playSound(gunshotClip, transform, 1f);
 
     }
 

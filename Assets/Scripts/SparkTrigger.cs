@@ -6,11 +6,9 @@ public class SparkTrigger : MonoBehaviour
 {
     [SerializeField] ParticleSystem sparkBurst;
     [SerializeField] AudioClip audioClip;
-    private AudioSource audioSource;
     // Start is called before the first frame update
     void Start()
     {
-        audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
@@ -21,9 +19,7 @@ public class SparkTrigger : MonoBehaviour
 
     public void triggerSparks()
     {
-        audioSource = GetComponent<AudioSource>();
         sparkBurst.Play();
-        audioSource.clip = audioClip;
-        audioSource.Play();
+        SoundManager.instance.playSound(audioClip, transform, 1f);
     }
 }

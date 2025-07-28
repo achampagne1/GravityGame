@@ -35,7 +35,7 @@ public class SpacePersonController : CharacterController
     {
         try
         {
-            jetPackAudioSource = GetComponents<AudioSource>()[2];
+            jetPackAudioSource = GetComponents<AudioSource>()[1];
         }
         catch
         {
