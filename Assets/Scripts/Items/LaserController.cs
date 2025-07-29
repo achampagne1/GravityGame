@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserController : MonoBehaviour
+public class LaserController : MonoBehaviour,IProjectile
 {
 
     //object creation
     Timer lifetime = new Timer(5f);
     ProjectileHelper projectileHelper;
+
+    [SerializeField] float damage = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +20,7 @@ public class LaserController : MonoBehaviour
     public void init(int shotBy)
     {
         lifetime.startTimer();
-        projectileHelper = new ProjectileHelper(shotBy,gameObject);
+        projectileHelper = new ProjectileHelper(shotBy,damage,gameObject);
     }
 
     // Update is called once per frame
@@ -41,5 +43,10 @@ public class LaserController : MonoBehaviour
     public int getShotBy()
     {
         return projectileHelper.getShotBy();
+    }
+
+    public float getDamage()
+    {
+        return projectileHelper.getDamage();
     }
 }

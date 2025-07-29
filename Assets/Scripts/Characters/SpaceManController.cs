@@ -14,6 +14,9 @@ public class SpaceManController : SpacePersonController
     [SerializeField] VCamController camController;
     [SerializeField] UIHandler uIHandler;
 
+    //vectors
+    Vector2 screenCenter;
+    Vector2 direction;
 
 
     public void Start()
@@ -23,6 +26,9 @@ public class SpaceManController : SpacePersonController
         Physics2D.IgnoreLayerCollision(12, 12, true);
         Physics2D.IgnoreLayerCollision(2, 12, true);
         Physics2D.IgnoreLayerCollision(11, 12, true);
+
+        screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+
         calculateSpacePersonStart();
         setMaxHealth(10f);
     }
@@ -85,8 +91,7 @@ public class SpaceManController : SpacePersonController
 
     private int lookLeftOrRight()
     {
-        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
-        Vector2 direction = new Vector2(Input.mousePosition.x, Input.mousePosition.y) - screenCenter;
+        direction = (Vector2) Input.mousePosition - screenCenter;
 
         if (direction.x < 0)
             return -1;

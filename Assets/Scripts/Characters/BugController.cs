@@ -15,7 +15,8 @@ public class BugController : CharacterController
     private bool pause = false;
     private bool playerHit = false;
     private int moveInput = 0;
-    private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
+    private Vector3 playerDirection = Vector3.zero;
+    private Vector3 notDetected = new Vector3(0f, 0f, 1f);
 
     //object creation
     private RandomTimer pauseDuration;
@@ -38,9 +39,9 @@ public class BugController : CharacterController
         if (movementToggle && !dead)
         {
             playerDirection = EnemyAssistant.detectPlayer(getFacingLeft(), gameObject);
-            if (playerDirection != new Vector3(0f, 0f, 1f))
+            if (playerDirection != notDetected)
             {
-                Vector2 temp = HelperFunctions.rotateVector(new Vector2(playerDirection.x,playerDirection.y),-transform.eulerAngles.z);
+                Vector2 temp = HelperFunctions.rotateVector((Vector2)playerDirection,-transform.eulerAngles.z);
                 if (!pounceRunning&&!knockBackRunning)
                 {
                     jumpCoroutine = StartCoroutine(jump(temp.x<0));

@@ -1,12 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class BulletController : ObjectController
+public class BulletController : ObjectController,IProjectile
 {
 
     //game variables
     private int shotBy = 0;
     private float drag = .1f;
+    [SerializeField] float damage = 1f;
 
     //objects
     ProjectileHelper projectileHelper;
@@ -15,12 +16,13 @@ public class BulletController : ObjectController
     public void Start()
     {
         simulated = true;
+        updateGravityField = true;
         calculateStart();
     }
 
     public void init(int shotBy)
     {
-        projectileHelper = new ProjectileHelper(shotBy, gameObject);
+        projectileHelper = new ProjectileHelper(shotBy, damage, gameObject);
     }
 
     // Update is called once per frame
@@ -64,6 +66,11 @@ public class BulletController : ObjectController
     public int getShotBy()
     {
         return projectileHelper.getShotBy();
+    }
+
+    public float getDamage()
+    {
+        return projectileHelper.getDamage();
     }
 
 }

@@ -99,7 +99,7 @@ public class SpacePersonController : CharacterController
 
         if (hoverFlag)
             useFuel();
-        hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero;
+        hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero; //avoid new
     }
 
     private void useFuel()

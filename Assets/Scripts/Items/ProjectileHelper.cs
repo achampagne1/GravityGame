@@ -8,16 +8,25 @@ using UnityEngine;
  * this kind of gets around no multiple inheritence 
  * if a change with a projectile needs to be made (for bullets or laser) verify if it should be here 
  */
+
+public interface IProjectile
+{
+    float getDamage();
+    int getShotBy();
+    
+}
 public struct ProjectileHelper
 {
     //variables
     int shotBy;
+    float damage;
     GameObject gameObject;
 
-    public ProjectileHelper(int shotBy, GameObject gameObject)
+    public ProjectileHelper(int shotBy, float damage, GameObject gameObject)
     {
         gameObject.tag = "Projectile";
         this.shotBy = shotBy;
+        this.damage = damage;
         this.gameObject = gameObject;
     }
     public void OnCollisionEnter2D(Collision2D collision)
@@ -35,5 +44,10 @@ public struct ProjectileHelper
     public int getShotBy()
     {
         return shotBy;
+    }
+
+    public float getDamage()
+    {
+        return damage;
     }
 }

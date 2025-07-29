@@ -15,6 +15,8 @@ public class DroneGunController : MonoBehaviour
     private Vector3 locationBuffer = new Vector3(0f,0f,0f);
     private int angleOffset = 0;
     private bool playerSeen = false;
+    private bool recoilRunning = false;
+    private Coroutine recoilCoroutine = null;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +49,9 @@ public class DroneGunController : MonoBehaviour
 
         if (shoot)
         {
+            if(recoilRunning) 
+                StopCoroutine(recoilCoroutine);
+            recoilCoroutine = StartCoroutine(recoil());
             SoundManager.instance.playSound(gunShot, transform, .8f);
             GameObject laserClone = Instantiate(laser, transform.position, transform.rotation);
             laserClone.GetComponent<LaserController>().init(gameObject.layer);
@@ -62,6 +67,36 @@ public class DroneGunController : MonoBehaviour
             shoot = true;
             yield return new WaitForSeconds(shootInterval);
         }
+    }
+
+    private IEnumerator recoil()
+    {
+        recoilRunning = true;
+        Vector3 originalPosition = transform.localPosition;
+        Vector3 recoilOffset = new Vector3(-1f, 0f, 0f);
+        Vector3 targetPosition = originalPosition + (transform.rotation * recoilOffset);
+
+        float recoilDuration = 0.05f;   
+        float returnDuration = 0.1f;    
+        float t = 0f;
+
+        while (t < recoilDuration)
+        {
+            transform.localPosition = Vector3.Lerp(originalPosition, targetPosition, t / recoilDuration);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        transform.localPosition = targetPosition;
+
+        t = 0f;
+        while (t < returnDuration)
+        {
+            transform.localPosition = Vector3.Lerp(targetPosition, originalPosition, t / returnDuration);
+            t += Time.deltaTime;
+            yield return null;
+        }
+        transform.localPosition = originalPosition;
+        recoilRunning = false;
     }
 
     private Vector3 detectPlayer()

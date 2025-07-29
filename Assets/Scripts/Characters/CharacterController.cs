@@ -109,7 +109,10 @@ public class CharacterController : ObjectController
         if (invincibleFlag)
             return;
 
-        health = health - 1f;
+        health = health - transform.gameObject.GetComponent<IProjectile>().getDamage();
+        if (health < 0)
+            health = 0;
+
         bulletStrikeLocation = transform.position;
         SoundManager.instance.playSound(hitSound, transform, 1f);
         StartCoroutine(changeColorWrapper());
@@ -219,7 +222,8 @@ public class CharacterController : ObjectController
         rotatedY = gravityDirection.x;
         if (wallInFrontVar == (int)horizontalInput)
             horizontalInput = 0;
-        moveDirection = new Vector2((horizontalInput * moveSpeed * rotatedX), (horizontalInput * moveSpeed * rotatedY));
+        moveDirection.x = (horizontalInput * moveSpeed * rotatedX);
+        moveDirection.y = (horizontalInput * moveSpeed * rotatedY);
     }
 
     private void calculateJump()
@@ -236,9 +240,12 @@ public class CharacterController : ObjectController
         rotatedX = -gravityDirection.x;
         rotatedY = -gravityDirection.y;
         if (space && isGrounded)
-            jump = new Vector2(rotatedX * jumpForce, rotatedY * jumpForce);
+        {
+            jump.x = rotatedX * jumpForce;
+            jump.y = rotatedY * jumpForce;
+        }
         else
-            jump = new Vector2(0, 0);
+            jump = Vector2.zero;
     }
 
     private int wallInFront()
@@ -262,12 +269,17 @@ public class CharacterController : ObjectController
     {
         if (direcitonInput == -1 && !facingLeft)
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            //NOTE: doing this is more Garbage OCllector friendly
+            Vector3 scale = transform.localScale;
+            scale.x = -scale.x;
+            transform.localScale = scale;
             facingLeft = true;
         }
         else if (direcitonInput == 1 && facingLeft)
         {
-            transform.localScale = new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z);
+            Vector3 scale = transform.localScale;
+            scale.x = -scale.x;
+            transform.localScale = scale;
             facingLeft = false;
         }
     }

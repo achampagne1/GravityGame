@@ -14,8 +14,9 @@ public class ObjectController : MonoBehaviour
 
     //public game variables
     public float terminalVelocity = 30f;
-    public bool gravityAffected = true;
-    public bool orientToGravity = true;
+    //when an object is created, you need to set these flags
+    [SerializeField] protected bool gravityAffected = true;
+    [SerializeField] protected bool orientToGravity = true;
     [SerializeField] protected bool updateGravityField = false;
     [SerializeField] protected bool calculateIsGrounded = false;
     [SerializeField] protected bool simulated = false;
@@ -78,7 +79,7 @@ public class ObjectController : MonoBehaviour
                 calculateRotation();
 
             rb.AddForce(forceLocal, ForceMode2D.Impulse);
-            forceLocal = new Vector2(0, 0);
+            forceLocal = Vector2.zero;
         }
     }
 
@@ -101,32 +102,14 @@ public class ObjectController : MonoBehaviour
     {
         do 
         {
-            //everything from here
-            //pass in transform locaiton, gravityPoints as an array
-            //that array will contain structs. that struct will contain location, fieldSize, fieldStrength
-            //the function must return the location in the array of the closest adjusted plaent
             GameObject closest = ObjectDLLBridge.findClosestFieldDLL(gameObject,gravityPoints);
             planetCenter = closest.transform;
             gravityForceMag = closest.GetComponent<GravityPointController>().getFieldStrength();
-            /*float closestGravityField = 1000f;
-            GameObject temp = gravityPoints[0];
-            foreach (GameObject gravityPoint in gravityPoints)
-            {
-                GravityPointController gravityPointController = gravityPoint.GetComponent<GravityPointController>();
-                float adjustedDistance = (float)(transform.position - gravityPoint.transform.position).magnitude / gravityPointController.getFieldSize();
-                if (adjustedDistance < closestGravityField)
-                {
-                    closestGravityField = adjustedDistance;
-                    temp = gravityPoint;
-                }
-            }*/
-            //this seciton below is for determining if youre going up or down. dont think this should be in find closest field
-            /*if (distanceToSource - closestGravityField < 0)
+
+            /**if (distanceToSource - closestGravityField < 0) //figure out later
                 up = true;
             else
-                up = false;
-            distanceToSource = closestGravityField;*/
-            //to here needs to move to the dll
+                up = false;*/
 
             yield return new WaitForSeconds(0.1f);
         }

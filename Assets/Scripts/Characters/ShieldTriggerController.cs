@@ -47,7 +47,7 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
                 if (shieldStrength > 0)
                 {
                     StartCoroutine(spawnShieldHit(trigger.gameObject));
-                    shieldStrength -= 10;
+                    shieldStrength -= trigger.gameObject.GetComponent<IProjectile>().getDamage() * 10;
                     if (shieldStrength < 0)
                         shieldStrength = 0;
                 }
