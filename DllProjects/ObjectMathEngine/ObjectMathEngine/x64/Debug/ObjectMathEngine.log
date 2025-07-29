@@ -1,0 +1,6 @@
+﻿  pch.cpp
+  dllmain.cpp
+  ObjectMathEngine.cpp
+  Generating Code...
+     Creating library D:\GravityGame\DllProjects\ObjectMathEngine\x64\Debug\ObjectMathEngine.lib and object D:\GravityGame\DllProjects\ObjectMathEngine\x64\Debug\ObjectMathEngine.exp
+  ObjectMathEngine.vcxproj -> D:\GravityGame\DllProjects\ObjectMathEngine\x64\Debug\ObjectMathEngine.dll

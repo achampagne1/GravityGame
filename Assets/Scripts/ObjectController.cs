@@ -97,7 +97,7 @@ public class ObjectController : MonoBehaviour
         }
     }
 
-    private IEnumerator findClosestField() //this checks for a new gravity field every 10th of a second
+    private IEnumerator findClosestField() //move to DLL
     {
         do
         {
