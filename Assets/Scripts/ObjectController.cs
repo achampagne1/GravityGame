@@ -99,9 +99,16 @@ public class ObjectController : MonoBehaviour
 
     private IEnumerator findClosestField() //move to DLL
     {
-        do
+        do 
         {
-            float closestGravityField = 1000f;
+            //everything from here
+            //pass in transform locaiton, gravityPoints as an array
+            //that array will contain structs. that struct will contain location, fieldSize, fieldStrength
+            //the function must return the location in the array of the closest adjusted plaent
+            GameObject closest = ObjectDLLBridge.findClosestFieldDLL(gameObject,gravityPoints);
+            planetCenter = closest.transform;
+            gravityForceMag = closest.GetComponent<GravityPointController>().getFieldStrength();
+            /*float closestGravityField = 1000f;
             GameObject temp = gravityPoints[0];
             foreach (GameObject gravityPoint in gravityPoints)
             {
@@ -112,14 +119,14 @@ public class ObjectController : MonoBehaviour
                     closestGravityField = adjustedDistance;
                     temp = gravityPoint;
                 }
-            }
-            if (distanceToSource - closestGravityField < 0)
+            }*/
+            //this seciton below is for determining if youre going up or down. dont think this should be in find closest field
+            /*if (distanceToSource - closestGravityField < 0)
                 up = true;
             else
                 up = false;
-            distanceToSource = closestGravityField;
-            planetCenter = temp.GetComponent<Transform>();
-            gravityForceMag = temp.GetComponent<GravityPointController>().getFieldStrength();
+            distanceToSource = closestGravityField;*/
+            //to here needs to move to the dll
 
             yield return new WaitForSeconds(0.1f);
         }
