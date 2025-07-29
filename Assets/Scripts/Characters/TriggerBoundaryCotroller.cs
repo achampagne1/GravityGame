@@ -38,12 +38,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
 
         if (trigger.gameObject.tag == "Projectile")
         {
-            //consult with sean to see if there a better way to get around this
-            var bullet = trigger.gameObject.GetComponent<BulletController>();
-            var laser = trigger.gameObject.GetComponent<LaserController>();
-
-            if ((bullet != null && bullet.getShotBy() == parent.layer) ||
-                (laser != null && laser.getShotBy() == parent.layer))
+            if (trigger.gameObject.GetComponent<IProjectile>().getShotBy() == parent.layer)
             {
                 return;
             }
