@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 public class ObjectDLLBridge
 {
-
+    [StructLayout(LayoutKind.Sequential)]
     struct GravityPoint
     {
         public float x;
@@ -29,10 +29,10 @@ public class ObjectDLLBridge
             gravityPointsArr[iterator]=gravityPointStruct;
             iterator++;
         }
-        int closest = bridge(selfStruct, gravityPointsArr);
+        int closest = bridge(selfStruct, gravityPointsArr,gravityPoints.Count);
         return gravityPoints[closest];
     }
 
-    [DllImport("objectHelper")]
-    private static extern int bridge([In] GravityPoint self, [In] GravityPoint[] gravityPoints);
+    [DllImport("ObjectMathEngine")]
+    private static extern int bridge([In] GravityPoint self, [In] GravityPoint[] gravityPoints, [In] int gravityPointsLen);
 }
