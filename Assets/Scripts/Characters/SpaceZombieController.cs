@@ -10,6 +10,7 @@ public class SpaceZombieController : SpacePersonController
     RandomTimer moveDuration;
     Timer timer = new Timer(3f);
     Timer shootTimer = new Timer(3f);
+    EnemyAssistant enemyAssistant;
 
     //public variables
     public bool first = false;
@@ -24,12 +25,13 @@ public class SpaceZombieController : SpacePersonController
 
     void Start()
     {
-        calculateSpacePersonStart();
         pauseDuration = new RandomTimer(.1f, 1f);
         moveDuration = new RandomTimer(1f,4f);
 
         timer.startTimer();
         shootTimer.startTimer(); //shoot timer must be started so that the enemey is ready when it first sees the player
+        enemyAssistant = new EnemyAssistant(gameObject);
+        calculateSpacePersonStart();
     }
 
     public void FixedUpdate()
@@ -38,10 +40,11 @@ public class SpaceZombieController : SpacePersonController
         {
             if (movementToggle && !dead)
             {
-                //playerDirection = EnemyAssistant.detectPlayer(getFacingLeft(), gameObject);
+                playerDirection = enemyAssistant.detectPlayer(getFacingLeft());
+                Debug.Log(playerDirection);
                 if (playerDirection !=new Vector3(0f,0f,1f))
                 {
-                    handController.setInputDirection(playerDirection);
+                    handController.setInputDirection(gameObject.transform.TransformDirection(playerDirection));
                     attackPlayer();
                 }
                 else

@@ -15,7 +15,6 @@ class EnemyAssistant
     {
         this.gameObject = gameObject;
 
-        //creation of mask
         int enemyLayer = LayerMask.NameToLayer("enemy");
         int triggerLayer = LayerMask.NameToLayer("TriggerBoudary");
         int itemsLayer = LayerMask.NameToLayer("items");
@@ -30,24 +29,23 @@ class EnemyAssistant
     }
     public Vector3 detectPlayer(bool facingLeft)
     {
-        //TODO: ad support for looking left
+        bool validDirection = false;
         if (player != null)
         {
-            direction = (player.transform.position-gameObject.transform.position).normalized;
-            if (direction.x < 0 && direction.y < 0)
-            {
-                //NOTE: I know this code is duplicated. its to check if the direction si outside of the enemies "view"
-                float angleToCast = gameObject.transform.eulerAngles.z + angle; 
-                direction.x = Mathf.Cos(angleToCast * Mathf.PI / 180);
-                direction.y = Mathf.Sin(angleToCast * Mathf.PI / 180);
-                angle = (angle + resolution) % 91;
-            }
+            direction = (player.transform.position - gameObject.transform.position).normalized;
+            Vector2 localDirection = gameObject.transform.InverseTransformDirection(direction);
+            if(!facingLeft && localDirection.x>0&&localDirection.y>0)
+                validDirection= true;
+            else if (facingLeft && localDirection.x < 0 && localDirection.y > 0)
+                validDirection = true;
         }
-        else
+
+        if (!validDirection)
         {
             float angleToCast = gameObject.transform.eulerAngles.z + angle;
-            direction.x = Mathf.Cos(angleToCast * Mathf.PI / 180);
-            direction.y = Mathf.Sin(angleToCast * Mathf.PI / 180);
+            angleToCast += facingLeft ? 90 : 0;
+            direction.x = Mathf.Cos(angleToCast * Mathf.Deg2Rad);
+            direction.y = Mathf.Sin(angleToCast * Mathf.Deg2Rad);
             angle = (angle + resolution) % 91;
         }
 
@@ -61,7 +59,7 @@ class EnemyAssistant
             if (hitObj != gameObject && hitObj.layer == LayerMask.NameToLayer("player"))
             {
                 player = hitObj;
-                return gameObject.transform.TransformDirection((gameObject.transform.position- hitObj.transform.position).normalized); //for now it will just be a direciton vector
+                return gameObject.transform.InverseTransformDirection((hitObj.transform.position- gameObject.transform.position).normalized); //for now it will just be a direciton vector
             }
 
             if (hitObj.layer != LayerMask.NameToLayer("player")) { }
@@ -71,3 +69,21 @@ class EnemyAssistant
         return new Vector3(0f,0f,1f);
     }
 }
+/*
+if (facingLeft && (direction.x > 0 || direction.y < 0))
+{
+    //NOTE: I know this code is duplicated. its to check if the direction si outside of the enemies "view"
+    float angleToCast = gameObject.transform.eulerAngles.z + angle;
+    angleToCast += 90;
+    direction.x = Mathf.Cos(angleToCast * Mathf.Deg2Rad);
+    direction.y = Mathf.Sin(angleToCast * Mathf.Deg2Rad);
+    angle = (angle + resolution) % 91;
+}
+else if (!facingLeft && (direction.x < 0 || direction.y < 0))
+{
+    //NOTE: I know this code is duplicated. its to check if the direction si outside of the enemies "view"
+    float angleToCast = gameObject.transform.eulerAngles.z + angle;
+    direction.x = Mathf.Cos(angleToCast * Mathf.Deg2Rad);
+    direction.y = Mathf.Sin(angleToCast * Mathf.Deg2Rad);
+    angle = (angle + resolution) % 91;
+}*/
