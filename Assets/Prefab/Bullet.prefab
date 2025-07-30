@@ -181,3 +181,4 @@ MonoBehaviour:
   updateGravityField: 0
   calculateIsGrounded: 0
   simulated: 0
+  damage: 1

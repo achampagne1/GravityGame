@@ -23,6 +23,7 @@ public class BugController : CharacterController
     private RandomTimer moveDuration;
     private RandomTimer blinkTimer;
     private Coroutine jumpCoroutine;
+    private EnemyAssistant enemyAssistant;
 
     // Start is called before the first frame update
     void Start()
@@ -30,6 +31,7 @@ public class BugController : CharacterController
         blinkTimer = new RandomTimer(3, 5);
         pauseDuration = new RandomTimer(.1f, 1f);
         moveDuration = new RandomTimer(1f, 4f);
+        enemyAssistant = new EnemyAssistant(gameObject);
         calculateCharacterStart();
     }
 
@@ -38,7 +40,7 @@ public class BugController : CharacterController
     {
         if (movementToggle && !dead)
         {
-            playerDirection = EnemyAssistant.detectPlayer(getFacingLeft(), gameObject);
+            playerDirection = enemyAssistant.detectPlayer(getFacingLeft());
             if (playerDirection != notDetected)
             {
                 Vector2 temp = HelperFunctions.rotateVector((Vector2)playerDirection,-transform.eulerAngles.z);

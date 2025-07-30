@@ -306,7 +306,7 @@ MonoBehaviour:
   playArea:
   - 100
   - 100
-  cameraShift: -0.18
+  cameraShift: -0.12
   camController: {fileID: 9025898114710739492}
   uIHandler: {fileID: 0}
 --- !u!82 &817579411317516132

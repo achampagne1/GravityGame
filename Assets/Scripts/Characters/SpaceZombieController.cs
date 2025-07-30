@@ -38,7 +38,7 @@ public class SpaceZombieController : SpacePersonController
         {
             if (movementToggle && !dead)
             {
-                playerDirection = EnemyAssistant.detectPlayer(getFacingLeft(), gameObject);
+                //playerDirection = EnemyAssistant.detectPlayer(getFacingLeft(), gameObject);
                 if (playerDirection !=new Vector3(0f,0f,1f))
                 {
                     handController.setInputDirection(playerDirection);

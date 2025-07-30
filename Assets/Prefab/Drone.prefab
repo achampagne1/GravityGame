@@ -101,7 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   shoot: 0
-  bulletForce: 50
+  bulletForce: 100
   shootInterval: 2
   laser: {fileID: 5848385344887034964, guid: b1ad4859f734b944b9fd0ccb1ec63f8b, type: 3}
   gunShot: {fileID: 8300000, guid: 5264979707fa9de4cad9393550c9909f, type: 3}

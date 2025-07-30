@@ -2,25 +2,72 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public struct EnemyAssistant
+class EnemyAssistant
 {
-    public static Vector3 detectPlayer(bool facingLeft,GameObject gameObject)
+    private bool playerFound;
+    private int angle = 0;
+    private int resolution = 4; //resolution is used to determine how many degrees seperate each ray cast shoot. it should not be a number 90 is divisible by
+    private Vector2 direction = Vector2.zero;
+    private GameObject gameObject;
+    private GameObject player = null;
+    private ContactFilter2D filter;
+    public EnemyAssistant(GameObject gameObject)
     {
-        for (int i = 0; i < 180; i++) //probably overkill
+        this.gameObject = gameObject;
+
+        //creation of mask
+        int enemyLayer = LayerMask.NameToLayer("enemy");
+        int triggerLayer = LayerMask.NameToLayer("TriggerBoudary");
+        int itemsLayer = LayerMask.NameToLayer("items");
+
+        int everythingMask = Physics2D.AllLayers;
+
+        int mask = everythingMask & ~(1 << enemyLayer) & ~(1 << triggerLayer) & ~(1 << itemsLayer);
+
+        filter = new ContactFilter2D();
+        filter.SetLayerMask(mask);
+        filter.useTriggers = false;
+    }
+    public Vector3 detectPlayer(bool facingLeft)
+    {
+        //TODO: ad support for looking left
+        if (player != null)
         {
-            float angle = (gameObject.transform.eulerAngles.z + 90 - i + (System.Convert.ToSingle(facingLeft) * 180)) % 360;
-            Vector2 temp = new Vector2(Mathf.Cos(angle * Mathf.PI / 180), Mathf.Sin(angle * Mathf.PI / 180));
-            RaycastHit2D[] lookForPlayer = Physics2D.RaycastAll(gameObject.transform.position, temp, 30f);
-            foreach (RaycastHit2D hit in lookForPlayer)
+            direction = (player.transform.position-gameObject.transform.position).normalized;
+            if (direction.x < 0 && direction.y < 0)
             {
-                if (hit.collider.gameObject.layer == 0 || hit.collider.gameObject.layer == 15)
-                    break;
-                if (hit.collider.gameObject != gameObject && hit.collider.gameObject.layer == 9)
-                {
-                    return new Vector3(temp.x, temp.y, 0f);
-                }
+                //NOTE: I know this code is duplicated. its to check if the direction si outside of the enemies "view"
+                float angleToCast = gameObject.transform.eulerAngles.z + angle; 
+                direction.x = Mathf.Cos(angleToCast * Mathf.PI / 180);
+                direction.y = Mathf.Sin(angleToCast * Mathf.PI / 180);
+                angle = (angle + resolution) % 91;
             }
         }
+        else
+        {
+            float angleToCast = gameObject.transform.eulerAngles.z + angle;
+            direction.x = Mathf.Cos(angleToCast * Mathf.PI / 180);
+            direction.y = Mathf.Sin(angleToCast * Mathf.PI / 180);
+            angle = (angle + resolution) % 91;
+        }
+
+        RaycastHit2D[] hits = new RaycastHit2D[10];
+        int hitCount = Physics2D.Raycast(gameObject.transform.position, direction, filter, hits, 30f);
+
+        for (int i = 0; i < hitCount; i++)
+        {
+            GameObject hitObj = hits[i].collider.gameObject;
+
+            if (hitObj != gameObject && hitObj.layer == LayerMask.NameToLayer("player"))
+            {
+                player = hitObj;
+                return gameObject.transform.TransformDirection((gameObject.transform.position- hitObj.transform.position).normalized); //for now it will just be a direciton vector
+            }
+
+            if (hitObj.layer != LayerMask.NameToLayer("player")) { }
+                break;
+        }
+        player = null;
         return new Vector3(0f,0f,1f);
     }
 }
