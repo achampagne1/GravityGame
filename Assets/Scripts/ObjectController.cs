@@ -41,15 +41,17 @@ public class ObjectController : MonoBehaviour
     protected void calculateStart()
     {
         groundStopWatch = new StopWatch();
-        if (simulated)
-        {
-            spriteRenderer = GetComponent<SpriteRenderer>();
-            rb = GetComponent<Rigidbody2D>();
-            layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
-            heightObject = getHeight();
-            gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
-            StartCoroutine(findClosestField());
-        }
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        rb = GetComponent<Rigidbody2D>();
+        layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
+        heightObject = getHeight();
+
+        gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
+        Debug.Log(ObjectDLLBridge.dataMarshalFlag);
+        if (!ObjectDLLBridge.dataMarshalFlag) //TODO: when gravity fields are added dynamically, then data needs to be remarshaled
+            ObjectDLLBridge.marshalData(gravityPoints);
+
+        StartCoroutine(findClosestField());
     }
 
     protected void calculateUpdate()
@@ -98,11 +100,11 @@ public class ObjectController : MonoBehaviour
         }
     }
 
-    private IEnumerator findClosestField() //move to DLL
+    private IEnumerator findClosestField() 
     {
         do 
         {
-            GameObject closest = ObjectDLLBridge.findClosestFieldDLL(gameObject,gravityPoints);
+            GameObject closest = gravityPoints[ObjectDLLBridge.findClosestFieldDLL(gameObject)];
             planetCenter = closest.transform;
             gravityForceMag = closest.GetComponent<GravityPointController>().getFieldStrength();
 
