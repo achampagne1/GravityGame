@@ -47,7 +47,6 @@ public class ObjectController : MonoBehaviour
         heightObject = getHeight();
 
         gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
-        Debug.Log(ObjectDLLBridge.dataMarshalFlag);
         if (!ObjectDLLBridge.dataMarshalFlag) //TODO: when gravity fields are added dynamically, then data needs to be remarshaled
             ObjectDLLBridge.marshalData(gravityPoints);
 

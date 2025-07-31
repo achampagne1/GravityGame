@@ -16,6 +16,7 @@ public class DroneGunController : MonoBehaviour
     private Vector3 playerNotFound = new Vector3(0f, 0f, 1f);
     private bool playerSeen = false;
     private bool recoilRunning = false;
+    private bool shootRunning = false;
     private Coroutine recoilCoroutine = null;
 
     // Start is called before the first frame update
@@ -28,19 +29,12 @@ public class DroneGunController : MonoBehaviour
     void Update()
     {
 
-        if (playerSeen && shootCoroutine==null)
-        {
-            shootCoroutine = StartCoroutine(shootFunction());
-        }
-        else if(!playerSeen && shootCoroutine != null)
-        {
-            StopCoroutine(shootCoroutine);
-            shootCoroutine = null;
-        }
+        if (playerSeen && !shootRunning)
+            StartCoroutine(shootFunction());
 
         if (shoot)
         {
-            if(recoilRunning) 
+            if (recoilRunning)
                 StopCoroutine(recoilCoroutine);
             recoilCoroutine = StartCoroutine(recoil());
             SoundManager.instance.playSound(gunShot, transform, .8f);
@@ -48,17 +42,17 @@ public class DroneGunController : MonoBehaviour
             laserClone.GetComponent<LaserController>().init(gameObject.layer);
             float angleRad = transform.eulerAngles.z * Mathf.Deg2Rad;
             laserClone.GetComponent<Rigidbody2D>().AddForce(new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * bulletForce, ForceMode2D.Impulse);
+            shoot = false;
         }
-        shoot = false;
     }
 
     private IEnumerator shootFunction()
     {
-        while (true)
-        {
-            shoot = true;
-            yield return new WaitForSeconds(shootInterval);
-        }
+        shoot = true;
+        shootRunning = true;
+        yield return new WaitForSeconds(shootInterval);
+        shootRunning = false;
+        yield return null;
     }
 
     private IEnumerator recoil()
