@@ -4,16 +4,39 @@ using UnityEngine;
 
 public class DroneController : CharacterController
 {
-
+    private EnemyAssistant[] enemyAssistants = new EnemyAssistant[5];
+    private GameObject droneGun;
+    private DroneGunController droneGunController;
+    private Vector3 playerNotFound = new Vector3(0f, 0f, 1f);
+    private int angleOffset = 0;
     // Start is called before the first frame update
     void Start()
     {
         calculateCharacterStart();
+        droneGun = transform.Find("Gun").gameObject;
+        droneGunController = droneGun.GetComponent<DroneGunController>();
+        int angleOffset = 0;
+        for (int i = 0; i < enemyAssistants.Length; i++)
+        {
+            enemyAssistants[i] = new EnemyAssistant(gameObject);
+            enemyAssistants[i].setAngleOffsetSetting(angleOffset);
+            angleOffset += 72;
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
+        Vector3 playerPos = detectPlayerWrapper();
+        if (playerPos != playerNotFound)
+        {
+            float angleRad = Mathf.Atan2(playerPos.y, playerPos.x);
+            float angleDeg = angleRad * Mathf.Rad2Deg;
+            droneGun.transform.rotation = Quaternion.Euler(0f, 0f, angleDeg);
+            droneGunController.setPlayerSeen(true);
+        }
+        else
+            droneGunController.setPlayerSeen(false);
         calculateCharacterUpdate();
     }
 
@@ -75,5 +98,16 @@ public class DroneController : CharacterController
             localPos.x = facingLeft ? localPos.x * -1 : localPos.x;
             return localPos.x < 0;
         }*/
+    }
+
+    private Vector3 detectPlayerWrapper()
+    {
+        for (int i = 0; i < enemyAssistants.Length; i++)
+        {
+            Vector3 temp = enemyAssistants[i].detectPlayer(false);
+            if (temp != playerNotFound)
+                return temp;
+        }
+        return playerNotFound;
     }
 }
