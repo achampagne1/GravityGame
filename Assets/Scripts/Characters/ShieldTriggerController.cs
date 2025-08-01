@@ -40,13 +40,13 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
             var bullet = trigger.gameObject.GetComponent<BulletController>();
             var laser = trigger.gameObject.GetComponent<LaserController>();
 
-            if (trigger.gameObject.GetComponent<IProjectile>().getShotBy() == parent.layer)
+            if (trigger.gameObject.GetComponent<IProjectileInfo>().getShotBy() == parent.layer)
                 return;
 
             if (shieldStrength > 0)
             {
                 StartCoroutine(spawnShieldHit(trigger.gameObject));
-                shieldStrength -= trigger.gameObject.GetComponent<IProjectile>().getDamage() * 10;
+                shieldStrength -= trigger.gameObject.GetComponent<IProjectileInfo>().getDamage() * 10;
                 if (shieldStrength < 0)
                     shieldStrength = 0;
             }

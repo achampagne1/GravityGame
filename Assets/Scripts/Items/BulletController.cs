@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class BulletController : ObjectController,IProjectile
+public class BulletController : ObjectController,IProjectileInfo
 {
 
     //game variables
@@ -72,5 +72,4 @@ public class BulletController : ObjectController,IProjectile
     {
         return projectileHelper.getDamage();
     }
-
 }

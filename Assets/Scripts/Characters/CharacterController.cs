@@ -109,7 +109,7 @@ public class CharacterController : ObjectController
         if (invincibleFlag)
             return;
 
-        health = health - transform.gameObject.GetComponent<IProjectile>().getDamage(); //needs to be reworked to allow for hazards
+        health = health - transform.gameObject.GetComponent<IProjectileInfo>().getDamage(); //needs to be reworked to allow for hazards
         if (health < 0)
             health = 0;
 

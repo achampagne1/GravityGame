@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LaserController : MonoBehaviour,IProjectile
+public class LaserController : MonoBehaviour,IProjectileInfo
 {
 
     //object creation

@@ -38,7 +38,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
 
         if (trigger.gameObject.tag == "Projectile")
         {
-            if (trigger.gameObject.GetComponent<IProjectile>().getShotBy() == parent.layer)
+            if (trigger.gameObject.GetComponent<IProjectileInfo>().getShotBy() == parent.layer)
             {
                 return;
             }
