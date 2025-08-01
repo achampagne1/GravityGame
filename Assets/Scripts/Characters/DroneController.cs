@@ -8,11 +8,18 @@ public class DroneController : CharacterController
     private GameObject droneGun;
     private DroneGunController droneGunController;
     private Vector3 playerNotFound = new Vector3(0f, 0f, 1f);
-    private int angleOffset = 0;
+    private Vector2 center = Vector2.zero;
+
+    [SerializeField] float width = 3f;  
+    [SerializeField] float height = .2f;  
+    [SerializeField] float speed = 1f;   
+    private float hoverTime = 0f;
+
     // Start is called before the first frame update
     void Start()
     {
         calculateCharacterStart();
+        center = (Vector2)transform.position;
         droneGun = transform.Find("Gun").gameObject;
         droneGunController = droneGun.GetComponent<DroneGunController>();
         int angleOffset = 0;
@@ -27,17 +34,27 @@ public class DroneController : CharacterController
     // Update is called once per frame
     void Update()
     {
+        hover();
         Vector3 playerPos = detectPlayerWrapper();
         if (playerPos != playerNotFound)
         {
             float angleRad = Mathf.Atan2(playerPos.y, playerPos.x);
             float angleDeg = angleRad * Mathf.Rad2Deg;
-            droneGun.transform.rotation = Quaternion.Euler(0f, 0f, angleDeg);
+            droneGun.transform.rotation = Quaternion.Euler(0f, 0f, angleDeg)*transform.rotation;
             droneGunController.setPlayerSeen(true);
         }
         else
             droneGunController.setPlayerSeen(false);
         calculateCharacterUpdate();
+    }
+
+    public void hover()
+    {
+        hoverTime = (hoverTime +(Time.deltaTime * speed))%(2*Mathf.PI);
+        float x = width * Mathf.Sin(hoverTime);
+        float y = height * Mathf.Sin(2 * hoverTime);
+
+        transform.position = new Vector3(center.x + x, center.y + y, transform.position.z);
     }
 
     public override void hit(Transform transform)

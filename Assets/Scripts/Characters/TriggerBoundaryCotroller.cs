@@ -45,6 +45,11 @@ public class TriggerBoundaryCotroller : MonoBehaviour
 
             characterController.hit(trigger.transform);
         }
+
+        if(trigger.gameObject.layer == 16 /*hazard layer*/)
+        {
+            Debug.Log("ouch");
+        }
     }
 
     public int getLayerConnectedTo()

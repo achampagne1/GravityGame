@@ -22,9 +22,12 @@ public class StarTwinkle : MonoBehaviour
 
     void Update()
     {
-        Vector3 delta = followPoint.position - lastPlayerPosition;
-        transform.position += delta*scale;
-        lastPlayerPosition = followPoint.position;
+        if (followPoint != null)
+        {
+            Vector3 delta = followPoint.position - lastPlayerPosition;
+            transform.position += delta * scale;
+            lastPlayerPosition = followPoint.position;
+        }
     }
 
     IEnumerator Twinkle()
