@@ -18,6 +18,7 @@ public class BackgroundGenerator : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        followPoint = MainCameraChecker.mainCameraLocation;
         lastPlayerPosition = followPoint.position;
 
         offsetX = Random.Range(0f, 9999f);
@@ -35,6 +36,7 @@ public class BackgroundGenerator : MonoBehaviour
     }
     void Update()
     {
+        followPoint = MainCameraChecker.mainCameraLocation;
         Vector3 delta = followPoint.position - lastPlayerPosition;
         transform.position += delta;
         lastPlayerPosition = followPoint.position;

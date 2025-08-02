@@ -2,4 +2,6 @@
 D:\GravityGame\DllProjects\DetermineStrikeLocation\DetermineStrikeLocation\DetermineStrikeLocation.cpp(46,89): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file '/DetermineStrikeLocation.cpp')
   
+  LINK : D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Debug\DetermineStrikeLocation.dll not found or not built by the last incremental link; performing full link
+     Creating library D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Debug\DetermineStrikeLocation.lib and object D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Debug\DetermineStrikeLocation.exp
   DetermineStrikeLocation.vcxproj -> D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Debug\DetermineStrikeLocation.dll

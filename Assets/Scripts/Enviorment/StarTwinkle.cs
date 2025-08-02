@@ -16,12 +16,14 @@ public class StarTwinkle : MonoBehaviour
     void Start()
     {
         twinkleSpeed = Random.Range(0.025f, 0.1f);
+        followPoint = MainCameraChecker.mainCameraLocation;
         lastPlayerPosition = followPoint.position;
         StartCoroutine(Twinkle());
     }
 
     void Update()
     {
+        followPoint = MainCameraChecker.mainCameraLocation;
         if (followPoint != null)
         {
             Vector3 delta = followPoint.position - lastPlayerPosition;

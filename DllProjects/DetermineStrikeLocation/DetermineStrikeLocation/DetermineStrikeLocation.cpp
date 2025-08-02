@@ -8,7 +8,7 @@ void bridge(const Vessel* vessel, Output* output) {
 	constexpr double rad2Deg = 180.0/3.14159265358979323846; //why no pi constant c++
 
 	//marshaling
-	glm::vec2 outputVec;
+	glm::vec2 outputVec(0.0,0.0);
 	//output.x = 0;
 	//output.y = 0;
 	//output.angle = 0;
