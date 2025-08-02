@@ -16,13 +16,13 @@ public class SpaceManTriggerBoundaryController : TriggerBoundaryCotroller
         
     }
 
-    protected override void OnTriggerEnter2D(Collider2D trigger)
+    /*protected override void OnTriggerEnter2D(Collider2D trigger)
     {
         if (trigger.gameObject.tag == "Bug") { 
             characterController.hit(trigger.transform);
             UIHandler.instance.setHealthValue(characterController.getHealth());
         }
         base.OnTriggerEnter2D(trigger);
-    }
+    }*/
 
 }

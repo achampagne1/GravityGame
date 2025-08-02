@@ -36,20 +36,8 @@ public class TriggerBoundaryCotroller : MonoBehaviour
                 UIHandler.instance.setHealthValue(characterController.getHealth());
         }
 
-        if (trigger.gameObject.tag == "Projectile")
-        {
-            if (trigger.gameObject.GetComponent<IProjectileInfo>().getShotBy() == parent.layer)
-            {
-                return;
-            }
-
-            characterController.hit(trigger.transform);
-        }
-
-        if(trigger.gameObject.layer == 16 /*hazard layer*/)
-        {
-            Debug.Log("ouch");
-        }
+        if (trigger.gameObject.tag == "Projectile" || trigger.gameObject.tag == "Hazard") 
+            characterController.hit(trigger.gameObject);
     }
 
     public int getLayerConnectedTo()

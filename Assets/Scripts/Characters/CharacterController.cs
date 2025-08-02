@@ -18,6 +18,7 @@ public class CharacterController : ObjectController
     [SerializeField] protected float moveSpeed = 20f;
     [SerializeField] protected float maxHealth = 3f; //default max health is 3
     [SerializeField] protected  bool invincibleFlag = false;
+    [SerializeField] protected bool shieldUpFlag = false;
     [SerializeField] protected float health = 0f;
     [SerializeField] protected bool forceLocalAdded = false;
     [SerializeField] float knockBackDuration = .1f;
@@ -104,19 +105,19 @@ public class CharacterController : ObjectController
 
     }
 
-    public virtual void hit(Transform transform)
+    public virtual void hit(GameObject hitGameObject)
     {
-        if (invincibleFlag)
+        if (shieldUpFlag && hitGameObject.tag=="Projectile") //should be dependency injection?
             return;
-
-        health = health - transform.gameObject.GetComponent<IProjectileInfo>().getDamage(); //needs to be reworked to allow for hazards
+        health = health - hitGameObject.GetComponent<IDamager>().damage(gameObject); 
         if (health < 0)
             health = 0;
 
-        bulletStrikeLocation = transform.position;
-        SoundManager.instance.playSound(hitSound, transform, 1f);
+        SoundManager.instance.playSound(hitSound, transform, 1f); 
+
+        /*bulletStrikeLocation = transform.position;
         StartCoroutine(changeColorWrapper());
-        StartCoroutine(knockBack(leftStrikeLocation(transform)));
+        StartCoroutine(knockBack(leftStrikeLocation(transform)));*/
 
         IEnumerator knockBack(bool strikeLeft)
         {
@@ -350,6 +351,11 @@ public class CharacterController : ObjectController
     public void setInvincible(bool invincibleFlag)
     {
         this.invincibleFlag = invincibleFlag;
+    }
+
+    public void setShieldUp(bool shieldUpFlag)
+    {
+        this.shieldUpFlag = shieldUpFlag;
     }
 
     public Collider2D getCharacterCollider()

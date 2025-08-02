@@ -99,22 +99,22 @@ public class SpaceManController : SpacePersonController
             return 1;
     }
 
-    public override void hit(Transform transform)
+    public override void hit(GameObject hitGameObject)
     {
-        if (invincibleFlag)
+        base.hit(hitGameObject);
+        if (shieldUpFlag && hitGameObject.tag == "Projectile")
         {
             camController.setShakeMagnitude(1f);
             camController.setShake(true);
             return;
-        }//NOTE: when the shields are up, you are "invincible"
+        }
+
         camController.setShakeMagnitude(3f);
         camController.setShake(true);
-        UIHandler.instance.setHealthValue(health); //Decouplethis 
-        base.hit(transform);
+        UIHandler.instance.setHealthValue(health);
     }
     protected override IEnumerator die()
     {
-        //uIHandler.showLevelEnd(false); //moved to level manager
         yield return base.die();
     }
 

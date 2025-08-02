@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class ShieldTriggerController : TriggerBoundaryCotroller
+using System.Diagnostics;
+public class ShieldTriggerController : MonoBehaviour
 {
     [SerializeField] GameObject shieldHit;
     [SerializeField] float fadeSize = .1f;
@@ -13,43 +13,32 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
     private float shieldStrength = 100f;
     private bool regenerateRunning = false;
     // Start is called before the first frame update
-    public override void Start()
+    public void Start()
     {
         parentController = transform.parent.gameObject.GetComponent<CharacterController>();
         collider = GetComponent<CircleCollider2D>();
-        base.Start();
     }
 
     public void Update()
     {
         if (shieldStrength == 0)
-            parentController.setInvincible(false);
+            parentController.setShieldUp(false);
         else
-            parentController.setInvincible(true); //maybe add a latch
+            parentController.setShieldUp(true); //maybe add a latch
 
         if(shieldStrength<100&&!regenerateRunning)
             StartCoroutine(regenerateShield());
         UIHandler.instance.setShieldValue(shieldStrength);
     }
 
-    protected override void OnTriggerEnter2D(Collider2D trigger)
+    private void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.gameObject.tag == "Projectile")
+        if (trigger.gameObject.tag == "Projectile"&& shieldStrength > 0)
         {
-            //consult with sean to see if there a better way to get around this
-            var bullet = trigger.gameObject.GetComponent<BulletController>();
-            var laser = trigger.gameObject.GetComponent<LaserController>();
-
-            if (trigger.gameObject.GetComponent<IProjectileInfo>().getShotBy() == parent.layer)
-                return;
-
-            if (shieldStrength > 0)
-            {
-                StartCoroutine(spawnShieldHit(trigger.gameObject));
-                shieldStrength -= trigger.gameObject.GetComponent<IProjectileInfo>().getDamage() * 10;
-                if (shieldStrength < 0)
-                    shieldStrength = 0;
-            }
+            StartCoroutine(spawnShieldHit(trigger.gameObject));
+            shieldStrength -= trigger.gameObject.GetComponent<IDamager>().damage(gameObject)*10f;
+            if (shieldStrength < 0)
+                shieldStrength = 0;
         }
     }
 
@@ -67,7 +56,12 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
     }
     private IEnumerator spawnShieldHit(GameObject trigger)
     {
-        var (strikeLocation,rotation) = determineStrikeLocation(trigger);
+        Stopwatch stopwatch = Stopwatch.StartNew();
+        var (strikeLocation,rotation) = StrikeLocation.determineStrikeLocation(trigger,gameObject,collider);
+        stopwatch.Stop();
+
+        double elapsedMs = stopwatch.Elapsed.TotalMilliseconds;
+        UnityEngine.Debug.Log($"Took {stopwatch.Elapsed.TotalMilliseconds:F4} ms");
         GameObject shieldHitTemp = Instantiate(shieldHit, new Vector3(strikeLocation.x,strikeLocation.y,transform.position.z), rotation);
         shieldHitTemp.transform.SetParent(transform);
         SpriteRenderer shieldHitTempSR = shieldHitTemp.GetComponent<SpriteRenderer>();
@@ -88,10 +82,10 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
         Vector2 triggerVelocity = (Vector2)trigger.GetComponent<Rigidbody2D>().velocity;
         Vector2 triggerLocationCurrent = (Vector2)trigger.transform.position;
         Vector2 triggerLocationPrevious = triggerLocationCurrent - triggerVelocity;
-        Vector2 worldCenter = (Vector2)transform.position + collider.offset;
+        Vector2 worldCenter = (Vector2)transform.position;
         float worldRadius = collider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
         Vector2 intersection = new Vector2();
-        bool found = HelperFunctions.chordIntersection(triggerLocationPrevious, triggerLocationCurrent, worldCenter, worldRadius, out intersection);
+        bool found = HelperFunctions.chordIntersection(triggerLocationPrevious, triggerLocationCurrent, (Vector2)transform.position, worldRadius, out intersection);
 
         float angle = Mathf.Atan2((intersection.y - worldCenter.y), (intersection.x - worldCenter.x)) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0, 0, angle);

@@ -1,13 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-public class BulletController : ObjectController,IProjectileInfo
+public class BulletController : ObjectController,IProjectileInfo,IDamager
 {
 
     //game variables
     private int shotBy = 0;
     private float drag = .1f;
-    [SerializeField] float damage = 1f;
+    [SerializeField] float damageVariable = 1f;
 
     //objects
     ProjectileHelper projectileHelper;
@@ -22,7 +22,7 @@ public class BulletController : ObjectController,IProjectileInfo
 
     public void init(int shotBy)
     {
-        projectileHelper = new ProjectileHelper(shotBy, damage, gameObject);
+        projectileHelper = new ProjectileHelper(shotBy, damageVariable, gameObject);
     }
 
     // Update is called once per frame
@@ -63,6 +63,11 @@ public class BulletController : ObjectController,IProjectileInfo
         //maybe have it so if the player and shield colliders are hit, that that doesnt count as a hit
     }
 
+    public float damage(GameObject hitGameobject)
+    {
+        return projectileHelper.damage(hitGameobject);
+    }
+
     public int getShotBy()
     {
         return projectileHelper.getShotBy();
@@ -70,6 +75,6 @@ public class BulletController : ObjectController,IProjectileInfo
 
     public float getDamage()
     {
-        return projectileHelper.getDamage();
+        return damageVariable;
     }
 }
