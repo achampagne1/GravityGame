@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      landing smoke_0: -7092971973452959228
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

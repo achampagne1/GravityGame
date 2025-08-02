@@ -1066,7 +1066,47 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      spritesheet_01idle_7x_0: 4757241340670262388
+      spritesheet_01idle_7x_1: -535508668103156276
+      spritesheet_01idle_7x_10: 4263608847952102164
+      spritesheet_01idle_7x_11: -7253326082219117772
+      spritesheet_01idle_7x_12: 2729603767543891452
+      spritesheet_01idle_7x_13: 8857212064734786719
+      spritesheet_01idle_7x_14: -713646754034904471
+      spritesheet_01idle_7x_15: 5930439797982016448
+      spritesheet_01idle_7x_16: -481755439472421600
+      spritesheet_01idle_7x_17: -238185273999278070
+      spritesheet_01idle_7x_18: -7193537313535224682
+      spritesheet_01idle_7x_19: 6949854035874380126
+      spritesheet_01idle_7x_2: -8181146228537409788
+      spritesheet_01idle_7x_20: 6816711260468717420
+      spritesheet_01idle_7x_21: 3205185088716962809
+      spritesheet_01idle_7x_22: -6013840730427338857
+      spritesheet_01idle_7x_23: 5351209414351068230
+      spritesheet_01idle_7x_24: 3602360935150339152
+      spritesheet_01idle_7x_25: 2614869589673618830
+      spritesheet_01idle_7x_26: -5184669947634926386
+      spritesheet_01idle_7x_27: -7960351784476044832
+      spritesheet_01idle_7x_28: 6876048858383265853
+      spritesheet_01idle_7x_29: 5885352659451341215
+      spritesheet_01idle_7x_3: 8228997880432640179
+      spritesheet_01idle_7x_30: -2502820303175446201
+      spritesheet_01idle_7x_31: -4923196351614486572
+      spritesheet_01idle_7x_32: 6080845958775605581
+      spritesheet_01idle_7x_33: 4363550356872423827
+      spritesheet_01idle_7x_34: -3869387207071147242
+      spritesheet_01idle_7x_35: -4555884222964214475
+      spritesheet_01idle_7x_36: 498533093400707679
+      spritesheet_01idle_7x_37: 8767987222475993554
+      spritesheet_01idle_7x_38: 3669491467650678539
+      spritesheet_01idle_7x_39: 4134132609021864527
+      spritesheet_01idle_7x_4: -1658102847280600276
+      spritesheet_01idle_7x_5: -1340490772582664112
+      spritesheet_01idle_7x_6: -8383678831771996949
+      spritesheet_01idle_7x_7: -45879834349069092
+      spritesheet_01idle_7x_8: -4064273168157347006
+      spritesheet_01idle_7x_9: -1896090054181082242
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

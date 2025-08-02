@@ -130,7 +130,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      flytoasteroid_0: -8962254700611692314
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
