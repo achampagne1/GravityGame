@@ -57,7 +57,7 @@ public class ShieldTriggerController : MonoBehaviour
     private IEnumerator spawnShieldHit(GameObject trigger)
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
-        var (strikeLocation,rotation) = StrikeLocation.determineStrikeLocation(trigger,gameObject,collider);
+        var (strikeLocation,rotation) = determineStrikeLocation(trigger);
         stopwatch.Stop();
 
         double elapsedMs = stopwatch.Elapsed.TotalMilliseconds;
