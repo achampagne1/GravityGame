@@ -1,9 +1,5 @@
-﻿  pch.cpp
-  DetermineStrikeLocation.cpp
-  dllmain.cpp
-D:\GravityGame\DllProjects\DetermineStrikeLocation\DetermineStrikeLocation\DetermineStrikeLocation.cpp(46,88): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+﻿  DetermineStrikeLocation.cpp
+D:\GravityGame\DllProjects\DetermineStrikeLocation\DetermineStrikeLocation\DetermineStrikeLocation.cpp(46,89): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
   (compiling source file '/DetermineStrikeLocation.cpp')
   
-  Generating Code...
-     Creating library D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Debug\DetermineStrikeLocation.lib and object D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Debug\DetermineStrikeLocation.exp
   DetermineStrikeLocation.vcxproj -> D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Debug\DetermineStrikeLocation.dll

@@ -57,8 +57,7 @@ public class ShieldTriggerController : MonoBehaviour
     private IEnumerator spawnShieldHit(GameObject trigger)
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
-        var (strikeLocation,rotation) = determineStrikeLocation(trigger);
-        stopwatch.Stop();
+        var (strikeLocation,rotation) = StrikeLocation.determineStrikeLocation(trigger,gameObject,collider);
 
         double elapsedMs = stopwatch.Elapsed.TotalMilliseconds;
         UnityEngine.Debug.Log($"Took {stopwatch.Elapsed.TotalMilliseconds:F4} ms");
@@ -79,15 +78,13 @@ public class ShieldTriggerController : MonoBehaviour
 
     private (Vector2,Quaternion) determineStrikeLocation(GameObject trigger) 
     {
-        Vector2 triggerVelocity = (Vector2)trigger.GetComponent<Rigidbody2D>().velocity;
+        Vector2 velocity = trigger.gameObject.GetComponent<Rigidbody2D>().velocity;
         Vector2 triggerLocationCurrent = (Vector2)trigger.transform.position;
-        Vector2 triggerLocationPrevious = triggerLocationCurrent - triggerVelocity;
-        Vector2 worldCenter = (Vector2)transform.position;
+        Vector2 triggerLocationPrevious = triggerLocationCurrent -velocity;
         float worldRadius = collider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
         Vector2 intersection = new Vector2();
         bool found = HelperFunctions.chordIntersection(triggerLocationPrevious, triggerLocationCurrent, (Vector2)transform.position, worldRadius, out intersection);
-
-        float angle = Mathf.Atan2((intersection.y - worldCenter.y), (intersection.x - worldCenter.x)) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2((intersection.y - transform.position.y), (intersection.x - transform.position.x)) * Mathf.Rad2Deg;
         Quaternion rotation = Quaternion.Euler(0, 0, angle);
         return (intersection,rotation);
     }

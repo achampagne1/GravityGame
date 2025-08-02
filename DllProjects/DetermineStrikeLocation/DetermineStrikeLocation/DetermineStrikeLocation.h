@@ -18,4 +18,4 @@ struct Output
     float angle;
 };
 
-extern "C" __declspec(dllexport) Output bridge(Vessel vessel);
+extern "C" __declspec(dllexport) void bridge(const Vessel* vessel, Output* output);

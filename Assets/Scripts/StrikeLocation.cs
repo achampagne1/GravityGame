@@ -29,6 +29,8 @@ public class StrikeLocation
     public static (Vector2, Quaternion) determineStrikeLocation(GameObject collider, GameObject collided, CircleCollider2D collidedRadius)
     {
         Vessel vessel = new Vessel();
+        Output output = new Output();
+
         Rigidbody2D colliderRb = collider.GetComponent<Rigidbody2D>();
         vessel.vx = colliderRb.velocity.x;
         vessel.vy = colliderRb.velocity.y;
@@ -37,13 +39,13 @@ public class StrikeLocation
         vessel.radius = collidedRadius.radius * Mathf.Max(collided.transform.lossyScale.x, collided.transform.lossyScale.y); //TODO: make it so if its not a circle it doesnt break;
         vessel.xCollided = collided.transform.position.x;
         vessel.yCollided = collided.transform.position.y;
-        
-        Output output = bridge(vessel);
-        Vector2 outputVec = Vector2.zero;
-        Quaternion rotation = Quaternion.identity;
+
+        bridge(ref vessel, ref output);
+        Vector2 outputVec = new Vector2(output.x,output.y);
+        Quaternion rotation = Quaternion.Euler(0, 0, output.angle);
         return (outputVec, rotation);
     }
 
-    [DllImport("DetermineStrikeLocation")]
-    private static extern Output bridge([In] Vessel vessel);
+    [DllImport("DetermineStrikeLocation", CallingConvention = CallingConvention.Cdecl)]
+    private static extern void bridge(ref Vessel vessel, ref Output output);
 }
