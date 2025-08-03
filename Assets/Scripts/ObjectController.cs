@@ -133,8 +133,8 @@ public class ObjectController : MonoBehaviour
         }
         while (updateGravityField);
 
-        [DllImport("GravityPointMath")]
-        static extern ref GravityPoint calulateClosestField(ref GravityPoint gravityPoint);
+        [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
+        static extern GravityPoint calulateClosestField(ref GravityPoint gravityPoint);
     }
 
     protected virtual void calculateRotation()

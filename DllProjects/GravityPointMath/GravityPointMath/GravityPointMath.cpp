@@ -13,7 +13,7 @@ void removeGravityPoint(GravityPoint* gravityPoint) {
 	//implement later
 }
 
-GravityPoint* calulateClosestField(GravityPoint* self) {
+GravityPoint calulateClosestField(GravityPoint* self) {
     float closestGravityField = 10000.0;
     GravityPoint* gravityPoint = nullptr;
     for (int i = 0; i < gravityPoints.size(); i++) {
@@ -23,7 +23,7 @@ GravityPoint* calulateClosestField(GravityPoint* self) {
             gravityPoint = gravityPoints[i];
         }
     }
-    return gravityPoint;
+    return *gravityPoint;
 }
 
 float magnitudeBetweenPoints(GravityPoint* a, GravityPoint* b) {

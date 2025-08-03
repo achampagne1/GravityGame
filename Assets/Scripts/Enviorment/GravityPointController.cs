@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class GravityPointController : MonoBehaviour
 {
-    [SerializeField] private float fieldStrength = 20f;
-    [SerializeField] private float fieldSize = 100.0f; //divide by this number
-
     [StructLayout(LayoutKind.Sequential)]
     struct GravityPoint
     {
@@ -15,6 +12,12 @@ public class GravityPointController : MonoBehaviour
         public float y;
         public float fieldSize;
     }
+
+    GravityPoint gravityPoint = new GravityPoint();
+
+    [SerializeField] private float fieldStrength = 20f;
+    [SerializeField] private float fieldSize = 100.0f; //divide by this number
+
 
     public float getFieldStrength()
     {
@@ -29,7 +32,6 @@ public class GravityPointController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
-        GravityPoint gravityPoint = new GravityPoint();
         gravityPoint.x = transform.position.x;
         gravityPoint.y = transform.position.y;
         gravityPoint.fieldSize = fieldSize;
