@@ -1,16 +1,27 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
+    [StructLayout(LayoutKind.Sequential)]
+    struct GravityPoint
+    {
+        public float x;
+        public float y;
+        public float fieldSize;
+    }
+
     //object creation
     protected Rigidbody2D rb;
     protected Transform planetCenter;
     protected StopWatch groundStopWatch;
     private List<GameObject> gravityPoints = new List<GameObject>();
     protected SpriteRenderer spriteRenderer;
+    private GravityPoint closestField;
+
 
     //public game variables
     public float terminalVelocity = 30f;
@@ -45,12 +56,12 @@ public class ObjectController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
         heightObject = getHeight();
-        foreach (GravityPointController gravityPoint in GravityPointsList.gravityPoints)//TEMPORARY
-        {
-            gravityPoints.Add(gravityPoint.gameObject);
-        }
-        if (!ObjectDLLBridge.dataMarshalFlag) //TODO: when gravity fields are added dynamically, then data needs to be remarshaled
-            ObjectDLLBridge.marshalData(gravityPoints);
+        //foreach (GravityPointController gravityPoint in GravityPointsList.gravityPoints)//TEMPORARY
+        //{
+        //    gravityPoints.Add(gravityPoint.gameObject);
+        //}
+        //if (!ObjectDLLBridge.dataMarshalFlag) //TODO: when gravity fields are added dynamically, then data needs to be remarshaled
+        //    ObjectDLLBridge.marshalData(gravityPoints);
 
         StartCoroutine(findClosestField());
     }
@@ -96,7 +107,9 @@ public class ObjectController : MonoBehaviour
         else
         {
             //Calculate gravitational force towards the planet
-            gravityDirection = (planetCenter.position - transform.position).normalized;
+            gravityDirection.x = closestField.x - transform.position.x;
+            gravityDirection.y = closestField.y - transform.position.y;
+            gravityDirection = gravityDirection.normalized;
             gravityForce = gravityDirection * gravityForceMag;
         }
     }
@@ -105,9 +118,11 @@ public class ObjectController : MonoBehaviour
     {
         do 
         {
-            GameObject closest = gravityPoints[ObjectDLLBridge.findClosestFieldDLL(gameObject)];
-            planetCenter = closest.transform;
-            gravityForceMag = closest.GetComponent<GravityPointController>().getFieldStrength();
+            GravityPoint gravityPoint = new GravityPoint();
+            gravityPoint.x = transform.position.x;
+            gravityPoint.y = transform.position.y;
+            gravityPoint.fieldSize = 0;
+            closestField = calulateClosestField(ref gravityPoint);
 
             /**if (distanceToSource - closestGravityField < 0) //figure out later
                 up = true;
@@ -117,6 +132,9 @@ public class ObjectController : MonoBehaviour
             yield return new WaitForSeconds(0.1f);
         }
         while (updateGravityField);
+
+        [DllImport("GravityPointMath")]
+        static extern ref GravityPoint calulateClosestField(ref GravityPoint gravityPoint);
     }
 
     protected virtual void calculateRotation()
