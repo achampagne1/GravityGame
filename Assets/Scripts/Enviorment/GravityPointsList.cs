@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GravityPointsList : MonoBehaviour
 {
-    public List<GameObject> gravityPoints = new List<GameObject>();
+    public static List<GravityPointController> gravityPoints = new List<GravityPointController>();
     public List<Color> colors = new List<Color>
     {
         new Color(1f, 0f, 0f),   // Pure Red
@@ -22,8 +22,7 @@ public class GravityPointsList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (Transform child in transform)
-            gravityPoints.Add(child.gameObject);
+
     }
 
     // Update is called once per frame
@@ -34,7 +33,7 @@ public class GravityPointsList : MonoBehaviour
 
     void OnDrawGizmosSelected()
     {
-        gravityPoints.Clear();
+        /*gravityPoints.Clear(); //redo
         foreach (Transform child in transform)
         {
             gravityPoints.Add(child.gameObject);
@@ -93,6 +92,6 @@ public class GravityPointsList : MonoBehaviour
                     Gizmos.DrawSphere(worldPoint, 0.0625f);
                 }
             }
-        }
+        }*/
     }
 }

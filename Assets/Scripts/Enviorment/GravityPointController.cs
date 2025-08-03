@@ -19,9 +19,9 @@ public class GravityPointController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
-        
+        GravityPointsList.gravityPoints.Add(gameObject.GetComponent<GravityPointController>());
     }
 
     // Update is called once per frame

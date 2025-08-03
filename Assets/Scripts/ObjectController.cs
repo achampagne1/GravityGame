@@ -9,7 +9,7 @@ public class ObjectController : MonoBehaviour
     protected Rigidbody2D rb;
     protected Transform planetCenter;
     protected StopWatch groundStopWatch;
-    private List<GameObject> gravityPoints;
+    private List<GameObject> gravityPoints = new List<GameObject>();
     protected SpriteRenderer spriteRenderer;
 
     //public game variables
@@ -45,8 +45,10 @@ public class ObjectController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
         heightObject = getHeight();
-
-        gravityPoints = GameObject.Find("GravityPointsList").GetComponent<GravityPointsList>().gravityPoints;
+        foreach (GravityPointController gravityPoint in GravityPointsList.gravityPoints)//TEMPORARY
+        {
+            gravityPoints.Add(gravityPoint.gameObject);
+        }
         if (!ObjectDLLBridge.dataMarshalFlag) //TODO: when gravity fields are added dynamically, then data needs to be remarshaled
             ObjectDLLBridge.marshalData(gravityPoints);
 
