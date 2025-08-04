@@ -9,8 +9,10 @@ void addGravityPoint(GravityPoint* gravityPoint) {
 }
 
 void removeGravityPoint(GravityPoint* gravityPoint) {
-    int hame = 0;
-	//implement later
+    gravityPoints.erase(
+        std::remove(gravityPoints.begin(), gravityPoints.end(), gravityPoint),
+        gravityPoints.end()
+    );
 }
 
 GravityPoint calulateClosestField(GravityPoint* self) {

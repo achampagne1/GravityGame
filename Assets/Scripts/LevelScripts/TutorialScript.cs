@@ -19,7 +19,6 @@ public class LevelManager : MonoBehaviour
     [SerializeField] GameObject greenTeamOriginal;
     [SerializeField] GameObject spawnPoint;
     [SerializeField] GameObject uIDocument;
-    [SerializeField] GameObject starList;
     [SerializeField] GameObject enemies;
     [SerializeField] GameObject wayPoint;
     [SerializeField] GameObject wayPoints;

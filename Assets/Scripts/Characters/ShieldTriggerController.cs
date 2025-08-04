@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
-public class ShieldTriggerController : MonoBehaviour
+public class ShieldTriggerController : TriggerBoundaryCotroller
 {
     [SerializeField] GameObject shieldHit;
     [SerializeField] float fadeSize = .1f;
@@ -13,10 +13,11 @@ public class ShieldTriggerController : MonoBehaviour
     private float shieldStrength = 100f;
     private bool regenerateRunning = false;
     // Start is called before the first frame update
-    public void Start()
+    public override void Start()
     {
         parentController = transform.parent.gameObject.GetComponent<CharacterController>();
         collider = GetComponent<CircleCollider2D>();
+        base.Start();
     }
 
     public void Update()
@@ -57,12 +58,11 @@ public class ShieldTriggerController : MonoBehaviour
     private IEnumerator spawnShieldHit(GameObject trigger)
     {
         Stopwatch stopwatch = Stopwatch.StartNew();
-        var (strikeLocation,rotation) = StrikeLocation.determineStrikeLocation(trigger,gameObject,collider);
+        float radius = collider.radius* Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
+        var (strikeLocation,rotation) = StrikeLocation.determineStrikeLocation(trigger,gameObject,radius);
 
-        double elapsedMs = stopwatch.Elapsed.TotalMilliseconds;
-        UnityEngine.Debug.Log($"Took {stopwatch.Elapsed.TotalMilliseconds:F4} ms");
         GameObject shieldHitTemp = Instantiate(shieldHit, new Vector3(strikeLocation.x,strikeLocation.y,transform.position.z), rotation);
-        shieldHitTemp.transform.SetParent(transform);
+        shieldHitTemp.transform.parent = gameObject.transform.parent;
         SpriteRenderer shieldHitTempSR = shieldHitTemp.GetComponent<SpriteRenderer>();
         SparkTrigger sparkTrigger = shieldHitTemp.GetComponent<SparkTrigger>();
         sparkTrigger.triggerSparks();
@@ -74,18 +74,5 @@ public class ShieldTriggerController : MonoBehaviour
         }
         GameObject.Destroy(shieldHitTemp);
         yield return null;
-    }
-
-    private (Vector2,Quaternion) determineStrikeLocation(GameObject trigger) 
-    {
-        Vector2 velocity = trigger.gameObject.GetComponent<Rigidbody2D>().velocity;
-        Vector2 triggerLocationCurrent = (Vector2)trigger.transform.position;
-        Vector2 triggerLocationPrevious = triggerLocationCurrent -velocity;
-        float worldRadius = collider.radius * Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
-        Vector2 intersection = new Vector2();
-        bool found = HelperFunctions.chordIntersection(triggerLocationPrevious, triggerLocationCurrent, (Vector2)transform.position, worldRadius, out intersection);
-        float angle = Mathf.Atan2((intersection.y - transform.position.y), (intersection.x - transform.position.x)) * Mathf.Rad2Deg;
-        Quaternion rotation = Quaternion.Euler(0, 0, angle);
-        return (intersection,rotation);
     }
 }

@@ -136,8 +136,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &897456634977463994
 BoxCollider2D:
@@ -321,8 +320,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &4248595741156943036
 BoxCollider2D:
@@ -506,8 +504,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &2544110777483327655
 BoxCollider2D:
@@ -734,8 +731,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &6058832900714094672
 BoxCollider2D:
@@ -919,8 +915,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &4297832990033713220
 BoxCollider2D:
@@ -1104,8 +1099,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &6895812846104054370
 BoxCollider2D:
@@ -1201,7 +1195,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   particleSystem: {fileID: 2843545757953165890}
-  center: {fileID: 5037364013845487407}
+  persistanceAfterDeath: 5
 --- !u!1 &4252888133049694312
 GameObject:
   m_ObjectHideFlags: 0
@@ -1338,8 +1332,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &958097008081348827
 BoxCollider2D:
@@ -1610,8 +1603,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &2639396088468813906
 BoxCollider2D:
@@ -1795,8 +1787,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &6079975591036754399
 BoxCollider2D:
@@ -1980,8 +1971,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &6989518960942910835
 BoxCollider2D:
@@ -2165,8 +2155,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &2991425171489320955
 BoxCollider2D:
@@ -7247,8 +7236,7 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 0
   explode: 0
-  center: {fileID: 5037364013845487407}
-  explosionStrength: 40
+  explosionStrength: 20
   fadeTime: 1.5
 --- !u!61 &3285525926965036658
 BoxCollider2D:

@@ -26,7 +26,7 @@ public class StrikeLocation
         public float angle;
     }
 
-    public static (Vector2, Quaternion) determineStrikeLocation(GameObject collider, GameObject collided, CircleCollider2D collidedRadius)
+    public static (Vector2, Quaternion) determineStrikeLocation(GameObject collider, GameObject collided, float collidedRadius) //maybe genralize into just a float 
     {
         Vessel vessel = new Vessel();
         Output output = new Output();
@@ -36,7 +36,7 @@ public class StrikeLocation
         vessel.vy = colliderRb.velocity.y;
         vessel.xCollider = collider.transform.position.x;
         vessel.yCollider = collider.transform.position.y;
-        vessel.radius = collidedRadius.radius * Mathf.Max(collided.transform.lossyScale.x, collided.transform.lossyScale.y); //TODO: make it so if its not a circle it doesnt break;
+        vessel.radius = collidedRadius;
         vessel.xCollided = collided.transform.position.x;
         vessel.yCollided = collided.transform.position.y;
 

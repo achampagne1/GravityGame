@@ -1,0 +1,6 @@
+﻿  pch.cpp
+  dllmain.cpp
+  GravityPointMath.cpp
+  Generating Code...
+     Creating library D:\GravityGame\DllProjects\GravityPointMath\x64\Debug\GravityPointMath.lib and object D:\GravityGame\DllProjects\GravityPointMath\x64\Debug\GravityPointMath.exp
+  GravityPointMath.vcxproj -> D:\GravityGame\DllProjects\GravityPointMath\x64\Debug\GravityPointMath.dll

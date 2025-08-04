@@ -13,7 +13,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
     // Start is called before the first frame update
     public virtual void Start()
     {
-        parent = transform.parent.gameObject;
+        parent = transform.parent.gameObject; //this needs to be reworked
         layerConnectedTo = parent.layer;
         characterController = parent.GetComponent<CharacterController>();
         foreach (Transform child in parent.transform)

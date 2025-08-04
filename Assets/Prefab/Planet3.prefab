@@ -74,7 +74,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: 7721303759404347504, guid: 3106bc35e0d827749af3639b28c4b22e,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -97,6 +97,8 @@ GameObject:
   m_Component:
   - component: {fileID: 3629034819267200924}
   - component: {fileID: 5298625033060330688}
+  - component: {fileID: 687981686432297330}
+  - component: {fileID: 248457377390795948}
   m_Layer: 0
   m_Name: Planet3
   m_TagString: Untagged
@@ -177,6 +179,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &687981686432297330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2329703631122209662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a4b8ca19c7ab1514a9f12e9970ead0c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 1
+--- !u!114 &248457377390795948
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2329703631122209662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87039a221b432a64bb8df8f8a506d8c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  fieldStrength: 15
+  fieldSize: 200
 --- !u!1 &5890475147137333523
 GameObject:
   m_ObjectHideFlags: 0
@@ -188,9 +217,10 @@ GameObject:
   - component: {fileID: 8843557707835986067}
   - component: {fileID: 7382502496615201940}
   - component: {fileID: 3387702754410346569}
+  - component: {fileID: 8200401377834769457}
   m_Layer: 0
   m_Name: Core
-  m_TagString: Untagged
+  m_TagString: Hazard
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -252,7 +282,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 101
   m_Sprite: {fileID: 2038984717674147123, guid: 1b75379773532d349a710b2d67775b5b,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -301,6 +331,19 @@ CircleCollider2D:
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 1.87
+--- !u!114 &8200401377834769457
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5890475147137333523}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 864188043b7a95f469804f17f55a0bf3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageVariable: 100
 --- !u!1 &8772539361656116303
 GameObject:
   m_ObjectHideFlags: 0
@@ -376,7 +419,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_Sprite: {fileID: -1977844283, guid: 03bf151c5063aaf4cbe06def139fb860, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

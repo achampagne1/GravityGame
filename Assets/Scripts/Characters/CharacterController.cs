@@ -109,15 +109,21 @@ public class CharacterController : ObjectController
     {
         if (shieldUpFlag && hitGameObject.tag=="Projectile") //should be dependency injection?
             return;
+
         health = health - hitGameObject.GetComponent<IDamager>().damage(gameObject); 
         if (health < 0)
             health = 0;
 
-        SoundManager.instance.playSound(hitSound, transform, 1f); 
-
-        /*bulletStrikeLocation = transform.position;
+        SoundManager.instance.playSound(hitSound, transform, 1f);
         StartCoroutine(changeColorWrapper());
-        StartCoroutine(knockBack(leftStrikeLocation(transform)));*/
+
+        if (hitGameObject.tag == "Hazard") //dependency injection?
+            return;
+        
+        var (strikeLocation, rotation) = StrikeLocation.determineStrikeLocation(hitGameObject, gameObject, heightObject);
+
+        bulletStrikeLocation = strikeLocation;
+        StartCoroutine(knockBack(leftStrikeLocation(strikeLocation)));
 
         IEnumerator knockBack(bool strikeLeft)
         {
@@ -157,10 +163,10 @@ public class CharacterController : ObjectController
             }
         }
 
-        bool leftStrikeLocation(Transform transform)
+        bool leftStrikeLocation(Vector2 strikeLocation)
         {
             //determines if the bullet struck the characters left or right side
-            Vector3 localPos = gameObject.transform.InverseTransformPoint(transform.position);
+            Vector3 localPos = gameObject.transform.InverseTransformPoint(strikeLocation);
             localPos.x = facingLeft ? localPos.x * -1 : localPos.x;
             return localPos.x<0;
         }

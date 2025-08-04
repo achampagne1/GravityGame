@@ -42,8 +42,8 @@ public class SpaceManController : SpacePersonController
         if (Keyboard.current.qKey.isPressed)
             handController.throwItem();
         calculateSpacePersonUpdate();
-        if (fuelBuffer != currentFuel) { }
-            UIHandler.instance.setFuelValue(currentFuel);
+        if (fuelBuffer != currentFuel)
+            UIHandler.instance.setFuelValue(currentFuel); //move latch to ui
 
         if (rb.velocity.magnitude > 15)
         {
@@ -53,6 +53,8 @@ public class SpaceManController : SpacePersonController
         }
         else
             camController.setShakeContinuously(false);
+
+        UIHandler.instance.setHealthValue(health);
     }
 
     public override void Update()
@@ -111,7 +113,6 @@ public class SpaceManController : SpacePersonController
 
         camController.setShakeMagnitude(3f);
         camController.setShake(true);
-        UIHandler.instance.setHealthValue(health);
     }
     protected override IEnumerator die()
     {

@@ -10,6 +10,7 @@ public class UIHandler : MonoBehaviour
     //game variables
     public float movePercent = 0f;
     private float parentTop = 0f;
+    private float healthBuffer =0f;
     private bool escapeClicked = false;
     private bool eClicked = false;
     private bool coroutineRunning = false;
@@ -277,12 +278,15 @@ public class UIHandler : MonoBehaviour
 
     public void setHealthValue(float health)
     {
+        if (healthBuffer == health)
+            return;
+
+        healthBuffer = health;
         health -= 1;
-        for(int i = 9; i >= health; i--)
+        for(int i = 9; i > health; i--)
         {
             hearts[i].style.backgroundImage = new StyleBackground(heartBrokenTexture);
         }
-        healthLevel = health;
     }
 
     public void setFuelValue(float fuelLevel)

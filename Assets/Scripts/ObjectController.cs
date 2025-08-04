@@ -6,13 +6,6 @@ using UnityEngine;
 
 public class ObjectController : MonoBehaviour
 {
-    [StructLayout(LayoutKind.Sequential)]
-    struct GravityPoint
-    {
-        public float x;
-        public float y;
-        public float fieldSize;
-    }
 
     //object creation
     protected Rigidbody2D rb;
@@ -56,12 +49,6 @@ public class ObjectController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
         heightObject = getHeight();
-        //foreach (GravityPointController gravityPoint in GravityPointsList.gravityPoints)//TEMPORARY
-        //{
-        //    gravityPoints.Add(gravityPoint.gameObject);
-        //}
-        //if (!ObjectDLLBridge.dataMarshalFlag) //TODO: when gravity fields are added dynamically, then data needs to be remarshaled
-        //    ObjectDLLBridge.marshalData(gravityPoints);
 
         StartCoroutine(findClosestField());
     }
@@ -128,10 +115,13 @@ public class ObjectController : MonoBehaviour
                 up = true;
             else
                 up = false;*/
+            if (rb == null)
+                break;
 
             yield return new WaitForSeconds(0.1f);
+            yield return new WaitUntil(() => rb.velocity != Vector2.zero);
         }
-        while (updateGravityField);
+        while (true);
 
         [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
         static extern GravityPoint calulateClosestField(ref GravityPoint gravityPoint);

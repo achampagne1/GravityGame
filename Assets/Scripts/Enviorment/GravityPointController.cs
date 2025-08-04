@@ -5,18 +5,11 @@ using UnityEngine;
 
 public class GravityPointController : MonoBehaviour
 {
-    [StructLayout(LayoutKind.Sequential)]
-    struct GravityPoint
-    {
-        public float x;
-        public float y;
-        public float fieldSize;
-    }
 
     GravityPoint gravityPoint = new GravityPoint();
 
-    [SerializeField] private float fieldStrength = 20f;
-    [SerializeField] private float fieldSize = 100.0f; //divide by this number
+    [SerializeField] private float fieldStrength = 15f;
+    [SerializeField] private float fieldSize = 200.0f; //divide by this number
 
 
     public float getFieldStrength()
@@ -35,10 +28,17 @@ public class GravityPointController : MonoBehaviour
         gravityPoint.x = transform.position.x;
         gravityPoint.y = transform.position.y;
         gravityPoint.fieldSize = fieldSize;
-
         addGravityPoint(ref gravityPoint);
     }
 
-    [DllImport("GravityPointMath")]
+    void OnDestroy()
+    {
+        removeGravityPoint(ref gravityPoint);
+    }
+
+    [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
     private static extern void addGravityPoint(ref GravityPoint gravityPoint);
+
+    [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
+    private static extern void removeGravityPoint(ref GravityPoint gravityPoint);
 }
