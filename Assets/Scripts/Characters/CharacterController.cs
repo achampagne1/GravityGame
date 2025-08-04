@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
 
-public class CharacterController : ObjectController
+public class CharacterController : ObjectController,IHealth
 {
     //object creation
     protected Animator animator;
@@ -110,7 +110,7 @@ public class CharacterController : ObjectController
         if (shieldUpFlag && hitGameObject.tag=="Projectile") //should be dependency injection?
             return;
 
-        health = health - hitGameObject.GetComponent<IDamager>().damage(gameObject); 
+        hitGameObject.GetComponent<IDamager>().damage(gameObject); 
         if (health < 0)
             health = 0;
 
@@ -362,11 +362,6 @@ public class CharacterController : ObjectController
     public void setShieldUp(bool shieldUpFlag)
     {
         this.shieldUpFlag = shieldUpFlag;
-    }
-
-    public Collider2D getCharacterCollider()
-    {
-        return GetComponent<Collider2D>();
     }
 
     public Vector2 getGravityDirection()

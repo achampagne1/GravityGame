@@ -41,7 +41,11 @@ public struct ProjectileHelper:IProjectileInfo,IDamager
             return 0f;
         }
         else
+        {
+            IHealth health = hitGameObject.GetComponent<IHealth>();
+            health.setHealth(health.getHealth() - damageVariable);
             return damageVariable;
+        }
     }
 
     public int getShotBy()

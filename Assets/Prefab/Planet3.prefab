@@ -191,7 +191,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a4b8ca19c7ab1514a9f12e9970ead0c9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotationSpeed: 1
+  rotationSpeed: 50
 --- !u!114 &248457377390795948
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -325,7 +325,7 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
@@ -343,7 +343,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 864188043b7a95f469804f17f55a0bf3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damageVariable: 100
+  damageVariable: 1
 --- !u!1 &8772539361656116303
 GameObject:
   m_ObjectHideFlags: 0

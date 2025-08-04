@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
-public class ShieldTriggerController : TriggerBoundaryCotroller
+public class ShieldTriggerController : TriggerBoundaryCotroller,IHealth
 {
     [SerializeField] GameObject shieldHit;
     [SerializeField] float fadeSize = .1f;
@@ -37,7 +37,7 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
         if (trigger.gameObject.tag == "Projectile"&& shieldStrength > 0)
         {
             StartCoroutine(spawnShieldHit(trigger.gameObject));
-            shieldStrength -= trigger.gameObject.GetComponent<IDamager>().damage(gameObject)*10f;
+            trigger.gameObject.GetComponent<IDamager>().damage(gameObject);
             if (shieldStrength < 0)
                 shieldStrength = 0;
         }
@@ -74,5 +74,15 @@ public class ShieldTriggerController : TriggerBoundaryCotroller
         }
         GameObject.Destroy(shieldHitTemp);
         yield return null;
+    }
+
+    public void setHealth(float health)
+    {
+        shieldStrength = health*10f;
+    }
+
+    public float getHealth()
+    {
+        return shieldStrength/10f;
     }
 }

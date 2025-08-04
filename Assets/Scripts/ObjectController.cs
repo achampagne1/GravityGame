@@ -14,6 +14,7 @@ public class ObjectController : MonoBehaviour
     private List<GameObject> gravityPoints = new List<GameObject>();
     protected SpriteRenderer spriteRenderer;
     private GravityPoint closestField;
+    private Collider2D collider;
 
 
     //public game variables
@@ -161,7 +162,7 @@ public class ObjectController : MonoBehaviour
 
     private float getHeight()
     {
-        Collider2D collider = GetComponent<Collider2D>();
+        collider = GetComponent<Collider2D>();
 
         if (collider is CircleCollider2D circle)
         {
@@ -194,6 +195,11 @@ public class ObjectController : MonoBehaviour
     public void setGravityOverride(Vector2 newGravity)
     {
         gravityOverride = newGravity;
+    }
+
+    public Collider2D getCollider()
+    {
+        return collider;
     }
 
 }
