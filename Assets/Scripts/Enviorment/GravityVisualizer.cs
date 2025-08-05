@@ -1,10 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
+using System.Runtime.InteropServices;
 
-public class GravityPointsList : MonoBehaviour
+public class GravityVisualizer : MonoBehaviour
 {
-    public static List<GravityPointController> gravityPoints = new List<GravityPointController>();
     public List<Color> colors = new List<Color>
     {
         new Color(1f, 0f, 0f),   // Pure Red
@@ -22,7 +23,12 @@ public class GravityPointsList : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        int size = 0;
+        IntPtr first = returnVec(ref size);
+        Debug.Log(size);
+        IntPtr elementPtr = Marshal.ReadIntPtr(first, 1 * IntPtr.Size);
+        GravityPoint gp = Marshal.PtrToStructure<GravityPoint>(elementPtr);
+        Debug.Log(gp);
     }
 
     // Update is called once per frame
@@ -30,6 +36,9 @@ public class GravityPointsList : MonoBehaviour
     {
         
     }
+
+    [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
+    static extern IntPtr returnVec(ref int size);
 
     void OnDrawGizmosSelected()
     {

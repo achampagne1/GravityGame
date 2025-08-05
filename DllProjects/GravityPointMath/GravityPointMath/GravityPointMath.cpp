@@ -15,6 +15,11 @@ void removeGravityPoint(GravityPoint* gravityPoint) {
     );
 }
 
+GravityPoint** returnVec(int* size) {
+    *size = gravityPoints.size();
+    return gravityPoints.data();
+}
+
 GravityPoint calulateClosestField(GravityPoint* self) {
     float closestGravityField = 10000.0;
     GravityPoint* gravityPoint = nullptr;

@@ -9,6 +9,7 @@ TagManager:
   - twinkle
   - Dead
   - Projectile
+  - Hazard
   layers:
   - Default
   - TransparentFX

@@ -1,6 +1,5 @@
-﻿  pch.cpp
-  dllmain.cpp
-  GravityPointMath.cpp
-  Generating Code...
-     Creating library D:\GravityGame\DllProjects\GravityPointMath\x64\Debug\GravityPointMath.lib and object D:\GravityGame\DllProjects\GravityPointMath\x64\Debug\GravityPointMath.exp
+﻿  GravityPointMath.cpp
+D:\GravityGame\DllProjects\GravityPointMath\GravityPointMath\GravityPointMath.cpp(19,31): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+  (compiling source file '/GravityPointMath.cpp')
+  
   GravityPointMath.vcxproj -> D:\GravityGame\DllProjects\GravityPointMath\x64\Debug\GravityPointMath.dll
