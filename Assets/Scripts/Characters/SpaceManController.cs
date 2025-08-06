@@ -37,7 +37,6 @@ public class SpaceManController : SpacePersonController
     {
         float fuelBuffer = currentFuel;
         setMovement(inputSystemToGetAxis());
-        setOrientation(lookLeftOrRight());
         setJump(Keyboard.current.spaceKey.isPressed);
         if (Keyboard.current.qKey.isPressed)
             handController.throwItem();
@@ -61,6 +60,7 @@ public class SpaceManController : SpacePersonController
     {
         Vector3 handDirection = mouseToDirection(Input.mousePosition, transform.rotation);
         handController.setInputDirection(handDirection);
+        setOrientation(lookLeftOrRight());
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             if (handController.getHoldingObject() != null && handController.getHoldingObject().name == "Gun") //will need to be updated wehn more guns are added

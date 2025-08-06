@@ -1,12 +1,16 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using System.Runtime.InteropServices;
 
+[ExecuteInEditMode]
 public class GravityVisualizer : MonoBehaviour
 {
-    public List<Color> colors = new List<Color>
+    [SerializeField] private float spacing = 25f;
+    [SerializeField] private GameObject planets;
+
+    private List<GravityPoint> gravityPoints = new List<GravityPoint>();
+    private Dictionary<int, Color> colorMap = new Dictionary<int, Color>();
+
+    private readonly List<Color> colors = new List<Color>
     {
         new Color(1f, 0f, 0f),   // Pure Red
         new Color(1f, 0.5f, 0f), // Vivid Orange
@@ -20,87 +24,77 @@ public class GravityVisualizer : MonoBehaviour
         new Color(0.5f, 1f, 0f)  // Lime Green
     };
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        int size = 0;
-        IntPtr first = returnVec(ref size);
-        Debug.Log(size);
-        IntPtr elementPtr = Marshal.ReadIntPtr(first, 1 * IntPtr.Size);
-        GravityPoint gp = Marshal.PtrToStructure<GravityPoint>(elementPtr);
-        Debug.Log(gp);
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
-    [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
-    static extern IntPtr returnVec(ref int size);
-
     void OnDrawGizmosSelected()
     {
-        /*gravityPoints.Clear(); //redo
-        foreach (Transform child in transform)
-        {
-            gravityPoints.Add(child.gameObject);
-        }
+        if (planets == null) return;
 
-        if (gravityPoints.Count == 0) return; // Exit if no gravity points exist
+        constructData();
 
-        int screenWidth = Screen.width;
-        int screenHeight = Screen.height;
-        float spacing = 12f;
+        int screenWidth = Screen.width*3;
+        int screenHeight = Screen.height*3;
 
-        // Cache gravity point positions & field sizes
-        Dictionary<GameObject, (Vector3 position, float fieldSize)> gravityData = new Dictionary<GameObject, (Vector3, float)>();
-        List<Color> fieldColors = new List<Color>();
+        Camera cam = Camera.main;
+        if (cam == null) return;
 
-        for (int i = 0; i < gravityPoints.Count; i++)
-        {
-            GameObject gravityPoint = gravityPoints[i];
-            GravityPointController gravityPointController = gravityPoint.GetComponent<GravityPointController>();
-            if (gravityPointController != null)
-            {
-                gravityData[gravityPoint] = (gravityPoint.transform.position, gravityPointController.getFieldSize());
-                fieldColors.Add(colors[i % colors.Count]);
-            }
-        }
-
-        // Loop through screen space with specified spacing
         for (int x = 0; x < screenWidth; x += (int)spacing)
         {
             for (int y = 0; y < screenHeight; y += (int)spacing)
             {
-                // Convert screen point to world position
-                Vector3 worldPoint = Camera.main.ScreenToWorldPoint(new Vector3(x, y, 10f));
+                float distanceToWorldPlane = -cam.transform.position.z;
+                Vector3 screenPos = new Vector3(x, y, distanceToWorldPlane);
+                Vector3 worldPos = cam.ScreenToWorldPoint(screenPos);
+                worldPos.z = 0f;
 
-                Gizmos.color = Color.yellow;
-                float closestGravityField = float.MaxValue;
-                int closestIndex = -1;
+                float minDistance = float.MaxValue;
+                int closestIndex = 0;
 
-                // Find the closest gravity point
                 for (int i = 0; i < gravityPoints.Count; i++)
                 {
-                    GameObject gravityPoint = gravityPoints[i];
-                    var (position, fieldSize) = gravityData[gravityPoint];
+                    Vector2 gpPos = new Vector2(gravityPoints[i].x, gravityPoints[i].y);
+                    float distance = Vector2.Distance(worldPos, gpPos)/gravityPoints[i].fieldSize;
 
-                    float adjustedDistance = (worldPoint - position).magnitude / fieldSize;
-                    if (adjustedDistance < closestGravityField)
+                    if (distance < minDistance)
                     {
-                        closestGravityField = adjustedDistance;
+                        minDistance = distance;
                         closestIndex = i;
                     }
                 }
 
-                if (closestIndex != -1)
+                if (colorMap.TryGetValue(closestIndex, out Color color))
                 {
-                    Gizmos.color = fieldColors[closestIndex];
-                    Gizmos.DrawSphere(worldPoint, 0.0625f);
+                    Gizmos.color = color;
+                    Gizmos.DrawSphere(worldPos, 0.1f);
                 }
             }
-        }*/
+        }
+    }
+
+    private void constructData()
+    {
+        gravityPoints.Clear();
+        colorMap.Clear();
+
+        int i = 0;
+        foreach (Transform planet in planets.transform)
+        {
+            GravityPointController controller = planet.GetComponent<GravityPointController>();
+            if (controller != null)
+            {
+                GravityPoint gp = new GravityPoint
+                {
+                    x = planet.position.x,
+                    y = planet.position.y,
+                    fieldSize = controller.getFieldSize()
+                };
+
+                gravityPoints.Add(gp);
+                colorMap[i] = colors[i % colors.Count];
+            }
+            else
+            {
+                Debug.LogError($"No GravityPointController attached to {planet.name}");
+            }
+            i++;
+        }
     }
 }

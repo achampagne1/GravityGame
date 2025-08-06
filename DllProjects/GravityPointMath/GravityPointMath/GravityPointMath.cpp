@@ -15,6 +15,10 @@ void removeGravityPoint(GravityPoint* gravityPoint) {
     );
 }
 
+void clearVec() {
+    gravityPoints.clear();
+}
+
 GravityPoint** returnVec(int* size) {
     *size = gravityPoints.size();
     return gravityPoints.data();

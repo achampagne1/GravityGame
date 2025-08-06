@@ -25,6 +25,11 @@ public class GravityPointController : MonoBehaviour
     // Start is called before the first frame update
     void Awake()
     {
+        createPoint();
+    }
+
+    public void createPoint()
+    {
         gravityPoint.x = transform.position.x;
         gravityPoint.y = transform.position.y;
         gravityPoint.fieldSize = fieldSize;
