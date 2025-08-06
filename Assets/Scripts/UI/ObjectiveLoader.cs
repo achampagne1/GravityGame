@@ -56,7 +56,7 @@ public class ObjectiveLoader : ScriptableObject
         }, () =>
         {
             List<Vector2> outputs = new List<Vector2>();
-            outputs.Add(new Vector2(44.85f, -2.66f));
+            outputs.Add(new Vector2(24f, -11f));
             return outputs;
         }, visualElement);
 
@@ -125,7 +125,7 @@ public class ObjectiveLoader : ScriptableObject
         }, () =>
         {
             List<Vector2> outputs = new List<Vector2>();
-            outputs.Add(new Vector2(-8f, -16f));
+            outputs.Add(new Vector2(-15f, -17f));
             return outputs;
         }, visualElement);
     }

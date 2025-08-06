@@ -11,6 +11,7 @@ public class UIHandler : MonoBehaviour
     public float movePercent = 0f;
     private float parentTop = 0f;
     private float healthBuffer =0f;
+    private float fuelBuffer = 0f;
     private bool escapeClicked = false;
     private bool eClicked = false;
     private bool coroutineRunning = false;
@@ -239,7 +240,7 @@ public class UIHandler : MonoBehaviour
         this.up = up;
         if (!up)
         {
-            comsOverlay.style.top = Length.Percent(100f);
+            comsOverlay.style.top = Length.Percent(-100f);
         }
         else
             comsOverlay.style.top = 0f;
@@ -291,6 +292,10 @@ public class UIHandler : MonoBehaviour
 
     public void setFuelValue(float fuelLevel)
     {
+        if (fuelBuffer == fuelLevel)
+            return;
+
+        fuelBuffer = fuelLevel;
         float initialOffset = 42f; //I dont know why its this number
         float finalOffset = 54f;
         float fuelScaler = .6f;
@@ -309,9 +314,49 @@ public class UIHandler : MonoBehaviour
         this.shieldLevel= shieldLevel;
     }
 
-    public void setBubbleText(string text) //height for 1 line is 8 with top at 83, 2 lines is 14 with top at 79, 3 lines is 20 with top at 73
+    public void setBubbleText(string text) 
     {
-        revealBubbleTextCoroutine = StartCoroutine(bubbleTextReveal(text));
+        revealBubbleTextCoroutine = StartCoroutine(bubbleTextReveal(insertNewLine(text)));
+
+        string insertNewLine(string text)
+        {
+            const int lineLength = 41;
+            const char insertChar = '\n';
+            string result = text;
+            int iterator = 0;
+            int count = 0;
+            while (iterator < result.Length)
+            {
+                if (count == lineLength)
+                {
+                    int rewind = iterator;
+                    while (true)
+                    {
+                        rewind--;
+                        if (result[rewind] == ' ')
+                        {
+                            result = result.Insert(rewind+1, insertChar.ToString());
+                            iterator = rewind;
+                            break;
+                        }
+                    }
+                    count = 0;
+                }
+                else
+                    count++;
+                iterator++;
+            }
+            /*int iterations = text.Length / lineLength;
+            string result = text;
+
+            for (int i = 1; i <= iterations; i++)
+            {
+                int insertIndex = i * lineLength + (i - 1); // Add (i - 1) to account for previous inserts
+                if (insertIndex < result.Length)
+                    result = result.Insert(insertIndex, insertChar.ToString());
+            }*/
+            return result;
+        }
     }
 
     private IEnumerator bubbleTextReveal(string text)

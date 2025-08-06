@@ -9,7 +9,6 @@ public class SpaceManController : SpacePersonController
     //game variables
     private bool enemyCollideFlag = false;
     private bool clickPressed = false;
-    [SerializeField] float[] playArea = { 50, 50 }; //generic play area 
     [SerializeField] float cameraShift = -110f; //for some reason this corrects the camera shift when the camera is shifted 20
     [SerializeField] VCamController camController;
     [SerializeField] UIHandler uIHandler;
@@ -41,8 +40,6 @@ public class SpaceManController : SpacePersonController
         if (Keyboard.current.qKey.isPressed)
             handController.throwItem();
         calculateSpacePersonUpdate();
-        if (fuelBuffer != currentFuel)
-            UIHandler.instance.setFuelValue(currentFuel); //move latch to ui
 
         if (rb.velocity.magnitude > 15)
         {
@@ -53,6 +50,7 @@ public class SpaceManController : SpacePersonController
         else
             camController.setShakeContinuously(false);
 
+        UIHandler.instance.setFuelValue(currentFuel);
         UIHandler.instance.setHealthValue(health);
     }
 

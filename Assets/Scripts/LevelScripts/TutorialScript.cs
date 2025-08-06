@@ -116,28 +116,28 @@ public class LevelManager : MonoBehaviour
         yield return new WaitUntil(acknowledgeOrWait);
 
         if(eventChoice == 1)
-            uIHandler.setBubbleText("Good. Welcome to the training course BE-7.\nGo ahead and take a look around.");
+            uIHandler.setBubbleText("Good. Welcome to the training course BE-7. Go ahead and take a look around.");
         else
-            uIHandler.setBubbleText("I'll take that as a yes.\nAnyway, welcome to the training course BE-7.\nGo ahead and take a look around.");
+            uIHandler.setBubbleText("I'll take that as a yes. Anyway, welcome to the training course BE-7. Go ahead and take a look around.");
         yield return new WaitForSeconds(.1f);  //tiny delay for loading
 
         //waits for player to aknowledge
         yield return new WaitForSeconds(10f); //do this better
 
         //displayes orders
-        uIHandler.setBubbleText("Time to use your jetpack.\nFly up to that asteroid but watch your fuel level.");
+        uIHandler.setBubbleText("Time to use your jetpack. Fly up to that asteroid, but watch your fuel level.");
         //changes objective
         changeObjective("flytoasteroid");
         //gets planet trigger and check if player is intersecting
         yield return new WaitUntil(currentObjective.completionCondition);
 
         //sets objective as get your gun and waits until it is completed
-        uIHandler.setBubbleText("Good work. There is a gun in the space station.\nGo ahead and pick it up. I added it as an objective.");
+        uIHandler.setBubbleText("Good work. There is a gun in the space station. Go ahead and pick it up. I added it as an objective.");
         //changes objective
         changeObjective("getyourgun");
         yield return new WaitUntil(currentObjective.completionCondition);
         //kill all bugs 
-        uIHandler.setBubbleText("Now for target practice. You see those bugs?\nTake em out!");
+        uIHandler.setBubbleText("Now for target practice. You see those bugs? Take em out!");
         //changes objective
         changeObjective("killallbugs");
         yield return new WaitUntil(currentObjective.completionCondition);
@@ -147,7 +147,7 @@ public class LevelManager : MonoBehaviour
         changeObjective("gettoteleporter");
 
         //get to teleporter
-        uIHandler.setBubbleText("Thats about it for training today.\nStart making your way to the teleporter.");
+        uIHandler.setBubbleText("Thats about it for training today.Start making your way to the teleporter.");
         //activate teleporter2
         TeleporterController teleporterController2 = teleporter2.GetComponent<TeleporterController>();
         teleporterController2.toggleStateFunc();
@@ -178,12 +178,12 @@ public class LevelManager : MonoBehaviour
         //waits for player to aknowledge or timer runs out
         eventTimer.setNewTime(10f);
         yield return new WaitUntil(acknowledgeOrWait);
-        uIHandler.setBubbleText("Thats the Green Team! How'd they find this place?!\nWe can't beam you up while they're here.");
+        uIHandler.setBubbleText("Thats the Green Team! How'd they find this place?! We can't beam you up while they're here.");
         changeObjective("defeatthegreenteam");
         yield return new WaitUntil(currentObjective.completionCondition);
 
         //green team defeated
-        uIHandler.setBubbleText("WOOOO you took care of those guys!\nNow we can get you. Get back to the teleporter.");
+        uIHandler.setBubbleText("WOOOO you took care of those guys! Now we can get you. Get back to the teleporter.");
         teleporterController2.toggleStateFunc();
         //waits until player is on the pad
         yield return new WaitUntil(() => teleporterController2.getPlayerOnPad());
