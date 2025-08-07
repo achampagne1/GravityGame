@@ -178,7 +178,8 @@ MonoBehaviour:
   terminalVelocity: 30
   gravityAffected: 1
   orientToGravity: 1
-  updateGravityField: 0
+  updateGravityField: 1
   calculateIsGrounded: 0
   simulated: 0
-  damage: 1
+  damageVariable: 1
+  lifeTime: 3

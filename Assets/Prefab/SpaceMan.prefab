@@ -209,18 +209,18 @@ MonoBehaviour:
   moveSpeed: 10
   maxHealth: 10
   invincibleFlag: 0
+  shieldUpFlag: 0
   health: 0
   forceLocalAdded: 0
   knockBackDuration: 0.1
   movementToggle: 1
   jetPackForce: 30
-  groundSmokeTime: 1
+  groundSmokeTime: 0.5
+  footOffset: 0.1
   landingSmoke: {fileID: 8098803252328287543, guid: 9e37d826df48111448919318eaf8a42f,
     type: 3}
-  playArea:
-  - 100
-  - 100
   cameraShift: -0.12
+  fireLimiterVariable: 0.15
   camController: {fileID: 9025898114710739492}
   uIHandler: {fileID: 0}
 --- !u!82 &817579411317516132

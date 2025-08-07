@@ -50,11 +50,11 @@ public class DroneController : CharacterController
 
     public void hover()
     {
-        hoverTime = (hoverTime +(Time.deltaTime * speed))%(2*Mathf.PI);
-        float x = width * Mathf.Sin(hoverTime);
-        float y = height * Mathf.Sin(2 * hoverTime);
-
-        transform.position = new Vector3(center.x + x, center.y + y, transform.position.z);
+        hoverTime = (hoverTime + (Time.deltaTime * speed)) % (2 * Mathf.PI);
+        float localX = width * Mathf.Sin(hoverTime);
+        float localY = height * Mathf.Sin(2 * hoverTime);
+        Vector2 offset = (transform.right * localX) + (transform.up * localY);
+        transform.position = center + offset;
     }
     private Vector3 detectPlayerWrapper()
     {

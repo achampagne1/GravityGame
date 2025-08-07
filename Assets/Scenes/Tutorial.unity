@@ -2355,6 +2355,16 @@ PrefabInstance:
       propertyPath: uIHandler
       value: 
       objectReference: {fileID: 485643197}
+    - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
+      propertyPath: footOffset
+      value: 0.2
+      objectReference: {fileID: 0}
+    - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
+      propertyPath: groundSmokeTime
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 6531168470496589061, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
       propertyPath: m_LocalPosition.x

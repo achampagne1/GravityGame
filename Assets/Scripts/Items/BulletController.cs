@@ -8,6 +8,7 @@ public class BulletController : ObjectController,IProjectileInfo,IDamager
     private int shotBy = 0;
     private float drag = .1f;
     [SerializeField] float damageVariable = 1f;
+    [SerializeField] float lifeTime = 3f;
 
     //objects
     ProjectileHelper projectileHelper;
@@ -22,7 +23,7 @@ public class BulletController : ObjectController,IProjectileInfo,IDamager
 
     public void init(int shotBy)
     {
-        projectileHelper = new ProjectileHelper(shotBy, damageVariable, gameObject);
+        projectileHelper = new ProjectileHelper(shotBy, damageVariable, gameObject,lifeTime);
     }
 
     // Update is called once per frame
@@ -31,6 +32,7 @@ public class BulletController : ObjectController,IProjectileInfo,IDamager
         calculateRotation();
         calculateUpdate();
         rb.velocity = calculateDrag(rb.velocity);  //drag prevent bullets from infinitly orbiting
+        projectileHelper.update();
     }
 
     protected override void calculateRotation()
@@ -63,7 +65,7 @@ public class BulletController : ObjectController,IProjectileInfo,IDamager
         //maybe have it so if the player and shield colliders are hit, that that doesnt count as a hit
     }
 
-    public float damage(GameObject hitGameobject)
+    public bool damage(GameObject hitGameobject)
     {
         return projectileHelper.damage(hitGameobject);
     }

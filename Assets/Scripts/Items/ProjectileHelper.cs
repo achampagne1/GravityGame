@@ -14,13 +14,25 @@ public struct ProjectileHelper:IProjectileInfo,IDamager
     private int shotBy;
     private GameObject gameObject;
     private float damageVariable;
+    private float lifeTimeVariable;
 
-    public ProjectileHelper(int shotBy, float damageVariable, GameObject gameObject)
+    //objects
+    Timer lifeTime;
+
+    public ProjectileHelper(int shotBy, float damageVariable, GameObject gameObject,float lifeTimeVariable)
     {
         gameObject.tag = "Projectile";
         this.shotBy = shotBy;
         this.gameObject = gameObject;
         this.damageVariable = damageVariable;
+        this.lifeTimeVariable = lifeTimeVariable;
+        if (lifeTimeVariable > 0)
+        {
+            lifeTime = new Timer(lifeTimeVariable);
+            lifeTime.startTimer();
+        }
+        else
+            lifeTime = new Timer(0);
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
@@ -34,17 +46,24 @@ public struct ProjectileHelper:IProjectileInfo,IDamager
             Object.Destroy(gameObject);
     }
 
-    public float damage(GameObject hitGameObject)
+    public void update()
     {
-        if (shotBy == hitGameObject.layer)
+        if(lifeTimeVariable > 0&& lifeTime.checkTimer())
+            Object.Destroy(gameObject);
+    }
+
+    public bool damage(GameObject hitGameObject)
+    {
+
+        if (shotBy == hitGameObject.layer|| (hitGameObject.layer == 14&&hitGameObject.GetComponent<TriggerBoundaryCotroller>().getLayerConnectedTo()==shotBy))
         {
-            return 0f;
+            return false;
         }
         else
         {
             IHealth health = hitGameObject.GetComponent<IHealth>();
             health.setHealth(health.getHealth() - damageVariable);
-            return damageVariable;
+            return true;
         }
     }
 

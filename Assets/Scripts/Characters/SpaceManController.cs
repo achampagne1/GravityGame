@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Diagnostics;
 
 public class SpaceManController : SpacePersonController
 {
@@ -10,8 +11,11 @@ public class SpaceManController : SpacePersonController
     private bool enemyCollideFlag = false;
     private bool clickPressed = false;
     [SerializeField] float cameraShift = -110f; //for some reason this corrects the camera shift when the camera is shifted 20
+    [SerializeField] float fireLimiterVariable = .1f;
     [SerializeField] VCamController camController;
     [SerializeField] UIHandler uIHandler;
+    private StopWatch fireLimiter = new StopWatch();
+
 
     //vectors
     Vector2 screenCenter;
@@ -61,9 +65,15 @@ public class SpaceManController : SpacePersonController
         setOrientation(lookLeftOrRight());
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            if (handController.getHoldingObject() != null && handController.getHoldingObject().name == "Gun") //will need to be updated wehn more guns are added
-                camController.setGunRecoil(handDirection);
-            handController.useHand();
+            if (!fireLimiter.getIsRunning())
+                fireLimiter.start();
+            else if(fireLimiter.getIsRunning() && fireLimiter.getElapsedTime() > fireLimiterVariable){
+                if (handController.getHoldingObject() != null && handController.getHoldingObject().name == "Gun") //will need to be updated wehn more guns are added
+                    camController.setGunRecoil(handDirection);
+                handController.useHand();
+                fireLimiter.reset();
+                fireLimiter.start();
+            }
         }
     }
 

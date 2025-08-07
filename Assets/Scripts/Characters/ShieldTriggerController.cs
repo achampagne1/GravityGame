@@ -36,8 +36,9 @@ public class ShieldTriggerController : TriggerBoundaryCotroller,IHealth
     {
         if (trigger.gameObject.tag == "Projectile"&& shieldStrength > 0)
         {
+            if(!trigger.gameObject.GetComponent<IDamager>().damage(gameObject))
+                return;
             StartCoroutine(spawnShieldHit(trigger.gameObject));
-            trigger.gameObject.GetComponent<IDamager>().damage(gameObject);
             if (shieldStrength < 0)
                 shieldStrength = 0;
         }
@@ -57,10 +58,8 @@ public class ShieldTriggerController : TriggerBoundaryCotroller,IHealth
     }
     private IEnumerator spawnShieldHit(GameObject trigger)
     {
-        Stopwatch stopwatch = Stopwatch.StartNew();
         float radius = collider.radius* Mathf.Max(transform.lossyScale.x, transform.lossyScale.y);
         var (strikeLocation,rotation) = StrikeLocation.determineStrikeLocation(trigger,gameObject,radius);
-
         GameObject shieldHitTemp = Instantiate(shieldHit, new Vector3(strikeLocation.x,strikeLocation.y,transform.position.z), rotation);
         shieldHitTemp.transform.parent = gameObject.transform.parent;
         SpriteRenderer shieldHitTempSR = shieldHitTemp.GetComponent<SpriteRenderer>();

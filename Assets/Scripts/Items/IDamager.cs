@@ -5,5 +5,5 @@ using UnityEngine;
 public interface IDamager
 {
     public float getDamage();
-    public float damage(GameObject gameObject);
+    public bool damage(GameObject gameObject);
 }

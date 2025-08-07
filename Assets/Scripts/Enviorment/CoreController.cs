@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Planet3Controller : MonoBehaviour
+public class CoreController : MonoBehaviour
 {
     [SerializeField] float rotationSpeed = 1f;
     private float rotationAmount = 0;

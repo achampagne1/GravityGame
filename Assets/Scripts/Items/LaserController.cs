@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class LaserController : MonoBehaviour,IProjectileInfo,IDamager
 {
+    //game variables
+    [SerializeField] float damageVariable = 1f;
+    [SerializeField] float lifetime = 5f;
 
     //object creation
-    Timer lifetime = new Timer(5f);
     ProjectileHelper projectileHelper;
-
-    [SerializeField] float damageVariable = 1f;
 
     // Start is called before the first frame update
     void Start()
@@ -19,15 +19,13 @@ public class LaserController : MonoBehaviour,IProjectileInfo,IDamager
 
     public void init(int shotBy)
     {
-        lifetime.startTimer();
-        projectileHelper = new ProjectileHelper(shotBy,damageVariable,gameObject);
+        projectileHelper = new ProjectileHelper(shotBy,damageVariable,gameObject,lifetime);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (lifetime.checkTimer())
-            Destroy(this.gameObject);
+        projectileHelper.update();
     }
 
     void OnCollisionEnter2D(Collision2D collision)
@@ -40,7 +38,7 @@ public class LaserController : MonoBehaviour,IProjectileInfo,IDamager
         projectileHelper.OnTriggerEnter2D(trigger);
     }
 
-    public float damage(GameObject hitGameobject)
+    public bool damage(GameObject hitGameobject)
     {
         return projectileHelper.damage(hitGameobject);
     }

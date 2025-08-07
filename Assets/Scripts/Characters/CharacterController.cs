@@ -97,6 +97,9 @@ public class CharacterController : ObjectController,IHealth
         previousV = -rb.velocity;
         previousMove = -moveDirection;
 
+        if (health < 0)
+            health = 0;
+
         if (health == 0 && !dead)
         {
             StartCoroutine(die());
@@ -110,9 +113,8 @@ public class CharacterController : ObjectController,IHealth
         if (shieldUpFlag && hitGameObject.tag=="Projectile") //should be dependency injection?
             return;
 
-        hitGameObject.GetComponent<IDamager>().damage(gameObject); 
-        if (health < 0)
-            health = 0;
+        if(!hitGameObject.GetComponent<IDamager>().damage(gameObject))
+            return;
 
         SoundManager.instance.playSound(hitSound, transform, 1f);
         StartCoroutine(changeColorWrapper());

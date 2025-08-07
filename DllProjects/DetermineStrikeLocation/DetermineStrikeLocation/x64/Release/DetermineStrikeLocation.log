@@ -1,0 +1,12 @@
+﻿  pch.cpp
+  DetermineStrikeLocation.cpp
+D:\GravityGame\DllProjects\DetermineStrikeLocation\DetermineStrikeLocation\DetermineStrikeLocation.cpp(46,89): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+  (compiling source file '/DetermineStrikeLocation.cpp')
+  
+  dllmain.cpp
+     Creating library D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Release\DetermineStrikeLocation.lib and object D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Release\DetermineStrikeLocation.exp
+  Generating code
+  Previous IPDB not found, fall back to full compilation.
+  All 12 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  DetermineStrikeLocation.vcxproj -> D:\GravityGame\DllProjects\DetermineStrikeLocation\x64\Release\DetermineStrikeLocation.dll

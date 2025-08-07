@@ -20,10 +20,10 @@ public class HazardController : MonoBehaviour, IDamager
         
     }
 
-    public float damage(GameObject damagedObject)
+    public bool damage(GameObject damagedObject)
     {
         StartCoroutine(damageOverTime(damagedObject));
-        return damageVariable;
+        return true;
     }
 
     private IEnumerator damageOverTime(GameObject damagedObject)
