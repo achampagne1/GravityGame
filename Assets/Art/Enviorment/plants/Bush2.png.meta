@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: 4c8c45e7ba6c8764db2777f6ff01af5d
+guid: e8646f28a5858e442a7282fddc51d2f1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1940275408494461777
-    second: Planet2_0
+      213: 2476417197399195537
+    second: Bush2_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,22 +100,22 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: Planet2_0
+      name: Bush2_0
       rect:
         serializedVersion: 2
-        x: 1
+        x: 0
         y: 0
-        width: 1064
-        height: 1067
+        width: 531
+        height: 271
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: facf246cbc1c215e0800000000000000
-      internalID: -1940275408494461777
+      spriteID: 19fb5a602500e5220800000000000000
+      internalID: 2476417197399195537
       vertices: []
       indices: 
       edges: []
@@ -123,7 +123,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 528cd804642c3084096360ca0006d35e
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -131,7 +131,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      Planet2_0: -1940275408494461777
+      Bush2_0: 2476417197399195537
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

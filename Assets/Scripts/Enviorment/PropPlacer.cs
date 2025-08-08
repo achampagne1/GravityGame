@@ -1,0 +1,59 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using System;
+
+public class PropPlacer : MonoBehaviour
+{
+    [SerializeField] int amount = 20;
+    [SerializeField] float offset = .1f;
+    [SerializeField] List<Sprite> props = new List<Sprite>();
+    private List<Vector2> locations = new List<Vector2>();
+    private PolygonCollider2D collider;
+    void Start()
+    {
+        System.Random rand = new System.Random();
+        collider = GetComponent<PolygonCollider2D>();
+        for (int i = 0; i < collider.pathCount; i++)
+        {
+            Vector2[] points = collider.GetPath(i);
+            foreach (Vector2 point in points)
+            {
+                // Convert local to world space if needed
+                locations.Add(collider.transform.TransformPoint(point));
+            }
+        }
+
+        for (int i = 0; i < amount; i++)
+        {
+            int randomNumber = rand.Next(locations.Count);
+            Vector2 location = locations[randomNumber];
+            locations.RemoveAt(randomNumber);
+
+            GameObject prop = new GameObject("prop");
+            SpriteRenderer sr = prop.AddComponent<SpriteRenderer>();
+            sr.sortingOrder = rand.Next(-90,-85);
+            prop.transform.parent = transform.Find("Props");
+
+            randomNumber = rand.Next(props.Count);
+            sr.sprite = props[randomNumber];
+
+            Vector2 direction = ((Vector2)transform.position - location).normalized;
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            prop.transform.rotation = Quaternion.Euler(0f, 0f, angle + 90);
+
+            prop.transform.localScale = prop.transform.localScale * (0.01f* rand.Next(40, 50));
+            if (rand.Next(2) == 0)
+            {
+                Vector3 scale = prop.transform.localScale;
+                scale.x *= -1;
+                prop.transform.localScale = scale;
+            }
+
+            float height = sr.sprite.bounds.size.y * prop.transform.localScale.y;
+            prop.transform.position = location + (Vector2)prop.transform.up * (height-offset);
+        }
+
+
+    }
+}

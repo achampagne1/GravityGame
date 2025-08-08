@@ -121,14 +121,6 @@ public class SpaceZombieController : SpacePersonController
         first = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.name == "Bullet(Clone)")
-        {
-            setHealth(health - 1f);
-        }
-    }
-
     private int lookLeftOrRight()
     {
         Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);

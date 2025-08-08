@@ -40,7 +40,7 @@ public class SpaceManController : SpacePersonController
     {
         float fuelBuffer = currentFuel;
         setMovement(inputSystemToGetAxis());
-        setJump(Keyboard.current.spaceKey.isPressed);
+        space = Keyboard.current.spaceKey.isPressed;
         if (Keyboard.current.qKey.isPressed)
             handController.throwItem();
         calculateSpacePersonUpdate();

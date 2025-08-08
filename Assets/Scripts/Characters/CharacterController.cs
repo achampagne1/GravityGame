@@ -331,14 +331,14 @@ public class CharacterController : ObjectController,IHealth
         horizontalInput = moveInput;
     }
 
+    public void setJump(bool jump)
+    {
+        space = jump;
+    }
+
     public void setOrientation(int direction)
     {
         direcitonInput = direction;
-    }
-
-    public void setJump(bool jumpInput)
-    {
-        space = jumpInput;
     }
 
     public void setHealth(float newHealth)
