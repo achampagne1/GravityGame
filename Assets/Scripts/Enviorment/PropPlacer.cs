@@ -19,7 +19,6 @@ public class PropPlacer : MonoBehaviour
             Vector2[] points = collider.GetPath(i);
             foreach (Vector2 point in points)
             {
-                // Convert local to world space if needed
                 locations.Add(collider.transform.TransformPoint(point));
             }
         }
@@ -32,7 +31,20 @@ public class PropPlacer : MonoBehaviour
 
             GameObject prop = new GameObject("prop");
             SpriteRenderer sr = prop.AddComponent<SpriteRenderer>();
-            sr.sortingOrder = rand.Next(-90,-85);
+            int depth = rand.Next(-90, -85);
+            sr.sortingOrder = depth;
+
+            float t = Mathf.InverseLerp(-90, -85, depth); 
+            float brightness = Mathf.Lerp(0.8f, 1f, t); 
+
+            Color originalColor = sr.color;
+            sr.color = new Color(
+                originalColor.r * brightness,
+                originalColor.g * brightness,
+                originalColor.b * brightness,
+                originalColor.a
+            );
+
             prop.transform.parent = transform.Find("Props");
 
             randomNumber = rand.Next(props.Count);
