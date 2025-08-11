@@ -2,13 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System;
+using static UnityEditor.FilePathAttribute;
+using static UnityEditor.Recorder.OutputPath;
 
 public class PropPlacer : MonoBehaviour
 {
     [SerializeField] int amount = 20;
+    [SerializeField] int maxTries = 20;
     [SerializeField] float offset = .1f;
     [SerializeField] List<Sprite> props = new List<Sprite>();
     private List<Vector2> locations = new List<Vector2>();
+    private List<GameObject> objects = new List<GameObject>();
     private PolygonCollider2D collider;
     void Start()
     {
@@ -25,10 +29,6 @@ public class PropPlacer : MonoBehaviour
 
         for (int i = 0; i < amount; i++)
         {
-            int randomNumber = rand.Next(locations.Count);
-            Vector2 location = locations[randomNumber];
-            locations.RemoveAt(randomNumber);
-
             GameObject prop = new GameObject("prop");
             SpriteRenderer sr = prop.AddComponent<SpriteRenderer>();
             int depth = rand.Next(-90, -85);
@@ -47,12 +47,8 @@ public class PropPlacer : MonoBehaviour
 
             prop.transform.parent = transform.Find("Props");
 
-            randomNumber = rand.Next(props.Count);
+            int randomNumber = rand.Next(props.Count);
             sr.sprite = props[randomNumber];
-
-            Vector2 direction = ((Vector2)transform.position - location).normalized;
-            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            prop.transform.rotation = Quaternion.Euler(0f, 0f, angle + 90);
 
             prop.transform.localScale = prop.transform.localScale * (0.01f* rand.Next(40, 50));
             if (rand.Next(2) == 0)
@@ -62,10 +58,35 @@ public class PropPlacer : MonoBehaviour
                 prop.transform.localScale = scale;
             }
 
-            float height = sr.sprite.bounds.size.y * prop.transform.localScale.y;
-            prop.transform.position = location + (Vector2)prop.transform.up * (height-offset);
+            Vector2 location = new Vector2();
+            int tries = 0;
+            bool intersect = true;
+            do
+            {
+                randomNumber = rand.Next(locations.Count);
+                location = locations[randomNumber];
+
+
+                Vector2 direction = ((Vector2)transform.position - location).normalized;
+                float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+                prop.transform.rotation = Quaternion.Euler(0f, 0f, angle + 90);
+
+                float height = sr.sprite.bounds.size.y * prop.transform.localScale.y;
+                prop.transform.position = location + (Vector2)prop.transform.up * (height - offset);
+                intersect = false;
+                foreach (GameObject placedProp in objects)
+                {
+                    if (sr.bounds.Intersects(placedProp.GetComponent<SpriteRenderer>().bounds))
+                    {
+                        intersect = true;
+                        tries++;
+                        break;
+                    }
+                }
+            } while (intersect&&tries<maxTries);
+
+            locations.RemoveAt(randomNumber);
+            objects.Add(prop);
         }
-
-
     }
 }
