@@ -33,7 +33,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: CoreGlowMat
+  m_Name: CoreMat
   m_Shader: {fileID: -6465566751694194690, guid: 96e70e882e300094d86ff2bb9273d298,
     type: 3}
   m_Parent: {fileID: 0}
@@ -72,12 +72,14 @@ Material:
     - _BUILTIN_QueueOffset: 0
     - _DissolveThreshold: 0.5
     - _LineThickness: 0.1
-    - _NoiseScale: 2
+    - _NoiseScale: 5
     m_Colors:
     - _HDRColor: {r: 1.9396225, g: 0.41644886, b: 0, a: 0}
-    - _HDRColor1: {r: 1.4980394, g: 0.34906226, b: 0, a: 0}
-    - _HDRColor2: {r: 0.78039217, g: 0.05223817, b: 0, a: 0}
-    - _ScrollSpeed: {r: 0.1, g: 0, b: 0, a: 0}
+    - _HDRColor1: {r: 0.7490196, g: 0.34457347, b: 0, a: 0}
+    - _HDRColor2: {r: 1.4980392, g: 0.024472715, b: 0, a: 0}
+    - _HDRColor3: {r: 1012.05707, g: 469.75128, b: 0, a: 0}
+    - _ScrollSpeed: {r: 0.2, g: 0, b: 0, a: 0}
+    - _ScrollSpeed2: {r: 0, g: 0.2, b: 0, a: 0}
     - _ScrollsSpeed: {r: 0.1, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
