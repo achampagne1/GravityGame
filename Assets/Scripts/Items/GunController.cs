@@ -24,6 +24,7 @@ public class GunController : ItemController
     private Animator animator;
     [SerializeField] AudioClip gunshotClip;
     [SerializeField] GameObject bullet;
+    [SerializeField] GameObject muzzleFlash;
 
 
     //private variables
@@ -93,8 +94,12 @@ public class GunController : ItemController
     {
         Vector3 offset = new Vector3(.5f, .25f, 0);
         offset.y = offset.y * (facingLeft ? -1 : 1);
-        animator.SetTrigger("Shoot");
         GameObject bulletClone= Instantiate(bullet, transform.position + transform.rotation * offset, transform.rotation);
+        GameObject muzzleFlashClone = Instantiate(muzzleFlash,transform);
+        muzzleFlashClone.transform.parent = transform;
+        muzzleFlashClone.transform.localPosition = new Vector3(3.04f, 1.05f, 0f);
+        Destroy(muzzleFlashClone, .1f);
+        animator.SetTrigger("Shoot");
         bulletClone.GetComponent<BulletController>().init(transform.parent.gameObject.layer);
         bulletClone.GetComponent<Rigidbody2D>().AddForce(shootDirection * bulletForce, ForceMode2D.Impulse);
         SoundManager.instance.playSound(gunshotClip, transform, 1f);
