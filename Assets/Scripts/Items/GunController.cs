@@ -98,7 +98,7 @@ public class GunController : ItemController
         GameObject muzzleFlashClone = Instantiate(muzzleFlash,transform);
         muzzleFlashClone.transform.parent = transform;
         muzzleFlashClone.transform.localPosition = new Vector3(3.04f, 1.05f, 0f);
-        Destroy(muzzleFlashClone, .1f);
+        Destroy(muzzleFlashClone, .05f);
         animator.SetTrigger("Shoot");
         bulletClone.GetComponent<BulletController>().init(transform.parent.gameObject.layer);
         bulletClone.GetComponent<Rigidbody2D>().AddForce(shootDirection * bulletForce, ForceMode2D.Impulse);

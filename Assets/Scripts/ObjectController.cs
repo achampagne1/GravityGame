@@ -62,18 +62,16 @@ public class ObjectController : MonoBehaviour
                 isGrounded = IsGrounded();
 
             calculateGravity();
+
+            up = Vector2.Dot(rb.velocity, gravityDirection) < 0;
+
             if (gravityAffected)
             {
                 //if (groundAngle < steepestGrade)  //figure out steepest grade later
-                rb.AddForce(gravityForce);
+                //this ternary causes the object to "stick" when it is grounded
+                Vector2 totalGravityForce = isGrounded ? gravityForce * 3 : gravityForce;
+                rb.AddForce(totalGravityForce);
 
-                
-                //this code breaks the bugs movement. dont know why
-                if (isGrounded)//this is to sort of stick the polayer to the ground when moving
-                {
-                    rb.AddForce(gravityForce * 2);
-                }
-                
                 //rb.velocity = Vector2.ClampMagnitude(rb.velocity, terminalVelocity); //terminal velocity
             }
 
@@ -112,14 +110,11 @@ public class ObjectController : MonoBehaviour
             gravityPoint.fieldSize = 0;
             closestField = calulateClosestField(ref gravityPoint);
 
-            /**if (distanceToSource - closestGravityField < 0) //figure out later
-                up = true;
-            else
-                up = false;*/
             if (rb == null)
                 break;
 
             yield return new WaitForSeconds(0.1f);
+            //the below yield needs to be updated for sitatuions when a new gravity objected is added during gameplay
             yield return new WaitUntil(() => rb.velocity != Vector2.zero);
         }
         while (true);

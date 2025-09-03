@@ -38,7 +38,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Frequency: 0
-    m_Colors: []
+    - _Brightness: 0.1
+    - _Frequency: 1000
+    - _Speed: 0.01
+    m_Colors:
+    - _OverlayColor: {r: 0.22264141, g: 0.22264141, b: 0.22264141, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
