@@ -26,7 +26,7 @@ public class StrikeLocation
         public float angle;
     }
 
-    public static (Vector2, Quaternion) determineStrikeLocation(GameObject collider, GameObject collided, float collidedRadius) //maybe genralize into just a float 
+    public static (Vector2, Quaternion) determineStrikeLocation(GameObject collider, GameObject collided, float collidedRadius) 
     {
         Vessel vessel = new Vessel();
         Output output = new Output();

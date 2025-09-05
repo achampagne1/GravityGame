@@ -160,6 +160,24 @@ Transform:
   - {fileID: 382160202}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &141354110 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2157760216389563369, guid: 4c0b4ee9cbf08a443987720e9c79e61b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1652454395}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &141354115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 141354110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7168cfad7f4e51c47b25ee74ba85a997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &169990485
 GameObject:
   m_ObjectHideFlags: 0
@@ -724,7 +742,11 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2157760216389563369, guid: 4c0b4ee9cbf08a443987720e9c79e61b,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 141354115}
   m_SourcePrefab: {fileID: 100100000, guid: 4c0b4ee9cbf08a443987720e9c79e61b, type: 3}
 --- !u!1001 &1906997097
 PrefabInstance:
@@ -914,6 +936,74 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2c5ef64c1caceca4c88d9c04f91fe627, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1001 &6861897219759394957
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2662185278951140547, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7240337340082624122, guid: 7f56c4cac122c224e82e6b6e94ba8625,
+        type: 3}
+      propertyPath: m_Name
+      value: DirtFling
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 7f56c4cac122c224e82e6b6e94ba8625, type: 3}
 --- !u!1001 &7975342397699643606
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1130,3 +1220,4 @@ SceneRoots:
   - {fileID: 123961761}
   - {fileID: 169990486}
   - {fileID: 717938541}
+  - {fileID: 6861897219759394957}

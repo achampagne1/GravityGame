@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3732671479214400587}
   - component: {fileID: 7437990033828595306}
   - component: {fileID: 6245876886945459708}
+  - component: {fileID: 3924856166254725189}
   m_Layer: 0
   m_Name: Planet2
   m_TagString: Untagged
@@ -345,7 +346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fieldStrength: 15
-  fieldSize: 200
+  fieldSize: 350
 --- !u!114 &6245876886945459708
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -366,6 +367,19 @@ MonoBehaviour:
   - {fileID: 2476417197399195537, guid: e8646f28a5858e442a7282fddc51d2f1, type: 3}
   - {fileID: 6215267202064938543, guid: 21cb61b08e1983648bdf4227a48de805, type: 3}
   - {fileID: 5354429476588687777, guid: 3d9b080467ad10148b1db0b6f45d1f6a, type: 3}
+--- !u!114 &3924856166254725189
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2157760216389563369}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7168cfad7f4e51c47b25ee74ba85a997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hitMark: {fileID: 6006924426108491367, guid: 7f56c4cac122c224e82e6b6e94ba8625, type: 3}
 --- !u!1 &5313542911417304333
 GameObject:
   m_ObjectHideFlags: 0
