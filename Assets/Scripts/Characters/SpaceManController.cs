@@ -101,13 +101,14 @@ public class SpaceManController : SpacePersonController
 
     private int lookLeftOrRight()
     {
-        direction = (Vector2) Input.mousePosition - screenCenter;
-
-        if (direction.x < 0)
-            return -1;
-        else
-            return 1;
+        Vector2 adjustedScreenCenter = new Vector2(
+            Screen.width / 2f,
+            Screen.height / 2f + (cameraShift * Screen.height)
+        );
+        Vector2 direction = (Vector2)Input.mousePosition - adjustedScreenCenter;
+        return direction.x < 0 ? -1 : 1;
     }
+
 
     public override void hit(GameObject hitGameObject)
     {

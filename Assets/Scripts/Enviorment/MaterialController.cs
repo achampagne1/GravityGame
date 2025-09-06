@@ -5,6 +5,7 @@ using UnityEngine;
 public class MaterialController : MonoBehaviour
 {
     [SerializeField] ParticleSystem hitMark;
+    [SerializeField] float dirtThrowThreshold = 5f;
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +19,9 @@ public class MaterialController : MonoBehaviour
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.relativeVelocity.magnitude < dirtThrowThreshold)
+            return;
+        Debug.Log("here");
         //TODO: use the collision code for the shield hit locaiton and explosiions
         ContactPoint2D contact = collision.GetContact(0);
         Vector2 collisionPoint = contact.point;
