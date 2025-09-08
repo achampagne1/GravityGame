@@ -24,7 +24,7 @@ public class ZombieSpawner : ObjectController
     {
         calculateUpdate();
 
-        if (timer.checkTimer())
+        /*if (timer.checkTimer())
         {
             if (GameObject.FindGameObjectsWithTag("SpaceZombie(Clone").Length <= 10)
             {
@@ -32,6 +32,6 @@ public class ZombieSpawner : ObjectController
                 newZombie.GetComponent<SpaceZombieController>().newInstance();
             }
             timer.startTimer();
-        }
+        }*/
     }
 }

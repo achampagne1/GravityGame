@@ -36,31 +36,34 @@ public class SpaceZombieController : SpacePersonController
 
     public void FixedUpdate()
     {
-        if (!first)
+        if (movementToggle && !dead)
         {
-            if (movementToggle && !dead)
+            playerDirection = enemyAssistant.detectPlayer(getFacingLeft());
+            if (playerDirection !=new Vector3(0f,0f,1f))
             {
-                playerDirection = enemyAssistant.detectPlayer(getFacingLeft());
-                if (playerDirection !=new Vector3(0f,0f,1f))
-                {
-                    handController.setInputDirection(gameObject.transform.TransformDirection(playerDirection));
-                    attackPlayer();
-                }
-                else
-                {
-                    handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
-                    if (normalState == 0)
-                        moveInput = 0;
-                    else if (normalState == 1)
-                        patrol();
-                    else
-                        randomMovement();
-                }
-                setMovement(moveInput);
-                setOrientation(moveInput);
+                handController.setInputDirection(gameObject.transform.TransformDirection(playerDirection));
+                attackPlayer();
             }
-            calculateSpacePersonUpdate();
+            else
+            {
+                handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
+                if (normalState == 0)
+                    moveInput = 0;
+                else if (normalState == 1)
+                    patrol();
+                else
+                    randomMovement();
+            }
+            setMovement(moveInput);
+            setOrientation(moveInput);
         }
+        calculateSpacePersonUpdate();
+    }
+
+    public override void hit(GameObject hitGameObject)
+    {
+        //leftstrikeLocation(Vector2.zero);
+        base.hit(hitGameObject);
     }
 
     private void randomMovement()
@@ -114,11 +117,6 @@ public class SpaceZombieController : SpacePersonController
             handController.useHand();
             yield return new WaitForSeconds(0.2f);
         }
-    }
-
-    public void newInstance()
-    {
-        first = false;
     }
 
     private int lookLeftOrRight()
