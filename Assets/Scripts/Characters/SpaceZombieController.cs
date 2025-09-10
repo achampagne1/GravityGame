@@ -18,6 +18,7 @@ public class SpaceZombieController : SpacePersonController
 
     //game variables
     private int moveInput = 0;
+    private int orientationInput = 1;
     private bool pause = false;
     private bool following = false;
     private bool attackLatch = false;
@@ -36,34 +37,32 @@ public class SpaceZombieController : SpacePersonController
 
     public void FixedUpdate()
     {
-        if (movementToggle && !dead)
+        if (hitLatch && strikeLeftLatch != facingLeft)
         {
-            playerDirection = enemyAssistant.detectPlayer(getFacingLeft());
-            if (playerDirection !=new Vector3(0f,0f,1f))
-            {
-                handController.setInputDirection(gameObject.transform.TransformDirection(playerDirection));
-                attackPlayer();
-            }
-            else
-            {
-                handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
-                if (normalState == 0)
-                    moveInput = 0;
-                else if (normalState == 1)
-                    patrol();
-                else
-                    randomMovement();
-            }
-            setMovement(moveInput);
-            setOrientation(moveInput);
+            orientationInput *= -1;
         }
-        calculateSpacePersonUpdate();
-    }
 
-    public override void hit(GameObject hitGameObject)
-    {
-        //leftstrikeLocation(Vector2.zero);
-        base.hit(hitGameObject);
+        playerDirection = enemyAssistant.detectPlayer(facingLeft);
+        if (playerDirection != new Vector3(0f, 0f, 1f))
+        {
+            handController.setInputDirection(gameObject.transform.TransformDirection(playerDirection));
+            attackPlayer();
+        }
+        /*else
+        {
+            handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
+            if (normalState == 0)
+                moveInput = 0;
+            else if (normalState == 1)
+                patrol();
+            else
+                randomMovement();
+        }*/
+
+        setMovement(moveInput);
+        setOrientation(orientationInput);
+
+        calculateSpacePersonUpdate();
     }
 
     private void randomMovement()
@@ -89,12 +88,14 @@ public class SpaceZombieController : SpacePersonController
         if (moveInput == 0)
         {
             moveInput = 1;
+            orientationInput = 1;
         }
 
 
         if (timer.checkTimer()||detectLedge()||wallInFrontVar==moveInput)
         {
             moveInput = moveInput * -1;
+            orientationInput = orientationInput * -1;
             timer.startTimer();
         }
 

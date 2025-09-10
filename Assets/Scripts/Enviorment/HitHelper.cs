@@ -28,4 +28,15 @@ public class HitHelper
         }
     }
 
+    public static IEnumerator changeColorWrapper(Animator animator, SpriteRenderer sr, Sprite hitSprite, GameObject gameObject)
+    {
+        animator.enabled = false;
+        sr.sprite = hitSprite;
+
+        changeColorRecursive(gameObject, "#FF0000");
+        yield return new WaitForSeconds(.05f);
+        changeColorRecursive(gameObject, "#FFFFFF");
+        animator.enabled = true;
+        yield return null;
+    }
 }

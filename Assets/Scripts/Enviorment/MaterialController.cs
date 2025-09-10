@@ -21,7 +21,7 @@ public class MaterialController : MonoBehaviour
     {
         if (collision.relativeVelocity.magnitude < dirtThrowThreshold)
             return;
-        Debug.Log("here");
+
         //TODO: use the collision code for the shield hit locaiton and explosiions
         ContactPoint2D contact = collision.GetContact(0);
         Vector2 collisionPoint = contact.point;

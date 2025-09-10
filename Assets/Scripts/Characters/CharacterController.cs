@@ -14,27 +14,31 @@ public class CharacterController : ObjectController,IHealth
     [SerializeField] protected GameObject explodeTemplate;
 
     //public game variables
+    [SerializeField] protected bool invincibleFlag = false;
+    [SerializeField] protected bool shieldUpFlag = false;
+    [SerializeField] protected bool forceLocalAdded = false;
+    [SerializeField] protected bool movementToggle = true;
     [SerializeField] protected float jumpForce = 11f;
     [SerializeField] protected float moveSpeed = 20f;
     [SerializeField] protected float maxHealth = 3f; //default max health is 3
-    [SerializeField] protected  bool invincibleFlag = false;
-    [SerializeField] protected bool shieldUpFlag = false;
     [SerializeField] protected float health = 0f;
-    [SerializeField] protected bool forceLocalAdded = false;
     [SerializeField] float knockBackDuration = .1f;
-    [SerializeField] protected bool movementToggle = true;
+
+    //protected game variables
+    protected bool click = false;
+    protected bool space = false;
+    protected bool facingLeft = false;
+    protected bool dead = false;
+    protected bool strikeLeftLatch = false;
+    protected bool hitLatch = false;
+    protected int wallInFrontVar = 0;
     protected float rotatedX = 0;
     protected float rotatedY = 0;
-    protected bool click = false;
+    protected float direcitonInput = 1;
 
     //private game variables
     private float jumpMagnitude = 0;
     private float horizontalInput = 0;
-    private float direcitonInput = 0;
-    protected int wallInFrontVar = 0;
-    protected bool space = false;
-    protected bool facingLeft = false;
-    protected bool dead = false;
 
     //vectors
     private Vector2 moveDirection = new Vector2(0, 0);
@@ -106,10 +110,13 @@ public class CharacterController : ObjectController,IHealth
             dead = true;
         }
 
+        strikeLeftLatch = false;
+        hitLatch = false;
     }
 
     public virtual void hit(GameObject hitGameObject)
     {
+        hitLatch = true;
         if (shieldUpFlag && hitGameObject.tag=="Projectile") //should be dependency injection?
             return;
 
@@ -117,7 +124,7 @@ public class CharacterController : ObjectController,IHealth
             return;
 
         SoundManager.instance.playSound(hitSound, transform, 1f);
-        StartCoroutine(changeColorWrapper());
+        StartCoroutine(HitHelper.changeColorWrapper(animator, spriteRenderer, hitSprite,gameObject));
 
         if (hitGameObject.tag == "Hazard") //dependency injection?
             return;
@@ -125,26 +132,15 @@ public class CharacterController : ObjectController,IHealth
         var (strikeLocation, rotation) = StrikeLocation.determineStrikeLocation(hitGameObject, gameObject, heightObject);
 
         bulletStrikeLocation = strikeLocation;
-        StartCoroutine(knockBack(HitHelper.leftStrikeLocation(gameObject,strikeLocation,facingLeft)));
+        strikeLeftLatch = HitHelper.leftStrikeLocation(gameObject, strikeLocation, facingLeft);
+        StartCoroutine(knockBack(strikeLeftLatch));
 
-        IEnumerator knockBack(bool strikeLeft)
+        IEnumerator knockBack(bool strikeLeft) //id like to move this to hit helper but you cant pass in ref for coroutines
         {
             forceLocalAdded = true; //need to pass in a reference to the gameobjects force lcoal added
             forceLocal = Quaternion.Euler(0f, 0f, gameObject.transform.eulerAngles.z) * new Vector2(strikeLeft ? 3f : -3f, 3f);
             yield return new WaitForSeconds(knockBackDuration);
             forceLocalAdded = false;
-            yield return null;
-        }
-
-        IEnumerator changeColorWrapper()
-        {
-            animator.enabled = false;
-            spriteRenderer.sprite = hitSprite;
-
-            HitHelper.changeColorRecursive(gameObject, "#FF0000");
-            yield return new WaitForSeconds(.05f);
-            HitHelper.changeColorRecursive(gameObject, "#FFFFFF");
-            animator.enabled = true;
             yield return null;
         }
     }
