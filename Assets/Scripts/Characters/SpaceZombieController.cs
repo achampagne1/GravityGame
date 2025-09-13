@@ -20,8 +20,9 @@ public class SpaceZombieController : SpacePersonController
     private int moveInput = 0;
     private int orientationInput = 1;
     private bool pause = false;
-    private bool following = false;
-    private bool attackLatch = false;
+    private bool attacking = false;
+    private bool attackRunning = false;
+    private Coroutine attackCoroutine = null;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
 
     void Start()
@@ -42,12 +43,8 @@ public class SpaceZombieController : SpacePersonController
             orientationInput *= -1;
         }
 
-        playerDirection = enemyAssistant.detectPlayer(facingLeft);
-        if (playerDirection != new Vector3(0f, 0f, 1f))
-        {
-            handController.setInputDirection(gameObject.transform.TransformDirection(playerDirection));
-            attackPlayer();
-        }
+        attackPlayer();
+
         /*else
         {
             handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
@@ -103,12 +100,37 @@ public class SpaceZombieController : SpacePersonController
 
     private void attackPlayer() //TODO: have the timer automatically reset if the player gets out of detection range
     {
-        if (shootTimer.checkTimer())
+        playerDirection = enemyAssistant.detectPlayer(facingLeft);
+        Debug.Log(playerDirection);
+        if (playerDirection != new Vector3(0f, 0f, 1f))
         {
-            StartCoroutine(clusterShot());
-            shootTimer.startTimer();
+            attacking = true;
+            handController.setInputDirection(gameObject.transform.TransformDirection(playerDirection));
+            if (!attackRunning)
+            {
+                attackCoroutine = StartCoroutine(attackFunction());
+                attackRunning = true;
+            }
         }
-        moveInput = 0;
+        else
+        {
+            attacking = false;
+            handController.setInputDirection(transform.rotation * new Vector3((float)orientationInput, 0f, 0f));
+            if(attackRunning)
+            {
+                StopCoroutine(attackCoroutine);
+                attackRunning = false;
+            }
+        }
+    }
+
+    private IEnumerator attackFunction()
+    {
+        while (true)
+        {
+            handController.useHand();
+            yield return new WaitForSeconds(.5f);
+        }
     }
 
     private IEnumerator clusterShot()
