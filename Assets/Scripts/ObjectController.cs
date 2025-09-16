@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
@@ -11,10 +12,10 @@ public class ObjectController : MonoBehaviour
     protected Rigidbody2D rb;
     protected Transform planetCenter;
     protected StopWatch groundStopWatch;
-    private List<GameObject> gravityPoints = new List<GameObject>();
     protected SpriteRenderer spriteRenderer;
     private GravityPoint closestField;
     private Collider2D collider;
+    GravityPoint selfPoint = new GravityPoint();
 
 
     //public game variables
@@ -104,18 +105,18 @@ public class ObjectController : MonoBehaviour
     {
         do 
         {
-            GravityPoint gravityPoint = new GravityPoint();
-            gravityPoint.x = transform.position.x;
-            gravityPoint.y = transform.position.y;
-            gravityPoint.fieldSize = 0;
-            closestField = calulateClosestField(ref gravityPoint);
+            selfPoint.x = transform.position.x;
+            selfPoint.y = transform.position.y;
+            selfPoint.fieldSize = 0;
+
+            closestField = calulateClosestField(ref selfPoint);
 
             if (rb == null)
                 break;
 
             yield return new WaitForSeconds(0.1f);
             //the below yield needs to be updated for sitatuions when a new gravity objected is added during gameplay
-            yield return new WaitUntil(() => rb.velocity != Vector2.zero);
+            //yield return new WaitUntil(() => rb.velocity != Vector2.zero); //commented out temporarly for gravity grenade testing
         }
         while (true);
 
@@ -182,7 +183,7 @@ public class ObjectController : MonoBehaviour
             return maxY - minY;
         }
 
-        Debug.LogError("No attached collider");
+        UnityEngine.Debug.LogError("No attached collider");
         return 0f;
     }
 

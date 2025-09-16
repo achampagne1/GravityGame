@@ -34,6 +34,8 @@ public class SpaceZombieController : SpacePersonController
         shootTimer.startTimer(); //shoot timer must be started so that the enemey is ready when it first sees the player
         enemyAssistant = new EnemyAssistant(gameObject);
         calculateSpacePersonStart();
+
+        handController.setInputDirection(transform.rotation * new Vector3((float)orientationInput, 0f, 0f));
     }
 
     public void FixedUpdate()
@@ -45,16 +47,22 @@ public class SpaceZombieController : SpacePersonController
 
         attackPlayer();
 
-        /*else
+        if (!attacking)
         {
-            handController.setInputDirection(transform.rotation * new Vector3((float)moveInput, 0f, 0f));
-            if (normalState == 0)
-                moveInput = 0;
-            else if (normalState == 1)
-                patrol();
-            else
-                randomMovement();
-        }*/
+            handController.setInputDirection(transform.rotation * new Vector3((float)orientationInput, 0f, 0f));
+            switch (normalState)
+            {
+                case 0:
+                    moveInput = 0;
+                    break;
+                case 1:
+                    patrol();
+                    break;
+                case 2:
+                    randomMovement();
+                    break;
+            };
+        }
 
         setMovement(moveInput);
         setOrientation(orientationInput);
@@ -98,10 +106,9 @@ public class SpaceZombieController : SpacePersonController
 
     }
 
-    private void attackPlayer() //TODO: have the timer automatically reset if the player gets out of detection range
+    private void attackPlayer()
     {
         playerDirection = enemyAssistant.detectPlayer(facingLeft);
-        Debug.Log(playerDirection);
         if (playerDirection != new Vector3(0f, 0f, 1f))
         {
             attacking = true;

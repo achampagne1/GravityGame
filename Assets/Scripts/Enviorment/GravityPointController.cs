@@ -6,7 +6,7 @@ using UnityEngine;
 public class GravityPointController : MonoBehaviour
 {
 
-    GravityPoint gravityPoint = new GravityPoint();
+    private GravityPoint gravityPoint = new GravityPoint();
 
     [SerializeField] private float fieldStrength = 15f;
     [SerializeField] private float fieldSize = 200.0f; //divide by this number
