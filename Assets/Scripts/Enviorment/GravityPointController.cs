@@ -23,7 +23,7 @@ public class GravityPointController : MonoBehaviour
     }
 
     // Start is called before the first frame update
-    public virtual void Awake()
+    public void Awake()
     {
         createPoint();
     }
