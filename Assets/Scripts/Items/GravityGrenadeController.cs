@@ -6,11 +6,10 @@ using UnityEngine;
 class GravityGrenadeController : ObjectController
 {
     //serialized fields
-    [SerializedField] float triggerTime = 5f;
-    [SerializedField] float lifeTime = 10f;
-    [SerializedField] GameObject nakedGravitySourcePrefab;
-    private GameObject nakedGravitySource;
-    private GravitySourceController gravitySourceController;
+    [SerializeField] float triggerTime = 5f;
+    [SerializeField] float lifeTime = 10f;
+    [SerializeField] GameObject nakedGravityPointPrefab;
+    private GameObject nakedGravityPoint;
 
     //private variables
     private bool triggeredFlag = false;
@@ -32,8 +31,8 @@ class GravityGrenadeController : ObjectController
     private IEnumerator timeline()
     {
         yield return new WaitForSeconds(triggerTime);
-        nakedGravitySource = Instantiate(nakedGravitySourcePrefab, transform.position, Quaternion.identity);
-        nakedGravitySource.transform.parent - gameObject;
+        nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
+        nakedGravityPoint.transform.parent = gameObject.transform;
         triggeredFlag = true;
         Destroy(gameObject, lifeTime);
         yield return null;
