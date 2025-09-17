@@ -31,10 +31,10 @@ class GravityGrenadeController : ObjectController
     private IEnumerator timeline()
     {
         yield return new WaitForSeconds(triggerTime);
-        nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
+        //nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
         nakedGravityPoint.transform.parent = gameObject.transform;
-        triggeredFlag = true;
-        Destroy(gameObject, lifeTime);
+        rb.bodyType = RigidbodyType2D.Static;
+        
         yield return null;
     }
     
