@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-class GravityGrenadeController : ObjectController
+class GravityGrenadeController : ItemController
 {
     //serialized fields
     [SerializeField] float triggerTime = 5f;
