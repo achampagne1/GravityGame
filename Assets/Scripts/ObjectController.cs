@@ -109,10 +109,16 @@ public class ObjectController : MonoBehaviour
             selfPoint.y = transform.position.y;
             selfPoint.fieldSize = 0;
 
-            closestField = calulateClosestField(ref selfPoint);
+            closestField = GravityPointVectorAssistant.calulateClosestField(ref selfPoint);
+
+            int num = 0;
+            IntPtr ptr = GravityPointVectorAssistant.returnVec(ref num);
+            UnityEngine.Debug.Log(num);
 
             if (rb == null)
                 break;
+
+            GravityPointVectorAssistant.printVec();
 
             yield return new WaitForSeconds(0.1f);
             //the below yield needs to be updated for sitatuions when a new gravity objected is added during gameplay
@@ -120,8 +126,6 @@ public class ObjectController : MonoBehaviour
         }
         while (true);
 
-        [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
-        static extern GravityPoint calulateClosestField(ref GravityPoint gravityPoint);
     }
 
     protected virtual void calculateRotation()

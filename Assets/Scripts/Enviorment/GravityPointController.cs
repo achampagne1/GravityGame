@@ -33,17 +33,11 @@ public class GravityPointController : MonoBehaviour
         gravityPoint.x = transform.position.x;
         gravityPoint.y = transform.position.y;
         gravityPoint.fieldSize = fieldSize;
-        addGravityPoint(ref gravityPoint);
+        GravityPointVectorAssistant.addGravityPoint(ref gravityPoint);
     }
 
     void OnDestroy()
     {
-        removeGravityPoint(ref gravityPoint);
+        GravityPointVectorAssistant.removeGravityPoint(ref gravityPoint);
     }
-
-    [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void addGravityPoint(ref GravityPoint gravityPoint);
-
-    [DllImport("GravityPointMath", CallingConvention = CallingConvention.Cdecl)]
-    private static extern void removeGravityPoint(ref GravityPoint gravityPoint);
 }
