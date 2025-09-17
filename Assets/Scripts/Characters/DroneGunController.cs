@@ -20,13 +20,13 @@ public class DroneGunController : MonoBehaviour
     private Coroutine recoilCoroutine = null;
 
     // Start is called before the first frame update
-    void Start()
+    public void Start()
     {
 
     }
 
     // Update is called once per frame
-    void Update()
+    public void FixedUpdate()
     {
 
         if (playerSeen && !shootRunning)

@@ -10,14 +10,14 @@ public class BoxController : ObjectController
 
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
-        calculateStart();
+        base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    public override void Update()
     {
-        calculateUpdate();
+        base.FixedUpdate();
     }
 }

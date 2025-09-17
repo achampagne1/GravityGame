@@ -33,7 +33,7 @@ public class GunController : ItemController
     private bool parentLatch = true;
     private int shotBy = 0;
 
-    public void Start()
+    public override void Start()
     {
         facingLeft = transform.localScale.x < 0;
         Physics2D.IgnoreLayerCollision(9, 13, true);
@@ -41,7 +41,7 @@ public class GunController : ItemController
         Physics2D.IgnoreLayerCollision(13, 13, true);
         throwTimer = new Timer(.25f); //this is to make sure the player doesnt immidietly grab the item when it is thrown
 
-        calculateItemStart();
+        base.Start();
 
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
         if (parented)
@@ -64,7 +64,7 @@ public class GunController : ItemController
 
     }
 
-    public void FixedUpdate()
+    public override void FixedUpdate()
     {
         parented = transform.parent != null; //parenting will need to be moved to item controller if more items are added
         
@@ -82,7 +82,7 @@ public class GunController : ItemController
             {
                 notParentedFlags();
             }
-            calculateItemUpdate();
+            base.FixedUpdate();
         }
         parentLatch = parented;
 

@@ -16,9 +16,9 @@ public class DroneController : CharacterController
     private float hoverTime = 0f;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
-        calculateCharacterStart();
+        base.Start();
         center = (Vector2)transform.position;
         droneGun = transform.Find("Gun").gameObject;
         droneGunController = droneGun.GetComponent<DroneGunController>();
@@ -32,7 +32,7 @@ public class DroneController : CharacterController
     }
 
     // Update is called once per frame
-    void Update()
+    public override void FixedUpdate()
     {
         hover();
         Vector3 playerPos = detectPlayerWrapper();
@@ -45,7 +45,7 @@ public class DroneController : CharacterController
         }
         else
             droneGunController.setPlayerSeen(false);
-        calculateCharacterUpdate();
+        base.FixedUpdate();
     }
 
     public void hover()

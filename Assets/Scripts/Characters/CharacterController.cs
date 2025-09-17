@@ -53,7 +53,7 @@ public class CharacterController : ObjectController,IHealth
 
 
     // Start is called before the first frame update
-    public void calculateCharacterStart()
+    public override void Start()
     {
         Physics2D.IgnoreLayerCollision(9, 9, true);
         Physics2D.IgnoreLayerCollision(9, 11, true);
@@ -73,11 +73,11 @@ public class CharacterController : ObjectController,IHealth
         if (transform.localScale.x < 0)
             facingLeft = true;
 
-        calculateStart();
+        base.Start();
     }
 
     // Update is called once per frame
-    public void calculateCharacterUpdate()
+    public override void FixedUpdate()
     {
         turnLeftRight();
         determineAnimation();
@@ -96,7 +96,7 @@ public class CharacterController : ObjectController,IHealth
             rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravit
         }
 
-        calculateUpdate();
+        base.FixedUpdate();
 
         previousV = -rb.velocity;
         previousMove = -moveDirection;

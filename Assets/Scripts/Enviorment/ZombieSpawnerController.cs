@@ -11,18 +11,18 @@ public class ZombieSpawner : ObjectController
     //public variables
     public float spawnRate = 3f;
 
-    void Start()
+    public override void Start()
     {
-        calculateStart();
+        base.Start();
         zombieObject = GameObject.Find("SpaceZombie");
         timer = new Timer(spawnRate);
         timer.startTimer();
     }
 
     // Update is called once per frame
-    void Update()
+    public override void FixedUpdate()
     {
-        calculateUpdate();
+        base.FixedUpdate();
 
         /*if (timer.checkTimer())
         {

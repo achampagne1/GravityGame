@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ExplodeController : MonoBehaviour
+public class ExplodeController : MonoBehaviour // this doesnt need to be inheriting form mon behaviour
 {
     [SerializeField] ParticleSystem particleSystem;
     [SerializeField] float persistanceAfterDeath = 5f;

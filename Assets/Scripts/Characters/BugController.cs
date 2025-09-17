@@ -26,17 +26,17 @@ public class BugController : CharacterController
     private EnemyAssistant enemyAssistant;
 
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
         blinkTimer = new RandomTimer(3, 5);
         pauseDuration = new RandomTimer(.1f, 1f);
         moveDuration = new RandomTimer(1f, 4f);
         enemyAssistant = new EnemyAssistant(gameObject);
-        calculateCharacterStart();
+        base.Start();
     }
 
     // Update is called once per frame
-    void FixedUpdate()
+    public override void FixedUpdate()
     {
         if (movementToggle && !dead)
         {
@@ -57,7 +57,7 @@ public class BugController : CharacterController
             }
             setOrientation(moveInput);
         }
-        calculateCharacterUpdate();
+        base.FixedUpdate();
     }
 
     private void randomMovement()

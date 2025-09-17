@@ -14,11 +14,11 @@ public class BulletController : ObjectController,IProjectileInfo,IDamager
     ProjectileHelper projectileHelper;
 
     // Start is called before the first frame update
-    public void Start()
+    public override void Start()
     {
         simulated = true;
         updateGravityField = true;
-        calculateStart();
+        base.Start();
     }
 
     public void init(int shotBy)
@@ -27,10 +27,10 @@ public class BulletController : ObjectController,IProjectileInfo,IDamager
     }
 
     // Update is called once per frame
-    public void Update()
+    public override void FixedUpdate()
     {
         calculateRotation();
-        calculateUpdate();
+        base.FixedUpdate();
         rb.velocity = calculateDrag(rb.velocity);  //drag prevent bullets from infinitly orbiting
         projectileHelper.update();
     }

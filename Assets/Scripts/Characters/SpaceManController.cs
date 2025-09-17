@@ -22,7 +22,7 @@ public class SpaceManController : SpacePersonController
     Vector2 direction;
 
 
-    public void Start()
+    public override void Start()
     {
         Physics2D.IgnoreLayerCollision(9, 12, true); //for bullets. I know its a dumb placement but it needs to be somewhere with every level
         Physics2D.IgnoreLayerCollision(13, 12, true);
@@ -32,18 +32,18 @@ public class SpaceManController : SpacePersonController
 
         screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
 
-        calculateSpacePersonStart();
+        base.Start();
         setMaxHealth(10f);
     }
 
-    public void FixedUpdate()
+    public override void FixedUpdate()
     {
         float fuelBuffer = currentFuel;
         setMovement(inputSystemToGetAxis());
         space = Keyboard.current.spaceKey.isPressed;
         if (Keyboard.current.qKey.isPressed)
             handController.throwItem();
-        calculateSpacePersonUpdate();
+        base.FixedUpdate();
 
         if (rb.velocity.magnitude > 15)
         {

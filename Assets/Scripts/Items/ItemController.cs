@@ -20,16 +20,16 @@ public class ItemController : ObjectController
     [SerializeField] float flaotSpeed = 100f;
 
     // Start is called before the first frame update
-    public void calculateItemStart()
+    public override void Start()
     {
-        calculateStart();
+        base.Start();
         originalPosition = transform.position;
     }
 
     // Update is called once per frame
-    public void calculateItemUpdate()
+    public void FixedUpdate()
     {
-        calculateUpdate();
+        base.FixedUpdate();
         if(floatFlag && floatItemCoroutine==null)
             floatItemCoroutine = StartCoroutine(floatItem());
         else if(!floatFlag && floatItemCoroutine != null)

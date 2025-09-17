@@ -25,7 +25,7 @@ public class SpaceZombieController : SpacePersonController
     private Coroutine attackCoroutine = null;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
 
-    void Start()
+    public override void Start()
     {
         pauseDuration = new RandomTimer(.1f, 1f);
         moveDuration = new RandomTimer(1f,4f);
@@ -33,12 +33,12 @@ public class SpaceZombieController : SpacePersonController
         timer.startTimer();
         shootTimer.startTimer(); //shoot timer must be started so that the enemey is ready when it first sees the player
         enemyAssistant = new EnemyAssistant(gameObject);
-        calculateSpacePersonStart();
+        base.Start();
 
         handController.setInputDirection(transform.rotation * new Vector3((float)orientationInput, 0f, 0f));
     }
 
-    public void FixedUpdate()
+    public override void FixedUpdate()
     {
         if (hitLatch && strikeLeftLatch != facingLeft)
         {
@@ -67,7 +67,7 @@ public class SpaceZombieController : SpacePersonController
         setMovement(moveInput);
         setOrientation(orientationInput);
 
-        calculateSpacePersonUpdate();
+        base.FixedUpdate();
     }
 
     private void randomMovement()

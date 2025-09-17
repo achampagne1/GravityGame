@@ -14,7 +14,7 @@ public class FragmentController : ObjectController
     private Rigidbody2D rb;
     private SpriteRenderer sr;
     private bool fadeLatch = false;
-    void Start()
+    public override void Start()
     {
         gravityAffected = true;
         updateGravityField = true;
@@ -23,11 +23,11 @@ public class FragmentController : ObjectController
         sr = GetComponent<SpriteRenderer>();
         fadeClock = new Timer(fadeTime);
         rb = GetComponent<Rigidbody2D>();
-        calculateStart();
+        base.Start();
     }
 
     // Update is called once per frame
-    void Update()
+    public override void FixedUpdate()
     {
        if (explode)
         {
@@ -47,7 +47,7 @@ public class FragmentController : ObjectController
         if (fadeLatch)
             fade();
 
-        calculateUpdate();
+        base.FixedUpdate();
     }
 
     private void fade() //fading may be tweaked in the future

@@ -7,7 +7,7 @@ public class MainMenuGuy : SpacePersonController
 
     void Start()
     {
-        calculateSpacePersonStart();
+        base.Start();
         setMovement(1);
         setOrientation(1);
 
@@ -16,6 +16,6 @@ public class MainMenuGuy : SpacePersonController
     public void FixedUpdate()
     {
         handController.setInputDirection(transform.rotation * new Vector3(.7f, -.3f, 0f));
-        calculateSpacePersonUpdate();
+        base.FixedUpdate();
     }
 }

@@ -23,7 +23,7 @@ public class LaserController : MonoBehaviour,IProjectileInfo,IDamager
     }
 
     // Update is called once per frame
-    void Update()
+    public void FixedUpdate()
     {
         projectileHelper.update();
     }

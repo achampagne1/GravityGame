@@ -32,7 +32,7 @@ public class SpacePersonController : CharacterController
 
 
 
-    public void calculateSpacePersonStart()
+    public override void Start()
     {
         try
         {
@@ -50,10 +50,10 @@ public class SpacePersonController : CharacterController
             if (child.name == "Hand")
                 handController = child.gameObject.GetComponent<HandController>();
         }
-        calculateCharacterStart();
+        base.Start();
     }
 
-    public void calculateSpacePersonUpdate()
+    public override void FixedUpdate()
     {
         smokeLatch = groundStopWatch.getElapsedTime() > groundSmokeTime;
 
@@ -61,7 +61,7 @@ public class SpacePersonController : CharacterController
 
         rb.AddForce(hover);
 
-        calculateCharacterUpdate();
+        base.FixedUpdate();
         if (isGrounded && smokeLatch)
         {
             Vector3 footPosition = transform.position - transform.up * (heightObject / 2f - footOffset);

@@ -44,7 +44,7 @@ public class ObjectController : MonoBehaviour
     protected Vector2 forceLocal = new Vector2(0, 0);
     private Vector2 gravityOverride = new Vector2(0, 0);
 
-    protected void calculateStart()
+    public virtual void Start()
     {
         groundStopWatch = new StopWatch();
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -55,7 +55,7 @@ public class ObjectController : MonoBehaviour
         StartCoroutine(findClosestField());
     }
 
-    protected void calculateUpdate()
+    public virtual void FixedUpdate()
     {
         if (simulated)
         {

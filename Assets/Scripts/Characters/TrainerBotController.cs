@@ -16,14 +16,14 @@ public class TrainerController : SpacePersonController
     private bool attackLatch = false;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
 
-    void Start()
+    public override void Start()
     {
-        calculateSpacePersonStart();
+        base.Start();
     }
 
     public void FixedUpdate()
     {
-        calculateSpacePersonUpdate();
+        base.FixedUpdate();
     }
 
     private int lookLeftOrRight()

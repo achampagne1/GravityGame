@@ -13,18 +13,18 @@ class GravityGrenadeController : ObjectController
 
     //private variables
     private bool triggeredFlag = false;
-    public void Start()
+    public override void Start()
     {
-        calculateStart();
+        base.Start();
         StartCoroutine(timeline());
     }
 
-    public void FixedUpdate()
+    public override void FixedUpdate()
     {
         //you will need to take it out of the simulation when its triggerd.
         if (!triggeredFlag)
         {
-            calculateUpdate();
+            base.FixedUpdate();
         }
     }
 

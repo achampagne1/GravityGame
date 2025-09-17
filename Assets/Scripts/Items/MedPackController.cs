@@ -7,15 +7,15 @@ public class MedPackController : ItemController
     //object creation
 
     // Start is called before the first frame update
-    public void Start()
+    public override void Start()
     {
-        calculateItemStart();
+        base.Start();
     }
 
     // Update is called once per frame
-    public void FixedUpdate()
+    public override void FixedUpdate()
     {
-        calculateItemUpdate();
+        base.FixedUpdate();
     }
 
 }
