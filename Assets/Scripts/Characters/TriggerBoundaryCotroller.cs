@@ -6,7 +6,6 @@ public class TriggerBoundaryCotroller : MonoBehaviour
 {
     //object creation
     protected GameObject parent;
-    private HandController handController;
     protected CharacterController characterController;
     protected int layerConnectedTo = 2; //2 is ignore raycast
 
@@ -16,26 +15,11 @@ public class TriggerBoundaryCotroller : MonoBehaviour
         parent = transform.parent.gameObject; //this needs to be reworked
         layerConnectedTo = parent.layer;
         characterController = parent.GetComponent<CharacterController>();
-        foreach (Transform child in parent.transform)
-        {
-            if (child.name == "Hand")
-                handController = child.gameObject.GetComponent<HandController>();
-        }
         Physics2D.IgnoreLayerCollision(9, 14, true);
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.gameObject.name == "Gun" && !trigger.gameObject.GetComponent<GunController>().getParented() && handController.getHolding()!=1)//will need to change to item controller once parenting is moved to item
-            handController.setChild(trigger.transform);
-
-        if (trigger.gameObject.name == "MedPack")
-        {
-            characterController.setHealth(characterController.getMaxHealth());
-            if(gameObject.name == "TriggerBoundarySpaceMan")
-                UIHandler.instance.setHealthValue(characterController.getHealth());
-        }
-
         if (trigger.gameObject.tag == "Projectile" || trigger.gameObject.tag == "Hazard") 
             characterController.hit(trigger.gameObject);
     }

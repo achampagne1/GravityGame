@@ -8,7 +8,7 @@ public class HandController : MonoBehaviour
     //object creation
     Transform playerBody;  // Assign the player's body transform
     SpacePersonController spacePersonController;
-    GunController gunController;
+    ItemController itemController;
 
     //game variables
     private Queue<Vector2> delay;
@@ -17,7 +17,7 @@ public class HandController : MonoBehaviour
     private Vector3 inputDirection = Vector3.zero;
     private bool facingLeft = false;
     private bool holdingLatch = false;
-    private int holding = 0;
+    private bool holding = false;
 
     // Start is called before the first frame update
     public void Start()
@@ -29,8 +29,8 @@ public class HandController : MonoBehaviour
 
         delay = new Queue<Vector2>();
         delay.Enqueue(transform.position);
-        holding = transform.childCount;
-        if (holding != 0)
+        holding = transform.childCount == 1;
+        if (holding)
             setChild(transform.GetChild(0));
 
         //NOTE: currently holding only fully works for guns
@@ -41,14 +41,12 @@ public class HandController : MonoBehaviour
     {
 
         //this is for handling if youre holding an item or not
-        holding = transform.childCount;
-        if (holding == 0)
+        holding = transform.childCount == 1;
+        if (!holding)
             emptyHand();
-        else if (holding == 1)
-            holdingSomething();
         else
-            Debug.LogError("too many children in hand");
-
+            holdingSomething();
+        holdingLatch = holding;
     }
 
     public void throwItem()
@@ -57,25 +55,26 @@ public class HandController : MonoBehaviour
             return;
         Transform child = transform.GetChild(0); // Get first child
         child.position = transform.parent.transform.position;
-        GunController childController = child.gameObject.GetComponent<GunController>(); //will be chagned to item controller
+        ItemController itemController = child.gameObject.GetComponent<ItemController>(); //will be chagned to item controller
         Vector2 forceLocal = transform.parent.transform.TransformDirection(new Vector2(10f * (facingLeft ? -1 : 1), 18f));
-        childController.setForceBuffer(forceLocal);
+        itemController.setForceBuffer(forceLocal);
         child.SetParent(null); //using transform.SetParent not Item.SetParent
     }
 
-    public void useHand()
+    public void useHand() //this will need to get expanded to allow for multiple inputs into the item
     {
-        if (holding == 1)
+        if (holding)
         {
-            gunController.setShootDirection(inputDirection);
-            gunController.shootWrapper(); //currently jsut guns
+            itemController.useItem();
         }
     }
 
     private void emptyHand()
     {
-        if(holdingLatch)
-            gunController = null;
+        if (holdingLatch!=holding)
+        {
+            itemController = null;
+        }
 
         facingLeft = spacePersonController.getFacingLeft();
         Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
@@ -88,12 +87,11 @@ public class HandController : MonoBehaviour
         delay.Enqueue(targetPosition); //adds the target to a queue. this is so the hand follows a path that is sligthly behind the body
         Vector2 delayedTarget = delay.Dequeue(); //gets the old delay
         transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); //smoothly places the hand
-        holdingLatch = false;
     }
 
     private void holdingSomething()
     {
-
+        //meed to get offset of item
         float angleRad = Mathf.Atan2(inputDirection.y, inputDirection.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;
         Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
@@ -105,13 +103,12 @@ public class HandController : MonoBehaviour
         }
         transform.position = (Vector2)playerBody.position + offset;
         transform.rotation = rotationQuaternion;
-        holdingLatch = true;
     }
 
     public void setChild(Transform child)
     {
-        gunController = child.gameObject.GetComponent<GunController>();
-        gunController.setParent(gameObject);
+        itemController = child.gameObject.GetComponent<ItemController>();
+        itemController.setParent(gameObject);
     }
 
     public void setInputDirection(Vector3 inputDirection)
@@ -124,14 +121,14 @@ public class HandController : MonoBehaviour
         return facingLeft;
     }
 
-    public int getHolding()
+    public bool getHolding()
     {
         return holding;
     }
 
     public GameObject getHoldingObject()
     {
-        if (holding > 0)
+        if (holding)
             return transform.GetChild(0).gameObject;
         else
             return null;

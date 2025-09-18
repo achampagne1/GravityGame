@@ -10,6 +10,7 @@ public class ItemController : ObjectController
 
     //vectors
     private Vector3 originalPosition = Vector3.zero;
+    private Vector2 forceBuffer = new Vector2(0, 0);
 
     //private variables
     private float floatCounter = 360f;
@@ -17,8 +18,8 @@ public class ItemController : ObjectController
 
     //protected variables
     protected bool parented = false;
-    private bool facingLeft = false;
-    private bool parentLatch = true;
+    protected bool facingLeft = false;
+    protected bool parentLatch = true;
     protected int shotBy = 0;
 
     //public variables
@@ -29,6 +30,7 @@ public class ItemController : ObjectController
     // Start is called before the first frame update
     public override void Start()
     {
+        facingLeft = transform.localScale.x < 0;
         base.Start();
         originalPosition = transform.position;
 
@@ -65,8 +67,14 @@ public class ItemController : ObjectController
         }
         parentLatch = parented;
 
-        if(throwTimer.checkTimer())
-            Physics2D.IgnoreLayerCollision(13, 14, false);
+        //if(throwTimer.checkTimer()) //imlpement later
+        //    Physics2D.IgnoreLayerCollision(13, 14, false);
+    }
+
+    public virtual void useItem()
+    {
+        Debug.Log("Item used");
+        //NOTE: each item should have its own override of this
     }
 
     private void parentedFlags()
@@ -143,7 +151,14 @@ public class ItemController : ObjectController
     {
         floatFlag = flag;
     }
-    
+
+    public void setForceBuffer(Vector2 force) //maybe move to item controller
+    {
+        Physics2D.IgnoreLayerCollision(13, 14, true);
+        //throwTimer.startTimer(); //implement later
+        forceBuffer = force;
+    }
+
     public bool getFacingLeft()
     {
         return facingLeft;

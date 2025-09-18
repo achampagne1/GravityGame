@@ -16,7 +16,7 @@ public class BoxController : ObjectController
     }
 
     // Update is called once per frame
-    public override void Update()
+    public override void FixedUpdate()
     {
         base.FixedUpdate();
     }

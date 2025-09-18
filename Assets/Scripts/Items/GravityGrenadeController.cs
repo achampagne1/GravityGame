@@ -31,7 +31,7 @@ class GravityGrenadeController : ItemController
     private IEnumerator timeline()
     {
         yield return new WaitForSeconds(triggerTime);
-        //nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
+        nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
         nakedGravityPoint.transform.parent = gameObject.transform;
         rb.bodyType = RigidbodyType2D.Static;
         

@@ -12,7 +12,6 @@ public class GunController : ItemController
     [SerializeField] float bulletForce = 50.0f;
 
     //vectors
-    private Vector2 forceBuffer = new Vector2(0, 0);
     private Vector3 shootDirection = Vector3.zero;
 
     //object creation
@@ -26,7 +25,6 @@ public class GunController : ItemController
 
     public override void Start()
     {
-        facingLeft = transform.localScale.x < 0;
         Physics2D.IgnoreLayerCollision(9, 13, true);
         Physics2D.IgnoreLayerCollision(11, 13, true);
         Physics2D.IgnoreLayerCollision(13, 13, true);
@@ -50,7 +48,13 @@ public class GunController : ItemController
         base.FixedUpdate();
     }
 
-    public void shootWrapper()
+    public override void useItem()
+    {
+        setShootDirection(new Vector3(1f,0f,0f)); //swap this to all items
+        shootWrapper(); //currently jsut guns
+    }
+
+    private void shootWrapper()
     {
         Vector3 offset = new Vector3(.5f, .25f, 0);
         offset.y = offset.y * (facingLeft ? -1 : 1);
@@ -66,14 +70,7 @@ public class GunController : ItemController
 
     }
 
-    public void setForceBuffer(Vector2 force) //maybe move to item controller
-    {
-        Physics2D.IgnoreLayerCollision(13, 14, true);
-        throwTimer.startTimer();
-        forceBuffer = force;
-    }
-
-    public void setShootDirection(Vector3 input)
+    private void setShootDirection(Vector3 input)
     {
         shootDirection = input;
     }
