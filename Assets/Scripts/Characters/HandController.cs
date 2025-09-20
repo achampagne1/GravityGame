@@ -17,6 +17,7 @@ public class HandController : MonoBehaviour
     private Vector3 inputDirection = Vector3.zero;
     private bool facingLeft = false;
     private bool holdingLatch = false;
+    private bool facingLeftLatch = false;
     private bool holding = false;
 
     // Start is called before the first frame update
@@ -33,7 +34,6 @@ public class HandController : MonoBehaviour
         if (holding)
             setChild(transform.GetChild(0));
 
-        //NOTE: currently holding only fully works for guns
     }
 
     // Update is called once per frame
@@ -42,11 +42,13 @@ public class HandController : MonoBehaviour
 
         //this is for handling if youre holding an item or not
         holding = transform.childCount == 1;
+        facingLeft = spacePersonController.getFacingLeft();
         if (!holding)
             emptyHand();
         else
             holdingSomething();
         holdingLatch = holding;
+        facingLeftLatch = facingLeft;
     }
 
     public void throwItem()
@@ -76,7 +78,6 @@ public class HandController : MonoBehaviour
             itemController = null;
         }
 
-        facingLeft = spacePersonController.getFacingLeft();
         Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
         float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 offset = new Vector2(
@@ -96,11 +97,8 @@ public class HandController : MonoBehaviour
         float angleDeg = angleRad * Mathf.Rad2Deg;
         Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
         Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
-        if (spacePersonController.getFacingLeft() != facingLeft)
-        {
+        if (facingLeftLatch != facingLeft)
             transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
-            facingLeft = !facingLeft;
-        }
         transform.position = (Vector2)playerBody.position + offset;
         transform.rotation = rotationQuaternion;
     }
@@ -108,7 +106,16 @@ public class HandController : MonoBehaviour
     public void setChild(Transform child)
     {
         itemController = child.gameObject.GetComponent<ItemController>();
-        itemController.setParent(gameObject);
+        child.SetParent(gameObject.transform);
+        Vector2 localPosition = itemController.getHandOffset();
+        if (facingLeft)
+        {
+            transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z); //this is for setting the orientation of the hand corrctly
+            //localPosition.x = -localPosition.x;
+            child.localScale = new Vector3(-child.localScale.x,child.localScale.y,child.localScale.z);
+            //localPosition.y = -localPosition.y;
+        }
+        child.localPosition = (Vector3)localPosition;
     }
 
     public void setInputDirection(Vector3 inputDirection)

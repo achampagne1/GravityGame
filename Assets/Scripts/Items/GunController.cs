@@ -50,8 +50,8 @@ public class GunController : ItemController
 
     public override void useItem()
     {
-        setShootDirection(new Vector3(1f,0f,0f)); //swap this to all items
-        shootWrapper(); //currently jsut guns
+        setShootDirection(new Vector3(1f,0f,0f)); 
+        shootWrapper(); 
     }
 
     private void shootWrapper()

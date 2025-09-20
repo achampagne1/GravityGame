@@ -5,12 +5,12 @@ using UnityEngine;
 public class ItemController : ObjectController
 {
     //object creation
-    private Transform playerBody;
     private HandController handController;
 
     //vectors
     private Vector3 originalPosition = Vector3.zero;
     private Vector2 forceBuffer = new Vector2(0, 0);
+    [SerializeField] private Vector2 handOffset;
 
     //private variables
     private float floatCounter = 360f;
@@ -92,26 +92,12 @@ public class ItemController : ObjectController
         rb.AddForce(forceBuffer, ForceMode2D.Impulse);
         forceBuffer = new Vector2(0, 0);
         handController = null;
-        playerBody = null;
         shotBy = 2; //ignore raycast layer
         gravityAffected = false;
         orientToGravity = true;
         //floatFlag=true; 
     }
 
-    public void setParent(GameObject parent)
-    {
-        transform.SetParent(parent.transform); //slightly different method
-        transform.localRotation = Quaternion.identity;
-        if (parent.gameObject.GetComponent<HandController>().getFacingLeft()!=facingLeft)
-        {
-            transform.localScale = new Vector3(transform.localScale.x, -transform.localScale.y, transform.localScale.z);
-            transform.localPosition = new Vector3(-3f, -1f, 0f); //for setting location of gun in hand
-            facingLeft = !facingLeft;
-        }
-        else
-            transform.localPosition = new Vector3(3f, 1f, 0f);
-    }
 
     private void parentingHelper()
     {
@@ -119,7 +105,6 @@ public class ItemController : ObjectController
         GameObject hand = transform.parent.gameObject; //will need to be changed if there are different things to parent to
         handController = hand.GetComponent<HandController>();
         shotBy = hand.layer;
-        playerBody = temp.GetComponent<Transform>(); //I want to get rid of the need for the player body and jsut ude the hand but idk how
     }
 
     private IEnumerator floatItem()
@@ -157,6 +142,11 @@ public class ItemController : ObjectController
         Physics2D.IgnoreLayerCollision(13, 14, true);
         //throwTimer.startTimer(); //implement later
         forceBuffer = force;
+    }
+
+    public Vector2 getHandOffset()
+    {
+        return handOffset;
     }
 
     public bool getFacingLeft()
