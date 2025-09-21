@@ -27,7 +27,7 @@ public class SpaceManTriggerBoundaryController : TriggerBoundaryCotroller
     protected override void OnTriggerEnter2D(Collider2D trigger)
     {
         ItemController itemController = trigger.gameObject.GetComponent<ItemController>();
-        if (itemController!=null && !itemController.getParented() && !handController.getHolding())
+        if (itemController!=null && itemController.getGrabable() && !handController.getHolding())
             handController.setChild(trigger.transform);
 
         /*if (trigger.gameObject.name == "MedPack")

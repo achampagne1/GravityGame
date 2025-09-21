@@ -50,9 +50,10 @@ public class GunController : ItemController
 
     public override void useItem()
     {
-        setShootDirection(new Vector3(1f,0f,0f)); 
-        shootWrapper(); 
+        shootDirection = transform.rotation * Vector3.right;
+        shootWrapper();
     }
+
 
     private void shootWrapper()
     {

@@ -9,12 +9,14 @@ public class ItemController : ObjectController
 
     //vectors
     private Vector3 originalPosition = Vector3.zero;
+    private Vector3 originalScale;
     private Vector2 forceBuffer = new Vector2(0, 0);
     [SerializeField] private Vector2 handOffset;
 
     //private variables
     private float floatCounter = 360f;
     private Coroutine floatItemCoroutine;
+    private bool grabable = false;
 
     //protected variables
     protected bool parented = false;
@@ -24,8 +26,9 @@ public class ItemController : ObjectController
 
     //public variables
     public bool floatFlag = false;
-    [SerializeField] float magnitudeOfFloat = .25f;
-    [SerializeField] float flaotSpeed = 100f;
+    [SerializeField] private float magnitudeOfFloat = .25f;
+    [SerializeField] private float flaotSpeed = 100f;
+    [SerializeField] private float grabDelay = 1f;
 
     // Start is called before the first frame update
     public override void Start()
@@ -33,6 +36,7 @@ public class ItemController : ObjectController
         facingLeft = transform.localScale.x < 0;
         base.Start();
         originalPosition = transform.position;
+        originalScale = transform.localScale;
 
         parented = transform.parent != null;
         if (parented)
@@ -66,9 +70,6 @@ public class ItemController : ObjectController
             base.FixedUpdate();
         }
         parentLatch = parented;
-
-        //if(throwTimer.checkTimer()) //imlpement later
-        //    Physics2D.IgnoreLayerCollision(13, 14, false);
     }
 
     public virtual void useItem()
@@ -84,24 +85,35 @@ public class ItemController : ObjectController
         floatFlag = false;
         gravityAffected = false;
         orientToGravity = false;
+        grabable = false;
     }
 
     private void notParentedFlags()
     {
+        transform.localScale = originalScale;
         rb.bodyType = RigidbodyType2D.Dynamic;
         rb.AddForce(forceBuffer, ForceMode2D.Impulse);
         forceBuffer = new Vector2(0, 0);
         handController = null;
         shotBy = 2; //ignore raycast layer
-        gravityAffected = false;
+        gravityAffected = true;
         orientToGravity = true;
+        updateGravityField = true;
+        simulated = true;
+        StartCoroutine(grabDelayFunction());
         //floatFlag=true; 
+    }
+
+    private IEnumerator grabDelayFunction()
+    {
+        yield return new WaitForSeconds(grabDelay);
+        grabable = true;
+        yield return null;
     }
 
 
     private void parentingHelper()
     {
-        GameObject temp = transform.parent.gameObject.transform.parent.gameObject; //this is the gameObject of the character
         GameObject hand = transform.parent.gameObject; //will need to be changed if there are different things to parent to
         handController = hand.GetComponent<HandController>();
         shotBy = hand.layer;
@@ -137,10 +149,8 @@ public class ItemController : ObjectController
         floatFlag = flag;
     }
 
-    public void setForceBuffer(Vector2 force) //maybe move to item controller
+    public void setForceBuffer(Vector2 force)
     {
-        Physics2D.IgnoreLayerCollision(13, 14, true);
-        //throwTimer.startTimer(); //implement later
         forceBuffer = force;
     }
 
@@ -158,5 +168,10 @@ public class ItemController : ObjectController
     {
         return parented;
     }
+
+    public bool getGrabable()
+    {
+        return grabable;
+    }   
 
 }

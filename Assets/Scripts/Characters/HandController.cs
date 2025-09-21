@@ -15,15 +15,17 @@ public class HandController : MonoBehaviour
     private float smoothTime = .05f;
     private Vector2 velocity = Vector2.zero;
     private Vector3 inputDirection = Vector3.zero;
+    private Vector3 originalScale = Vector3.zero;
     private bool facingLeft = false;
     private bool holdingLatch = false;
     private bool facingLeftLatch = false;
     private bool holding = false;
 
+
     // Start is called before the first frame update
     public void Start()
     {
-
+        originalScale = transform.localScale;
         GameObject temp = transform.parent.gameObject; //hand will always have a character parent
         playerBody = temp.GetComponent<Transform>();
         spacePersonController = temp.GetComponent<SpacePersonController>();
@@ -39,26 +41,27 @@ public class HandController : MonoBehaviour
     // Update is called once per frame
     public void FixedUpdate()
     {
+        facingLeft = spacePersonController.getFacingLeft();
 
         //this is for handling if youre holding an item or not
         holding = transform.childCount == 1;
-        facingLeft = spacePersonController.getFacingLeft();
         if (!holding)
             emptyHand();
         else
             holdingSomething();
+
         holdingLatch = holding;
         facingLeftLatch = facingLeft;
     }
 
     public void throwItem()
     {
-        if (transform.childCount == 0) //theres nothing to throw
+        if (!holding) //theres nothing to throw
             return;
+
         Transform child = transform.GetChild(0); // Get first child
         child.position = transform.parent.transform.position;
-        ItemController itemController = child.gameObject.GetComponent<ItemController>(); //will be chagned to item controller
-        Vector2 forceLocal = transform.parent.transform.TransformDirection(new Vector2(10f * (facingLeft ? -1 : 1), 18f));
+        Vector2 forceLocal = transform.parent.transform.TransformDirection(new Vector2(7f * (facingLeft ? -1 : 1), 7f));
         itemController.setForceBuffer(forceLocal);
         child.SetParent(null); //using transform.SetParent not Item.SetParent
     }
@@ -76,6 +79,8 @@ public class HandController : MonoBehaviour
         if (holdingLatch!=holding)
         {
             itemController = null;
+            transform.rotation = playerBody.rotation;
+            transform.localScale = originalScale;
         }
 
         Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
@@ -107,13 +112,12 @@ public class HandController : MonoBehaviour
     {
         itemController = child.gameObject.GetComponent<ItemController>();
         child.SetParent(gameObject.transform);
+        child.localRotation = Quaternion.identity;
         Vector2 localPosition = itemController.getHandOffset();
         if (facingLeft)
         {
             transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z); //this is for setting the orientation of the hand corrctly
-            //localPosition.x = -localPosition.x;
             child.localScale = new Vector3(-child.localScale.x,child.localScale.y,child.localScale.z);
-            //localPosition.y = -localPosition.y;
         }
         child.localPosition = (Vector3)localPosition;
     }
