@@ -6,6 +6,7 @@ public class ItemController : ObjectController
 {
     //object creation
     private HandController handController;
+    private Coroutine floatCoroutine;
 
     //vectors
     private Vector3 originalPosition = Vector3.zero;
@@ -15,8 +16,11 @@ public class ItemController : ObjectController
 
     //private variables
     private float floatCounter = 360f;
+    private float heightOffGround = .1f;
     private Coroutine floatItemCoroutine;
     private bool grabable = false;
+    private bool floatFlag = false;
+    private bool floatRunning = false;
 
     //protected variables
     protected bool parented = false;
@@ -25,9 +29,8 @@ public class ItemController : ObjectController
     protected int shotBy = 0;
 
     //public variables
-    public bool floatFlag = false;
     [SerializeField] private float magnitudeOfFloat = .25f;
-    [SerializeField] private float flaotSpeed = 100f;
+    [SerializeField] private float floatSpeed = 100f;
     [SerializeField] private float grabDelay = 1f;
 
     // Start is called before the first frame update
@@ -69,6 +72,16 @@ public class ItemController : ObjectController
             }
             base.FixedUpdate();
         }
+
+        if (floatFlag && !floatRunning)
+        {
+            floatCoroutine = StartCoroutine(floatItem());
+        }
+        else if (!floatFlag && floatRunning)
+        {
+            StopCoroutine(floatCoroutine);
+        }
+
         parentLatch = parented;
     }
 
@@ -80,8 +93,11 @@ public class ItemController : ObjectController
 
     private void parentedFlags()
     {
-        parentingHelper();
+        GameObject hand = transform.parent.gameObject; //will need to be changed if there are different things to parent to
+        handController = hand.GetComponent<HandController>();
+        shotBy = hand.layer;
         rb.bodyType = RigidbodyType2D.Kinematic;
+        simulated = false;
         floatFlag = false;
         gravityAffected = false;
         orientToGravity = false;
@@ -101,7 +117,6 @@ public class ItemController : ObjectController
         updateGravityField = true;
         simulated = true;
         StartCoroutine(grabDelayFunction());
-        //floatFlag=true; 
     }
 
     private IEnumerator grabDelayFunction()
@@ -111,36 +126,14 @@ public class ItemController : ObjectController
         yield return null;
     }
 
-
-    private void parentingHelper()
-    {
-        GameObject hand = transform.parent.gameObject; //will need to be changed if there are different things to parent to
-        handController = hand.GetComponent<HandController>();
-        shotBy = hand.layer;
-    }
-
     private IEnumerator floatItem()
     {
-        orientToGravity = true;
-        originalPosition = transform.position;
+        rb.bodyType = RigidbodyType2D.Kinematic;
+        
         while (true)
         {
-            floatCounter -= flaotSpeed * Time.deltaTime;
-
-            Vector2 newPosition = new Vector2(
-                originalPosition.x + Mathf.Sin(floatCounter) * magnitudeOfFloat * -gravityDirection.x,
-                originalPosition.y + Mathf.Sin(floatCounter) * magnitudeOfFloat * -gravityDirection.y
-            );
-
-            rb.MovePosition(newPosition);
-
-            if (floatCounter <= 0)
-            {
-                floatCounter = 360f;
-                transform.position = originalPosition;
-            }
-
-            yield return null;
+            Debug.Log("float");
+            yield return WaitForSeconds(.1f);
         }
     }
 
@@ -149,9 +142,9 @@ public class ItemController : ObjectController
         foreach (ContactPoint2D contact in collision.contacts)
         {
             float dot = Vector2.Dot(gravityDirection.normalized, contact.normal);
-            if (Mathf.Abs(dot) > .9f) // tweak the threshold as needed
+            if (Mathf.Abs(dot) > .9f)
             {
-                Debug.Log("Collided with object below (gravity direction).");
+                floatFlag = true;
                 return;
             }
         }
