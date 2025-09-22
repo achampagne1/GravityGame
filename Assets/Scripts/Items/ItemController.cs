@@ -144,6 +144,19 @@ public class ItemController : ObjectController
         }
     }
 
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        foreach (ContactPoint2D contact in collision.contacts)
+        {
+            float dot = Vector2.Dot(gravityDirection.normalized, contact.normal);
+            if (Mathf.Abs(dot) > .9f) // tweak the threshold as needed
+            {
+                Debug.Log("Collided with object below (gravity direction).");
+                return;
+            }
+        }
+    }
+
     public void setFloatFlag(bool flag)
     {
         floatFlag = flag;
