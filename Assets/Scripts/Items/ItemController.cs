@@ -9,7 +9,6 @@ public class ItemController : ObjectController
     private Coroutine floatCoroutine;
 
     //vectors
-    private Vector3 originalPosition = Vector3.zero;
     private Vector3 originalScale;
     private Vector2 forceBuffer = new Vector2(0, 0);
     [SerializeField] private Vector2 handOffset;
@@ -18,13 +17,13 @@ public class ItemController : ObjectController
     private float floatCounter = 360f;
     private float heightOffGround = .1f;
     private Coroutine floatItemCoroutine;
-    private bool grabable = false;
-    private bool floatFlag = false;
 
     //protected variables
     protected bool parented = false;
     protected bool facingLeft = false;
     protected bool parentLatch = true;
+    protected bool grabable = false;
+    protected bool floatFlag = false;
     protected int shotBy = 0;
 
     //public variables
@@ -37,7 +36,6 @@ public class ItemController : ObjectController
     {
         facingLeft = transform.localScale.x < 0;
         base.Start();
-        originalPosition = transform.position;
         originalScale = transform.localScale;
 
         parented = transform.parent != null;
@@ -75,11 +73,13 @@ public class ItemController : ObjectController
         //NOTE: each item should have its own override of this
     }
 
-    private void parentedFlags()
+    //this is marked as virtual incase an item needs different flags
+    private virtual void parentedFlags()
     {
         GameObject hand = transform.parent.gameObject; //will need to be changed if there are different things to parent to
         handController = hand.GetComponent<HandController>();
         shotBy = hand.layer;
+        rb.velocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
         simulated = false;
         floatFlag = false;
@@ -88,7 +88,8 @@ public class ItemController : ObjectController
         grabable = false;
     }
 
-    private void notParentedFlags()
+    //this is marked as virtual incase an item needs different flags
+    private virtual void notParentedFlags()
     {
         transform.localScale = originalScale;
         rb.bodyType = RigidbodyType2D.Dynamic;
@@ -127,18 +128,13 @@ public class ItemController : ObjectController
     {
         rb.velocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
-        floatFlag = true;
-
 
         float amplitude = 0.5f;   
         float frequency = 1f;     
         float elapsedTime = 0f;
 
         Vector2 parallel = gravityDirection.normalized;
-        Vector2 startPos = transform.position;
-
-        Vector2 targetPos = startPos - magnitudeOfFloat*parallel;
-        Vector2 offsetPos = startPos - magnitudeOfFloat * parallel;
+        Vector2 offsetPos = transform.position - magnitudeOfFloat * parallel;
 
         while (true)
         {

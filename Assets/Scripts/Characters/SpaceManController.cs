@@ -11,10 +11,8 @@ public class SpaceManController : SpacePersonController
     private bool enemyCollideFlag = false;
     private bool clickPressed = false;
     [SerializeField] float cameraShift = -110f; //for some reason this corrects the camera shift when the camera is shifted 20
-    [SerializeField] float fireLimiterVariable = .1f;
     [SerializeField] VCamController camController;
     [SerializeField] UIHandler uIHandler;
-    private StopWatch fireLimiter = new StopWatch();
 
 
     //vectors
@@ -65,15 +63,9 @@ public class SpaceManController : SpacePersonController
         setOrientation(lookLeftOrRight());
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            if (!fireLimiter.getIsRunning())
-                fireLimiter.start();
-            else if(fireLimiter.getIsRunning() && fireLimiter.getElapsedTime() > fireLimiterVariable){
-                if (handController.getHoldingObject() != null && handController.getHoldingObject().name == "Gun") //will need to be updated wehn more guns are added
-                    camController.setGunRecoil(handDirection);
-                handController.useHand();
-                fireLimiter.reset();
-                fireLimiter.start();
-            }
+            handController.useHand();
+            camController.setGunRecoil(handDirection);//this seems clunky 
+            //if youre holding a different item then there shouldnt be any gun recoil camera shake. however I dont like the idea of the gun having the cam controlelr
         }
     }
 

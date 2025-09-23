@@ -16,7 +16,6 @@ class GravityGrenadeController : ItemController
     public override void Start()
     {
         base.Start();
-        StartCoroutine(timeline());
     }
 
     public override void FixedUpdate()
@@ -26,6 +25,24 @@ class GravityGrenadeController : ItemController
         {
             base.FixedUpdate();
         }
+        else
+        {
+            rb.velocity = Vector2.zero;
+            rb.bodyType = RigidbodyType2D.Kinematic;
+            simulated = false;
+            floatFlag = false;
+            gravityAffected = false;
+            orientToGravity = false;
+            grabable = false;
+        }
+    }
+
+    public override void useItem()
+    {
+        //this needs to built upon the not parented logic in item controller
+        //it needs to override the floating item logic too
+        //and grab delay
+        StartCoroutine(timeline());
     }
 
     private IEnumerator timeline()
@@ -34,7 +51,7 @@ class GravityGrenadeController : ItemController
         nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
         nakedGravityPoint.transform.parent = gameObject.transform;
         rb.bodyType = RigidbodyType2D.Static;
-        
+
         yield return null;
     }
     

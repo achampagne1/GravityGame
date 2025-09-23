@@ -33,7 +33,6 @@ public class ObjectController : MonoBehaviour
     protected bool isGrounded = false;
     protected float gravityForceMag = 20f;
     protected float heightObject = 0;
-    private float distanceToSource = 0;
     private float groundAngle = 0f;
     private float steepestGrade = 135f;
 

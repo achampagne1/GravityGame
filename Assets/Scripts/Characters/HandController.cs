@@ -69,9 +69,9 @@ public class HandController : MonoBehaviour
     public void useHand() //this will need to get expanded to allow for multiple inputs into the item
     {
         if (holding)
-        {
             itemController.useItem();
-        }
+        else
+            Debug.Log("Nothing to use");
     }
 
     private void emptyHand()

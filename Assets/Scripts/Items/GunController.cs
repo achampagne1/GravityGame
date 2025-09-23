@@ -8,17 +8,16 @@ using static UnityEditor.FilePathAttribute;
 
 public class GunController : ItemController
 {
-    //public variables
-    [SerializeField] float bulletForce = 50.0f;
+    //serialized variables
+    [SerializeField] private float bulletForce = 50.0f;
+    [SerializeField] private float fireLimiterVariable = .1f;
 
     //vectors
     private Vector3 shootDirection = Vector3.zero;
 
     //object creation
-    private GameObject bulletObject;
-    private Timer throwTimer;
-    private Timer throwTimer2;
     private Animator animator;
+    private StopWatch fireLimiter = new StopWatch();
     [SerializeField] AudioClip gunshotClip;
     [SerializeField] GameObject bullet;
     [SerializeField] GameObject muzzleFlash;
@@ -28,7 +27,6 @@ public class GunController : ItemController
         Physics2D.IgnoreLayerCollision(9, 13, true);
         Physics2D.IgnoreLayerCollision(11, 13, true);
         Physics2D.IgnoreLayerCollision(13, 13, true);
-        throwTimer = new Timer(.25f); //this is to make sure the player doesnt immidietly grab the item when it is thrown
 
         base.Start();
 
@@ -50,8 +48,14 @@ public class GunController : ItemController
 
     public override void useItem()
     {
-        shootDirection = transform.rotation * Vector3.right;
-        shootWrapper();
+        if (!fireLimiter.getIsRunning())
+                fireLimiter.start();
+        if(fireLimiter.getIsRunning() && fireLimiter.getElapsedTime() > fireLimiterVariable){
+            shootDirection = transform.rotation * Vector3.right;
+            shootWrapper();
+            fireLimiter.reset();
+            fireLimiter.start();
+        }
     }
 
 
@@ -70,11 +74,4 @@ public class GunController : ItemController
         SoundManager.instance.playSound(gunshotClip, transform, 1f);
 
     }
-
-    private void setShootDirection(Vector3 input)
-    {
-        shootDirection = input;
-    }
-
-
 }
