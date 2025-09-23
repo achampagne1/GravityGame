@@ -20,7 +20,6 @@ public class ItemController : ObjectController
     private Coroutine floatItemCoroutine;
     private bool grabable = false;
     private bool floatFlag = false;
-    private bool floatRunning = false;
 
     //protected variables
     protected bool parented = false;
@@ -29,8 +28,8 @@ public class ItemController : ObjectController
     protected int shotBy = 0;
 
     //public variables
-    [SerializeField] private float magnitudeOfFloat = .25f;
-    [SerializeField] private float floatSpeed = 100f;
+    [SerializeField] private float magnitudeOfFloat = 10f;
+    [SerializeField] private float floatSpeed = 10f;
     [SerializeField] private float grabDelay = 1f;
 
     // Start is called before the first frame update
@@ -43,13 +42,9 @@ public class ItemController : ObjectController
 
         parented = transform.parent != null;
         if (parented)
-        {
             parentedFlags();
-        }
         else
-        {
             notParentedFlags();
-        }
     }
 
     // Update is called once per frame
@@ -59,28 +54,17 @@ public class ItemController : ObjectController
         if (parented)
         {
             if (!parentLatch)
-            {
                 parentedFlags();
-            }
             facingLeft = handController.getFacingLeft();
         }
         else
         {
             if (parentLatch)
-            {
                 notParentedFlags();
-            }
             base.FixedUpdate();
         }
 
-        if (floatFlag && !floatRunning)
-        {
-            floatCoroutine = StartCoroutine(floatItem());
-        }
-        else if (!floatFlag && floatRunning)
-        {
-            StopCoroutine(floatCoroutine);
-        }
+        floatStateMachine();
 
         parentLatch = parented;
     }
@@ -126,14 +110,46 @@ public class ItemController : ObjectController
         yield return null;
     }
 
+    private void floatStateMachine()
+    {
+        if (floatFlag && floatCoroutine == null)
+        {
+            floatCoroutine = StartCoroutine(floatItem());
+        }
+        else if (!floatFlag && floatCoroutine!=null)
+        {
+            StopCoroutine(floatCoroutine);
+            floatCoroutine = null;
+        }
+    }
+
     private IEnumerator floatItem()
     {
+        rb.velocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
-        
+        floatFlag = true;
+
+
+        float amplitude = 0.5f;   
+        float frequency = 1f;     
+        float elapsedTime = 0f;
+
+        Vector2 parallel = gravityDirection.normalized;
+        Vector2 startPos = transform.position;
+
+        Vector2 targetPos = startPos - magnitudeOfFloat*parallel;
+        Vector2 offsetPos = startPos - magnitudeOfFloat * parallel;
+
         while (true)
         {
-            Debug.Log("float");
-            yield return WaitForSeconds(.1f);
+            elapsedTime += floatSpeed*Time.deltaTime;
+
+            // Sine oscillation for smooth float motion
+            float offset = Mathf.Sin((elapsedTime * frequency)+(Mathf.PI / 2f)) * amplitude;
+
+            // Move along the perpendicular axis relative to starting position
+            transform.position = offsetPos + parallel * offset;
+            yield return null; // wait until next frame
         }
     }
 

@@ -1126,9 +1126,9 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 1
   handOffset: {x: 0.75, y: 0.75}
-  floatFlag: 0
-  magnitudeOfFloat: 0.25
-  flaotSpeed: 100
+  magnitudeOfFloat: 0.75
+  floatSpeed: 1
+  grabDelay: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
