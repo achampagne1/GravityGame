@@ -47,10 +47,14 @@ class GravityGrenadeController : ItemController
 
     private IEnumerator timeline()
     {
+        transform.SetParent(null);
+        grabableLockout = true;
+        forceBuffer = new Vector2(10f, 10f);
         yield return new WaitForSeconds(triggerTime);
         nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
         nakedGravityPoint.transform.parent = gameObject.transform;
         rb.bodyType = RigidbodyType2D.Static;
+        //Destroy(gameObject); //uncomment this when the explosion animation is done
 
         yield return null;
     }

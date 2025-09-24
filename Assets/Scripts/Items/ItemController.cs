@@ -5,12 +5,12 @@ using UnityEngine;
 public class ItemController : ObjectController
 {
     //object creation
-    private HandController handController;
+    protected HandController handController;
     private Coroutine floatCoroutine;
 
     //vectors
-    private Vector3 originalScale;
-    private Vector2 forceBuffer = new Vector2(0, 0);
+    protected Vector3 originalScale;
+    protected Vector2 forceBuffer = new Vector2(0, 0);
     [SerializeField] private Vector2 handOffset;
 
     //private variables
@@ -23,12 +23,13 @@ public class ItemController : ObjectController
     protected bool facingLeft = false;
     protected bool parentLatch = true;
     protected bool grabable = false;
+    protected bool grabableLockout = false;
     protected bool floatFlag = false;
     protected int shotBy = 0;
 
     //public variables
-    [SerializeField] private float magnitudeOfFloat = 10f;
-    [SerializeField] private float floatSpeed = 10f;
+    [SerializeField] private float magnitudeOfFloat = .75f;
+    [SerializeField] private float floatSpeed = 1.5f;
     [SerializeField] private float grabDelay = 1f;
 
     // Start is called before the first frame update
@@ -64,7 +65,14 @@ public class ItemController : ObjectController
 
         floatStateMachine();
 
+        if(forceBuffer != Vector2.zero) //the force buffer is needed to apply forces after being thrown
+        {
+            rb.AddForce(forceBuffer, ForceMode2D.Impulse);
+            forceBuffer = Vector2.zero;
+        }
+
         parentLatch = parented;
+        grabableLockout = false;
     }
 
     public virtual void useItem()
@@ -74,37 +82,46 @@ public class ItemController : ObjectController
     }
 
     //this is marked as virtual incase an item needs different flags
-    private virtual void parentedFlags()
+    protected virtual void parentedFlags()
     {
         GameObject hand = transform.parent.gameObject; //will need to be changed if there are different things to parent to
         handController = hand.GetComponent<HandController>();
         shotBy = hand.layer;
+
         rb.velocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
+
         simulated = false;
-        floatFlag = false;
         gravityAffected = false;
         orientToGravity = false;
         grabable = false;
+        updateGravityField = false;
+        floatFlag = false;
+
+        transform.localPosition = handOffset;
+        transform.localRotation = Quaternion.identity;
+        transform.localScale = handController.getFacingLeft() ? new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z) : transform.localScale;
     }
 
     //this is marked as virtual incase an item needs different flags
-    private virtual void notParentedFlags()
+    protected virtual void notParentedFlags()
     {
-        transform.localScale = originalScale;
-        rb.bodyType = RigidbodyType2D.Dynamic;
-        rb.AddForce(forceBuffer, ForceMode2D.Impulse);
-        forceBuffer = new Vector2(0, 0);
         handController = null;
         shotBy = 2; //ignore raycast layer
+
+        rb.bodyType = RigidbodyType2D.Dynamic;
+
+        simulated = true;
         gravityAffected = true;
         orientToGravity = true;
+        if(!grabableLockout)
+            StartCoroutine(grabDelayFunction());
         updateGravityField = true;
-        simulated = true;
-        StartCoroutine(grabDelayFunction());
+
+        transform.localScale = originalScale;
     }
 
-    private IEnumerator grabDelayFunction()
+    protected IEnumerator grabDelayFunction()
     {
         yield return new WaitForSeconds(grabDelay);
         grabable = true;
@@ -134,18 +151,14 @@ public class ItemController : ObjectController
         float elapsedTime = 0f;
 
         Vector2 parallel = gravityDirection.normalized;
-        Vector2 offsetPos = transform.position - magnitudeOfFloat * parallel;
+        Vector2 offsetPos = (Vector2)transform.position - magnitudeOfFloat * parallel;
 
         while (true)
         {
             elapsedTime += floatSpeed*Time.deltaTime;
-
-            // Sine oscillation for smooth float motion
             float offset = Mathf.Sin((elapsedTime * frequency)+(Mathf.PI / 2f)) * amplitude;
-
-            // Move along the perpendicular axis relative to starting position
             transform.position = offsetPos + parallel * offset;
-            yield return null; // wait until next frame
+            yield return null;
         }
     }
 

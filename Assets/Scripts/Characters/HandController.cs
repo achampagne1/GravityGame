@@ -112,14 +112,7 @@ public class HandController : MonoBehaviour
     {
         itemController = child.gameObject.GetComponent<ItemController>();
         child.SetParent(gameObject.transform);
-        child.localRotation = Quaternion.identity;
-        Vector2 localPosition = itemController.getHandOffset();
-        if (facingLeft)
-        {
-            transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z); //this is for setting the orientation of the hand corrctly
-            child.localScale = new Vector3(-child.localScale.x,child.localScale.y,child.localScale.z);
-        }
-        child.localPosition = (Vector3)localPosition;
+        transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z) : transform.localScale; //this is for setting the orientation of the hand corrctly
     }
 
     public void setInputDirection(Vector3 inputDirection)
