@@ -75,9 +75,21 @@ public class ItemController : ObjectController
         grabableLockout = false;
     }
 
-    public virtual void useItem()
+    public virtual void useItemOnce()
     {
-        Debug.Log("Item used");
+        Debug.Log("Item used once");
+        //NOTE: each item should have its own override of this
+    }
+
+    public virtual void useItemHold()
+    {
+        Debug.Log("Item used held");
+        //NOTE: each item should have its own override of this
+    }
+
+    public virtual void useItemRelease(long holdTime)
+    {
+        Debug.Log("Item use released");
         //NOTE: each item should have its own override of this
     }
 

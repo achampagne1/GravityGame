@@ -46,7 +46,7 @@ public class GunController : ItemController
         base.FixedUpdate();
     }
 
-    public override void useItem()
+    public override void useItemOnce()
     {
         if (!fireLimiter.getIsRunning())
                 fireLimiter.start();

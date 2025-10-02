@@ -66,10 +66,26 @@ public class HandController : MonoBehaviour
         child.SetParent(null); //using transform.SetParent not Item.SetParent
     }
 
-    public void useHand() //this will need to get expanded to allow for multiple inputs into the item
+    public void useHandOnce() //this will need to get expanded to allow for multiple inputs into the item
     {
         if (holding)
-            itemController.useItem();
+            itemController.useItemOnce();
+        else
+            Debug.Log("Nothing to use");
+    }
+
+    public void useHandHold()
+    {
+        if (holding)
+            itemController.useItemHold();
+        else
+            Debug.Log("Nothing to use");
+    }
+
+    public void useHandRelease(long holdTime)
+    {
+        if (holding)
+            itemController.useItemRelease(holdTime);
         else
             Debug.Log("Nothing to use");
     }

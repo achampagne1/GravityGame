@@ -13,6 +13,7 @@ public class SpaceManController : SpacePersonController
     [SerializeField] float cameraShift = -110f; //for some reason this corrects the camera shift when the camera is shifted 20
     [SerializeField] VCamController camController;
     [SerializeField] UIHandler uIHandler;
+    private Stopwatch holdTime = new Stopwatch();
 
 
     //vectors
@@ -63,9 +64,23 @@ public class SpaceManController : SpacePersonController
         setOrientation(lookLeftOrRight());
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            handController.useHand();
+            handController.useHandOnce();
             camController.setGunRecoil(handDirection);//this seems clunky 
             //if youre holding a different item then there shouldnt be any gun recoil camera shake. however I dont like the idea of the gun having the cam controlelr
+        }
+        else if (Mouse.current.leftButton.isPressed)
+        {
+            handController.useHandHold();
+            holdTime.Start();
+        }
+        else if (Mouse.current.leftButton.wasReleasedThisFrame)
+        {
+            if (holdTime.IsRunning)
+            {
+                handController.useHandRelease(holdTime.ElapsedMilliseconds);
+                //handController.useHandHold(holdTime.ElapsedMilliseconds);
+                holdTime.Reset();
+            }
         }
     }
 

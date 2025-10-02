@@ -135,7 +135,7 @@ public class SpaceZombieController : SpacePersonController
     {
         while (true)
         {
-            handController.useHand();
+            handController.useHandOnce();
             yield return new WaitForSeconds(.5f);
         }
     }
@@ -144,7 +144,7 @@ public class SpaceZombieController : SpacePersonController
     {
         for (int i = 0; i < 3; i++)
         {
-            handController.useHand();
+            handController.useHandOnce();
             yield return new WaitForSeconds(0.2f);
         }
     }

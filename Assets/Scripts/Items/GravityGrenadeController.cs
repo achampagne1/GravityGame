@@ -37,7 +37,7 @@ class GravityGrenadeController : ItemController
         }
     }
 
-    public override void useItem()
+    public override void useItemOnce()
     {
         //this needs to built upon the not parented logic in item controller
         //it needs to override the floating item logic too
@@ -45,15 +45,26 @@ class GravityGrenadeController : ItemController
         StartCoroutine(timeline());
     }
 
-    private IEnumerator timeline()
+    public override void useItemHold()
+    {
+        //gotta write code to cook
+        base.useItemHold();
+    }
+
+    public override void useItemRelease(long holdTime)
     {
         transform.SetParent(null);
         grabableLockout = true;
-        forceBuffer = new Vector2(10f, 10f);
+        forceBuffer = new Vector2(10f, 10f); //adds force to the object
+    }
+
+    private IEnumerator timeline()
+    {
         yield return new WaitForSeconds(triggerTime);
         nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
         nakedGravityPoint.transform.parent = gameObject.transform;
         rb.bodyType = RigidbodyType2D.Static;
+        gameObject.layer = 8;
         //Destroy(gameObject); //uncomment this when the explosion animation is done
 
         yield return null;
