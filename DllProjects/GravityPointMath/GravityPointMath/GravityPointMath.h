@@ -5,6 +5,7 @@ struct GravityPoint
     float x;
     float y;
     float fieldSize;
+	float fieldStrength;
 };
 
 std::vector<GravityPoint*> gravityPoints;

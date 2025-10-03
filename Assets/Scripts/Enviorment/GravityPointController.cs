@@ -33,6 +33,7 @@ public class GravityPointController : MonoBehaviour
         gravityPoint.x = transform.position.x;
         gravityPoint.y = transform.position.y;
         gravityPoint.fieldSize = fieldSize;
+        gravityPoint.fieldStrength = fieldStrength;
         GravityPointVectorAssistant.addGravityPoint(ref gravityPoint);
     }
 

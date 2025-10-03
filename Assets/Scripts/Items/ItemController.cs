@@ -25,6 +25,7 @@ public class ItemController : ObjectController
     protected bool grabable = false;
     protected bool grabableLockout = false;
     protected bool floatFlag = false;
+    protected bool floatLockout = false;
     protected int shotBy = 0;
 
     //public variables
@@ -65,11 +66,8 @@ public class ItemController : ObjectController
 
         floatStateMachine();
 
-        if(forceBuffer != Vector2.zero) //the force buffer is needed to apply forces after being thrown
-        {
-            rb.AddForce(forceBuffer, ForceMode2D.Impulse);
-            forceBuffer = Vector2.zero;
-        }
+        rb.AddForce(forceBuffer, ForceMode2D.Impulse); //the force buffer is needed to apply forces after being thrown
+        forceBuffer = Vector2.zero;
 
         parentLatch = parented;
         grabableLockout = false;
@@ -179,9 +177,17 @@ public class ItemController : ObjectController
         foreach (ContactPoint2D contact in collision.contacts)
         {
             float dot = Vector2.Dot(gravityDirection.normalized, contact.normal);
-            if (Mathf.Abs(dot) > .9f)
+            if (!floatLockout)
             {
-                floatFlag = true;
+                if (Mathf.Abs(dot) > .9f)
+                {
+                    floatFlag = true;
+                    return;
+                }
+            }
+            else
+            {
+                forceBuffer += contact.normal * 10f;
                 return;
             }
         }

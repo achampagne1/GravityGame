@@ -31,7 +31,6 @@ public class ObjectController : MonoBehaviour
     protected int layerMaskPlanet = 0;
     protected bool up = false;
     protected bool isGrounded = false;
-    protected float gravityForceMag = 20f;
     protected float heightObject = 0;
     private float groundAngle = 0f;
     private float steepestGrade = 135f;
@@ -96,7 +95,7 @@ public class ObjectController : MonoBehaviour
             gravityDirection.x = closestField.x - transform.position.x;
             gravityDirection.y = closestField.y - transform.position.y;
             gravityDirection = gravityDirection.normalized;
-            gravityForce = gravityDirection * gravityForceMag;
+            gravityForce = gravityDirection.normalized * closestField.fieldStrength;
         }
     }
 

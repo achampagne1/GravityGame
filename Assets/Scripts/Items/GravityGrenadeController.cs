@@ -8,6 +8,7 @@ class GravityGrenadeController : ItemController
     //serialized fields
     [SerializeField] float triggerTime = 5f;
     [SerializeField] float lifeTime = 10f;
+    [SerializeField] Vector2 throwForce = new Vector2(15f, 15f);
     [SerializeField] GameObject nakedGravityPointPrefab;
     private GameObject nakedGravityPoint;
 
@@ -55,19 +56,19 @@ class GravityGrenadeController : ItemController
     {
         transform.SetParent(null);
         grabableLockout = true;
-        forceBuffer = new Vector2(10f, 10f); //adds force to the object
+        forceBuffer = throwForce * (transform.rotation* Vector3.right);
     }
 
     private IEnumerator timeline()
     {
+        floatLockout = true; //prevents item from floating when it hits the ground
         yield return new WaitForSeconds(triggerTime);
         nakedGravityPoint = Instantiate(nakedGravityPointPrefab, transform.position, Quaternion.identity);
         nakedGravityPoint.transform.parent = gameObject.transform;
         rb.bodyType = RigidbodyType2D.Static;
         gameObject.layer = 8;
         //Destroy(gameObject); //uncomment this when the explosion animation is done
-
-        yield return null;
+        Destroy(gameObject, lifeTime);
     }
     
 }

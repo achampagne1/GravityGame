@@ -762,6 +762,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7437990033828595306, guid: 4c0b4ee9cbf08a443987720e9c79e61b,
+        type: 3}
+      propertyPath: fieldStrength
+      value: 15
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1129,9 +1134,10 @@ MonoBehaviour:
   magnitudeOfFloat: 0.75
   floatSpeed: 1.5
   grabDelay: 1
-  triggerTime: 1
+  triggerTime: 3
   lifeTime: 10
-  nakedGravityPointPrefab: {fileID: 8803112450986566360, guid: c0d8afac0c638394c8276f1436c91b64,
+  throwForce: {x: 15, y: 15}
+  nakedGravityPointPrefab: {fileID: 890866978912204078, guid: 12f7858c4076aff498dad39e3b41764b,
     type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
