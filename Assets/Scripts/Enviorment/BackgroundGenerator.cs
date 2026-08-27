@@ -5,17 +5,24 @@ using Cinemachine;
 
 public class BackgroundGenerator : MonoBehaviour
 {
-    private Transform followPoint;
+    private Camera renderCamera;
+    private SpriteRenderer backgroundRenderer;
 
-    // Start is called before the first frame update
     void Start()
     {
-        Vector3 camPos = MainCameraChecker.mainCameraLocation.position;
-        transform.position = new Vector3(camPos.x, camPos.y, transform.position.z);
+        renderCamera = Camera.main;
+        backgroundRenderer = GetComponent<SpriteRenderer>();
     }
-    void Update()
+
+    void LateUpdate()
     {
-        Vector3 camPos = MainCameraChecker.mainCameraLocation.position;
-        transform.position = new Vector3(camPos.x, camPos.y, transform.position.z);
+        if (renderCamera == null)
+            renderCamera = Camera.main;
+
+        if (renderCamera == null)
+            return;
+
+        Vector3 center = renderCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, renderCamera.nearClipPlane + 0.01f));
+        transform.position = new Vector3(center.x, center.y, center.z);
     }
 }

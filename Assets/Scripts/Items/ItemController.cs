@@ -28,7 +28,7 @@ public class ItemController : ObjectController
     protected bool floatLockout = false;
     protected int shotBy = 0;
 
-    //public variables
+    //serialized fields
     [SerializeField] private float magnitudeOfFloat = .75f;
     [SerializeField] private float floatSpeed = 1.5f;
     [SerializeField] private float grabDelay = 1f;
