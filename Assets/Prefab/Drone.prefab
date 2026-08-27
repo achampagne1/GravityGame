@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shoot: 0
   bulletForce: 100
-  shootInterval: 2
+  shootInterval: 1
   laser: {fileID: 5848385344887034964, guid: b1ad4859f734b944b9fd0ccb1ec63f8b, type: 3}
   gunShot: {fileID: 8300000, guid: 5264979707fa9de4cad9393550c9909f, type: 3}
 --- !u!1 &903986097713975586
@@ -269,15 +269,15 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: b5b1bf4c71c1dee4da67590903b10b32, type: 3}
   explodeTemplate: {fileID: 9170421527295217875, guid: 37a35457f221efe4db4d5c859e8df9f4,
     type: 3}
+  invincibleFlag: 0
+  shieldUpFlag: 0
+  forceLocalAdded: 0
+  movementToggle: 1
   jumpForce: 11
   moveSpeed: 20
   maxHealth: 3
-  invincibleFlag: 0
-  shieldUpFlag: 0
   health: 0
-  forceLocalAdded: 0
   knockBackDuration: 0.1
-  movementToggle: 1
   width: 3
   height: 0.2
   speed: 1

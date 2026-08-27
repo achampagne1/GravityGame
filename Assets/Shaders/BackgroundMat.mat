@@ -45,7 +45,7 @@ Material:
     - _Scale: 1
     m_Colors:
     - _Color1: {r: 0, g: 0, b: 0, a: 0}
-    - _Color2: {r: 0, g: 0.004150939, b: 0.3019608, a: 0}
+    - _Color2: {r: 0, g: 0.0004900623, b: 0.03773582, a: 0}
     - _ScrollSpeed: {r: 0.05, g: 0.05, b: 0, a: 0}
     - _ScrollSpeed2: {r: 0.05, g: 0.05, b: 0, a: 0}
   m_BuildTextureStacks: []
