@@ -429,17 +429,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be56b4cd81b802649bb44b98e3d4a6b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  level: 0
   greenTeam: {fileID: 6496834915412234364, guid: 5a9c845941aeade468875eb28208d482,
     type: 3}
   bug: {fileID: 5620588181166548615, guid: 8c86f36fdc78c844ebe6b289a23fa494, type: 3}
   drone: {fileID: 903986097713975586, guid: 5429c1bcf99f0d9439c577d0746944ca, type: 3}
+  enemiesFolder: {fileID: 911512636}
+  planetsFolder: {fileID: 123961760}
+  levelShift: 0.8
+  rampIn: 3.6
   greenTeamGain: 0.2
-  bugGain: 0.5
-  droneGain: 0.5
-  greenTeamStart: 0.2
-  bugStart: 0.7
-  droneStart: 0.1
+  spawnOffset: 0.1
+  spawnRate: 2
+  level: 0
 --- !u!114 &370729142
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -452,13 +453,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6708832fdc7ee5d4c9b1560c1423eb55, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playScript: 0
+  playScript: 1
   player: {fileID: 1499134266}
   uIDocument: {fileID: 1993004485}
   enemies: {fileID: 911512636}
   playArea:
-  - 50
-  - 50
+  - 100
+  - 100
   wayPoint: {fileID: 0}
   wayPoints: {fileID: 1544319154}
 --- !u!1 &371634734
@@ -556,7 +557,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7088162793046189500, guid: 3c420a4f1bfe268409db42877a85a472, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c420a4f1bfe268409db42877a85a472, type: 3}
@@ -786,7 +788,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7088162793046189500, guid: 3c420a4f1bfe268409db42877a85a472, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c420a4f1bfe268409db42877a85a472, type: 3}

@@ -24,6 +24,7 @@ public class EndlessScript : MonoBehaviour
     private Dictionary<string, Objective> objectives;
     private Objective currentObjective;
     private bool objectivesLoading = true;
+    private EnemySpawner enemySpawner; 
     int eventChoice = 0; //0 is reserved for no choice being made or reset
 
     // Start is called before the first frame update
@@ -42,6 +43,8 @@ public class EndlessScript : MonoBehaviour
     {
         uIHandler = uIDocument.GetComponent<UIHandler>();
         spaceManController = player.GetComponent<SpaceManController>();
+        enemySpawner = GetComponent<EnemySpawner>();
+
         if (playScript)
         {
             yield return null;
@@ -61,10 +64,22 @@ public class EndlessScript : MonoBehaviour
         uIHandler.setBubbleText("Sorry Kid, we cant rescue you. You're on your own. All we can do is drop in fuel and med kits");
         yield return new WaitForSeconds(.1f); //tiny delay for loading
 
-        //waits for player to aknowledge or timer runs out
-        eventTimer.setNewTime(10f);
-        eventTimer.resetTimer();
-        yield return new WaitUntil(acknowledgeOrWait);
+        //sets level to 1
+        yield return new WaitForSeconds(1f);
+        enemySpawner.setLevel(1);
+        //delay to prevent double spawning
+        yield return new WaitForSeconds(2f);
+
+        while (true) {
+            //wait until enemies are cleared
+            yield return new WaitUntil(()=> enemies.transform.childCount == 0);
+            //delay for the player to breathe
+            yield return new WaitForSeconds(10f);
+            //increment level
+            enemySpawner.setLevel(enemySpawner.getLevel()+1);
+            yield return new WaitForSeconds(.1f);
+        }
+
     }
 
     private IEnumerator failConditions()
