@@ -39,7 +39,7 @@ public class VCamController : MonoBehaviour
 
         if(direction != Vector2.zero)
         {
-            if (hand != null && hand.transform.childCount > 0 && hand.transform.GetChild(0).tag == "Gun")
+             if (hand != null && hand.transform.childCount > 0 && hand.transform.GetChild(0).tag == "Gun")
             {
                 StartCoroutine(gunRecoil(direction));
                 direction = Vector2.zero;

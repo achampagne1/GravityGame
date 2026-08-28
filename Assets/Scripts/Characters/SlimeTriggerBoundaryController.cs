@@ -25,6 +25,10 @@ public class SlimeTriggerBoundaryController : TriggerBoundaryCotroller, IDamager
         {
             slimeController.triggerPlayerHit();
         }
+        else if(trigger.gameObject.transform.tag== "Melee")
+        {
+            return;
+        }
         base.OnTriggerEnter2D(trigger);
     }
 
