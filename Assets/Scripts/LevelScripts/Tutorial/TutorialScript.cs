@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 /**
@@ -10,7 +8,7 @@ using UnityEngine.SceneManagement;
  *all wait until events must be wrapped in as an objective. they dont need to have text ascociated but must be wrapped
  *the only exception is aknowledge or wait
  **/
-public class LevelManager : MonoBehaviour
+public class TutorialScript : MonoBehaviour
 {
     [SerializeField] bool playScript = false;
     [SerializeField] GameObject teleporter;
