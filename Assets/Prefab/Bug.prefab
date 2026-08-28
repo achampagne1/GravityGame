@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 2747752325061903103}
   m_Layer: 14
   m_Name: TriggerBoundarySlime
-  m_TagString: Untagged
+  m_TagString: Melee
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -82,6 +82,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82f07957bbb61d46935f80e5d14c9e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damageVariable: 1
 --- !u!95 &2747752325061903103
 Animator:
   serializedVersion: 7
@@ -247,14 +248,15 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: 31e4f915dcf6e1c43b4fd822b1968560, type: 3}
   explodeTemplate: {fileID: 5636764931406021650, guid: 5d36ba58ccca21a4ba703506698f20eb,
     type: 3}
+  invincibleFlag: 0
+  shieldUpFlag: 0
+  forceLocalAdded: 1
+  movementToggle: 1
   jumpForce: 11
   moveSpeed: 2
   maxHealth: 3
-  invincibleFlag: 0
   health: 0
-  forceLocalAdded: 1
   knockBackDuration: 0.1
-  movementToggle: 1
   persistanceAfterDeath: 5
   jumpAngle: 45
   jumpMagnitude: 10

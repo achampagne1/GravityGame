@@ -205,22 +205,21 @@ MonoBehaviour:
   hitSound: {fileID: 8300000, guid: 31e4f915dcf6e1c43b4fd822b1968560, type: 3}
   explodeTemplate: {fileID: 6680122378165076922, guid: aee5d51fceed3454680cec5eddc0a016,
     type: 3}
+  invincibleFlag: 0
+  shieldUpFlag: 0
+  forceLocalAdded: 0
+  movementToggle: 1
   jumpForce: 11
   moveSpeed: 10
   maxHealth: 10
-  invincibleFlag: 0
-  shieldUpFlag: 0
   health: 0
-  forceLocalAdded: 0
   knockBackDuration: 0.1
-  movementToggle: 1
   jetPackForce: 30
   groundSmokeTime: 0.5
   footOffset: 0.1
   landingSmoke: {fileID: 8098803252328287543, guid: 9e37d826df48111448919318eaf8a42f,
     type: 3}
   cameraShift: -0.12
-  fireLimiterVariable: 0.15
   camController: {fileID: 9025898114710739492}
   uIHandler: {fileID: 0}
 --- !u!82 &817579411317516132
@@ -566,6 +565,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a020b0c3722e234a8c7c13294dbc539, type: 3}
+--- !u!1 &78098305417290325 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 357639574731171298, guid: 9a020b0c3722e234a8c7c13294dbc539,
+    type: 3}
+  m_PrefabInstance: {fileID: 424432047634515895}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5070827973349304947 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4881006573538078148, guid: 9a020b0c3722e234a8c7c13294dbc539,
@@ -585,6 +590,11 @@ PrefabInstance:
       propertyPath: m_Lens.OrthographicSize
       value: 15
       objectReference: {fileID: 0}
+    - target: {fileID: 7890692750123727933, guid: 105085c0f91237d4faa3b183f84b75d1,
+        type: 3}
+      propertyPath: hand
+      value: 
+      objectReference: {fileID: 78098305417290325}
     - target: {fileID: 7890692750123727933, guid: 105085c0f91237d4faa3b183f84b75d1,
         type: 3}
       propertyPath: initialZoom

@@ -14,8 +14,9 @@ public class VCamController : MonoBehaviour
     [SerializeField] float shootMagnitude = 2f;
     [SerializeField] bool shake = false;
     [SerializeField] bool shakeContinuously = false;
+    [SerializeField] GameObject hand;
     private Vector3 originalLocal;
-    private Vector2 direction = new Vector2(0,0);
+    private Vector2 direction = Vector2.zero;
     // Start is called before the first frame update
     void Start()
     {
@@ -38,8 +39,11 @@ public class VCamController : MonoBehaviour
 
         if(direction != Vector2.zero)
         {
-            StartCoroutine(gunRecoil(direction));
-            direction = Vector2.zero;
+            if (hand != null && hand.transform.childCount > 0 && hand.transform.GetChild(0).tag == "Gun")
+            {
+                StartCoroutine(gunRecoil(direction));
+                direction = Vector2.zero;
+            }
         }
     }
 

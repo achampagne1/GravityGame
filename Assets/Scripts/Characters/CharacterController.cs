@@ -127,7 +127,7 @@ public class CharacterController : ObjectController,IHealth
         SoundManager.instance.playSound(hitSound, transform, 1f);
         StartCoroutine(HitHelper.changeColorWrapper(animator, spriteRenderer, hitSprite,gameObject));
 
-        if (hitGameObject.tag == "Hazard") //dependency injection?
+        if (hitGameObject.tag == "Hazard" || hitGameObject.tag == "Melee") //dependency injection?
             return;
         
         var (strikeLocation, rotation) = StrikeLocation.determineStrikeLocation(hitGameObject, gameObject, heightObject);

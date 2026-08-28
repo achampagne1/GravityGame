@@ -10,6 +10,7 @@ TagManager:
   - Dead
   - Projectile
   - Hazard
+  - Melee
   layers:
   - Default
   - TransparentFX
