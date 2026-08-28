@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SlimeTriggerBoundaryController : TriggerBoundaryCotroller
+public class SlimeTriggerBoundaryController : TriggerBoundaryCotroller, IDamager
 {
+    //game variables
+    [SerializeField] float damageVariable = 1f;
     private BugController slimeController;
     public override void Start()
     {
@@ -24,5 +26,17 @@ public class SlimeTriggerBoundaryController : TriggerBoundaryCotroller
             slimeController.triggerPlayerHit();
         }
         base.OnTriggerEnter2D(trigger);
+    }
+
+    public bool damage(GameObject hitGameObject)
+    {
+        IHealth health = hitGameObject.GetComponent<IHealth>();
+        health.setHealth(health.getHealth() - damageVariable);
+        return true;
+    }
+
+    public float getDamage()
+    {
+        return damageVariable;
     }
 }

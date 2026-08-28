@@ -20,7 +20,7 @@ public class TriggerBoundaryCotroller : MonoBehaviour
 
     protected virtual void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.gameObject.tag == "Projectile" || trigger.gameObject.tag == "Hazard") 
+        if (trigger.gameObject.tag == "Projectile" || trigger.gameObject.tag == "Hazard" || trigger.gameObject.tag == "Melee") 
             characterController.hit(trigger.gameObject);
     }
 
