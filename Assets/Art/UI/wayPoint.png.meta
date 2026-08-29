@@ -103,12 +103,12 @@ TextureImporter:
       name: wayPoint_0
       rect:
         serializedVersion: 2
-        x: 68
-        y: 13
-        width: 224
-        height: 352
+        x: 0
+        y: 0
+        width: 729
+        height: 919
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -123,7 +123,7 @@ TextureImporter:
     outline: []
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 35db2ec560c0f48489768b828b3a61d8
     internalID: 0
     vertices: []
     indices: 
