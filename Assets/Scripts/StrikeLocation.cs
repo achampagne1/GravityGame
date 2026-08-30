@@ -32,8 +32,8 @@ public class StrikeLocation
         Output output = new Output();
 
         Rigidbody2D colliderRb = collider.GetComponent<Rigidbody2D>();
-        vessel.vx = colliderRb.velocity.x;
-        vessel.vy = colliderRb.velocity.y;
+        vessel.vx = colliderRb.linearVelocity.x;
+        vessel.vy = colliderRb.linearVelocity.y;
         vessel.xCollider = collider.transform.position.x;
         vessel.yCollider = collider.transform.position.y;
         vessel.radius = collidedRadius;

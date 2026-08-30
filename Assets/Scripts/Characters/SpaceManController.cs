@@ -44,11 +44,11 @@ public class SpaceManController : SpacePersonController
             handController.throwItem();
         base.FixedUpdate();
 
-        if (rb.velocity.magnitude > 15)
+        if (rb.linearVelocity.magnitude > 15)
         {
             camController.setShakeContinuously(true);
             camController.setShake(true); //setshake is a latch and automatically goes back to false
-            camController.setShakeMagnitude(rb.velocity.magnitude/40);
+            camController.setShakeMagnitude(rb.linearVelocity.magnitude/40);
         }
         else
             camController.setShakeContinuously(false);

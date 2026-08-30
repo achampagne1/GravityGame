@@ -31,7 +31,7 @@ public class BulletController : ObjectController,IProjectileInfo,IDamager
     {
         calculateRotation();
         base.FixedUpdate();
-        rb.velocity = calculateDrag(rb.velocity);  //drag prevent bullets from infinitly orbiting
+        rb.linearVelocity = calculateDrag(rb.linearVelocity);  //drag prevent bullets from infinitly orbiting
         projectileHelper.update();
     }
 
@@ -40,7 +40,7 @@ public class BulletController : ObjectController,IProjectileInfo,IDamager
         // Create a quaternion representing the desired rotation angle around the y-axis
         // bullet rotation is slightly different from other object rotations. it must take into account its velocity
         // due to this, the calculateRotation() parent function is overidden
-        float angle = Mathf.Atan2(rb.velocity.y+gravityDirection.y, rb.velocity.x+gravityDirection.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(rb.linearVelocity.y+gravityDirection.y, rb.linearVelocity.x+gravityDirection.x) * Mathf.Rad2Deg;
         Quaternion desiredRotation = Quaternion.Euler(0f, 0f,angle);
         transform.rotation = desiredRotation;
     }

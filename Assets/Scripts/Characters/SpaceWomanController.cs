@@ -43,6 +43,6 @@ public class SpaceWomanController : MonoBehaviour
         Quaternion desiredRotation = Quaternion.Euler(0f, 0f, 90f + angle);
         transform.rotation = desiredRotation;
 
-        rb.velocity = gravityForce;
+        rb.linearVelocity = gravityForce;
     }
 }

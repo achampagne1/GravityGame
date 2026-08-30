@@ -42,7 +42,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _GlowOffset: 0
     - _Opacity: 0.2
+    - _Pulse: 0
+    - _Speed: 1
     m_Colors:
     - _Color: {r: 5.992157, g: 0.3444005, b: 0, a: 0}
   m_BuildTextureStacks: []
@@ -59,4 +62,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d0353a89b1f911e48b9e16bdc9f2e058, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  version: 9
+  version: 10

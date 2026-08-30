@@ -94,12 +94,12 @@ public class CharacterController : ObjectController,IHealth
             rb.AddForce(jump, ForceMode2D.Impulse);
             rb.AddForce(moveDirection, ForceMode2D.Impulse);
             rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
-            rb.velocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravit
+            rb.linearVelocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravit
         }
         
         base.FixedUpdate();
         
-        previousV = -rb.velocity;
+        previousV = -rb.linearVelocity;
         previousMove = -moveDirection;
 
         if (health < 0)
@@ -210,7 +210,7 @@ public class CharacterController : ObjectController,IHealth
     private void calculateJump()
     {
         if (!isGrounded)
-            jumpExtraction = rb.velocity - gravityForce - moveDirection;
+            jumpExtraction = rb.linearVelocity - gravityForce - moveDirection;
         else
             jumpExtraction = Vector2.zero;
 

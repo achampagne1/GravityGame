@@ -28,7 +28,7 @@ class GravityGrenadeController : ItemController
         }
         else
         {
-            rb.velocity = Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             rb.bodyType = RigidbodyType2D.Kinematic;
             simulated = false;
             floatFlag = false;

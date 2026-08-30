@@ -62,7 +62,7 @@ public class ObjectController : MonoBehaviour
 
             calculateGravity();
 
-            up = Vector2.Dot(rb.velocity, gravityDirection) < 0;
+            up = Vector2.Dot(rb.linearVelocity, gravityDirection) < 0;
 
             if (gravityAffected)
             {

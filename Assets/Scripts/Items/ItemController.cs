@@ -98,7 +98,7 @@ public class ItemController : ObjectController
         handController = hand.GetComponent<HandController>();
         shotBy = hand.layer;
 
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
 
         simulated = false;
@@ -153,7 +153,7 @@ public class ItemController : ObjectController
 
     private IEnumerator floatItem()
     {
-        rb.velocity = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
         rb.bodyType = RigidbodyType2D.Kinematic;
 
         float amplitude = 0.5f;   
