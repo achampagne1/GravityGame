@@ -173,6 +173,12 @@ Transform:
   - {fileID: 382160202}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &124296170 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5381183814411198057, guid: 98bd757dea9151e40914a160539cb8d3,
+    type: 3}
+  m_PrefabInstance: {fileID: 1880284958}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &169990485
 GameObject:
   m_ObjectHideFlags: 0
@@ -599,6 +605,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1880284958}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &703938827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 124296170}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 63fe23711b95932409768bd1ec970d89, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ClearCameraEachFrame
 --- !u!1001 &715390786
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -927,6 +945,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 927081583553060077, guid: 98bd757dea9151e40914a160539cb8d3,
         type: 3}
+      propertyPath: m_OcclusionCulling
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 927081583553060077, guid: 98bd757dea9151e40914a160539cb8d3,
+        type: 3}
       propertyPath: m_CullingMask.m_Bits
       value: 1024
       objectReference: {fileID: 0}
@@ -1085,6 +1108,16 @@ PrefabInstance:
       propertyPath: m_RenderPostProcessing
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3228875007188339809, guid: 98bd757dea9151e40914a160539cb8d3,
+        type: 3}
+      propertyPath: m_RequiresDepthTextureOption
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3228875007188339809, guid: 98bd757dea9151e40914a160539cb8d3,
+        type: 3}
+      propertyPath: m_RequiresOpaqueTextureOption
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4547183111475427440, guid: 98bd757dea9151e40914a160539cb8d3,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -1145,10 +1178,15 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Untagged
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4051108221603673209, guid: 98bd757dea9151e40914a160539cb8d3, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5381183814411198057, guid: 98bd757dea9151e40914a160539cb8d3,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 703938827}
   m_SourcePrefab: {fileID: 100100000, guid: 98bd757dea9151e40914a160539cb8d3, type: 3}
 --- !u!4 &1965047474 stripped
 Transform:
