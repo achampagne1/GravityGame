@@ -8,6 +8,7 @@ public class DroneGunController : MonoBehaviour
     [SerializeField] float bulletForce = 35.0f;
     [SerializeField] float shootInterval = 2f;
     [SerializeField] GameObject laser;
+    [SerializeField] GameObject muzzleFlash;
     [SerializeField] AudioClip gunShot;
     private AudioSource soundFx;
     private Coroutine shootCoroutine = null;
@@ -34,6 +35,10 @@ public class DroneGunController : MonoBehaviour
 
         if (shoot)
         {
+            GameObject muzzleFlashClone = Instantiate(muzzleFlash, transform);
+            muzzleFlashClone.transform.parent = transform;
+            muzzleFlashClone.transform.localPosition = new Vector3(8.23f, -1.02f, 0f);
+            Destroy(muzzleFlashClone, .05f);
             if (recoilRunning)
                 StopCoroutine(recoilCoroutine);
             recoilCoroutine = StartCoroutine(recoil());
