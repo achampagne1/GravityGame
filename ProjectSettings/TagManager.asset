@@ -18,18 +18,18 @@ TagManager:
   - 
   - Water
   - UI
-  - gravitySources
-  - powerUp
-  - planet
   - player
+  - planet
+  - platform
   - background
   - enemy
-  - bullet
-  - items
-  - TriggerBoudary
-  - Platforms
-  - NPC
-  - ignoreMask
+  - item
+  - trigger
+  - worldCameraIgnore
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 

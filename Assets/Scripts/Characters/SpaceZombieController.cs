@@ -24,6 +24,7 @@ public class SpaceZombieController : SpacePersonController
     private bool attackRunning = false;
     private Coroutine attackCoroutine = null;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
+    [SerializeField] private GameObject player;
 
     public override void Start()
     {
@@ -32,7 +33,7 @@ public class SpaceZombieController : SpacePersonController
 
         timer.startTimer();
         shootTimer.startTimer(); //shoot timer must be started so that the enemey is ready when it first sees the player
-        enemyAssistant = new EnemyAssistant(gameObject);
+        enemyAssistant = new EnemyAssistant(gameObject,player);
         base.Start();
 
         handController.setInputDirection(transform.rotation * new Vector3((float)orientationInput, 0f, 0f));

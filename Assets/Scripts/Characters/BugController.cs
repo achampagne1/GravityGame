@@ -10,6 +10,7 @@ public class BugController : CharacterController
     [SerializeField] float jumpAngle = 20f;
     [SerializeField] float jumpMagnitude = 10f;
     [SerializeField] float pounceCooldownTime =.1f;
+    [SerializeField] GameObject player;
     private bool pounceRunning = false;
     private bool knockBackRunning = false;
     private bool pause = false;
@@ -31,7 +32,7 @@ public class BugController : CharacterController
         blinkTimer = new RandomTimer(3, 5);
         pauseDuration = new RandomTimer(.1f, 1f);
         moveDuration = new RandomTimer(1f, 4f);
-        enemyAssistant = new EnemyAssistant(gameObject);
+        enemyAssistant = new EnemyAssistant(gameObject, player);
         base.Start();
     }
 

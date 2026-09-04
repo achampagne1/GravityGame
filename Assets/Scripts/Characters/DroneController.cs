@@ -12,7 +12,8 @@ public class DroneController : CharacterController
 
     [SerializeField] float width = 3f;  
     [SerializeField] float height = .2f;  
-    [SerializeField] float speed = 1f;   
+    [SerializeField] float speed = 1f;
+    [SerializeField] GameObject player;
     private float hoverTime = 0f;
 
     // Start is called before the first frame update
@@ -25,7 +26,7 @@ public class DroneController : CharacterController
         int angleOffset = 0;
         for (int i = 0; i < enemyAssistants.Length; i++)
         {
-            enemyAssistants[i] = new EnemyAssistant(gameObject);
+            enemyAssistants[i] = new EnemyAssistant(gameObject,player);
             enemyAssistants[i].setAngleOffsetSetting(angleOffset);
             angleOffset += 72;
         }

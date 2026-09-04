@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
+using static UnityEngine.UI.Image;
 
 class EnemyAssistant
 {
@@ -10,11 +12,12 @@ class EnemyAssistant
     private int resolution = 4; //resolution is used to determine how many degrees seperate each ray cast shoot. it should not be a number 90 is divisible by
     private Vector2 direction = Vector2.zero;
     private GameObject gameObject;
-    private GameObject player = null;
+    private GameObject player;
     private static readonly ContactFilter2D filter = getContactFilter2D();
-    public EnemyAssistant(GameObject gameObject)
+    public EnemyAssistant(GameObject gameObject,GameObject player)
     {
         this.gameObject = gameObject;
+        this.player = player;
     }
 
     public Vector3 detectPlayer(bool facingLeft)
@@ -23,21 +26,16 @@ class EnemyAssistant
         bool validDirection = false;
         if (player != null)
         {
-            direction = (player.transform.position - gameObject.transform.position).normalized;
-            Vector2 localDirection = gameObject.transform.InverseTransformDirection(direction);
+            Vector3 playerDirection = (player.transform.position-gameObject.transform.position).normalized;
+            Debug.DrawRay(gameObject.transform.position, playerDirection * 30f, Color.red);
+            RaycastHit2D[] hits = new RaycastHit2D[1];
 
-            float angleOffset = (facingLeft ? -angleOffsetSetting : angleOffsetSetting) * Mathf.Deg2Rad;
-            float cos = Mathf.Cos(angleOffset);
-            float sin = Mathf.Sin(angleOffset);
-            Vector2 rotatedDir = new Vector2(
-                localDirection.x * cos - localDirection.y * sin,
-                localDirection.x * sin + localDirection.y * cos
-            );
-
-            if (!facingLeft && rotatedDir.x > 0 && rotatedDir.y > 0)
-                validDirection = true;
-            else if (facingLeft && rotatedDir.x < 0 && rotatedDir.y > 0)
-                validDirection = true;
+            int count = Physics2D.Raycast(gameObject.transform.position, playerDirection, filter, hits, 30f);
+            if (count > 0)
+            {
+                if (hits[0].collider.gameObject.layer == LayerMask.NameToLayer("player"))
+                    Debug.Log("See player");
+            }
         }
 
         if (!validDirection)
@@ -48,24 +46,6 @@ class EnemyAssistant
             direction.y = Mathf.Sin(angleToCast * Mathf.Deg2Rad);
             angle = (angle + resolution) % 91;
         }
-
-        RaycastHit2D[] hits = new RaycastHit2D[10];
-        int hitCount = Physics2D.Raycast(gameObject.transform.position, direction, filter, hits, 30f);
-
-        for (int i = 0; i < hitCount; i++)
-        {
-            GameObject hitObj = hits[i].collider.gameObject;
-
-            if (hitObj != gameObject && hitObj.layer == LayerMask.NameToLayer("player"))
-            {
-                player = hitObj;
-                return gameObject.transform.InverseTransformDirection((hitObj.transform.position- gameObject.transform.position).normalized); //for now it will just be a direciton vector
-            }
-
-            if (hitObj.layer != LayerMask.NameToLayer("player")) { }
-                break;
-        }
-        player = null;
         return new Vector3(0f,0f,1f);
     }
 
@@ -76,11 +56,12 @@ class EnemyAssistant
 
     private static ContactFilter2D getContactFilter2D() {
         int enemyLayer = LayerMask.NameToLayer("enemy");
-        int triggerLayer = LayerMask.NameToLayer("TriggerBoudary");
-        int itemsLayer = LayerMask.NameToLayer("items");
+        int triggerLayer = LayerMask.NameToLayer("trigger");
+        int itemsLayer = LayerMask.NameToLayer("item");
+        int backgroundLayer = LayerMask.NameToLayer("background");
 
         int everythingMask = Physics2D.AllLayers;
-        int mask = everythingMask & ~(1 << enemyLayer) & ~(1 << triggerLayer) & ~(1 << itemsLayer);
+        int mask = everythingMask & ~(1 << enemyLayer) & ~(1 << triggerLayer) & ~(1 << itemsLayer) & ~(1 << backgroundLayer);
 
         ContactFilter2D f = new ContactFilter2D();
         f.SetLayerMask(mask);
