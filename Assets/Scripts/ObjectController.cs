@@ -28,7 +28,7 @@ public class ObjectController : MonoBehaviour
     [SerializeField] protected bool simulated = false;
 
     //game variables
-    protected int layerMaskPlanet = 0;
+    static protected int layerMaskPlatforms = 0;
     protected bool up = false;
     protected bool isGrounded = false;
     protected float heightObject = 0;
@@ -47,7 +47,8 @@ public class ObjectController : MonoBehaviour
         groundStopWatch = new StopWatch();
         spriteRenderer = GetComponent<SpriteRenderer>();
         rb = GetComponent<Rigidbody2D>();
-        layerMaskPlanet = LayerMask.GetMask("Default", "Platforms");
+        if(layerMaskPlatforms == 0)
+            layerMaskPlatforms = LayerMask.GetMask("platform", "planet");
         heightObject = getHeight();
 
         StartCoroutine(findClosestField());
@@ -134,7 +135,7 @@ public class ObjectController : MonoBehaviour
 
     private bool IsGrounded()
     {
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, gravityDirection, heightObject/2+.5f, layerMaskPlanet);//the .5 is to allow for a bit of wiggle room
+        RaycastHit2D hit = Physics2D.Raycast(transform.position, gravityDirection, heightObject/2+.5f, layerMaskPlatforms);//the .5 is to allow for a bit of wiggle room
         bool ground = hit.collider != null;
         if (!ground)
         {
