@@ -30,6 +30,7 @@ public class PropPlacer : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             GameObject prop = new GameObject("prop");
+            prop.layer = LayerMask.NameToLayer("prop");
             SpriteRenderer sr = prop.AddComponent<SpriteRenderer>();
             int depth = rand.Next(-90, -85);
             sr.sortingOrder = depth;

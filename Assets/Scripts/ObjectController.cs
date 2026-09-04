@@ -83,6 +83,8 @@ public class ObjectController : MonoBehaviour
         }
     }
 
+    public virtual void triggerLogic(Collider2D trigger) { /*currently no base logic for triggers*/}
+
     protected virtual void calculateGravity() 
     {
         if (gravityOverride != Vector2.zero)

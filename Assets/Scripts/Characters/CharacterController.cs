@@ -55,9 +55,6 @@ public class CharacterController : ObjectController,IHealth
     // Start is called before the first frame update
     public override void Start()
     {
-        Physics2D.IgnoreLayerCollision(9, 9, true);
-        Physics2D.IgnoreLayerCollision(9, 11, true);
-        Physics2D.IgnoreLayerCollision(11, 11, true);
 
         health = maxHealth;
 
@@ -113,6 +110,14 @@ public class CharacterController : ObjectController,IHealth
 
         strikeLeftLatch = false;
         hitLatch = false;
+    }
+
+    public override void triggerLogic(Collider2D trigger)
+    {
+        if (trigger.gameObject.tag == "Projectile" || trigger.gameObject.tag == "Hazard" || trigger.gameObject.tag == "Melee")
+            hit(trigger.gameObject);
+
+        base.triggerLogic(trigger);
     }
 
     public virtual void hit(GameObject hitGameObject)

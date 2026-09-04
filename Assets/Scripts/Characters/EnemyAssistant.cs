@@ -27,13 +27,10 @@ class EnemyAssistant
         if (player != null)
         {
             Vector3 playerDirection = (player.transform.position-gameObject.transform.position).normalized;
-            Debug.DrawRay(gameObject.transform.position, playerDirection * 30f, Color.red);
-            RaycastHit2D[] hits = new RaycastHit2D[1];
-
-            int count = Physics2D.Raycast(gameObject.transform.position, playerDirection, filter, hits, 30f);
-            if (count > 0)
+            RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, playerDirection, 30f, filter.layerMask);//the .5 is to allow for a bit of wiggle room
+            if (hit)
             {
-                if (hits[0].collider.gameObject.layer == LayerMask.NameToLayer("player"))
+                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("player"))
                     Debug.Log("See player");
             }
         }

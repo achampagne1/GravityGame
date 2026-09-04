@@ -31,7 +31,7 @@ public class StarGenerator : MonoBehaviour
         {
             float alpha = Random.Range(0.25f, 1);
             GameObject starObject = Instantiate(initialStar, new Vector3(Random.Range(spawnPoint.position.x-_mapSize.x, spawnPoint.position.x+_mapSize.x), Random.Range(spawnPoint.position.y - _mapSize.y, spawnPoint.position.y+_mapSize.y), 0), Quaternion.identity);
-            starObject.tag = "twinkle";
+            //starObject.tag = "twinkle";
             SpriteRenderer spriteRenderer = starObject.GetComponent<SpriteRenderer>();
             spriteRenderer.sprite = _starSprites[Random.Range(0, _starSprites.Count)];
             spriteRenderer.sortingOrder = -102;

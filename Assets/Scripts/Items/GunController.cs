@@ -18,15 +18,12 @@ public class GunController : ItemController
     //object creation
     private Animator animator;
     private StopWatch fireLimiter = new StopWatch();
-    [SerializeField] AudioClip gunshotClip;
-    [SerializeField] GameObject bullet;
-    [SerializeField] GameObject muzzleFlash;
+    [SerializeField] private AudioClip gunshotClip;
+    [SerializeField] private GameObject bullet;
+    [SerializeField] private GameObject muzzleFlash;
 
     public override void Start()
     {
-        Physics2D.IgnoreLayerCollision(9, 13, true);
-        Physics2D.IgnoreLayerCollision(11, 13, true);
-        Physics2D.IgnoreLayerCollision(13, 13, true);
 
         base.Start();
 

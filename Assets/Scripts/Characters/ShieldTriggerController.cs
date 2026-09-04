@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
-public class ShieldTriggerController : TriggerBoundaryCotroller,IHealth
+public class ShieldTriggerController : MonoBehaviour,IHealth
 {
     [SerializeField] GameObject shieldHit;
     [SerializeField] float fadeSize = .1f;
@@ -13,11 +13,10 @@ public class ShieldTriggerController : TriggerBoundaryCotroller,IHealth
     private float shieldStrength = 100f;
     private bool regenerateRunning = false;
     // Start is called before the first frame update
-    public override void Start()
+    public void Start()
     {
         parentController = transform.parent.gameObject.GetComponent<CharacterController>();
         collider = GetComponent<CircleCollider2D>();
-        base.Start();
     }
 
     public void Update()

@@ -71,9 +71,17 @@ public class SpacePersonController : CharacterController
         smokeLatch = false;
     }
 
+    public override void triggerLogic(Collider2D trigger)
+    {
+        ItemController itemController = trigger.gameObject.GetComponent<ItemController>();
+        if (itemController != null && itemController.getGrabable() && !handController.getHolding())
+            handController.setChild(trigger.transform);
+
+        base.triggerLogic(trigger);
+    }
+
     public virtual void Update()
     {
-        int ham = 0;
         //basically an abstract funciton
     }
 
