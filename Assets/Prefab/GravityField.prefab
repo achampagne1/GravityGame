@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 128789484778494048}
   - component: {fileID: 3503481325014125013}
   - component: {fileID: 6120998658661071583}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: GravityField
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -92,3 +92,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fieldStrength: 20
+  direction: {x: 0, y: -1}

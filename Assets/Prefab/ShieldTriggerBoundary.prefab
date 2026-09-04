@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 459312370684212570}
   - component: {fileID: 5761295327006901013}
   - component: {fileID: 1133635339454035323}
-  m_Layer: 14
+  m_Layer: 11
   m_Name: ShieldTriggerBoundary
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2605727235981582886}
   - component: {fileID: 2638228240095060081}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: GravityVisualizer
   m_TagString: Untagged
   m_Icon: {fileID: 0}

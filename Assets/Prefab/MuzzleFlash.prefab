@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8346089747383887984}
   - component: {fileID: 9145100386013688051}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: OuterGlow
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -103,7 +103,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5992851936520404616}
   - component: {fileID: 6580874399391098989}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}

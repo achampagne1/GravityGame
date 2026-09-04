@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4622401280902540694}
   - component: {fileID: 9093555100603836331}
   - component: {fileID: 7200657744619183238}
-  m_Layer: 13
+  m_Layer: 11
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,6 +39,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4226510805164169320
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -56,6 +57,9 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,9 +81,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 1
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -6628414004274166170, guid: 668d53b80a71d5b48a72d23585bc8892,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -90,8 +96,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!114 &9184237530594172509
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,18 +117,18 @@ MonoBehaviour:
   calculateIsGrounded: 0
   simulated: 1
   handOffset: {x: 3, y: 1}
-  floatFlag: 0
   magnitudeOfFloat: 0.1
-  flaotSpeed: 4
+  floatSpeed: 1.5
   grabDelay: 1
   bulletForce: 100
+  fireLimiterVariable: 0.1
   gunshotClip: {fileID: 8300000, guid: f531f1bba93abff4d8eeca4e65344fac, type: 3}
   bullet: {fileID: 5338086611691396769, guid: 2f8c39ffa4da29044a624623649d42ed, type: 3}
   muzzleFlash: {fileID: 4305216388988206239, guid: 64e817bd7ce00fe478e95bc9da2479da,
     type: 3}
 --- !u!50 &490096820176868143
 Rigidbody2D:
-  serializedVersion: 4
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -133,8 +139,8 @@ Rigidbody2D:
   m_UseFullKinematicContacts: 0
   m_UseAutoMass: 0
   m_Mass: 1
-  m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_IncludeLayers:
@@ -225,7 +231,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 87a994f22e2a29546b53618d5434c5b5, type: 3}
+  m_audioClip: {fileID: 0}
   m_Resource: {fileID: 8300000, guid: 87a994f22e2a29546b53618d5434c5b5, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1

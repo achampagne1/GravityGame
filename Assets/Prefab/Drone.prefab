@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4166812074556588968}
   - component: {fileID: 8559380982672661618}
   - component: {fileID: 61215529239478348}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 44213664299606981}
   - component: {fileID: 6390334921417434718}
   - component: {fileID: 6438851431983271781}
-  m_Layer: 11
+  m_Layer: 10
   m_Name: Drone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -295,6 +295,7 @@ MonoBehaviour:
   width: 3
   height: 0.2
   speed: 1
+  player: {fileID: 0}
 --- !u!50 &6390334921417434718
 Rigidbody2D:
   serializedVersion: 5
@@ -355,7 +356,7 @@ GameObject:
   - component: {fileID: 2945011380360102844}
   - component: {fileID: 2836498742370527814}
   - component: {fileID: 421957946707649702}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: JetFlame
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -470,7 +471,7 @@ GameObject:
   - component: {fileID: 3382543802110253487}
   - component: {fileID: 7446191337359081580}
   - component: {fileID: 9158670996051688082}
-  m_Layer: 14
+  m_Layer: 12
   m_Name: TriggerBoundaryDrone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -561,7 +562,7 @@ GameObject:
   - component: {fileID: 3855477163915413230}
   - component: {fileID: 5442709425930351511}
   - component: {fileID: 7079774190461184973}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: JetFlame (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}

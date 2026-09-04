@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4906519143337695274}
   - component: {fileID: 2556291986462569329}
-  m_Layer: 6
+  m_Layer: 7
   m_Name: NakedGravityPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}

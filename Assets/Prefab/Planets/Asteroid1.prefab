@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8155229471000884864}
   - component: {fileID: 2969214956540812018}
   - component: {fileID: 3436484875587372400}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Asteroid1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -39,6 +39,7 @@ Transform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &4111232044167321864
 SpriteRenderer:
+  serializedVersion: 3
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -56,6 +57,9 @@ SpriteRenderer:
   m_RayTraceProcedural: 0
   m_RayTracingAccelStructBuildFlagsOverride: 0
   m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -77,9 +81,11 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 100
+  m_MaskInteraction: 0
   m_Sprite: {fileID: -833164383909932804, guid: 52670db52d9843a41991074096a60102,
     type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -90,8 +96,8 @@ SpriteRenderer:
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
-  m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+  m_BlendShapeWeights: []
 --- !u!60 &8155229471000884864
 PolygonCollider2D:
   m_ObjectHideFlags: 0
@@ -377,7 +383,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3625123190778404265}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Props
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -410,7 +416,7 @@ GameObject:
   - component: {fileID: 7077789039571648222}
   - component: {fileID: 2966743211571554535}
   - component: {fileID: 2975347895093784604}
-  m_Layer: 2
+  m_Layer: 12
   m_Name: Asteroid1Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}

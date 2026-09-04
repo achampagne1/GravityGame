@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7052228290468972845}
   - component: {fileID: 4255643935656172998}
-  m_Layer: 0
+  m_Layer: 1
   m_Name: LevelManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -51,7 +51,6 @@ MonoBehaviour:
   greenTeamOriginal: {fileID: 0}
   spawnPoint: {fileID: 0}
   uIDocument: {fileID: 0}
-  starList: {fileID: 0}
   enemies: {fileID: 0}
   wayPoint: {fileID: 9188229693498863588, guid: ebadbea0e675fe348a8c3e6d24ca0459,
     type: 3}
