@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using UnityEngine;
 
 public class SpacePersonController : CharacterController
 {
     //object creation
-    private SpriteRenderer jetPackFlame;
     protected HandController handController;
     private AudioSource jetPackAudioSource;
     protected Timer hoverTimer;
@@ -16,6 +16,8 @@ public class SpacePersonController : CharacterController
     [SerializeField] private float groundSmokeTime = 2f;
     [SerializeField] private float footOffset = .1f;
     [SerializeField] private GameObject landingSmoke;
+    [SerializeField] private GameObject jetPackFlame;
+    [SerializeField] private Vector2 flameOffset = new Vector2(0, 0);
 
 
     //private game variables
@@ -23,6 +25,7 @@ public class SpacePersonController : CharacterController
     protected bool throwItem = false;
     private bool hoverFlag = false;
     private bool smokeLatch = false;
+    private GameObject jetPackFlameClone;
 
     //protected game variables
     protected float currentFuel = 100f;
@@ -45,8 +48,6 @@ public class SpacePersonController : CharacterController
 
         foreach(Transform child in transform)
         {
-            if (child.name == "JetPackFlame")
-                jetPackFlame = child.gameObject.GetComponent<SpriteRenderer>();
             if (child.name == "Hand")
                 handController = child.gameObject.GetComponent<HandController>();
         }
@@ -93,18 +94,17 @@ public class SpacePersonController : CharacterController
         {
             jetPackAudioSource.Play();
             hoverFlag = true;
-            Color color = jetPackFlame.color;
-            color.a = 1.0f; // Set alpha (0 = transparent, 1 = opaque)
-            jetPackFlame.color = color;
+            jetPackFlameClone = Instantiate(jetPackFlame);
+            jetPackFlameClone.transform.parent = gameObject.transform;
+            jetPackFlameClone.transform.rotation = transform.rotation;
+            jetPackFlameClone.transform.localPosition = new Vector3(flameOffset[0],flameOffset[1], transform.position.z);
         }
 
         if (!space || currentFuel == 0)
         {
             jetPackAudioSource.Stop();
             hoverFlag = false;
-            Color color = jetPackFlame.color;
-            color.a = 0.0f; // Set alpha (0 = transparent, 1 = opaque)
-            jetPackFlame.color = color;
+            Destroy(jetPackFlameClone);
         }
 
         if (hoverFlag)
