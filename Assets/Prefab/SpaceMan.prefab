@@ -414,6 +414,8 @@ MonoBehaviour:
   jetPackFlame: {fileID: 3859246152096219491, guid: e73ac5e7184a70d40be4d842179e59a0,
     type: 3}
   flameOffset: {x: -4.25, y: -6.5}
+  maxVisorAngle: {x: 30, y: -30}
+  maxJetPackAngle: {x: 0, y: -30}
   cameraShift: -0.12
   camController: {fileID: 9025898114710739492}
   uIHandler: {fileID: 0}

@@ -54,13 +54,13 @@ public class SpaceManController : SpacePersonController
 
     public override void Update()
     {
-        Vector3 handDirection = mouseToDirection(Input.mousePosition, transform.rotation);
-        handController.setInputDirection(handDirection);
+        lookingDirection = mouseToDirection(Input.mousePosition, transform.rotation);
+        handController.setInputDirection(lookingDirection);
         setOrientation(lookLeftOrRight());
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
             handController.useHandOnce();
-            camController.setGunRecoil(handDirection);//this seems clunky 
+            camController.setGunRecoil(lookingDirection);//this seems clunky 
             //if youre holding a different item then there shouldnt be any gun recoil camera shake. however I dont like the idea of the gun having the cam controlelr
         }
         else if (Mouse.current.leftButton.isPressed)
