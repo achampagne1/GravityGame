@@ -116,10 +116,12 @@ MonoBehaviour:
   updateGravityField: 1
   calculateIsGrounded: 0
   simulated: 1
-  handOffset: {x: 3, y: 1}
+  handOffset1: {x: 2.75, y: 1}
+  handOffset2: {x: 0, y: 0}
   magnitudeOfFloat: 0.1
   floatSpeed: 1.5
   grabDelay: 1
+  twoHands: 0
   bulletForce: 100
   fireLimiterVariable: 0.1
   gunshotClip: {fileID: 8300000, guid: f531f1bba93abff4d8eeca4e65344fac, type: 3}

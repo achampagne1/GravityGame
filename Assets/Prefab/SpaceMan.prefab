@@ -226,6 +226,7 @@ MonoBehaviour:
     type: 3}
   jetPackFlame: {fileID: 3859246152096219491, guid: e73ac5e7184a70d40be4d842179e59a0,
     type: 3}
+  flameOffset: {x: -4.25, y: -6.5}
   cameraShift: -0.12
   camController: {fileID: 9025898114710739492}
   uIHandler: {fileID: 0}
@@ -435,11 +436,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Hand
-      objectReference: {fileID: 0}
-    - target: {fileID: 357639574731171298, guid: 9a020b0c3722e234a8c7c13294dbc539,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4881006573538078148, guid: 9a020b0c3722e234a8c7c13294dbc539,
         type: 3}
@@ -676,11 +672,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: ShieldTriggerBoundary
-      objectReference: {fileID: 0}
-    - target: {fileID: 2744645358298037165, guid: 10898bc27c0ba8348bc2bdc7845edaf8,
-        type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

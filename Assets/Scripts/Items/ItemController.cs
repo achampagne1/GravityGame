@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class ItemController : ObjectController
 {
@@ -11,7 +12,6 @@ public class ItemController : ObjectController
     //vectors
     protected Vector3 originalScale;
     protected Vector2 forceBuffer = new Vector2(0, 0);
-    [SerializeField] private Vector2 handOffset;
 
     //private variables
     private float floatCounter = 360f;
@@ -32,6 +32,10 @@ public class ItemController : ObjectController
     [SerializeField] private float magnitudeOfFloat = .75f;
     [SerializeField] private float floatSpeed = 1.5f;
     [SerializeField] private float grabDelay = 1f;
+    [SerializeField] private float armLength = .5f;
+    [SerializeField] private bool twoHands = false;
+    [SerializeField] private Vector2 handOffset1;
+    [SerializeField] private Vector2 handOffset2;
 
     // Start is called before the first frame update
     public override void Start()
@@ -108,7 +112,7 @@ public class ItemController : ObjectController
         updateGravityField = false;
         floatFlag = false;
 
-        transform.localPosition = handOffset;
+        transform.localPosition = handOffset1;
         transform.localRotation = Quaternion.identity;
         transform.localScale = handController.getFacingLeft() ? new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z) : transform.localScale;
     }
@@ -203,9 +207,25 @@ public class ItemController : ObjectController
         forceBuffer = force;
     }
 
-    public Vector2 getHandOffset()
+    public Vector2 getHandOffset1()
     {
-        return handOffset;
+        return handOffset1;
+    }
+
+    public Vector2 getHandOffset2()
+    {
+        if(twoHands)
+            return handOffset2;
+        else
+        {
+            Debug.Log("getHandOffset2 called on a 1 handed item");
+            return Vector2.zero;
+        }
+    }
+
+    public bool getTwoHands()
+    {
+        return twoHands;
     }
 
     public bool getFacingLeft()
@@ -223,4 +243,8 @@ public class ItemController : ObjectController
         return grabable;
     }   
 
+    public float getArmLength()
+    {
+        return armLength;
+    }
 }

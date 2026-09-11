@@ -113,7 +113,7 @@ GameObject:
   - component: {fileID: 8772004313697816388}
   - component: {fileID: 2659207592033062378}
   - component: {fileID: 7890692750123727933}
-  m_Layer: 2
+  m_Layer: 6
   m_Name: PlayerCam
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -193,3 +193,5 @@ MonoBehaviour:
   shakeMagnitude: 0.2
   shootMagnitude: 0.05
   shake: 0
+  shakeContinuously: 0
+  hand: {fileID: 0}

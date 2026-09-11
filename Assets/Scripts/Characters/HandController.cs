@@ -1,7 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 
 public class HandController : MonoBehaviour
 {
@@ -11,6 +10,7 @@ public class HandController : MonoBehaviour
     ItemController itemController;
 
     //game variables
+    private float armLength = .5f; 
     private Queue<Vector2> delay;
     private float smoothTime = .05f;
     private Vector2 velocity = Vector2.zero;
@@ -20,7 +20,7 @@ public class HandController : MonoBehaviour
     private bool holdingLatch = false;
     private bool facingLeftLatch = false;
     private bool holding = false;
-
+    private GameObject secondHand = null;
 
     // Start is called before the first frame update
     public void Start()
@@ -43,8 +43,8 @@ public class HandController : MonoBehaviour
     {
         facingLeft = spacePersonController.getFacingLeft();
 
-        //this is for handling if youre holding an item or not
-        holding = transform.childCount == 1;
+        //NOTE: The second hand is a child of the first hand. Will this cause issues? maybe
+        holding = transform.childCount >= 1;
         if (!holding)
             emptyHand();
         else
@@ -97,6 +97,11 @@ public class HandController : MonoBehaviour
             itemController = null;
             transform.rotation = playerBody.rotation;
             transform.localScale = originalScale;
+            if(secondHand != null)
+            {
+                Destroy(secondHand);
+                secondHand = null;
+            }
         }
 
         Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
@@ -117,7 +122,7 @@ public class HandController : MonoBehaviour
         float angleRad = Mathf.Atan2(inputDirection.y, inputDirection.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;
         Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
-        Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad));
+        Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * armLength;
         if (facingLeftLatch != facingLeft)
             transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
         transform.position = (Vector2)playerBody.position + offset;
@@ -127,8 +132,22 @@ public class HandController : MonoBehaviour
     public void setChild(Transform child)
     {
         itemController = child.gameObject.GetComponent<ItemController>();
+        armLength = itemController.getArmLength();
         child.SetParent(gameObject.transform);
         transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z) : transform.localScale; //this is for setting the orientation of the hand corrctly
+        createSecondHand(child);    
+    }
+
+    private void createSecondHand(Transform child)
+    {
+        secondHand = new GameObject();
+        secondHand.name = "secondHand";
+        SpriteRenderer sr = secondHand.AddComponent<SpriteRenderer>();
+        sr.sprite = GetComponent<SpriteRenderer>().sprite;
+        secondHand.transform.parent = transform;
+        secondHand.transform.localScale = transform.localScale;
+        sr.sortingOrder = child.GetComponent<SpriteRenderer>().sortingOrder - 1;
+        secondHand.transform.localPosition = child.GetComponent<ItemController>().getHandOffset2();
     }
 
     public void setInputDirection(Vector3 inputDirection)
