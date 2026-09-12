@@ -10,7 +10,8 @@ public class HandController : MonoBehaviour
     ItemController itemController;
 
     //game variables
-    private float armLength = .5f; 
+    [SerializeField] private float armLength = .5f;
+    [SerializeField] private bool relax = false;
     private Queue<Vector2> delay;
     private float smoothTime = .05f;
     private Vector2 velocity = Vector2.zero;
@@ -21,6 +22,9 @@ public class HandController : MonoBehaviour
     private bool facingLeftLatch = false;
     private bool holding = false;
     private GameObject secondHand = null;
+
+    [SerializeField] float holdingRelaxAngle = 0.0f;
+    [SerializeField] float inputDirectionTolerance = 0.1f;
 
     // Start is called before the first frame update
     public void Start()
@@ -35,7 +39,6 @@ public class HandController : MonoBehaviour
         holding = transform.childCount == 1;
         if (holding)
             setChild(transform.GetChild(0));
-
     }
 
     // Update is called once per frame
@@ -118,8 +121,13 @@ public class HandController : MonoBehaviour
 
     private void holdingSomething()
     {
-        //meed to get offset of item
-        float angleRad = Mathf.Atan2(inputDirection.y, inputDirection.x);
+        int facingLeftInt = facingLeft ? -1 : 1;
+        Vector2 holdingRelaxAngle = new Vector2(Mathf.Cos(this.holdingRelaxAngle * Mathf.Deg2Rad)*facingLeftInt, Mathf.Sin(this.holdingRelaxAngle * Mathf.Deg2Rad));
+        float angleRad;
+        if (relax)
+            angleRad = Mathf.Atan2(holdingRelaxAngle.y, holdingRelaxAngle.x);
+        else
+           angleRad = Mathf.Atan2(inputDirection.y, inputDirection.x);
         float angleDeg = angleRad * Mathf.Rad2Deg;
         Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
         Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * armLength;

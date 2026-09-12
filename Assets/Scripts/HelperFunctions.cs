@@ -83,4 +83,10 @@ public struct HelperFunctions
 
         return found;
     }
+
+    public static float similar(Vector2 a, Vector2 b)
+    {
+        Vector2 diff = a - b;
+        return diff.magnitude;
+    }
 }

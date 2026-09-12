@@ -33,6 +33,8 @@ public class SpacePersonController : CharacterController
     private Transform jetPack;
     private Vector3 originalVisorPos;
     private Vector3 originalJetPackPos;
+    private Quaternion originalVisorRot;
+    private Quaternion originalJetPackRot;
     private bool holdingLatch = false;
 
     //protected game variables
@@ -66,6 +68,8 @@ public class SpacePersonController : CharacterController
         }
         originalVisorPos = visor.localPosition;
         originalJetPackPos = jetPack.localPosition;
+        originalVisorRot = visor.localRotation;
+        originalJetPackRot = jetPack.localRotation;
 
 
         base.Start();
@@ -92,42 +96,44 @@ public class SpacePersonController : CharacterController
         {
             visor.localPosition = originalVisorPos;
             jetPack.localPosition = originalJetPackPos;
+            visor.localRotation = originalVisorRot;
+            jetPack.localRotation = originalJetPackRot;
         }
 
-        if(handController.getHolding())
-        {
-            Vector2 localLookingDirection = transform.InverseTransformDirection(lookingDirection*(facingLeft?-1:1));
-            float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
-            Debug.Log("Angle: " + angle);
-            float visorAngle;
-            float jetPackAngle;
-
-            if (angle > maxVisorAngle.x)
-                visorAngle = maxVisorAngle.x;
-            else if (angle < maxVisorAngle.y)
-                visorAngle = maxVisorAngle.y;
-            else
-                visorAngle = angle;
-
-            if(angle > maxJetPackAngle.x)
-                jetPackAngle = maxJetPackAngle.x;
-            else if(angle < maxJetPackAngle.y)
-                jetPackAngle = maxJetPackAngle.y;
-            else
-                jetPackAngle = angle;
-
-            Quaternion lookRotationVisor = Quaternion.Euler(0f, 0f, visorAngle*(facingLeft ? -1 : 1));
-            Quaternion lookRotationJetPack = Quaternion.Euler(0f, 0f, jetPackAngle * (facingLeft ? -1 : 1));
-
-            visor.localPosition = lookRotationVisor * originalVisorPos;
-            jetPack.localPosition = lookRotationJetPack * originalJetPackPos;
-
-            visor.localRotation = lookRotationVisor;
-            jetPack.localRotation = lookRotationJetPack;
-        }
+        if (handController.getHolding())
+            angleJetPackAndVisor();
 
         smokeLatch = false;
         holdingLatch = handController.getHolding();
+    }
+
+    private void angleJetPackAndVisor()
+    {
+        int facingLeftInt = facingLeft ? -1 : 1;
+        Vector2 localLookingDirection = transform.InverseTransformDirection(lookingDirection * facingLeftInt);
+        float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
+        float visorAngle;
+        float jetPackAngle;
+
+        if (!facingLeft)
+        {
+            visorAngle = Mathf.Clamp(angle, maxVisorAngle.y, maxVisorAngle.x);
+            jetPackAngle = Mathf.Clamp(angle, maxJetPackAngle.y, maxJetPackAngle.x);
+        }
+        else
+        {
+            visorAngle = Mathf.Clamp(angle, -maxVisorAngle.x, -maxVisorAngle.y);
+            jetPackAngle = Mathf.Clamp(angle, -maxJetPackAngle.x, -maxJetPackAngle.y);
+        }
+
+        Quaternion lookRotationVisor = Quaternion.Euler(0f, 0f, visorAngle * facingLeftInt);
+        Quaternion lookRotationJetPack = Quaternion.Euler(0f, 0f, jetPackAngle * facingLeftInt);
+
+        visor.localPosition = lookRotationVisor * originalVisorPos;
+        jetPack.localPosition = lookRotationJetPack * originalJetPackPos;
+
+        visor.localRotation = lookRotationVisor;
+        jetPack.localRotation = lookRotationJetPack;
     }
 
     public override void triggerLogic(Collider2D trigger)
