@@ -109,7 +109,9 @@ public class SpacePersonController : CharacterController
 
     private void angleJetPackAndVisor()
     {
-        int facingLeftInt = facingLeft ? -1 : 1;
+        //NOTE: CUrrently this is only for basic rotation of visor and jetpack. if the movements for those items gets more complicated, this logic should get moved to their own clases
+        //The space person should not be responsible for the movements of its children except for basic sprite game objects
+        //Since the hand is a more complicated game objct, its movement should not go here
         Vector2 localLookingDirection = transform.InverseTransformDirection(lookingDirection * facingLeftInt);
         float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
         float visorAngle;

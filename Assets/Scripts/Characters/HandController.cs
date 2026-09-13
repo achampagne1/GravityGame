@@ -122,19 +122,11 @@ public class HandController : MonoBehaviour
     private void holdingSomething()
     {
         int facingLeftInt = facingLeft ? -1 : 1;
-        Vector2 holdingRelaxAngle = new Vector2(Mathf.Cos(this.holdingRelaxAngle * Mathf.Deg2Rad)*facingLeftInt, Mathf.Sin(this.holdingRelaxAngle * Mathf.Deg2Rad));
-        float angleRad;
-        if (relax)
-            angleRad = Mathf.Atan2(holdingRelaxAngle.y, holdingRelaxAngle.x);
-        else
-           angleRad = Mathf.Atan2(inputDirection.y, inputDirection.x);
-        float angleDeg = angleRad * Mathf.Rad2Deg;
-        Quaternion rotationQuaternion = Quaternion.Euler(0, 0, angleDeg);
-        Vector2 offset = new Vector2(Mathf.Cos(angleRad), Mathf.Sin(angleRad)) * armLength;
-        if (facingLeftLatch != facingLeft)
-            transform.localScale = new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z);
-        transform.position = (Vector2)playerBody.position + offset;
-        transform.rotation = rotationQuaternion;
+        Vector2 localLookingDirection = playerBody.InverseTransformDirection(inputDirection * facingLeftInt);
+        float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
+        Quaternion lookingRotation = Quaternion.Euler(0f, 0f, angle * facingLeftInt);
+        transform.localRotation = lookingRotation;
+        transform.localPosition = lookingRotation * new Vector2(armLength, 0f);
     }
 
     public void setChild(Transform child)

@@ -32,6 +32,7 @@ public class CharacterController : ObjectController,IHealth
     protected bool strikeLeftLatch = false;
     protected bool hitLatch = false;
     protected int wallInFrontVar = 0;
+    protected int facingLeftInt = 1;
     protected float rotatedX = 0;
     protected float rotatedY = 0;
     protected float direcitonInput = 1;
@@ -268,6 +269,7 @@ public class CharacterController : ObjectController,IHealth
             transform.localScale = scale;
             facingLeft = false;
         }
+        facingLeftInt = facingLeft ? -1 : 1;
     }
 
     protected virtual void determineAnimation() //might need to be redone to allow for differences between space eprson and chgaracter
