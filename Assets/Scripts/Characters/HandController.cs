@@ -8,10 +8,13 @@ public class HandController : CharacterProp
     ItemController itemController;
 
     //game variables
-    [SerializeField] private float armLengthAiming = 4.5f;
-    [SerializeField] private float armLengthRelaxed = 3f;
     [SerializeField] private float relaxAngle = 0f;
     [SerializeField] private bool relax = false;
+    private float armLengthActive = 0;
+    private float armLengthPassive = 0;
+    private bool twoHandItem = false;
+    private Vector2 hand2Offset = new Vector2(0, 0);
+    private int itemSortingOrder = 0;
     private Queue<Vector2> delay;
     private float smoothTime = .05f;
     private Vector2 velocity = Vector2.zero;
@@ -39,13 +42,12 @@ public class HandController : CharacterProp
     // Update is called once per frame
     public override void FixedUpdate()
     {
-        //NOTE: The second hand is a child of the first hand. Will this cause issues? maybe
-        holding = transform.childCount >= 1;
+        holding = GetComponentInChildren<ItemController>() != null;
+
+        base.FixedUpdate();
 
         holdingLatch = holding;
         facingLeftLatch = facingLeft;
-
-        base.FixedUpdate();
     }
 
     public void throwItem()
@@ -95,13 +97,13 @@ public class HandController : CharacterProp
 
     protected override void aimingState()
     {
-        originalPosition = new Vector3(armLengthAiming, 0, 0);
+        originalPosition = new Vector3(armLengthActive, 0, 0);
         base.aimingState();
     }
 
     private void relaxedHolding()
     { 
-        originalPosition = new Vector3(armLengthRelaxed, 0, 0);
+        originalPosition = new Vector3(armLengthPassive, 0, 0);
         originalRotation = Quaternion.Euler(0, 0, relaxAngle);
         base.idleState();
     }
@@ -135,13 +137,33 @@ public class HandController : CharacterProp
     public void setChild(Transform child)
     {
         itemController = child.gameObject.GetComponent<ItemController>();
-        //armLength = itemController.getArmLength();
+        setItemData(itemController);
         child.SetParent(gameObject.transform);
         transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z) : transform.localScale; //this is for setting the orientation of the hand corrctly
-        createSecondHand(child);    
+        if(twoHandItem)
+            createSecondHand();    
     }
 
-    private void createSecondHand(Transform child)
+    public void setItemData(ItemController itemController)
+    {
+        PermanentItemData newItem = itemController.getPermanentItemData();
+        armLengthActive = newItem.activeArmLength;
+        armLengthPassive = newItem.passiveArmLength;
+        twoHandItem = newItem.twoHands;
+        hand2Offset = newItem.hand2Pos;
+        itemSortingOrder = newItem.sortingOrder;
+    }
+
+    public void resetItemData()
+    {
+        armLengthActive = 0.0f;
+        armLengthPassive = 0.0f;
+        twoHandItem = false;
+        hand2Offset = Vector2.zero;
+        itemSortingOrder = 0;
+    }
+
+    private void createSecondHand()
     {
         secondHand = new GameObject();
         secondHand.name = "secondHand";
@@ -149,8 +171,8 @@ public class HandController : CharacterProp
         sr.sprite = GetComponent<SpriteRenderer>().sprite;
         secondHand.transform.parent = transform;
         secondHand.transform.localScale = transform.localScale;
-        sr.sortingOrder = child.GetComponent<SpriteRenderer>().sortingOrder - 1;
-        secondHand.transform.localPosition = child.GetComponent<ItemController>().getHandOffset2();
+        sr.sortingOrder = itemSortingOrder - 1;
+        secondHand.transform.localPosition = hand2Offset;
     }
 
     public bool getFacingLeft()

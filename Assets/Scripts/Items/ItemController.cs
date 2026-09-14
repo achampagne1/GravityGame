@@ -3,6 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
+public struct PermanentItemData
+{
+    public bool twoHands;
+    public Vector2 hand1Pos;
+    public Vector2 hand2Pos;
+    public float activeArmLength;
+    public float passiveArmLength;
+    public int sortingOrder;
+}
+
 public class ItemController : ObjectController
 {
     //object creation
@@ -32,7 +42,8 @@ public class ItemController : ObjectController
     [SerializeField] private float magnitudeOfFloat = .75f;
     [SerializeField] private float floatSpeed = 1.5f;
     [SerializeField] private float grabDelay = 1f;
-    [SerializeField] private float armLength = .5f;
+    [SerializeField] private float armLengthActive = .5f;
+    [SerializeField] private float armLengthPassive = .5f;
     [SerializeField] private bool twoHands = false;
     [SerializeField] private Vector2 handOffset1;
     [SerializeField] private Vector2 handOffset2;
@@ -207,27 +218,6 @@ public class ItemController : ObjectController
         forceBuffer = force;
     }
 
-    public Vector2 getHandOffset1()
-    {
-        return handOffset1;
-    }
-
-    public Vector2 getHandOffset2()
-    {
-        if(twoHands)
-            return handOffset2;
-        else
-        {
-            Debug.Log("getHandOffset2 called on a 1 handed item");
-            return Vector2.zero;
-        }
-    }
-
-    public bool getTwoHands()
-    {
-        return twoHands;
-    }
-
     public bool getFacingLeft()
     {
         return facingLeft;
@@ -241,10 +231,16 @@ public class ItemController : ObjectController
     public bool getGrabable()
     {
         return grabable;
-    }   
-
-    public float getArmLength()
+    }
+    
+    public PermanentItemData getPermanentItemData()
     {
-        return armLength;
+        PermanentItemData data = new PermanentItemData();
+        data.twoHands = twoHands;
+        data.hand2Pos = handOffset2;
+        data.activeArmLength = armLengthActive;
+        data.passiveArmLength = armLengthPassive;
+        data.sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+        return data;
     }
 }
