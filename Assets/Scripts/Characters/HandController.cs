@@ -5,8 +5,6 @@ using UnityEngine.InputSystem.HID;
 public class HandController : CharacterProp
 {
     //object creation
-    Transform playerBody;  // Assign the player's body transform
-    SpacePersonController spacePersonController;
     ItemController itemController;
 
     //game variables
@@ -29,10 +27,6 @@ public class HandController : CharacterProp
     // Start is called before the first frame update
     public override void Start()
     {
-        GameObject temp = transform.parent.gameObject; //hand will always have a character parent
-        playerBody = temp.GetComponent<Transform>();
-        spacePersonController = temp.GetComponent<SpacePersonController>();
-
         delay = new Queue<Vector2>();
         delay.Enqueue(transform.position);
         holding = transform.childCount == 1;
@@ -45,8 +39,6 @@ public class HandController : CharacterProp
     // Update is called once per frame
     public override void FixedUpdate()
     {
-        facingLeft = spacePersonController.getFacingLeft();
-
         //NOTE: The second hand is a child of the first hand. Will this cause issues? maybe
         holding = transform.childCount >= 1;
 
@@ -119,7 +111,7 @@ public class HandController : CharacterProp
         if (holdingLatch!=holding)
         {
             itemController = null;
-            transform.rotation = playerBody.rotation;
+            transform.rotation = transform.parent.rotation;
             transform.localScale = originalScale;
             if(secondHand != null)
             {
@@ -129,12 +121,12 @@ public class HandController : CharacterProp
         }
 
         Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
-        float angleRad = playerBody.rotation.eulerAngles.z * Mathf.Deg2Rad;
+        float angleRad = transform.parent.rotation.eulerAngles.z * Mathf.Deg2Rad;
         Vector2 offset = new Vector2(
             localOffset.x * Mathf.Cos(angleRad) - localOffset.y * Mathf.Sin(angleRad),
             localOffset.x * Mathf.Sin(angleRad) + localOffset.y * Mathf.Cos(angleRad)
         ); //converts the local offset into a global one
-        Vector2 targetPosition = (Vector2)playerBody.position + offset;  //calcluates a target positions
+        Vector2 targetPosition = (Vector2)transform.parent.position + offset;  //calcluates a target positions
         delay.Enqueue(targetPosition); //adds the target to a queue. this is so the hand follows a path that is sligthly behind the body
         Vector2 delayedTarget = delay.Dequeue(); //gets the old delay
         transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); //smoothly places the hand
