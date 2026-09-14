@@ -5,6 +5,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Unity.Collections.AllocatorManager;
 
+public enum CHARACTERSTATE
+{
+    IDLE,
+    AIMING
+}
+
 public class CharacterController : ObjectController,IHealth
 {
     //object creation

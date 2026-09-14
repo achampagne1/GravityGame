@@ -1457,6 +1457,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
+      propertyPath: armLength
+      value: 4.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
       propertyPath: uIHandler
       value: 
       objectReference: {fileID: 485643197}
@@ -1469,6 +1474,11 @@ PrefabInstance:
         type: 3}
       propertyPath: flameOffset.y
       value: -6.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
+      propertyPath: handRelaxedAngle
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
@@ -1500,6 +1510,11 @@ PrefabInstance:
         type: 3}
       propertyPath: handOffset
       value: 0.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2667448509233387349, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
+      propertyPath: holdingRelaxAngle
+      value: -45
       objectReference: {fileID: 0}
     - target: {fileID: 2950402490743257772, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}

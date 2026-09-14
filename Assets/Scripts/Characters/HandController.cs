@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
 
-public class HandController : MonoBehaviour
+public class HandController : CharacterProp
 {
     //object creation
     Transform playerBody;  // Assign the player's body transform
@@ -10,13 +10,13 @@ public class HandController : MonoBehaviour
     ItemController itemController;
 
     //game variables
-    [SerializeField] private float armLength = .5f;
+    [SerializeField] private float armLengthAiming = 4.5f;
+    [SerializeField] private float armLengthRelaxed = 3f;
+    [SerializeField] private float relaxAngle = 0f;
     [SerializeField] private bool relax = false;
     private Queue<Vector2> delay;
     private float smoothTime = .05f;
     private Vector2 velocity = Vector2.zero;
-    private Vector3 inputDirection = Vector3.zero;
-    private Vector3 originalScale = Vector3.zero;
     private bool facingLeft = false;
     private bool holdingLatch = false;
     private bool facingLeftLatch = false;
@@ -27,9 +27,8 @@ public class HandController : MonoBehaviour
     [SerializeField] float inputDirectionTolerance = 0.1f;
 
     // Start is called before the first frame update
-    public void Start()
+    public override void Start()
     {
-        originalScale = transform.localScale;
         GameObject temp = transform.parent.gameObject; //hand will always have a character parent
         playerBody = temp.GetComponent<Transform>();
         spacePersonController = temp.GetComponent<SpacePersonController>();
@@ -39,22 +38,22 @@ public class HandController : MonoBehaviour
         holding = transform.childCount == 1;
         if (holding)
             setChild(transform.GetChild(0));
+
+        base.Start();
     }
 
     // Update is called once per frame
-    public void FixedUpdate()
+    public override void FixedUpdate()
     {
         facingLeft = spacePersonController.getFacingLeft();
 
         //NOTE: The second hand is a child of the first hand. Will this cause issues? maybe
         holding = transform.childCount >= 1;
-        if (!holding)
-            emptyHand();
-        else
-            holdingSomething();
 
         holdingLatch = holding;
         facingLeftLatch = facingLeft;
+
+        base.FixedUpdate();
     }
 
     public void throwItem()
@@ -93,6 +92,28 @@ public class HandController : MonoBehaviour
             Debug.Log("Nothing to use");
     }
 
+    protected override void idleState()
+    {
+        //TODO: idle state needs to break up into emptyHand and holding something but not aiming, or (future) holding something but not aimable
+        if (holding)
+            relaxedHolding();
+        else
+            emptyHand();
+    }
+
+    protected override void aimingState()
+    {
+        originalPosition = new Vector3(armLengthAiming, 0, 0);
+        base.aimingState();
+    }
+
+    private void relaxedHolding()
+    { 
+        originalPosition = new Vector3(armLengthRelaxed, 0, 0);
+        originalRotation = Quaternion.Euler(0, 0, relaxAngle);
+        base.idleState();
+    }
+
     private void emptyHand()
     {
         if (holdingLatch!=holding)
@@ -119,20 +140,10 @@ public class HandController : MonoBehaviour
         transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); //smoothly places the hand
     }
 
-    private void holdingSomething()
-    {
-        int facingLeftInt = facingLeft ? -1 : 1;
-        Vector2 localLookingDirection = playerBody.InverseTransformDirection(inputDirection * facingLeftInt);
-        float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
-        Quaternion lookingRotation = Quaternion.Euler(0f, 0f, angle * facingLeftInt);
-        transform.localRotation = lookingRotation;
-        transform.localPosition = lookingRotation * new Vector2(armLength, 0f);
-    }
-
     public void setChild(Transform child)
     {
         itemController = child.gameObject.GetComponent<ItemController>();
-        armLength = itemController.getArmLength();
+        //armLength = itemController.getArmLength();
         child.SetParent(gameObject.transform);
         transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z) : transform.localScale; //this is for setting the orientation of the hand corrctly
         createSecondHand(child);    
@@ -148,11 +159,6 @@ public class HandController : MonoBehaviour
         secondHand.transform.localScale = transform.localScale;
         sr.sortingOrder = child.GetComponent<SpriteRenderer>().sortingOrder - 1;
         secondHand.transform.localPosition = child.GetComponent<ItemController>().getHandOffset2();
-    }
-
-    public void setInputDirection(Vector3 inputDirection)
-    {
-        this.inputDirection = inputDirection;
     }
 
     public bool getFacingLeft()
