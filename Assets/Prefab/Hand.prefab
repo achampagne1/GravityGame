@@ -105,4 +105,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8610708f7bb051346b0b6319e295616a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  handOffset: 0.9
+  maxRotationalAngle: {x: 180, y: -180}
+  transitionSpeed: 20
+  characterState: 0
+  relax: 0

@@ -48,14 +48,18 @@ public class CharacterController : ObjectController,IHealth
     private float horizontalInput = 0;
 
     //vectors
-    private Vector2 moveDirection = new Vector2(0, 0);
-    private Vector2 jump = new Vector2(0, 0);
-    private Vector2 previousV = new Vector2(0, 0);
-    private Vector2 drag = new Vector2(0, 0);
-    private Vector2 previousMove = new Vector2(0, 0);
-    private Vector2 jumpExtraction = new Vector2(0, 0);
-    private Vector2 additionalForce = new Vector2(0, 0);
+    private Vector2 moveDirection = Vector2.zero;
+    private Vector2 jump = Vector2.zero;
+    private Vector2 previousV = Vector2.zero;
+    private Vector2 drag = Vector2.zero;
+    private Vector2 previousMove = Vector2.zero;
+    private Vector2 jumpExtraction = Vector2.zero;
+    private Vector2 additionalForce = Vector2.zero;
     protected Vector2 bulletStrikeLocation;
+    protected Vector2 lookingDirection = Vector2.zero;
+
+    protected List<CharacterProp> characterProps;
+    protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
 
 
 
@@ -64,6 +68,7 @@ public class CharacterController : ObjectController,IHealth
     {
 
         health = maxHealth;
+        characterProps = new List<CharacterProp>();
 
         try
         {
@@ -76,6 +81,12 @@ public class CharacterController : ObjectController,IHealth
 
         if (transform.localScale.x < 0)
             facingLeft = true;
+
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<CharacterProp>() != null)
+                characterProps.Add(child.gameObject.GetComponent<CharacterProp>());
+        }
 
         base.Start();
     }
@@ -100,7 +111,14 @@ public class CharacterController : ObjectController,IHealth
             rb.AddForce(drag, ForceMode2D.Impulse); //drag is needed because negate the old velcotiy so you can account for hte new agnel and recalculate
             rb.linearVelocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravit
         }
-        
+
+        foreach (CharacterProp prop in characterProps)
+        {
+            prop.setFacingLeft(facingLeft);
+            prop.setInputDirection(lookingDirection);
+            prop.setCharacterState(characterState);
+        }
+
         base.FixedUpdate();
         
         previousV = -rb.linearVelocity;

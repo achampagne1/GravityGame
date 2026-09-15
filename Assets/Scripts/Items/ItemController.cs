@@ -11,6 +11,7 @@ public struct PermanentItemData
     public float activeArmLength;
     public float passiveArmLength;
     public int sortingOrder;
+    public float relaxAngle;
 }
 
 public class ItemController : ObjectController
@@ -47,6 +48,7 @@ public class ItemController : ObjectController
     [SerializeField] private bool twoHands = false;
     [SerializeField] private Vector2 handOffset1;
     [SerializeField] private Vector2 handOffset2;
+    [SerializeField] private float relaxAngle = 0f;
 
     // Start is called before the first frame update
     public override void Start()
@@ -241,6 +243,7 @@ public class ItemController : ObjectController
         data.activeArmLength = armLengthActive;
         data.passiveArmLength = armLengthPassive;
         data.sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
+        data.relaxAngle = relaxAngle;
         return data;
     }
 }

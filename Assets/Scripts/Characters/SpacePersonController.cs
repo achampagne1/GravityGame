@@ -16,6 +16,7 @@ public class SpacePersonController : CharacterController
     [SerializeField] private float jetPackForce = 30f;
     [SerializeField] private float groundSmokeTime = 2f;
     [SerializeField] private float footOffset = .1f;
+    [SerializeField] private float relaxTime = 3f;
     [SerializeField] private GameObject landingSmoke;
     [SerializeField] private GameObject jetPackFlame;
     [SerializeField] private Vector2 flameOffset = new Vector2(0, 0);
@@ -36,12 +37,9 @@ public class SpacePersonController : CharacterController
     private Quaternion originalVisorRot;
     private Quaternion originalJetPackRot;
     private bool holdingLatch = false;
-    private List<CharacterProp> spaceCharacterProps;
-    private CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
 
     //protected game variables
     protected float currentFuel = 100f;
-    protected Vector2 lookingDirection = Vector2.zero;
 
     //vectors
     private Vector2 hover = new Vector2(0, 0);
@@ -50,7 +48,6 @@ public class SpacePersonController : CharacterController
 
     public override void Start()
     {
-        spaceCharacterProps = new List<CharacterProp>();
 
         try
         {
@@ -65,12 +62,6 @@ public class SpacePersonController : CharacterController
         {
             if (child.name == "Hand")
                 handController = child.gameObject.GetComponent<HandController>();
-            else if (child.name == "Visor")
-                visor = child;
-            else if (child.name == "JetPack")
-                jetPack = child;
-            if (child.gameObject.GetComponent<CharacterProp>() != null)
-                spaceCharacterProps.Add(child.gameObject.GetComponent<CharacterProp>());
         }
 
         base.Start();
@@ -99,14 +90,14 @@ public class SpacePersonController : CharacterController
         }
         else if (handController.getHolding())
         {
-            characterState = CHARACTERSTATE.AIMING;
-        }
-
-        foreach (CharacterProp prop in spaceCharacterProps)
-        {
-            prop.setFacingLeft(facingLeft);
-            prop.setInputDirection(lookingDirection);
-            prop.setCharacterState(characterState);
+            if(handController.getTimeLastUsedDiff() > relaxTime)
+            {
+                characterState = CHARACTERSTATE.IDLE;
+            }
+            else
+            {
+                characterState = CHARACTERSTATE.AIMING;
+            }
         }
 
         smokeLatch = false;

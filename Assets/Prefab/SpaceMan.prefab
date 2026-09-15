@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5591656423680020509}
   - component: {fileID: 136032660726285174}
+  - component: {fileID: 5109836237123887450}
   m_Layer: 0
   m_Name: Visor
   m_TagString: Untagged
@@ -92,6 +93,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &5109836237123887450
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1940252005798528868}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cb57f455d9d48e4b9d2ec3ebb8f83ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterProp
+  maxRotationalAngle: {x: 30, y: -30}
+  transitionSpeed: 20
+  characterState: 0
 --- !u!1 &4245597159928487303
 GameObject:
   m_ObjectHideFlags: 0
@@ -102,6 +118,7 @@ GameObject:
   m_Component:
   - component: {fileID: 196552273224755160}
   - component: {fileID: 8596006523429432171}
+  - component: {fileID: 7461905786222037249}
   m_Layer: 0
   m_Name: JetPack
   m_TagString: Untagged
@@ -184,6 +201,21 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_SpriteSortPoint: 0
   m_BlendShapeWeights: []
+--- !u!114 &7461905786222037249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4245597159928487303}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9cb57f455d9d48e4b9d2ec3ebb8f83ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CharacterProp
+  maxRotationalAngle: {x: 0, y: -10}
+  transitionSpeed: 20
+  characterState: 0
 --- !u!1 &6531168470496589063
 GameObject:
   m_ObjectHideFlags: 0
@@ -409,6 +441,7 @@ MonoBehaviour:
   jetPackForce: 30
   groundSmokeTime: 0.5
   footOffset: 0.1
+  relaxTime: 3
   landingSmoke: {fileID: 8098803252328287543, guid: 9e37d826df48111448919318eaf8a42f,
     type: 3}
   jetPackFlame: {fileID: 3859246152096219491, guid: e73ac5e7184a70d40be4d842179e59a0,

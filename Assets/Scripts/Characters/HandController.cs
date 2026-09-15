@@ -8,7 +8,6 @@ public class HandController : CharacterProp
     ItemController itemController;
 
     //game variables
-    [SerializeField] private float relaxAngle = 0f;
     [SerializeField] private bool relax = false;
     private float armLengthActive = 0;
     private float armLengthPassive = 0;
@@ -23,9 +22,8 @@ public class HandController : CharacterProp
     private bool facingLeftLatch = false;
     private bool holding = false;
     private GameObject secondHand = null;
-
-    [SerializeField] float holdingRelaxAngle = 0.0f;
-    [SerializeField] float inputDirectionTolerance = 0.1f;
+    private float timeLastUsed = 0.0f;
+    private float relaxAngle = 0.0f;
 
     // Start is called before the first frame update
     public override void Start()
@@ -64,6 +62,7 @@ public class HandController : CharacterProp
 
     public void useHandOnce() //this will need to get expanded to allow for multiple inputs into the item
     {
+        timeLastUsed = Time.realtimeSinceStartup;
         if (holding)
             itemController.useItemOnce();
         else
@@ -72,6 +71,7 @@ public class HandController : CharacterProp
 
     public void useHandHold()
     {
+        timeLastUsed = Time.realtimeSinceStartup;
         if (holding)
             itemController.useItemHold();
         else
@@ -84,6 +84,20 @@ public class HandController : CharacterProp
             itemController.useItemRelease(holdTime);
         else
             Debug.Log("Nothing to use");
+    }
+
+    public float getTimeLastUsedDiff()
+    {
+        if(timeLastUsed == 0.0f)
+        {
+            timeLastUsed = Time.realtimeSinceStartup;
+            return timeLastUsed;
+        }
+        else
+        {
+            float tempTime = Time.realtimeSinceStartup - timeLastUsed;
+            return tempTime;
+        }
     }
 
     protected override void idleState()
@@ -103,8 +117,8 @@ public class HandController : CharacterProp
 
     private void relaxedHolding()
     { 
-        originalPosition = new Vector3(armLengthPassive, 0, 0);
         originalRotation = Quaternion.Euler(0, 0, relaxAngle);
+        originalPosition = originalRotation * new Vector3(armLengthPassive, 0, 0);
         base.idleState();
     }
 
@@ -152,6 +166,7 @@ public class HandController : CharacterProp
         twoHandItem = newItem.twoHands;
         hand2Offset = newItem.hand2Pos;
         itemSortingOrder = newItem.sortingOrder;
+        relaxAngle = newItem.relaxAngle;
     }
 
     public void resetItemData()
@@ -161,6 +176,7 @@ public class HandController : CharacterProp
         twoHandItem = false;
         hand2Offset = Vector2.zero;
         itemSortingOrder = 0;
+        relaxAngle = 0.0f;
     }
 
     private void createSecondHand()
