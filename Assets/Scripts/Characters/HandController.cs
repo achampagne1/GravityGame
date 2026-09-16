@@ -9,6 +9,7 @@ public class HandController : CharacterProp
 
     //game variables
     [SerializeField] private bool relax = false;
+    [SerializeField] private AudioClip relaxClip; //temporarirly in hand controller
     private float armLengthActive = 0;
     private float armLengthPassive = 0;
     private bool twoHandItem = false;
@@ -40,6 +41,11 @@ public class HandController : CharacterProp
     // Update is called once per frame
     public override void FixedUpdate()
     {
+        if (stateLatch == CHARACTERSTATE.AIMING && characterState == CHARACTERSTATE.IDLE)
+        {
+            SoundManager.instance.playSound(relaxClip, transform, 1f);
+        }
+
         holding = GetComponentInChildren<ItemController>() != null;
 
         base.FixedUpdate();

@@ -728,36 +728,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 9184237530594172509, guid: 023fe229542e21840a941de70cefc3f8,
-        type: 3}
-      propertyPath: twoHands
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9184237530594172509, guid: 023fe229542e21840a941de70cefc3f8,
-        type: 3}
-      propertyPath: armLength
-      value: 0.85
-      objectReference: {fileID: 0}
-    - target: {fileID: 9184237530594172509, guid: 023fe229542e21840a941de70cefc3f8,
-        type: 3}
-      propertyPath: handOffset2.x
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 9184237530594172509, guid: 023fe229542e21840a941de70cefc3f8,
-        type: 3}
-      propertyPath: handOffset2.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9184237530594172509, guid: 023fe229542e21840a941de70cefc3f8,
-        type: 3}
-      propertyPath: armLengthActive
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 9184237530594172509, guid: 023fe229542e21840a941de70cefc3f8,
-        type: 3}
-      propertyPath: armLengthPassive
-      value: 3
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -994,26 +964,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1992349533}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &1107305958 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1940252005798528868, guid: 748d52aa7c804d44b86fd06f80ab99da,
-    type: 3}
-  m_PrefabInstance: {fileID: 1992349533}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1107305961
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1107305958}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cb57f455d9d48e4b9d2ec3ebb8f83ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CharacterProp
-  maxRotationalAngle: {x: 30, y: -30}
-  characterState: 0
 --- !u!4 &1325832559 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4547183111475427440, guid: 98bd757dea9151e40914a160539cb8d3,
@@ -1492,6 +1442,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
+      propertyPath: relaxTime
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 76191401300093832, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
       propertyPath: uIHandler
       value: 
       objectReference: {fileID: 485643197}
@@ -1535,31 +1490,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 2667448509233387349, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      propertyPath: armLength
-      value: 4.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 2667448509233387349, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      propertyPath: handOffset
-      value: 0.9
-      objectReference: {fileID: 0}
-    - target: {fileID: 2667448509233387349, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      propertyPath: holdingRelaxAngle
-      value: -45
-      objectReference: {fileID: 0}
-    - target: {fileID: 2667448509233387349, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      propertyPath: maxRotationalAngle.x
-      value: 180
-      objectReference: {fileID: 0}
-    - target: {fileID: 2667448509233387349, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      propertyPath: maxRotationalAngle.y
-      value: -180
       objectReference: {fileID: 0}
     - target: {fileID: 2950402490743257772, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
@@ -1670,36 +1600,8 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 263758264}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4245597159928487303, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2096703838}
-    - targetCorrespondingSourceObject: {fileID: 1940252005798528868, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 1107305961}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 748d52aa7c804d44b86fd06f80ab99da, type: 3}
---- !u!1 &2096703835 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4245597159928487303, guid: 748d52aa7c804d44b86fd06f80ab99da,
-    type: 3}
-  m_PrefabInstance: {fileID: 1992349533}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2096703838
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2096703835}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9cb57f455d9d48e4b9d2ec3ebb8f83ea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CharacterProp
-  maxRotationalAngle: {x: 0, y: -10}
-  characterState: 0
 --- !u!1001 &7975342397699643606
 PrefabInstance:
   m_ObjectHideFlags: 0

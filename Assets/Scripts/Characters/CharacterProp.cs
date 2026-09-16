@@ -12,8 +12,8 @@ public class CharacterProp : MonoBehaviour
     private int facingLeftInt = 1;
     private float transitionInterpolator = 0.0f;
 
-    [SerializeField] private CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
-    private CHARACTERSTATE stateLatch;
+    [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
+    protected CHARACTERSTATE stateLatch;
 
     public virtual void Start()
     {
