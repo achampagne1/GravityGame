@@ -18,7 +18,6 @@ public class HandController : CharacterProp
     private Queue<Vector2> delay;
     private float smoothTime = .05f;
     private Vector2 velocity = Vector2.zero;
-    private bool facingLeft = false;
     private bool holdingLatch = false;
     private bool facingLeftLatch = false;
     private bool holding = false;
@@ -49,6 +48,7 @@ public class HandController : CharacterProp
         holding = GetComponentInChildren<ItemController>() != null;
 
         base.FixedUpdate();
+        itemController.setFacingLeft(facingLeft);
 
         holdingLatch = holding;
         facingLeftLatch = facingLeft;

@@ -72,7 +72,6 @@ public class ItemController : ObjectController
         {
             if (!parentLatch)
                 parentedFlags();
-            facingLeft = handController.getFacingLeft();
         }
         else
         {
@@ -127,7 +126,7 @@ public class ItemController : ObjectController
 
         transform.localPosition = handOffset1;
         transform.localRotation = Quaternion.identity;
-        transform.localScale = handController.getFacingLeft() ? new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z) : transform.localScale;
+        transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, transform.localScale.y, transform.localScale.z) : transform.localScale;
     }
 
     //this is marked as virtual incase an item needs different flags
@@ -218,6 +217,11 @@ public class ItemController : ObjectController
     public void setForceBuffer(Vector2 force)
     {
         forceBuffer = force;
+    }
+
+    public void setFacingLeft(bool facingLeft)
+    {
+        this.facingLeft = facingLeft;
     }
 
     public bool getFacingLeft()

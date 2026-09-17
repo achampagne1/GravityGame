@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System.Diagnostics;
+using System.Reflection.Metadata.Ecma335;
 
 public class SpaceManController : SpacePersonController
 {
@@ -114,7 +115,7 @@ public class SpaceManController : SpacePersonController
     public override void hit(GameObject hitGameObject)
     {
         base.hit(hitGameObject);
-        if (shieldUpFlag && hitGameObject.tag == "Projectile")
+        if (shieldUpFlag && hitGameObject.tag == "Projectile" && hitGameObject.GetComponent<IProjectileInfo>().getShotBy() != 6)
         {
             camController.setShakeMagnitude(1f);
             camController.setShake(true);

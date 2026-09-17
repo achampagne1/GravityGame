@@ -8,7 +8,7 @@ public class CharacterProp : MonoBehaviour
     protected Vector3 originalPosition;
     protected Vector3 originalScale;
     protected Vector3 inputDirection = Vector3.zero;
-    private bool facingLeft = false;
+    protected bool facingLeft = false;
     private int facingLeftInt = 1;
     private float transitionInterpolator = 0.0f;
 

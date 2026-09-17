@@ -33,7 +33,8 @@ public class ShieldTriggerController : MonoBehaviour,IHealth
 
     private void OnTriggerEnter2D(Collider2D trigger)
     {
-        if (trigger.gameObject.tag == "Projectile"&& shieldStrength > 0)
+        //TODO: make the logic work if the shield is attached to any layer
+        if (trigger.gameObject.tag == "Projectile"&&trigger.gameObject.GetComponent<IProjectileInfo>().getShotBy()!=6&& shieldStrength > 0)
         {
             if(!trigger.gameObject.GetComponent<IDamager>().damage(gameObject))
                 return;

@@ -48,7 +48,7 @@ public class GunController : ItemController
         if (!fireLimiter.getIsRunning())
                 fireLimiter.start();
         if(fireLimiter.getIsRunning() && fireLimiter.getElapsedTime() > fireLimiterVariable){
-            shootDirection = transform.rotation * Vector3.right;
+            shootDirection = transform.rotation * (facingLeft ? Vector2.left : Vector2.right); ;
             shootWrapper();
             fireLimiter.reset();
             fireLimiter.start();
