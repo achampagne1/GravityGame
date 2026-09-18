@@ -18,9 +18,12 @@ public class GunController : ItemController
     //object creation
     private Animator animator;
     private StopWatch fireLimiter = new StopWatch();
+    [SerializeField] private float recoilAmount = .5f;
     [SerializeField] private AudioClip gunshotClip;
     [SerializeField] private GameObject bullet;
     [SerializeField] private GameObject muzzleFlash;
+
+    public event Action<Vector2, float> onShoot;
 
     public override void Start()
     {
@@ -52,6 +55,7 @@ public class GunController : ItemController
             shootWrapper();
             fireLimiter.reset();
             fireLimiter.start();
+            onShoot?.Invoke(shootDirection, recoilAmount);
         }
     }
 
@@ -59,7 +63,7 @@ public class GunController : ItemController
     private void shootWrapper()
     {
         Vector3 offset = new Vector3(.5f, .25f, 0);
-        offset.y = offset.y * (facingLeft ? -1 : 1);
+        //offset.y = offset.y * (facingLeft ? -1 : 1);
         GameObject bulletClone= Instantiate(bullet, transform.position + transform.rotation * offset, transform.rotation);
         GameObject muzzleFlashClone = Instantiate(muzzleFlash,transform);
         muzzleFlashClone.transform.parent = transform;
@@ -69,6 +73,10 @@ public class GunController : ItemController
         bulletClone.GetComponent<BulletController>().init(transform.parent.gameObject.layer);
         bulletClone.GetComponent<Rigidbody2D>().AddForce(shootDirection * bulletForce, ForceMode2D.Impulse);
         SoundManager.instance.playSound(gunshotClip, transform, 1f);
+    }
 
+    public float getRecoilAmount()
+    {
+        return recoilAmount;
     }
 }

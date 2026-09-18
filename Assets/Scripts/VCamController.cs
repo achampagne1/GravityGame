@@ -9,7 +9,7 @@ public class VCamController : MonoBehaviour
 {
     public CinemachineVirtualCamera vcam;
     public float initialZoom = 5f;
-    [SerializeField] float duration = 1f;
+    [SerializeField] float duration = .12f;
     [SerializeField] float shakeMagnitude = .2f;
     [SerializeField] float shootMagnitude = 2f;
     [SerializeField] bool shake = false;
@@ -39,11 +39,16 @@ public class VCamController : MonoBehaviour
 
         if(direction != Vector2.zero)
         {
-             if (hand != null && hand.transform.childCount > 0 && hand.transform.GetChild(0).tag == "Gun")
-            {
-                StartCoroutine(gunRecoil(direction));
-                direction = Vector2.zero;
-            }
+             if (hand != null && hand.transform.childCount > 0)
+             {
+                GunController gunController = hand.transform.GetChild(0).GetComponent<GunController>();
+                if(gunController != null)
+                {
+                    shootMagnitude = gunController.getRecoilAmount();
+                    StartCoroutine(gunRecoil(direction));
+                    direction = Vector2.zero;
+                }
+             }
         }
     }
 
@@ -67,28 +72,31 @@ public class VCamController : MonoBehaviour
 
     private IEnumerator gunRecoil(Vector2 direction)
     {
-        transform.localPosition = new Vector3(originalLocal.x, originalLocal.y, originalLocal.z);
         direction = HelperFunctions.rotateVector(direction, -transform.eulerAngles.z); //this is to account for the rotation of the player
-        Vector3 originalPos = transform.localPosition;
         float elapsedTime = 0f;
-        while (elapsedTime < duration)
+        float recoilDuration = duration * .35f;
+        while (elapsedTime < recoilDuration)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x+(direction.x*shootMagnitude), transform.localPosition.y + (direction.y * shootMagnitude), originalPos.z);
+            float progress = elapsedTime / recoilDuration;
+            float offset = Mathf.Sin(progress * Mathf.PI * .5f) * shootMagnitude;
+            transform.localPosition = originalLocal + new Vector3(direction.x * offset, direction.y * offset, 0f);
 
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
         elapsedTime = 0f;
-        while (elapsedTime < duration)
+        while (elapsedTime < recoilDuration)
         {
-            transform.localPosition = new Vector3(transform.localPosition.x + (+direction.x * shootMagnitude), transform.localPosition.y + (+direction.y * shootMagnitude), originalPos.z);
+            float progress = elapsedTime / recoilDuration;
+            float offset = (1f - progress) * shootMagnitude;
+            transform.localPosition = originalLocal + new Vector3(direction.x * offset, direction.y * offset, 0f);
 
             elapsedTime += Time.deltaTime;
 
             yield return null;
         }
-        transform.localPosition = new Vector3(originalLocal.x, originalLocal.y, originalLocal.z);
+        transform.localPosition = originalLocal;
     }
 
     public void setShake(bool shake)

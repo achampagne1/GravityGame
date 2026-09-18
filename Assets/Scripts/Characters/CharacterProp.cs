@@ -9,7 +9,7 @@ public class CharacterProp : MonoBehaviour
     protected Vector3 originalScale;
     protected Vector3 inputDirection = Vector3.zero;
     protected bool facingLeft = false;
-    private int facingLeftInt = 1;
+    protected int facingLeftInt = 1;
     private float transitionInterpolator = 0.0f;
 
     [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;

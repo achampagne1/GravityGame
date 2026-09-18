@@ -115,7 +115,12 @@ public class SpaceManController : SpacePersonController
     public override void hit(GameObject hitGameObject)
     {
         base.hit(hitGameObject);
-        if (shieldUpFlag && hitGameObject.tag == "Projectile" && hitGameObject.GetComponent<IProjectileInfo>().getShotBy() != 6)
+        if (hitGameObject.GetComponent<IProjectileInfo>().getShotBy() == gameObject.layer)
+        {
+            return;
+        }
+
+        if (shieldUpFlag && hitGameObject.tag == "Projectile")
         {
             camController.setShakeMagnitude(1f);
             camController.setShake(true);
