@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,13 +13,20 @@ public struct PermanentItemData
     public float passiveArmLength;
     public int sortingOrder;
     public float relaxAngle;
+    public IParentedEffect parentedEffect;
 }
 
 public class ItemController : ObjectController
 {
+    //events
+    public event Action itemUsedOnce;
+    public event Action itemUsedHold;
+    public event Action itemUsedRelease;
+
     //object creation
     protected HandController handController;
     private Coroutine floatCoroutine;
+    private IParentedEffect parentedEffect = null;
 
     //vectors
     protected Vector3 originalScale;
@@ -56,6 +64,7 @@ public class ItemController : ObjectController
         facingLeft = transform.localScale.x < 0;
         base.Start();
         originalScale = transform.localScale;
+        parentedEffect = GetComponent<IParentedEffect>();
 
         parented = transform.parent != null;
         if (parented)
@@ -91,18 +100,21 @@ public class ItemController : ObjectController
 
     public virtual void useItemOnce()
     {
+        itemUsedOnce?.Invoke();
         //Debug.Log("Item used once");
         //NOTE: each item should have its own override of this
     }
 
     public virtual void useItemHold()
     {
+        itemUsedHold?.Invoke();
         //Debug.Log("Item used held");
         //NOTE: each item should have its own override of this
     }
 
     public virtual void useItemRelease(long holdTime)
     {
+        itemUsedRelease?.Invoke();
         //Debug.Log("Item use released");
         //NOTE: each item should have its own override of this
     }
@@ -209,6 +221,11 @@ public class ItemController : ObjectController
         }
     }
 
+    public IParentedEffect getParentedEffect()
+    {
+        return parentedEffect;
+    }
+
     public void setFloatFlag(bool flag)
     {
         floatFlag = flag;
@@ -248,6 +265,7 @@ public class ItemController : ObjectController
         data.passiveArmLength = armLengthPassive;
         data.sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         data.relaxAngle = relaxAngle;
+        data.parentedEffect = parentedEffect;
         return data;
     }
 }

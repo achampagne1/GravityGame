@@ -8,6 +8,7 @@ public class CharacterProp : MonoBehaviour
     [SerializeField] private float recoilMultiplier = 100f;
     [SerializeField] private float recoilSpeedMultiplier = 1.0f;
     [SerializeField] private float recoilReturnSpeed = .2f;
+    protected IParentedEffect itemParentedEffect = null;
     protected Quaternion originalRotation;
     protected Vector3 originalPosition;
     protected Vector3 originalScale;
@@ -80,6 +81,12 @@ public class CharacterProp : MonoBehaviour
         Quaternion lookRotation = Quaternion.Euler(0f, 0f, finalAngle * facingLeftInt);
         transform.localPosition = lookRotation * position;
         transform.localRotation = lookRotation;
+    }
+
+    protected void useParentedEffectRequested()
+    {
+        if(itemParentedEffect != null)
+            itemParentedEffect.parentedEffect();
     }
 
     protected void recoil(Vector2 direction, float magnitude)

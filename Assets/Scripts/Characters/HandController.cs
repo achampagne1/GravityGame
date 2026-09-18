@@ -132,10 +132,7 @@ public class HandController : CharacterProp
     {
         if (holdingLatch!=holding)
         {
-            if((GunController)itemController != null)
-            {
-                ((GunController)itemController).onShoot -= recoil;
-            }
+            itemController.itemUsedOnce -= useParentedEffectRequested;
             itemController = null;
             transform.rotation = transform.parent.rotation;
             transform.localScale = originalScale;
@@ -163,11 +160,8 @@ public class HandController : CharacterProp
         itemController = child.gameObject.GetComponent<ItemController>();
         setItemData(itemController);
         child.SetParent(gameObject.transform);
-        transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z) : transform.localScale; //this is for setting the orientation of the hand corrctly
-        if(child.GetComponent<GunController>() != null)
-        {
-            child.GetComponent<GunController>().onShoot += recoil;
-        }
+        transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z) : transform.localScale; //this is for setting the orientation of the hand corrctly    
+        itemController.itemUsedOnce += useParentedEffectRequested;
 
         if(twoHandItem)
             createSecondHand();    
@@ -182,6 +176,7 @@ public class HandController : CharacterProp
         hand2Offset = newItem.hand2Pos;
         itemSortingOrder = newItem.sortingOrder;
         relaxAngle = newItem.relaxAngle;
+        itemParentedEffect = newItem.parentedEffect;
     }
 
     public void resetItemData()
@@ -192,6 +187,7 @@ public class HandController : CharacterProp
         hand2Offset = Vector2.zero;
         itemSortingOrder = 0;
         relaxAngle = 0.0f;
+        itemParentedEffect = null;
     }
 
     private void createSecondHand()

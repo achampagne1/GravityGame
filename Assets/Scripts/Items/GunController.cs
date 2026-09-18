@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 using static Unity.Collections.AllocatorManager;
 using static UnityEditor.FilePathAttribute;
 
@@ -55,7 +56,7 @@ public class GunController : ItemController
             shootWrapper();
             fireLimiter.reset();
             fireLimiter.start();
-            onShoot?.Invoke(shootDirection, recoilAmount);
+            base.useItemOnce();
         }
     }
 
