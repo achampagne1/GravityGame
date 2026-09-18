@@ -1501,6 +1501,11 @@ PrefabInstance:
       propertyPath: relaxClip
       value: 
       objectReference: {fileID: 8300000, guid: 9d62ba679dcfd7342a26b828ac8d69ee, type: 3}
+    - target: {fileID: 2667448509233387349, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
+      propertyPath: recoilSpeedMultiplier
+      value: 0.01
+      objectReference: {fileID: 0}
     - target: {fileID: 2950402490743257772, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
       propertyPath: m_Layer

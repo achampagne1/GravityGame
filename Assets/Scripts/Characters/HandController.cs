@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
@@ -11,9 +10,6 @@ public class HandController : CharacterProp
     //game variables
     [SerializeField] private bool relax = false;
     [SerializeField] private AudioClip relaxClip; //temporarirly in hand controller
-    [SerializeField] private float recoilMultiplier = 100f;
-    [SerializeField] private float recoilSpeedMultiplier = 1.0f;
-    [SerializeField] private float recoilReturnSpeed = .2f;
     private float armLengthActive = 0;
     private float armLengthPassive = 0;
     private bool twoHandItem = false;
@@ -28,7 +24,6 @@ public class HandController : CharacterProp
     private GameObject secondHand = null;
     private float timeLastUsed = 0.0f;
     private float relaxAngle = 0.0f;
-    private Coroutine recoilCoroutine;
 
     // Start is called before the first frame update
     public override void Start()
@@ -139,7 +134,7 @@ public class HandController : CharacterProp
         {
             if((GunController)itemController != null)
             {
-                ((GunController)itemController).onShoot -= recoilHand;
+                ((GunController)itemController).onShoot -= recoil;
             }
             itemController = null;
             transform.rotation = transform.parent.rotation;
@@ -171,12 +166,9 @@ public class HandController : CharacterProp
         transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z) : transform.localScale; //this is for setting the orientation of the hand corrctly
         if(child.GetComponent<GunController>() != null)
         {
-            child.GetComponent<GunController>().onShoot += recoilHand;
+            child.GetComponent<GunController>().onShoot += recoil;
         }
-        else
-        {
-            Debug.Log("Item is not a gun");
-        }
+
         if(twoHandItem)
             createSecondHand();    
     }
@@ -212,47 +204,6 @@ public class HandController : CharacterProp
         secondHand.transform.localScale = transform.localScale;
         sr.sortingOrder = itemSortingOrder - 1;
         secondHand.transform.localPosition = hand2Offset;
-    }
-
-    private void recoilHand(Vector2 direction, float magnitude)
-    {
-        originalPosition = new Vector3(armLengthActive, 0, 0);
-        if (recoilCoroutine != null)
-            StopCoroutine(recoilCoroutine);
-
-        Vector3 previousDirection = inputDirection;
-        float inputAngle = Mathf.Atan2(previousDirection.y, previousDirection.x) * Mathf.Rad2Deg;
-        float recoilAngle = inputAngle + magnitude * recoilMultiplier;
-        Vector3 recoilDirection = Quaternion.Euler(0f, 0f, recoilAngle) * Vector3.right;
-        recoilCoroutine = StartCoroutine(recoilHandRoutine(previousDirection, recoilDirection, magnitude));
-    }
-
-    private IEnumerator recoilHandRoutine(Vector3 previousDirection, Vector3 recoilDirection,float magnitude)
-    {
-        float elapsedTime = 0f;
-        float kickDuration = recoilSpeedMultiplier*magnitude;
-        recoilDirection.y = recoilDirection.y * facingLeftInt;
-
-        while (elapsedTime < kickDuration)
-        {
-            inputDirection = Vector3.Lerp(previousDirection, recoilDirection, elapsedTime / kickDuration);
-            base.aimingState();
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        elapsedTime = 0f;
-        while (elapsedTime < recoilReturnSpeed)
-        {
-            inputDirection = Vector3.Lerp(recoilDirection, previousDirection, elapsedTime / recoilReturnSpeed);
-            base.aimingState();
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        inputDirection = previousDirection;
-        base.aimingState();
-        recoilCoroutine = null;
     }
 
     public bool getFacingLeft()

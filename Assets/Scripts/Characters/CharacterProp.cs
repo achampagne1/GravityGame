@@ -1,9 +1,13 @@
 using UnityEngine;
+using System.Collections;
 
 public class CharacterProp : MonoBehaviour
 {
     [SerializeField] private Vector2 maxRotationalAngle = new Vector2(-180, 180);
     [SerializeField] private float transitionSpeed = 20f;
+    [SerializeField] private float recoilMultiplier = 100f;
+    [SerializeField] private float recoilSpeedMultiplier = 1.0f;
+    [SerializeField] private float recoilReturnSpeed = .2f;
     protected Quaternion originalRotation;
     protected Vector3 originalPosition;
     protected Vector3 originalScale;
@@ -11,6 +15,7 @@ public class CharacterProp : MonoBehaviour
     protected bool facingLeft = false;
     protected int facingLeftInt = 1;
     private float transitionInterpolator = 0.0f;
+    protected Coroutine recoilCoroutine;
 
     [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
     protected CHARACTERSTATE stateLatch;
@@ -54,7 +59,12 @@ public class CharacterProp : MonoBehaviour
 
     protected virtual void aimingState()
     {
-        Vector2 localLookingDirection = transform.parent.InverseTransformDirection(inputDirection * facingLeftInt);
+        rotateAboutCenter(inputDirection,originalPosition);
+    }
+
+    protected void rotateAboutCenter(Vector2 direction,Vector3 position)
+    {
+        Vector2 localLookingDirection = transform.parent.InverseTransformDirection(direction * facingLeftInt);
         float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
         float finalAngle;
 
@@ -68,8 +78,49 @@ public class CharacterProp : MonoBehaviour
         }
 
         Quaternion lookRotation = Quaternion.Euler(0f, 0f, finalAngle * facingLeftInt);
-        transform.localPosition = lookRotation * originalPosition;
+        transform.localPosition = lookRotation * position;
         transform.localRotation = lookRotation;
+    }
+
+    protected void recoil(Vector2 direction, float magnitude)
+    {
+        //originalPosition = new Vector3(armLengthActive, 0, 0);
+        if (recoilCoroutine != null)
+            StopCoroutine(recoilCoroutine);
+
+        Vector3 previousDirection = inputDirection;
+        float inputAngle = Mathf.Atan2(previousDirection.y, previousDirection.x) * Mathf.Rad2Deg;
+        float recoilAngle = inputAngle + magnitude * recoilMultiplier;
+        Vector3 recoilDirection = Quaternion.Euler(0f, 0f, recoilAngle) * Vector3.right;
+        recoilCoroutine = StartCoroutine(recoilRoutine(previousDirection, recoilDirection, magnitude));
+    }
+
+    protected IEnumerator recoilRoutine(Vector3 previousDirection, Vector3 recoilDirection, float magnitude)
+    {
+        float elapsedTime = 0f;
+        float kickDuration = recoilSpeedMultiplier * magnitude;
+        recoilDirection.y = recoilDirection.y * facingLeftInt;
+
+        while (elapsedTime < kickDuration)
+        {
+            inputDirection = Vector3.Lerp(previousDirection, recoilDirection, elapsedTime / kickDuration);
+            rotateAboutCenter(inputDirection, originalPosition);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        elapsedTime = 0f;
+        while (elapsedTime < recoilReturnSpeed)
+        {
+            inputDirection = Vector3.Lerp(recoilDirection, previousDirection, elapsedTime / recoilReturnSpeed);
+            rotateAboutCenter(inputDirection,originalPosition);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        inputDirection = previousDirection;
+        rotateAboutCenter(inputDirection, originalPosition);
+        recoilCoroutine = null;
     }
 
     public void setCharacterState(CHARACTERSTATE newState)
