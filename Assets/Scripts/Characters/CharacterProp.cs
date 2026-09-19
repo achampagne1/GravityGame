@@ -5,9 +5,6 @@ public class CharacterProp : MonoBehaviour
 {
     [SerializeField] private Vector2 maxRotationalAngle = new Vector2(-180, 180);
     [SerializeField] private float transitionSpeed = 20f;
-    [SerializeField] private float recoilMultiplier = 100f;
-    [SerializeField] private float recoilSpeedMultiplier = 1.0f;
-    [SerializeField] private float recoilReturnSpeed = .2f;
     protected IParentedEffect itemParentedEffect = null;
     protected Quaternion originalRotation;
     protected Vector3 originalPosition;
@@ -16,7 +13,6 @@ public class CharacterProp : MonoBehaviour
     protected bool facingLeft = false;
     protected int facingLeftInt = 1;
     private float transitionInterpolator = 0.0f;
-    protected Coroutine recoilCoroutine;
 
     [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
     protected CHARACTERSTATE stateLatch;
@@ -86,48 +82,7 @@ public class CharacterProp : MonoBehaviour
     protected void useParentedEffectRequested()
     {
         if(itemParentedEffect != null)
-            itemParentedEffect.parentedEffect();
-    }
-
-    protected void recoil(Vector2 direction, float magnitude)
-    {
-        //originalPosition = new Vector3(armLengthActive, 0, 0);
-        if (recoilCoroutine != null)
-            StopCoroutine(recoilCoroutine);
-
-        Vector3 previousDirection = inputDirection;
-        float inputAngle = Mathf.Atan2(previousDirection.y, previousDirection.x) * Mathf.Rad2Deg;
-        float recoilAngle = inputAngle + magnitude * recoilMultiplier;
-        Vector3 recoilDirection = Quaternion.Euler(0f, 0f, recoilAngle) * Vector3.right;
-        recoilCoroutine = StartCoroutine(recoilRoutine(previousDirection, recoilDirection, magnitude));
-    }
-
-    protected IEnumerator recoilRoutine(Vector3 previousDirection, Vector3 recoilDirection, float magnitude)
-    {
-        float elapsedTime = 0f;
-        float kickDuration = recoilSpeedMultiplier * magnitude;
-        recoilDirection.y = recoilDirection.y * facingLeftInt;
-
-        while (elapsedTime < kickDuration)
-        {
-            inputDirection = Vector3.Lerp(previousDirection, recoilDirection, elapsedTime / kickDuration);
-            rotateAboutCenter(inputDirection, originalPosition);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        elapsedTime = 0f;
-        while (elapsedTime < recoilReturnSpeed)
-        {
-            inputDirection = Vector3.Lerp(recoilDirection, previousDirection, elapsedTime / recoilReturnSpeed);
-            rotateAboutCenter(inputDirection,originalPosition);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        inputDirection = previousDirection;
-        rotateAboutCenter(inputDirection, originalPosition);
-        recoilCoroutine = null;
+            itemParentedEffect.parentedEffect(transform,facingLeftInt,inputDirection,originalPosition,maxRotationalAngle);
     }
 
     public void setCharacterState(CHARACTERSTATE newState)

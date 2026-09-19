@@ -30,7 +30,7 @@ public class GunController : ItemController
     {
 
         base.Start();
-
+        parentedEffect.float1 = recoilAmount;
         try
         {
             animator = GetComponent<Animator>();

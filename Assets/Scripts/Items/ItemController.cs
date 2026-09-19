@@ -26,7 +26,7 @@ public class ItemController : ObjectController
     //object creation
     protected HandController handController;
     private Coroutine floatCoroutine;
-    private IParentedEffect parentedEffect = null;
+    protected IParentedEffect parentedEffect = null;
 
     //vectors
     protected Vector3 originalScale;

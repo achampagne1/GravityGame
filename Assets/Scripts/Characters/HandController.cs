@@ -170,24 +170,24 @@ public class HandController : CharacterProp
     public void setItemData(ItemController itemController)
     {
         PermanentItemData newItem = itemController.getPermanentItemData();
-        armLengthActive = newItem.activeArmLength;
-        armLengthPassive = newItem.passiveArmLength;
-        twoHandItem = newItem.twoHands;
-        hand2Offset = newItem.hand2Pos;
-        itemSortingOrder = newItem.sortingOrder;
-        relaxAngle = newItem.relaxAngle;
-        itemParentedEffect = newItem.parentedEffect;
+        armLengthActive           = newItem.activeArmLength;
+        armLengthPassive          = newItem.passiveArmLength;
+        twoHandItem               = newItem.twoHands;
+        hand2Offset               = newItem.hand2Pos;
+        itemSortingOrder          = newItem.sortingOrder;
+        relaxAngle                = newItem.relaxAngle;
+        itemParentedEffect        = newItem.parentedEffect;
     }
 
     public void resetItemData()
     {
-        armLengthActive = 0.0f;
-        armLengthPassive = 0.0f;
-        twoHandItem = false;
-        hand2Offset = Vector2.zero;
-        itemSortingOrder = 0;
-        relaxAngle = 0.0f;
-        itemParentedEffect = null;
+        armLengthActive           = 0.0f;
+        armLengthPassive          = 0.0f;
+        twoHandItem               = false;
+        hand2Offset               = Vector2.zero;
+        itemSortingOrder          = 0;
+        relaxAngle                = 0.0f;
+        itemParentedEffect        = null;
     }
 
     private void createSecondHand()
