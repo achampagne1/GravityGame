@@ -22,6 +22,7 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
         this.facingLeftInt = facingLeftInt;
         this.inputDirection = inputDirection;
         this.originalPosition = originalPosition;
+        this.maxRotationalAngle = maxRotationalAngle;
         recoil(float1);
     }
 
