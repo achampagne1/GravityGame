@@ -64,7 +64,18 @@ public class SpacePersonController : CharacterController
                 handController = child.gameObject.GetComponent<HandController>();
         }
 
+        if(handController == null)
+        {
+            Debug.Log("no hand found on Space Person Controller");
+        }
+
         base.Start();
+
+        handController.itemSuccessfullyUsedOnce += onItemSucessfullyUsedOnce;
+        handController.itemSuccessfullyUsedHold += onItemSucessfullyUsedHold;
+        handController.itemSuccessfullyUsedRelease += onItemSuccessfullyUsedRelease;
+        handController.changeInItemEffect += onChangeInItemEffect;
+        onChangeInItemEffect(handController.getItemParentedEffect());
     }
 
     public override void FixedUpdate()
@@ -102,37 +113,6 @@ public class SpacePersonController : CharacterController
 
         smokeLatch = false;
         holdingLatch = handController.getHolding();
-    }
-
-    private void angleJetPackAndVisor()
-    {
-        //NOTE: CUrrently this is only for basic rotation of visor and jetpack. if the movements for those items gets more complicated, this logic should get moved to their own clases
-        //The space person should not be responsible for the movements of its children except for basic sprite game objects
-        //Since the hand is a more complicated game objct, its movement should not go here
-        Vector2 localLookingDirection = transform.InverseTransformDirection(lookingDirection * facingLeftInt);
-        float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
-        float visorAngle;
-        float jetPackAngle;
-
-        if (!facingLeft)
-        {
-            visorAngle = Mathf.Clamp(angle, maxVisorAngle.y, maxVisorAngle.x);
-            jetPackAngle = Mathf.Clamp(angle, maxJetPackAngle.y, maxJetPackAngle.x);
-        }
-        else
-        {
-            visorAngle = Mathf.Clamp(angle, -maxVisorAngle.x, -maxVisorAngle.y);
-            jetPackAngle = Mathf.Clamp(angle, -maxJetPackAngle.x, -maxJetPackAngle.y);
-        }
-
-        Quaternion lookRotationVisor = Quaternion.Euler(0f, 0f, visorAngle * facingLeftInt);
-        Quaternion lookRotationJetPack = Quaternion.Euler(0f, 0f, jetPackAngle * facingLeftInt);
-
-        visor.localPosition = lookRotationVisor * originalVisorPos;
-        jetPack.localPosition = lookRotationJetPack * originalJetPackPos;
-
-        visor.localRotation = lookRotationVisor;
-        jetPack.localRotation = lookRotationJetPack;
     }
 
     public override void triggerLogic(Collider2D trigger)
@@ -173,6 +153,42 @@ public class SpacePersonController : CharacterController
         if (hoverFlag)
             useFuel();
         hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero; //avoid new
+    }
+
+    private void onItemSucessfullyUsedOnce()
+    {
+        foreach (CharacterProp prop in characterProps)
+        {
+            prop.useParentedEffect();
+        }
+    }
+
+    private void onItemSucessfullyUsedHold()
+    {
+
+    }
+
+    private void onItemSuccessfullyUsedRelease()
+    {
+
+    }
+
+    private void onChangeInItemEffect(IParentedEffect itemEffect)
+    {
+        foreach(CharacterProp prop in characterProps)
+        {
+            if (itemEffect == null)
+            {
+                prop.setItemParentedEffect(null);
+                continue;
+            }
+
+            Type effectType = itemEffect.GetType();
+            IParentedEffect newItemEffect = (IParentedEffect)prop.gameObject.AddComponent(effectType);
+            newItemEffect.copyData(itemEffect);
+
+            prop.setItemParentedEffect(newItemEffect);
+        }
     }
 
     private void useFuel()

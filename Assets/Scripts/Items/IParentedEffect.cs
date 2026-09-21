@@ -10,4 +10,6 @@ public interface IParentedEffect
     public Transform prop { get; set; }
 
     public void parentedEffect(Transform prop, int facingLeftInt, Vector3 inputDirection, Vector3 originalPosition, Vector2 maxRotationalAngle);
+
+    public void copyData(IParentedEffect otherEffect);
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem.HID;
@@ -24,6 +25,11 @@ public class HandController : CharacterProp
     private GameObject secondHand = null;
     private float timeLastUsed = 0.0f;
     private float relaxAngle = 0.0f;
+
+    public event Action itemSuccessfullyUsedOnce;
+    public event Action itemSuccessfullyUsedHold;
+    public event Action itemSuccessfullyUsedRelease;
+    public event Action<IParentedEffect> changeInItemEffect;
 
     // Start is called before the first frame update
     public override void Start()
@@ -132,15 +138,11 @@ public class HandController : CharacterProp
     {
         if (holdingLatch!=holding)
         {
-            itemController.itemUsedOnce -= useParentedEffectRequested;
+            disconnectItemEvents();
             itemController = null;
             transform.rotation = transform.parent.rotation;
             transform.localScale = originalScale;
-            if(secondHand != null)
-            {
-                Destroy(secondHand);
-                secondHand = null;
-            }
+            destroysecondHand();
         }
 
         Vector2 localOffset = new Vector2(facingLeft ? .5f : -.5f, -.1f); //calculates the local offset to the body including if the player is facing left or right
@@ -161,7 +163,7 @@ public class HandController : CharacterProp
         setItemData(itemController);
         child.SetParent(gameObject.transform);
         transform.localScale = facingLeft ? new Vector3(-transform.localScale.x, -transform.localScale.y, transform.localScale.z) : transform.localScale; //this is for setting the orientation of the hand corrctly    
-        itemController.itemUsedOnce += useParentedEffectRequested;
+        connectItemEvents();
 
         if(twoHandItem)
             createSecondHand();    
@@ -177,6 +179,7 @@ public class HandController : CharacterProp
         itemSortingOrder          = newItem.sortingOrder;
         relaxAngle                = newItem.relaxAngle;
         itemParentedEffect        = newItem.parentedEffect;
+        changeInItemEffect?.Invoke(itemParentedEffect);
     }
 
     public void resetItemData()
@@ -188,6 +191,12 @@ public class HandController : CharacterProp
         itemSortingOrder          = 0;
         relaxAngle                = 0.0f;
         itemParentedEffect        = null;
+        changeInItemEffect?.Invoke(null);
+    }
+
+    public IParentedEffect getItemParentedEffect()
+    {
+        return itemParentedEffect;
     }
 
     private void createSecondHand()
@@ -200,6 +209,44 @@ public class HandController : CharacterProp
         secondHand.transform.localScale = transform.localScale;
         sr.sortingOrder = itemSortingOrder - 1;
         secondHand.transform.localPosition = hand2Offset;
+    }
+
+    private void destroysecondHand()
+    {
+        if (secondHand != null)
+        {
+            Destroy(secondHand);
+            secondHand = null;
+        }
+    }
+
+    private void connectItemEvents()
+    {
+        itemController.itemUsedOnce += forwardItemUsedOnce;
+        itemController.itemUsedHold += forwardItemUsedHold;
+        itemController.itemUsedRelease += forwardItemUsedRelease;
+    }
+
+    private void disconnectItemEvents()
+    {
+        itemController.itemUsedOnce -= forwardItemUsedOnce;
+        itemController.itemUsedHold -= forwardItemUsedHold;
+        itemController.itemUsedRelease -= forwardItemUsedRelease;
+    }
+
+    private void forwardItemUsedOnce()
+    {
+        itemSuccessfullyUsedOnce?.Invoke();
+    }
+
+    private void forwardItemUsedHold()
+    {
+        itemSuccessfullyUsedHold?.Invoke();
+    }
+
+    private void forwardItemUsedRelease()
+    {
+        itemSuccessfullyUsedRelease?.Invoke();
     }
 
     public bool getFacingLeft()

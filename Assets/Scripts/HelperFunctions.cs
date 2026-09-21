@@ -84,6 +84,26 @@ public struct HelperFunctions
         return found;
     }
 
+    public static void rotateAboutPoint(Transform transform,Vector2 direction, Vector3 position,int facingLeftInt,Vector2 maxRotationalAngle)
+    {
+        Vector2 localLookingDirection = transform.parent.InverseTransformDirection(direction * facingLeftInt);
+        float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
+        float finalAngle;
+
+        if (facingLeftInt == 1)
+        {
+            finalAngle = Mathf.Clamp(angle, maxRotationalAngle.y, maxRotationalAngle.x);
+        }
+        else
+        {
+            finalAngle = Mathf.Clamp(angle, -maxRotationalAngle.x, -maxRotationalAngle.y);
+        }
+
+        Quaternion lookRotation = Quaternion.Euler(0f, 0f, finalAngle * facingLeftInt);
+        transform.localPosition = lookRotation * position;
+        transform.localRotation = lookRotation;
+    }
+
     public static float similar(Vector2 a, Vector2 b)
     {
         Vector2 diff = a - b;

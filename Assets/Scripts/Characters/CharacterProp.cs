@@ -56,30 +56,10 @@ public class CharacterProp : MonoBehaviour
 
     protected virtual void aimingState()
     {
-        rotateAboutCenter(inputDirection,originalPosition);
+        HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
     }
 
-    protected void rotateAboutCenter(Vector2 direction,Vector3 position)
-    {
-        Vector2 localLookingDirection = transform.parent.InverseTransformDirection(direction * facingLeftInt);
-        float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
-        float finalAngle;
-
-        if (!facingLeft)
-        {
-            finalAngle = Mathf.Clamp(angle, maxRotationalAngle.y, maxRotationalAngle.x);
-        }
-        else
-        {
-            finalAngle = Mathf.Clamp(angle, -maxRotationalAngle.x, -maxRotationalAngle.y);
-        }
-
-        Quaternion lookRotation = Quaternion.Euler(0f, 0f, finalAngle * facingLeftInt);
-        transform.localPosition = lookRotation * position;
-        transform.localRotation = lookRotation;
-    }
-
-    protected void useParentedEffectRequested()
+    public void useParentedEffect()
     {
         if(itemParentedEffect != null)
             itemParentedEffect.parentedEffect(transform,facingLeftInt,inputDirection,originalPosition,maxRotationalAngle);
@@ -99,5 +79,10 @@ public class CharacterProp : MonoBehaviour
     {
         this.facingLeft = facingLeft;
         facingLeftInt = facingLeft ? -1 : 1;
+    }
+
+    public void setItemParentedEffect(IParentedEffect itemEffect)
+    {
+        itemParentedEffect = itemEffect;
     }
 }

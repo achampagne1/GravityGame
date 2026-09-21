@@ -34,7 +34,7 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
 
         Vector3 previousDirection = inputDirection;
         float inputAngle = Mathf.Atan2(previousDirection.y, previousDirection.x) * Mathf.Rad2Deg;
-        float recoilAngle = inputAngle + magnitude * recoilMultiplier;
+        float recoilAngle = inputAngle + magnitude * recoilMultiplier * facingLeftInt;
         Vector3 recoilDirection = Quaternion.Euler(0f, 0f, recoilAngle) * Vector3.right;
         recoilCoroutine = StartCoroutine(recoilRoutine(previousDirection, recoilDirection, magnitude));
     }
@@ -43,12 +43,11 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
     {
         float elapsedTime = 0f;
         float kickDuration = recoilSpeedMultiplier * magnitude;
-        recoilDirection.y = recoilDirection.y * facingLeftInt;
 
         while (elapsedTime < kickDuration)
         {
             inputDirection = Vector3.Lerp(previousDirection, recoilDirection, elapsedTime / kickDuration);
-            rotateAboutCenter(inputDirection, originalPosition);
+            HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -57,33 +56,27 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
         while (elapsedTime < recoilReturnSpeed)
         {
             inputDirection = Vector3.Lerp(recoilDirection, previousDirection, elapsedTime / recoilReturnSpeed);
-            rotateAboutCenter(inputDirection, originalPosition);
+            HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         inputDirection = previousDirection;
-        rotateAboutCenter(inputDirection, originalPosition);
+        HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
         recoilCoroutine = null;
     }
-    protected void rotateAboutCenter(Vector2 direction, Vector3 position)
+
+    public void copyData(IParentedEffect otherEffect)
     {
-        Vector2 localLookingDirection = prop.parent.InverseTransformDirection(direction * facingLeftInt);
-        float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
-        float finalAngle;
-
-        if (facingLeftInt == 1)
-        {
-            finalAngle = Mathf.Clamp(angle, maxRotationalAngle.y, maxRotationalAngle.x);
-        }
-        else
-        {
-            finalAngle = Mathf.Clamp(angle, -maxRotationalAngle.x, -maxRotationalAngle.y);
-        }
-
-        Quaternion lookRotation = Quaternion.Euler(0f, 0f, finalAngle * facingLeftInt);
-        prop.localPosition = lookRotation * position;
-        prop.localRotation = lookRotation;
+        GunParentedEffect gunParentedEffect = otherEffect as GunParentedEffect;
+        recoilMultiplier = gunParentedEffect.recoilMultiplier;
+        recoilSpeedMultiplier = gunParentedEffect.recoilSpeedMultiplier;
+        recoilReturnSpeed = gunParentedEffect.recoilReturnSpeed;
+        float1 = gunParentedEffect.float1;
+        facingLeftInt = gunParentedEffect.facingLeftInt;
+        inputDirection = new Vector3(gunParentedEffect.inputDirection.x, gunParentedEffect.inputDirection.y, gunParentedEffect.inputDirection.z);
+        originalPosition = new Vector3(gunParentedEffect.originalPosition.x, gunParentedEffect.originalPosition.y, gunParentedEffect.originalPosition.z);
+        //prop = new Transform(gunParentedEffect.prop);
     }
 
 }

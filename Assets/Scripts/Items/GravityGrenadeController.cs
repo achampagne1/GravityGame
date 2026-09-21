@@ -40,6 +40,7 @@ class GravityGrenadeController : ItemController
 
     public override void useItemOnce()
     {
+        base.useItemOnce();
         //this needs to built upon the not parented logic in item controller
         //it needs to override the floating item logic too
         //and grab delay
@@ -54,6 +55,7 @@ class GravityGrenadeController : ItemController
 
     public override void useItemRelease(long holdTime)
     {
+        base.useItemRelease(holdTime);
         transform.SetParent(null);
         grabableLockout = true;
         forceBuffer = throwForce * (transform.rotation* Vector3.right);
