@@ -13,22 +13,23 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
     public Vector3 originalPosition { get; set; }
     public Vector2 maxRotationalAngle { get; set; }
     public Transform prop { get; set; }
+    public Vector3 point { get; set; }
 
     private Coroutine recoilCoroutine;
 
-    public void parentedEffect(Transform prop,int facingLeftInt, Vector3 inputDirection,Vector3 originalPosition,Vector2 maxRotationalAngle)
+    public void parentedEffect(Transform prop, int facingLeftInt, Vector3 inputDirection, Vector3 originalPosition, Vector2 maxRotationalAngle, Vector3 point = default(Vector3))
     {
         this.prop = prop;
         this.facingLeftInt = facingLeftInt;
         this.inputDirection = inputDirection;
         this.originalPosition = originalPosition;
         this.maxRotationalAngle = maxRotationalAngle;
+        this.point = point;
         recoil(float1);
     }
 
     protected void recoil(float magnitude)
     {
-        //originalPosition = new Vector3(armLengthActive, 0, 0);
         if (recoilCoroutine != null)
             StopCoroutine(recoilCoroutine);
 
@@ -47,7 +48,7 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
         while (elapsedTime < kickDuration)
         {
             inputDirection = Vector3.Lerp(previousDirection, recoilDirection, elapsedTime / kickDuration);
-            HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
+            HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -56,13 +57,13 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
         while (elapsedTime < recoilReturnSpeed)
         {
             inputDirection = Vector3.Lerp(recoilDirection, previousDirection, elapsedTime / recoilReturnSpeed);
-            HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
+            HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         inputDirection = previousDirection;
-        HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
+        HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
         recoilCoroutine = null;
     }
 
@@ -76,7 +77,6 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
         facingLeftInt = gunParentedEffect.facingLeftInt;
         inputDirection = new Vector3(gunParentedEffect.inputDirection.x, gunParentedEffect.inputDirection.y, gunParentedEffect.inputDirection.z);
         originalPosition = new Vector3(gunParentedEffect.originalPosition.x, gunParentedEffect.originalPosition.y, gunParentedEffect.originalPosition.z);
-        //prop = new Transform(gunParentedEffect.prop);
     }
 
 }

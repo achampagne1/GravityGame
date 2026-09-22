@@ -54,7 +54,7 @@ public class ItemController : ObjectController
     [SerializeField] private float armLengthActive = .5f;
     [SerializeField] private float armLengthPassive = .5f;
     [SerializeField] private bool twoHands = false;
-    [SerializeField] private Vector2 handOffset1;
+    [SerializeField] protected Vector2 handOffset1;
     [SerializeField] private Vector2 handOffset2;
     [SerializeField] private float relaxAngle = 0f;
 

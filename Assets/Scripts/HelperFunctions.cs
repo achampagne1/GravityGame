@@ -84,7 +84,7 @@ public struct HelperFunctions
         return found;
     }
 
-    public static void rotateAboutPoint(Transform transform,Vector2 direction, Vector3 position,int facingLeftInt,Vector2 maxRotationalAngle)
+    public static void rotateAboutPoint(Transform transform, Vector2 direction, Vector3 position, int facingLeftInt, Vector2 maxRotationalAngle, Vector3 point = default(Vector3))
     {
         Vector2 localLookingDirection = transform.parent.InverseTransformDirection(direction * facingLeftInt);
         float angle = Mathf.Atan2(localLookingDirection.y, localLookingDirection.x) * Mathf.Rad2Deg;
@@ -100,7 +100,7 @@ public struct HelperFunctions
         }
 
         Quaternion lookRotation = Quaternion.Euler(0f, 0f, finalAngle * facingLeftInt);
-        transform.localPosition = lookRotation * position;
+        transform.localPosition = point + lookRotation * (position - point);
         transform.localRotation = lookRotation;
     }
 

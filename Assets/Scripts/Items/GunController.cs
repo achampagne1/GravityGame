@@ -24,8 +24,6 @@ public class GunController : ItemController
     [SerializeField] private GameObject bullet;
     [SerializeField] private GameObject muzzleFlash;
 
-    public event Action<Vector2, float> onShoot;
-
     public override void Start()
     {
 
@@ -52,7 +50,7 @@ public class GunController : ItemController
         if (!fireLimiter.getIsRunning())
                 fireLimiter.start();
         if(fireLimiter.getIsRunning() && fireLimiter.getElapsedTime() > fireLimiterVariable){
-            shootDirection = transform.rotation * (facingLeft ? Vector2.left : Vector2.right); ;
+            shootDirection = transform.parent.TransformDirection(facingLeft ? Vector2.left : Vector2.right);
             shootWrapper();
             fireLimiter.reset();
             fireLimiter.start();
@@ -64,7 +62,6 @@ public class GunController : ItemController
     private void shootWrapper()
     {
         Vector3 offset = new Vector3(.5f, .25f, 0);
-        //offset.y = offset.y * (facingLeft ? -1 : 1);
         GameObject bulletClone= Instantiate(bullet, transform.position + transform.rotation * offset, transform.rotation);
         GameObject muzzleFlashClone = Instantiate(muzzleFlash,transform);
         muzzleFlashClone.transform.parent = transform;
@@ -74,6 +71,7 @@ public class GunController : ItemController
         bulletClone.GetComponent<BulletController>().init(transform.parent.gameObject.layer);
         bulletClone.GetComponent<Rigidbody2D>().AddForce(shootDirection * bulletForce, ForceMode2D.Impulse);
         SoundManager.instance.playSound(gunshotClip, transform, 1f);
+        parentedEffect?.parentedEffect(transform, facingLeft ? -1 : 1, shootDirection, handOffset1, new Vector2(180f, -180f), handOffset1);
     }
 
     public float getRecoilAmount()
