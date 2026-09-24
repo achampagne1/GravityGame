@@ -16,6 +16,7 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
     public Vector3 point { get; set; }
 
     private Coroutine recoilCoroutine;
+    private float recoilOffsetAngle;
 
     public void parentedEffect(Transform prop, int facingLeftInt, Vector3 inputDirection, Vector3 originalPosition, Vector2 maxRotationalAngle, Vector3 point = default(Vector3))
     {
@@ -25,44 +26,46 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         this.originalPosition = originalPosition;
         this.maxRotationalAngle = maxRotationalAngle;
         this.point = point;
-        recoil(float1);
+        recoil(inputDirection, float1);
     }
 
-    protected void recoil(float magnitude)
+    protected void recoil(Vector3 baseDirection, float magnitude)
     {
         if (recoilCoroutine != null)
             StopCoroutine(recoilCoroutine);
 
-        Vector3 previousDirection = inputDirection;
-        float inputAngle = Mathf.Atan2(previousDirection.y, previousDirection.x) * Mathf.Rad2Deg;
-        float recoilAngle = inputAngle + magnitude * recoilMultiplier * facingLeftInt;
-        Vector3 recoilDirection = Quaternion.Euler(0f, 0f, recoilAngle) * Vector3.right;
-        recoilCoroutine = StartCoroutine(recoilRoutine(previousDirection, recoilDirection, magnitude));
+        float startingOffset = recoilOffsetAngle;
+        float targetOffset = startingOffset + magnitude * recoilMultiplier * facingLeftInt;
+        recoilCoroutine = StartCoroutine(recoilRoutine(baseDirection, startingOffset, targetOffset, magnitude));
     }
 
-    protected IEnumerator recoilRoutine(Vector3 previousDirection, Vector3 recoilDirection, float magnitude)
+    protected IEnumerator recoilRoutine(Vector3 baseDirection, float startingOffset, float targetOffset, float magnitude)
     {
         float elapsedTime = 0f;
         float kickDuration = recoilSpeedMultiplier * magnitude;
 
         while (elapsedTime < kickDuration)
         {
-            inputDirection = Vector3.Lerp(previousDirection, recoilDirection, elapsedTime / kickDuration);
+            recoilOffsetAngle = Mathf.Lerp(startingOffset, targetOffset, elapsedTime / kickDuration);
+            inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
             HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
+        recoilOffsetAngle = targetOffset;
         elapsedTime = 0f;
         while (elapsedTime < recoilReturnSpeed)
         {
-            inputDirection = Vector3.Lerp(recoilDirection, previousDirection, elapsedTime / recoilReturnSpeed);
+            recoilOffsetAngle = Mathf.Lerp(targetOffset, 0f, elapsedTime / recoilReturnSpeed);
+            inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
             HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
-        inputDirection = previousDirection;
+        recoilOffsetAngle = 0f;
+        inputDirection = baseDirection;
         HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
         recoilCoroutine = null;
     }

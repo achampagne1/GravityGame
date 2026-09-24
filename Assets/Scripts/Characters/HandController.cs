@@ -54,7 +54,9 @@ public class HandController : CharacterProp
         holding = GetComponentInChildren<ItemController>() != null;
 
         base.FixedUpdate();
-        itemController.setFacingLeft(facingLeft);
+
+        if(itemController != null)
+            itemController.setFacingLeft(facingLeft);
 
         holdingLatch = holding;
         facingLeftLatch = facingLeft;
