@@ -14,7 +14,7 @@ public class GunController : ItemController
     [SerializeField] private float fireLimiterVariable = .1f;
 
     //vectors
-    private Vector3 shootDirection = Vector3.zero;
+    private Vector3 gunOrientation = Vector3.zero;
 
     //object creation
     private Animator animator;
@@ -52,7 +52,7 @@ public class GunController : ItemController
         if (!fireLimiter.getIsRunning())
                 fireLimiter.start();
         if(fireLimiter.getIsRunning() && fireLimiter.getElapsedTime() > fireLimiterVariable){
-            shootDirection = transform.TransformDirection(Vector2.right);
+            gunOrientation = transform.parent.TransformDirection(facingLeft ? Vector2.left : Vector2.right);
             shootWrapper();
             fireLimiter.reset();
             fireLimiter.start();
@@ -71,9 +71,10 @@ public class GunController : ItemController
         Destroy(muzzleFlashClone, .05f);
         animator.SetTrigger("Shoot");
         bulletClone.GetComponent<BulletController>().init(transform.parent.gameObject.layer);
+        Vector2 shootDirection = transform.TransformVector(Vector2.right).normalized;
         bulletClone.GetComponent<Rigidbody2D>().AddForce(shootDirection * bulletForce, ForceMode2D.Impulse);
         SoundManager.instance.playSound(gunshotClip, transform, 1f);
-        itemEffect?.parentedEffect(transform, facingLeft ? -1 : 1, shootDirection, handOffset1, recoilLimit, recoilRotationPoint);
+        itemEffect?.parentedEffect(transform, facingLeft ? -1 : 1, gunOrientation, handOffset1, recoilLimit, recoilRotationPoint);
     }
 
     public float getRecoilAmount()
