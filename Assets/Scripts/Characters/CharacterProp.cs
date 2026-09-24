@@ -5,7 +5,7 @@ public class CharacterProp : MonoBehaviour
 {
     [SerializeField] private Vector2 maxRotationalAngle = new Vector2(-180, 180);
     [SerializeField] private float transitionSpeed = 20f;
-    protected IParentedEffect itemParentedEffect = null;
+    protected IItemEffect itemParentedEffect = null;
     protected Quaternion originalRotation;
     protected Vector3 originalPosition;
     protected Vector3 originalScale;
@@ -81,8 +81,8 @@ public class CharacterProp : MonoBehaviour
         facingLeftInt = facingLeft ? -1 : 1;
     }
 
-    public void setItemParentedEffect(IParentedEffect itemEffect)
+    public void setItemParentedEffect(IItemEffect itemEffect)
     {
         itemParentedEffect = itemEffect;
-    }
+    }   
 }

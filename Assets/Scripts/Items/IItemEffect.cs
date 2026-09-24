@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IParentedEffect
+public interface IItemEffect
 {
     public float float1 {get; set;}
     public int facingLeftInt { get; set; }
@@ -11,5 +11,5 @@ public interface IParentedEffect
 
     public void parentedEffect(Transform prop, int facingLeftInt, Vector3 inputDirection, Vector3 originalPosition, Vector2 maxRotationalAngle, Vector3 point = default(Vector3));
 
-    public void copyData(IParentedEffect otherEffect);
+    public void copyData(IItemEffect otherEffect);
 }

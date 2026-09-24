@@ -29,7 +29,7 @@ public class HandController : CharacterProp
     public event Action itemSuccessfullyUsedOnce;
     public event Action itemSuccessfullyUsedHold;
     public event Action itemSuccessfullyUsedRelease;
-    public event Action<IParentedEffect> changeInItemEffect;
+    public event Action<IItemEffect> changeInItemEffect;
 
     // Start is called before the first frame update
     public override void Start()
@@ -178,7 +178,7 @@ public class HandController : CharacterProp
         hand2Offset               = newItem.hand2Pos;
         itemSortingOrder          = newItem.sortingOrder;
         relaxAngle                = newItem.relaxAngle;
-        itemParentedEffect        = newItem.parentedEffect;
+        itemParentedEffect        = newItem.itemEffect;
         changeInItemEffect?.Invoke(itemParentedEffect);
     }
 
@@ -194,7 +194,7 @@ public class HandController : CharacterProp
         changeInItemEffect?.Invoke(null);
     }
 
-    public IParentedEffect getItemParentedEffect()
+    public IItemEffect getItemParentedEffect()
     {
         return itemParentedEffect;
     }

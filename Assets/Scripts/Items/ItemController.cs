@@ -13,7 +13,7 @@ public struct PermanentItemData
     public float passiveArmLength;
     public int sortingOrder;
     public float relaxAngle;
-    public IParentedEffect parentedEffect;
+    public IItemEffect itemEffect;
 }
 
 public class ItemController : ObjectController
@@ -26,7 +26,7 @@ public class ItemController : ObjectController
     //object creation
     protected HandController handController;
     private Coroutine floatCoroutine;
-    protected IParentedEffect parentedEffect = null;
+    protected IItemEffect itemEffect = null;
 
     //vectors
     protected Vector3 originalScale;
@@ -64,7 +64,7 @@ public class ItemController : ObjectController
         facingLeft = transform.localScale.x < 0;
         base.Start();
         originalScale = transform.localScale;
-        parentedEffect = GetComponent<IParentedEffect>();
+        itemEffect = GetComponent<IItemEffect>();
 
         parented = transform.parent != null;
         if (parented)
@@ -221,9 +221,9 @@ public class ItemController : ObjectController
         }
     }
 
-    public IParentedEffect getParentedEffect()
+    public IItemEffect getItemEffect()
     {
-        return parentedEffect;
+        return itemEffect;
     }
 
     public void setFloatFlag(bool flag)
@@ -265,7 +265,7 @@ public class ItemController : ObjectController
         data.passiveArmLength = armLengthPassive;
         data.sortingOrder = GetComponent<SpriteRenderer>().sortingOrder;
         data.relaxAngle = relaxAngle;
-        data.parentedEffect = parentedEffect;
+        data.itemEffect = itemEffect;
         return data;
     }
 }

@@ -173,7 +173,7 @@ public class SpacePersonController : CharacterController
 
     }
 
-    private void onChangeInItemEffect(IParentedEffect itemEffect)
+    private void onChangeInItemEffect(IItemEffect itemEffect)
     {
         foreach(CharacterProp prop in characterProps)
         {
@@ -184,7 +184,7 @@ public class SpacePersonController : CharacterController
             }
 
             Type effectType = itemEffect.GetType();
-            IParentedEffect newItemEffect = (IParentedEffect)prop.gameObject.AddComponent(effectType);
+            IItemEffect newItemEffect = (IItemEffect)prop.gameObject.AddComponent(effectType);
             newItemEffect.copyData(itemEffect);
 
             prop.setItemParentedEffect(newItemEffect);

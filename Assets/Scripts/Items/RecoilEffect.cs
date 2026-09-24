@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class GunParentedEffect : MonoBehaviour, IParentedEffect
+public class RecoilEffect : MonoBehaviour, IItemEffect
 {
     [SerializeField] private float recoilMultiplier = 100f;
     [SerializeField] private float recoilSpeedMultiplier = 1.0f;
@@ -67,9 +67,9 @@ public class GunParentedEffect : MonoBehaviour, IParentedEffect
         recoilCoroutine = null;
     }
 
-    public void copyData(IParentedEffect otherEffect)
+    public void copyData(IItemEffect otherEffect)
     {
-        GunParentedEffect gunParentedEffect = otherEffect as GunParentedEffect;
+        RecoilEffect gunParentedEffect = otherEffect as RecoilEffect;
         recoilMultiplier = gunParentedEffect.recoilMultiplier;
         recoilSpeedMultiplier = gunParentedEffect.recoilSpeedMultiplier;
         recoilReturnSpeed = gunParentedEffect.recoilReturnSpeed;
