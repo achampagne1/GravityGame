@@ -23,6 +23,7 @@ public class GunController : ItemController
     [SerializeField] private AudioClip gunshotClip;
     [SerializeField] private GameObject bullet;
     [SerializeField] private GameObject muzzleFlash;
+    [SerializeField] private Vector2 recoilRotationPoint = Vector2.zero;
 
     public override void Start()
     {
@@ -71,7 +72,7 @@ public class GunController : ItemController
         bulletClone.GetComponent<BulletController>().init(transform.parent.gameObject.layer);
         bulletClone.GetComponent<Rigidbody2D>().AddForce(shootDirection * bulletForce, ForceMode2D.Impulse);
         SoundManager.instance.playSound(gunshotClip, transform, 1f);
-        parentedEffect?.parentedEffect(transform, facingLeft ? -1 : 1, shootDirection, handOffset1, new Vector2(180f, -180f), handOffset1);
+        parentedEffect?.parentedEffect(transform, facingLeft ? -1 : 1, shootDirection, handOffset1, new Vector2(180f, -180f), recoilRotationPoint);
     }
 
     public float getRecoilAmount()
