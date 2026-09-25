@@ -26,12 +26,16 @@ public class GunController : ItemController
     [SerializeField] private Vector2 recoilRotationPoint = Vector2.zero;
     [SerializeField] private Vector2 recoilLimit = new Vector2(-180f, 180f);
 
+    public override void Awake()
+    {
+        base.Awake();
+        itemEffect.float1 = recoilAmount;
+    }
+
     public override void Start()
     {
 
         base.Start();
-        itemEffect.float1 = recoilAmount;
-        itemEffect.onConnect(transform);
         try
         {
             animator = GetComponent<Animator>();

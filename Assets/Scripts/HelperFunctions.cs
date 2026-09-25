@@ -104,9 +104,13 @@ public struct HelperFunctions
         transform.localRotation = lookRotation;
     }
 
-    public static float similar(Vector2 a, Vector2 b)
+    public static bool similar(Vector2 a, Vector2 b,float sensitivity)
     {
-        Vector2 diff = a - b;
-        return diff.magnitude;
+        if (Mathf.Abs(a.x) > (Mathf.Abs(b.x) * (1 + sensitivity)) ||
+            Mathf.Abs(a.y) > (Mathf.Abs(b.y) * (1 + sensitivity)) ||
+            Mathf.Abs(a.x) < (Mathf.Abs(b.x) * (1 - sensitivity)) ||
+            Mathf.Abs(a.y) < (Mathf.Abs(b.y) * (1 - sensitivity)))
+            return false;
+        return true;
     }
 }

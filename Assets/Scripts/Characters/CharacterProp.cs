@@ -13,6 +13,8 @@ public class CharacterProp : MonoBehaviour, ILeft
     protected Vector3 originalPosition;
     protected Vector3 originalScale;
     protected Vector3 inputDirection = Vector3.zero;
+    protected Vector3 inputDirectionLatch = Vector3.zero;
+    [SerializeField] protected float inputLatchSensitivity = .1f;
     private float transitionInterpolator = 0.0f;
 
     [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;

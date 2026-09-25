@@ -377,11 +377,6 @@ public class CharacterController : ObjectController,IHealth
         return transform.rotation.eulerAngles.z;
     }
 
-    public bool getFacingLeft()
-    {
-        return facingLeft;
-    }
-
     public float getHealth()
     {
         return health;

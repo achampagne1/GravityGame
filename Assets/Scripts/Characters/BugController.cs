@@ -41,7 +41,7 @@ public class BugController : CharacterController
     {
         if (movementToggle && !dead)
         {
-            playerDirection = enemyAssistant.detectPlayer(getFacingLeft());
+            playerDirection = enemyAssistant.detectPlayer(facingLeft);
             if (playerDirection != notDetected)
             {
                 Vector2 temp = HelperFunctions.rotateVector((Vector2)playerDirection,-transform.eulerAngles.z);

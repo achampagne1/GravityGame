@@ -101,7 +101,7 @@ public class SpacePersonController : CharacterController
         }
         else if (handController.getHolding())
         {
-            if(handController.getTimeLastUsedDiff() > relaxTime)
+            if(handController.getTimeLastUsedDiff() > relaxTime && handController.getTimeLastMovedDiff() > relaxTime)
             {
                 characterState = CHARACTERSTATE.IDLE;
             }

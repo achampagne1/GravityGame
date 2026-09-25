@@ -75,7 +75,6 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         recoilSpeedMultiplier = gunParentedEffect.recoilSpeedMultiplier;
         recoilReturnSpeed = gunParentedEffect.recoilReturnSpeed;
         float1 = gunParentedEffect.float1;
-        left.facingLeftInt = gunParentedEffect.left.facingLeftInt;
         inputDirection = new Vector3(gunParentedEffect.inputDirection.x, gunParentedEffect.inputDirection.y, gunParentedEffect.inputDirection.z);
         originalPosition = new Vector3(gunParentedEffect.originalPosition.x, gunParentedEffect.originalPosition.y, gunParentedEffect.originalPosition.z);
     }

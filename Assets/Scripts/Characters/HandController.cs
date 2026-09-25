@@ -24,6 +24,7 @@ public class HandController : CharacterProp
     private bool holding = false;
     private GameObject secondHand = null;
     private float timeLastUsed = 0.0f;
+    private float timeLastMoved = 0.0f;
     private float relaxAngle = 0.0f;
 
     public event Action itemSuccessfullyUsedOnce;
@@ -55,6 +56,11 @@ public class HandController : CharacterProp
 
         base.FixedUpdate();
 
+        if (!HelperFunctions.similar(inputDirection,inputDirectionLatch,inputLatchSensitivity))
+        {
+            inputDirectionLatch = inputDirection;
+            timeLastMoved = Time.realtimeSinceStartup;
+        }
         holdingLatch = holding;
         facingLeftLatch = facingLeft;
     }
@@ -109,6 +115,26 @@ public class HandController : CharacterProp
             float tempTime = Time.realtimeSinceStartup - timeLastUsed;
             return tempTime;
         }
+    }
+
+    public float getTimeLastMovedDiff()
+    {
+        if (timeLastMoved == 0.0f)
+        {
+            timeLastMoved = Time.realtimeSinceStartup;
+            return timeLastMoved;
+        }
+        else
+        {
+            float tempTime = Time.realtimeSinceStartup - timeLastMoved;
+            Debug.Log(tempTime);
+            return tempTime;
+        }
+    }
+
+    private void determineInputMoved()
+    {
+
     }
 
     protected override void idleState()
@@ -246,11 +272,6 @@ public class HandController : CharacterProp
     private void forwardItemUsedRelease()
     {
         itemSuccessfullyUsedRelease?.Invoke();
-    }
-
-    public bool getFacingLeft()
-    {
-        return facingLeft;
     }
 
     public bool getHolding()

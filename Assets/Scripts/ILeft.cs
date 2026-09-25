@@ -9,7 +9,7 @@ public interface ILeft
             else
                 return false;
         }
-        set { } }
+        private set { } }
    public int facingLeftInt {
         get
         {
@@ -18,6 +18,5 @@ public interface ILeft
             else
                 return 1;
         }
-        set { }
-    }
+        private set { } }
 }

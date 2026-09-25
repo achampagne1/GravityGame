@@ -58,12 +58,16 @@ public class ItemController : ObjectController
     [SerializeField] private float relaxAngle = 0f;
 
     // Start is called before the first frame update
+
+    public virtual void Awake()
+    {
+        itemEffect = GetComponent<IItemEffect>();
+        itemEffect.onConnect(transform);
+    }
     public override void Start()
     {
-        facingLeft = transform.localScale.x < 0;
         base.Start();
         originalScale = transform.localScale;
-        itemEffect = GetComponent<IItemEffect>();
 
         parented = transform.parent != null;
         if (parented)
@@ -233,11 +237,6 @@ public class ItemController : ObjectController
     public void setForceBuffer(Vector2 force)
     {
         forceBuffer = force;
-    }
-
-    public bool getFacingLeft()
-    {
-        return facingLeft;
     }
 
     public bool getParented()
