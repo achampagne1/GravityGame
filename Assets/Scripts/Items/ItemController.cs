@@ -39,7 +39,6 @@ public class ItemController : ObjectController
 
     //protected variables
     protected bool parented = false;
-    protected bool facingLeft = false;
     protected bool parentLatch = true;
     protected bool grabable = false;
     protected bool grabableLockout = false;

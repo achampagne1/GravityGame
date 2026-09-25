@@ -33,12 +33,10 @@ public class CharacterController : ObjectController,IHealth
     //protected game variables
     protected bool click = false;
     protected bool space = false;
-    protected bool facingLeft = false;
     protected bool dead = false;
     protected bool strikeLeftLatch = false;
     protected bool hitLatch = false;
     protected int wallInFrontVar = 0;
-    protected int facingLeftInt = 1;
     protected float rotatedX = 0;
     protected float rotatedY = 0;
     protected float direcitonInput = 1;

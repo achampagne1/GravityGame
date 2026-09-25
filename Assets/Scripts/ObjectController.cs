@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Runtime.InteropServices;
 using UnityEngine;
 
-public class ObjectController : MonoBehaviour
+public class ObjectController : MonoBehaviour, ILeft
 {
 
     //object creation
@@ -20,6 +20,9 @@ public class ObjectController : MonoBehaviour
 
     //public game variables
     public float terminalVelocity = 30f;
+    public bool facingLeft { get; set; } = false;
+    public int facingLeftInt { get; set; } = 1;
+
     //when an object is created, you need to set these flags
     [SerializeField] protected bool gravityAffected = true;
     [SerializeField] protected bool orientToGravity = true;

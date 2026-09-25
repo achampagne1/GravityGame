@@ -12,15 +12,13 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
     public Vector3 inputDirection { get; set; }
     public Vector3 originalPosition { get; set; }
     public Vector2 maxRotationalAngle { get; set; }
-    public Transform prop { get; set; }
     public Vector3 point { get; set; }
 
     private Coroutine recoilCoroutine;
     private float recoilOffsetAngle;
 
-    public void parentedEffect(Transform prop, int facingLeftInt, Vector3 inputDirection, Vector3 originalPosition, Vector2 maxRotationalAngle, Vector3 point = default(Vector3))
+    public void effect(int facingLeftInt, Vector3 inputDirection, Vector3 originalPosition, Vector2 maxRotationalAngle, Vector3 point = default(Vector3))
     {
-        this.prop = prop;
         this.facingLeftInt = facingLeftInt;
         this.inputDirection = inputDirection;
         this.originalPosition = originalPosition;
@@ -48,7 +46,7 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         {
             recoilOffsetAngle = Mathf.Lerp(startingOffset, targetOffset, elapsedTime / kickDuration);
             inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
-            HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
+            HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -59,14 +57,14 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         {
             recoilOffsetAngle = Mathf.Lerp(targetOffset, 0f, elapsedTime / recoilReturnSpeed);
             inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
-            HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
+            HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         recoilOffsetAngle = 0f;
         inputDirection = baseDirection;
-        HelperFunctions.rotateAboutPoint(prop, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
+        HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
         recoilCoroutine = null;
     }
 

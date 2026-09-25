@@ -1,8 +1,11 @@
 using UnityEngine;
 using System.Collections;
 
-public class CharacterProp : MonoBehaviour
+public class CharacterProp : MonoBehaviour, ILeft
 {
+    public bool facingLeft { get; set; } = false;
+    public int facingLeftInt { get; set; } = 1;
+
     [SerializeField] private Vector2 maxRotationalAngle = new Vector2(-180, 180);
     [SerializeField] private float transitionSpeed = 20f;
     protected IItemEffect itemParentedEffect = null;
@@ -10,8 +13,6 @@ public class CharacterProp : MonoBehaviour
     protected Vector3 originalPosition;
     protected Vector3 originalScale;
     protected Vector3 inputDirection = Vector3.zero;
-    protected bool facingLeft = false;
-    protected int facingLeftInt = 1;
     private float transitionInterpolator = 0.0f;
 
     [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
@@ -62,7 +63,7 @@ public class CharacterProp : MonoBehaviour
     public void useParentedEffect()
     {
         if(itemParentedEffect != null)
-            itemParentedEffect.parentedEffect(transform,facingLeftInt,inputDirection,originalPosition,maxRotationalAngle);
+            itemParentedEffect.effect(facingLeftInt,inputDirection,originalPosition,maxRotationalAngle);
     }
 
     public void setCharacterState(CHARACTERSTATE newState)

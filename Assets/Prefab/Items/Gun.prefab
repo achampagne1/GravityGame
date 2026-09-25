@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4622401280902540694}
   - component: {fileID: 9093555100603836331}
   - component: {fileID: 7200657744619183238}
+  - component: {fileID: 8911824881322441222}
   m_Layer: 11
   m_Name: Gun
   m_TagString: Untagged
@@ -127,10 +128,13 @@ MonoBehaviour:
   relaxAngle: -45
   bulletForce: 100
   fireLimiterVariable: 0.1
+  recoilAmount: 0.25
   gunshotClip: {fileID: 8300000, guid: f531f1bba93abff4d8eeca4e65344fac, type: 3}
   bullet: {fileID: 5338086611691396769, guid: 2f8c39ffa4da29044a624623649d42ed, type: 3}
   muzzleFlash: {fileID: 4305216388988206239, guid: 64e817bd7ce00fe478e95bc9da2479da,
     type: 3}
+  recoilRotationPoint: {x: -0.5, y: 0}
+  recoilLimit: {x: 30, y: 0}
 --- !u!50 &490096820176868143
 Rigidbody2D:
   serializedVersion: 5
@@ -323,3 +327,18 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &8911824881322441222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956059173827187456}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d5abf32eda248148a069bd11df5e4d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GunParentedEffect
+  recoilMultiplier: 100
+  recoilSpeedMultiplier: 0.001
+  recoilReturnSpeed: 0.15
