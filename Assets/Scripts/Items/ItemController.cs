@@ -235,11 +235,6 @@ public class ItemController : ObjectController
         forceBuffer = force;
     }
 
-    public void setFacingLeft(bool facingLeft)
-    {
-        this.facingLeft = facingLeft;
-    }
-
     public bool getFacingLeft()
     {
         return facingLeft;

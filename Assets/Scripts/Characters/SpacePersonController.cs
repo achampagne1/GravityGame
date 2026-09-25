@@ -185,6 +185,7 @@ public class SpacePersonController : CharacterController
 
             Type effectType = itemEffect.GetType();
             IItemEffect newItemEffect = (IItemEffect)prop.gameObject.AddComponent(effectType);
+            newItemEffect.onConnect(prop.transform);
             newItemEffect.copyData(itemEffect);
 
             prop.setItemParentedEffect(newItemEffect);

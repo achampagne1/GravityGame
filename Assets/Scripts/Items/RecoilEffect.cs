@@ -8,22 +8,22 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
     [SerializeField] private float recoilReturnSpeed = .2f;
 
     public float float1 { get; set; }
-    public int facingLeftInt { get; set; }
     public Vector3 inputDirection { get; set; }
     public Vector3 originalPosition { get; set; }
     public Vector2 maxRotationalAngle { get; set; }
     public Vector3 point { get; set; }
+    public ILeft left { get; set; }
 
     private Coroutine recoilCoroutine;
     private float recoilOffsetAngle;
 
-    public void effect(int facingLeftInt, Vector3 inputDirection, Vector3 originalPosition, Vector2 maxRotationalAngle, Vector3 point = default(Vector3))
+    public void effect(Vector3 inputDirection, Vector3 originalPosition, Vector2 maxRotationalAngle, Vector3 point = default(Vector3))
     {
-        this.facingLeftInt = facingLeftInt;
         this.inputDirection = inputDirection;
         this.originalPosition = originalPosition;
         this.maxRotationalAngle = maxRotationalAngle;
         this.point = point;
+        
         recoil(inputDirection, float1);
     }
 
@@ -33,7 +33,7 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
             StopCoroutine(recoilCoroutine);
 
         float startingOffset = recoilOffsetAngle;
-        float targetOffset = startingOffset + magnitude * recoilMultiplier * facingLeftInt;
+        float targetOffset = startingOffset + magnitude * recoilMultiplier * left.facingLeftInt;
         recoilCoroutine = StartCoroutine(recoilRoutine(baseDirection, startingOffset, targetOffset, magnitude));
     }
 
@@ -46,7 +46,7 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         {
             recoilOffsetAngle = Mathf.Lerp(startingOffset, targetOffset, elapsedTime / kickDuration);
             inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
-            HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
+            HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, left.facingLeftInt, maxRotationalAngle, point);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -57,14 +57,14 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         {
             recoilOffsetAngle = Mathf.Lerp(targetOffset, 0f, elapsedTime / recoilReturnSpeed);
             inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
-            HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
+            HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, left.facingLeftInt, maxRotationalAngle, point);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         recoilOffsetAngle = 0f;
         inputDirection = baseDirection;
-        HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle, point);
+        HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, left.facingLeftInt, maxRotationalAngle, point);
         recoilCoroutine = null;
     }
 
@@ -75,7 +75,7 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         recoilSpeedMultiplier = gunParentedEffect.recoilSpeedMultiplier;
         recoilReturnSpeed = gunParentedEffect.recoilReturnSpeed;
         float1 = gunParentedEffect.float1;
-        facingLeftInt = gunParentedEffect.facingLeftInt;
+        left.facingLeftInt = gunParentedEffect.left.facingLeftInt;
         inputDirection = new Vector3(gunParentedEffect.inputDirection.x, gunParentedEffect.inputDirection.y, gunParentedEffect.inputDirection.z);
         originalPosition = new Vector3(gunParentedEffect.originalPosition.x, gunParentedEffect.originalPosition.y, gunParentedEffect.originalPosition.z);
     }

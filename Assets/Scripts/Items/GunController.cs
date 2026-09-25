@@ -31,6 +31,7 @@ public class GunController : ItemController
 
         base.Start();
         itemEffect.float1 = recoilAmount;
+        itemEffect.onConnect(transform);
         try
         {
             animator = GetComponent<Animator>();
@@ -74,7 +75,7 @@ public class GunController : ItemController
         Vector2 shootDirection = transform.TransformVector(Vector2.right).normalized;
         bulletClone.GetComponent<Rigidbody2D>().AddForce(shootDirection * bulletForce, ForceMode2D.Impulse);
         SoundManager.instance.playSound(gunshotClip, transform, 1f);
-        itemEffect?.effect(facingLeft ? -1 : 1, gunOrientation, handOffset1, recoilLimit, recoilRotationPoint);
+        itemEffect?.effect(gunOrientation, handOffset1, recoilLimit, recoilRotationPoint);
     }
 
     public float getRecoilAmount()

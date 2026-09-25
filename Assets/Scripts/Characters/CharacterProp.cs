@@ -63,7 +63,7 @@ public class CharacterProp : MonoBehaviour, ILeft
     public void useParentedEffect()
     {
         if(itemParentedEffect != null)
-            itemParentedEffect.effect(facingLeftInt,inputDirection,originalPosition,maxRotationalAngle);
+            itemParentedEffect.effect(inputDirection,originalPosition,maxRotationalAngle);
     }
 
     public void setCharacterState(CHARACTERSTATE newState)
