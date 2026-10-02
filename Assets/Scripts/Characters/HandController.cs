@@ -26,6 +26,8 @@ public class HandController : CharacterProp
     private float timeLastUsed = 0.0f;
     private float timeLastMoved = 0.0f;
     private float relaxAngle = 0.0f;
+    private Vector2 screenPosition;
+    private Vector2 screenPositionLatch;
 
     public event Action itemSuccessfullyUsedOnce;
     public event Action itemSuccessfullyUsedHold;
@@ -56,13 +58,18 @@ public class HandController : CharacterProp
 
         base.FixedUpdate();
 
-        if (!HelperFunctions.similar(inputDirection,inputDirectionLatch,inputLatchSensitivity))
+        if (!HelperFunctions.similar(screenPosition, screenPositionLatch, inputLatchSensitivity))
         {
-            inputDirectionLatch = inputDirection;
+            screenPositionLatch = screenPosition;
             timeLastMoved = Time.realtimeSinceStartup;
         }
         holdingLatch = holding;
         facingLeftLatch = facingLeft;
+    }
+
+    public void setInputScreenPosition(Vector2 screenPosition)
+    {
+        this.screenPosition = screenPosition;
     }
 
     public void throwItem()

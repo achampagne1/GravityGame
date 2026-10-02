@@ -55,7 +55,9 @@ public class SpaceManController : SpacePersonController
 
     public override void Update()
     {
-        lookingDirection = mouseToDirection(Input.mousePosition, transform.rotation);
+        Vector3 cursorPosition = Input.mousePosition;
+        handController.setInputScreenPosition(cursorPosition);
+        lookingDirection = mouseToDirection(cursorPosition, transform.rotation);
         setOrientation(lookLeftOrRight());
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
