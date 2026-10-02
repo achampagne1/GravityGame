@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 1940252005798528868}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1.95, y: 1.57, z: 0}
+  m_LocalPosition: {x: 1.9500047, y: 1.5699989, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -107,6 +107,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterProp
   maxRotationalAngle: {x: 30, y: -30}
   transitionSpeed: 20
+  inputLatchSensitivity: 0.1
   characterState: 0
 --- !u!1 &4245597159928487303
 GameObject:
@@ -135,7 +136,7 @@ Transform:
   m_GameObject: {fileID: 4245597159928487303}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.16, y: 0.72, z: 0}
+  m_LocalPosition: {x: -4.159998, y: 0.72000134, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -215,6 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::CharacterProp
   maxRotationalAngle: {x: 0, y: -10}
   transitionSpeed: 20
+  inputLatchSensitivity: 0.1
   characterState: 0
 --- !u!1 &6531168470496589063
 GameObject:
@@ -256,8 +258,8 @@ Transform:
   - {fileID: 7601894536948443485}
   - {fileID: 5070827973349304947}
   - {fileID: 3893534454884792547}
-  - {fileID: 196552273224755160}
   - {fileID: 5591656423680020509}
+  - {fileID: 196552273224755160}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &6531168470496589060

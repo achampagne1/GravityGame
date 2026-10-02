@@ -15,6 +15,7 @@ public class CharacterProp : MonoBehaviour, ILeft
     protected Vector3 inputDirection = Vector3.zero;
     protected Vector3 inputDirectionLatch = Vector3.zero;
     [SerializeField] protected float inputLatchSensitivity = .1f;
+    [SerializeField] private Vector2 animationOffset = Vector2.zero;
     private float transitionInterpolator = 0.0f;
 
     [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
@@ -45,6 +46,8 @@ public class CharacterProp : MonoBehaviour, ILeft
                 idleState();
                 break;
         }
+        
+        transform.localPosition += (Vector3)animationOffset;
         stateLatch = characterState;
         transitionInterpolator = transitionSpeed * Time.deltaTime;
         Mathf.Clamp(transitionInterpolator, 0.0f, 1.0f);
@@ -53,7 +56,8 @@ public class CharacterProp : MonoBehaviour, ILeft
     protected virtual void idleState()
     {
         transform.localRotation = Quaternion.Lerp(transform.localRotation, originalRotation, transitionInterpolator);
-        transform.localPosition = Vector3.Lerp(transform.localPosition,originalPosition, transitionInterpolator);
+        Vector3 offset = animationOffset;
+        transform.localPosition = Vector3.Lerp(transform.localPosition - offset, originalPosition, transitionInterpolator);
         transform.localScale = originalScale;
     }
 
