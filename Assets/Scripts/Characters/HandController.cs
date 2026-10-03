@@ -11,6 +11,7 @@ public class HandController : CharacterProp
     //game variables
     [SerializeField] private bool relax = false;
     [SerializeField] private AudioClip relaxClip; //temporarirly in hand controller
+    [SerializeField] private float aimDamper = 0.5f;
     private float armLengthActive = 0;
     private float armLengthPassive = 0;
     private bool twoHandItem = false;
@@ -134,7 +135,6 @@ public class HandController : CharacterProp
         else
         {
             float tempTime = Time.realtimeSinceStartup - timeLastMoved;
-            Debug.Log(tempTime);
             return tempTime;
         }
     }
@@ -155,6 +155,7 @@ public class HandController : CharacterProp
 
     protected override void aimingState()
     {
+        animationOffset *= aimDamper;
         originalPosition = new Vector3(armLengthActive, 0, 0);
         base.aimingState();
     }

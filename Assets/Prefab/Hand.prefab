@@ -107,5 +107,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxRotationalAngle: {x: 180, y: -180}
   transitionSpeed: 20
+  inputLatchSensitivity: 0.1
+  animationOffset: {x: 0, y: 0}
   characterState: 0
   relax: 0
+  relaxClip: {fileID: 8300000, guid: 9d62ba679dcfd7342a26b828ac8d69ee, type: 3}
+  aimDamper: 0.5

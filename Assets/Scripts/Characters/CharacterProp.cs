@@ -15,7 +15,7 @@ public class CharacterProp : MonoBehaviour, ILeft
     protected Vector3 inputDirection = Vector3.zero;
     protected Vector3 inputDirectionLatch = Vector3.zero;
     [SerializeField] protected float inputLatchSensitivity = .1f;
-    [SerializeField] private Vector2 animationOffset = Vector2.zero;
+    [SerializeField] protected Vector2 animationOffset = Vector2.zero;
     private float transitionInterpolator = 0.0f;
 
     [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
