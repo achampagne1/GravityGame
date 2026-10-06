@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
-using static UnityEditor.FilePathAttribute;
-using static UnityEditor.Recorder.OutputPath;
 
 public class PropPlacer : MonoBehaviour
 {
