@@ -28,7 +28,8 @@ public class CharacterController : ObjectController,IHealth
     [SerializeField] protected float moveSpeed = 20f;
     [SerializeField] protected float maxHealth = 3f; //default max health is 3
     [SerializeField] protected float health = 0f;
-    [SerializeField] float knockBackDuration = .1f;
+    [SerializeField] private float knockBackDuration = .1f;
+    [SerializeField] protected float groundedGracePeriod = 0.1f;
 
     //protected game variables
     protected bool click = false;
@@ -298,7 +299,7 @@ public class CharacterController : ObjectController,IHealth
     {
         try
         {
-            if (isGrounded)
+            if (isGrounded || groundStopWatch.getElapsedTime()<groundedGracePeriod)
             {
                 animator.SetBool("Airborn", false);
                 if (horizontalInput == 0)
