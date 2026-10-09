@@ -30,11 +30,10 @@ public class CharacterProp : MonoBehaviour, ILeft
         stateLatch = characterState;
     }
 
-    public virtual void LateUpdate()
+    public virtual void FixedUpdate()
     {
         transform.localRotation *= Quaternion.Inverse(appliedRotationOffset);
 
-        //NOTE: late update is needed to override animation in certain states
         if(stateLatch != characterState)
         {
             transitionInterpolator = 0.0f;
@@ -72,7 +71,7 @@ public class CharacterProp : MonoBehaviour, ILeft
         HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
     }
 
-    public void useParentedEffect()
+    public void useEffect()
     {
         if(itemParentedEffect != null)
             itemParentedEffect.effect(inputDirection,originalPosition,maxRotationalAngle);

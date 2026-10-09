@@ -47,7 +47,7 @@ public class HandController : CharacterProp
         base.Start();
     }
 
-    public override void LateUpdate()
+    public override void FixedUpdate()
     {
         if (stateLatch == CHARACTERSTATE.AIMING && characterState == CHARACTERSTATE.IDLE)
         {
@@ -56,7 +56,7 @@ public class HandController : CharacterProp
 
         holding = GetComponentInChildren<ItemController>() != null;
 
-        base.LateUpdate();
+        base.FixedUpdate();
 
         if (!HelperFunctions.similar(screenPosition, screenPositionLatch, inputLatchSensitivity))
         {
@@ -186,7 +186,7 @@ public class HandController : CharacterProp
         Vector2 targetPosition = (Vector2)transform.parent.position + offset;  //calcluates a target positions
         delay.Enqueue(targetPosition); //adds the target to a queue. this is so the hand follows a path that is sligthly behind the body
         Vector2 delayedTarget = delay.Dequeue(); //gets the old delay
-        transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); //smoothly places the hand
+        transform.position = Vector2.SmoothDamp(transform.position, delayedTarget, ref velocity, smoothTime); 
     }
 
     public void setChild(Transform child)

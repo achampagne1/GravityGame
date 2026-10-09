@@ -117,7 +117,8 @@ public class SpaceManController : SpacePersonController
     public override void hit(GameObject hitGameObject)
     {
         base.hit(hitGameObject);
-        if (hitGameObject.GetComponent<IProjectileInfo>().getShotBy() == gameObject.layer)
+        IProjectileInfo projectileInfo = hitGameObject.GetComponent<IProjectileInfo>();
+        if (projectileInfo != null && projectileInfo.getShotBy() == gameObject.layer)
         {
             return;
         }

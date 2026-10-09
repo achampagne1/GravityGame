@@ -30,13 +30,8 @@ public class SpacePersonController : CharacterController
     private bool hoverFlag = false;
     private bool smokeLatch = false;
     private GameObject jetPackFlameClone;
-    private Transform visor;
-    private Transform jetPack;
-    private Vector3 originalVisorPos;
-    private Vector3 originalJetPackPos;
-    private Quaternion originalVisorRot;
-    private Quaternion originalJetPackRot;
     private bool holdingLatch = false;
+    private VisorController visorController;
 
     //protected game variables
     protected float currentFuel = 100f;
@@ -70,6 +65,14 @@ public class SpacePersonController : CharacterController
         }
 
         base.Start();
+
+        foreach (CharacterProp prop in characterProps)
+        {
+            if (prop is VisorController)
+            {
+                visorController = (VisorController)prop;
+            }
+        }
 
         handController.itemSuccessfullyUsedOnce += onItemSucessfullyUsedOnce;
         handController.itemSuccessfullyUsedHold += onItemSucessfullyUsedHold;
@@ -155,11 +158,17 @@ public class SpacePersonController : CharacterController
         hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero; //avoid new
     }
 
+    public override void hit(GameObject hitGameObject)
+    {
+        visorController.setHit();
+        base.hit(hitGameObject);
+    }
+
     private void onItemSucessfullyUsedOnce()
     {
         foreach (CharacterProp prop in characterProps)
         {
-            prop.useParentedEffect();
+            prop.useEffect();
         }
     }
 
