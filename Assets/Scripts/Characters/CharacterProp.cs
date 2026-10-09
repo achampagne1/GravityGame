@@ -1,5 +1,4 @@
 using UnityEngine;
-using System.Collections;
 
 public class CharacterProp : MonoBehaviour, ILeft
 {
@@ -16,7 +15,9 @@ public class CharacterProp : MonoBehaviour, ILeft
     protected Vector3 inputDirectionLatch = Vector3.zero;
     [SerializeField] protected float inputLatchSensitivity = .1f;
     [SerializeField] protected Vector2 animationOffset = Vector2.zero;
+    [SerializeField] protected Vector3 rotationOffset = Vector3.zero;
     private float transitionInterpolator = 0.0f;
+    private Quaternion appliedRotationOffset = Quaternion.identity;
 
     [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
     protected CHARACTERSTATE stateLatch;
@@ -29,8 +30,11 @@ public class CharacterProp : MonoBehaviour, ILeft
         stateLatch = characterState;
     }
 
-    public virtual void FixedUpdate()
+    public virtual void LateUpdate()
     {
+        transform.localRotation *= Quaternion.Inverse(appliedRotationOffset);
+
+        //NOTE: late update is needed to override animation in certain states
         if(stateLatch != characterState)
         {
             transitionInterpolator = 0.0f;
@@ -48,6 +52,8 @@ public class CharacterProp : MonoBehaviour, ILeft
         }
         
         transform.localPosition += (Vector3)animationOffset;
+        appliedRotationOffset = Quaternion.Euler(rotationOffset);
+        transform.localRotation *= appliedRotationOffset;
         stateLatch = characterState;
         transitionInterpolator = transitionSpeed * Time.deltaTime;
         Mathf.Clamp(transitionInterpolator, 0.0f, 1.0f);

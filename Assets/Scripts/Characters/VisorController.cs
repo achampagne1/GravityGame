@@ -12,9 +12,10 @@ public class VisorController : CharacterProp
         base.Start();
     }
 
-    void LateUpdate()
+    public override void LateUpdate()
     {
         if (characterState == CHARACTERSTATE.AIMING)
             spriteRenderer.sprite = defaultSprite;
+        base.LateUpdate();
     }
 }

@@ -47,8 +47,7 @@ public class HandController : CharacterProp
         base.Start();
     }
 
-    // Update is called once per frame
-    public override void FixedUpdate()
+    public override void LateUpdate()
     {
         if (stateLatch == CHARACTERSTATE.AIMING && characterState == CHARACTERSTATE.IDLE)
         {
@@ -57,7 +56,7 @@ public class HandController : CharacterProp
 
         holding = GetComponentInChildren<ItemController>() != null;
 
-        base.FixedUpdate();
+        base.LateUpdate();
 
         if (!HelperFunctions.similar(screenPosition, screenPositionLatch, inputLatchSensitivity))
         {
