@@ -7,8 +7,18 @@ using static Unity.Collections.AllocatorManager;
 
 public enum CHARACTERSTATE
 {
-    IDLE,
-    AIMING
+    IDLING,
+    WALKING,
+    AIMING,
+    AIRBORNE, //AIRBORNING?
+    GROUNDING,
+    GETTINGHURT,
+}
+
+public struct CharacterStateNode
+{
+    public CHARACTERSTATE characterState;
+    public int subState; //used for things like airborne up/down, walking left/right
 }
 
 public class CharacterController : ObjectController,IHealth
@@ -45,6 +55,7 @@ public class CharacterController : ObjectController,IHealth
     //private game variables
     private float jumpMagnitude = 0;
     private float horizontalInput = 0;
+    private List<CharacterStateNode> characterStates = new List<CharacterStateNode>();
 
     //vectors
     private Vector2 moveDirection = Vector2.zero;
@@ -58,7 +69,6 @@ public class CharacterController : ObjectController,IHealth
     protected Vector2 lookingDirection = Vector2.zero;
 
     protected List<CharacterProp> characterProps;
-    protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
 
 
 
@@ -93,9 +103,8 @@ public class CharacterController : ObjectController,IHealth
     // Update is called once per frame
     public override void FixedUpdate()
     {
-        
         turnLeftRight();
-        determineAnimation();
+        characterStates.Clear();
         wallInFrontVar = wallInFront();
         calculateJump();
         calculateMovement();
@@ -111,11 +120,12 @@ public class CharacterController : ObjectController,IHealth
             rb.linearVelocity += -jumpExtraction + jumpMagnitude * -gravityDirection; //what this line does is if the player is in the air, it automatically adjusts its jump arc to follow gravit
         }
 
+        characterStateMachine();
         foreach (CharacterProp prop in characterProps)
         {
-            prop.setFacingLeft(facingLeft);
+            //prop.setFacingLeft(facingLeft);
             prop.setInputDirection(lookingDirection);
-            prop.setCharacterState(characterState);
+            prop.setCharacterStates(characterStates);
         }
 
         base.FixedUpdate();
@@ -295,37 +305,30 @@ public class CharacterController : ObjectController,IHealth
         facingLeftInt = facingLeft ? -1 : 1;
     }
 
-    protected virtual void determineAnimation() //might need to be redone to allow for differences between space eprson and chgaracter
+    protected virtual void characterStateMachine()
     {
-        try
+        if (isGrounded || groundStopWatch.getElapsedTime() < groundedGracePeriod)
         {
-            if (isGrounded || groundStopWatch.getElapsedTime()<groundedGracePeriod)
+            addCharacterState(CHARACTERSTATE.GROUNDING);
+            if (horizontalInput != 0)
             {
-                animator.SetBool("Airborn", false);
-                if (horizontalInput == 0)
-                {
-                    animator.SetBool("Walk", false);
-                    animator.SetBool("Backwards", false);
-                }
-                else
-                {
-                    animator.SetBool("Walk", true);
-                    if ((facingLeft && horizontalInput == 1) || (!facingLeft && horizontalInput == -1))
-                        animator.SetBool("Backwards", true);
-                    else
-                        animator.SetBool("Backwards", false);
-                }
-            }
-            else
-            {
-                animator.SetBool("Airborn", true);
-                animator.SetBool("Up", up);
+                addCharacterState(CHARACTERSTATE.WALKING,(int)horizontalInput);
             }
         }
-        catch (Exception e)
+        else
         {
-            bool ham = false;
+            addCharacterState(CHARACTERSTATE.AIRBORNE,up ? 1 : 0);
         }
+    }
+
+    protected void addCharacterState(CHARACTERSTATE characterState, int subState = 0)
+    {
+        CharacterStateNode characterStateNode = new CharacterStateNode()
+        {
+            characterState = characterState,
+            subState = subState
+        };
+        characterStates.Add(characterStateNode);
     }
 
     public void setMovement(int moveInput)
@@ -392,10 +395,4 @@ public class CharacterController : ObjectController,IHealth
     {
         return dead;
     }
-
-    public string getTag()
-    {
-        return gameObject.tag;
-    }
-
 }

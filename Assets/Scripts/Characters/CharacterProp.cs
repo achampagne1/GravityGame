@@ -1,4 +1,8 @@
+using NUnit.Framework;
 using UnityEngine;
+using System.Collections.Generic;
+using System.Collections;
+using System.Linq;
 
 public class CharacterProp : MonoBehaviour, ILeft
 {
@@ -18,44 +22,58 @@ public class CharacterProp : MonoBehaviour, ILeft
     [SerializeField] protected Vector3 rotationOffset = Vector3.zero;
     private float transitionInterpolator = 0.0f;
     private Quaternion appliedRotationOffset = Quaternion.identity;
+    private Animator animator;
 
-    [SerializeField] protected CHARACTERSTATE characterState = CHARACTERSTATE.IDLE;
-    protected CHARACTERSTATE stateLatch;
+    protected List<CharacterStateNode> characterStates = new List<CharacterStateNode>();
+    protected List<CharacterStateNode> stateLatch = new List<CharacterStateNode>();
 
     public virtual void Start()
     {
         originalPosition = transform.localPosition;
         originalRotation = transform.localRotation;
         originalScale = transform.localScale;
-        stateLatch = characterState;
+        stateLatch = characterStates;
+
+        animator = GetComponent<Animator>();
     }
 
     public virtual void FixedUpdate()
     {
         transform.localRotation *= Quaternion.Inverse(appliedRotationOffset);
 
-        if(stateLatch != characterState)
+        if(!characterStates.SequenceEqual(stateLatch))
         {
             transitionInterpolator = 0.0f;
         }
 
-        switch (characterState)
-        {
-            case CHARACTERSTATE.AIMING:
-                aimingState();
-                break;
-            case CHARACTERSTATE.IDLE:
-            default:
-                idleState();
-                break;
-        }
+        characterStateMachine();
         
         transform.localPosition += (Vector3)animationOffset;
         appliedRotationOffset = Quaternion.Euler(rotationOffset);
         transform.localRotation *= appliedRotationOffset;
-        stateLatch = characterState;
+        stateLatch = characterStates;
         transitionInterpolator = transitionSpeed * Time.deltaTime;
         Mathf.Clamp(transitionInterpolator, 0.0f, 1.0f);
+    }
+
+    protected virtual void characterStateMachine()
+    {
+        foreach (CharacterStateNode state in characterStates)
+        {
+            switch (state.characterState)
+            {
+                case CHARACTERSTATE.AIMING:
+                    aimingState();
+                    break;
+                case CHARACTERSTATE.WALKING:
+                    walkingState();
+                    break;
+                case CHARACTERSTATE.IDLING:
+                default:
+                    idleState();
+                    break;
+            }
+        }
     }
 
     protected virtual void idleState()
@@ -64,11 +82,19 @@ public class CharacterProp : MonoBehaviour, ILeft
         Vector3 offset = animationOffset;
         transform.localPosition = Vector3.Lerp(transform.localPosition - offset, originalPosition, transitionInterpolator);
         transform.localScale = originalScale;
+        safeAnimationSetState("Idle", true);
+    }
+
+    protected virtual void walkingState()
+    {
+        idleState();
+        safeAnimationSetState("Walk", true); //overrides the previously set idle stat ewith the walking state
     }
 
     protected virtual void aimingState()
     {
         HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
+        safeAnimationSetState("Aim", true);
     }
 
     public void useEffect()
@@ -77,9 +103,9 @@ public class CharacterProp : MonoBehaviour, ILeft
             itemParentedEffect.effect(inputDirection,originalPosition,maxRotationalAngle);
     }
 
-    public void setCharacterState(CHARACTERSTATE newState)
+    public void setCharacterStates(List<CharacterStateNode> characterStates)
     {
-        characterState = newState;
+        this.characterStates = characterStates;
     }
 
     public void setInputDirection(Vector3 inputDirection)
@@ -97,4 +123,25 @@ public class CharacterProp : MonoBehaviour, ILeft
     {
         itemParentedEffect = itemEffect;
     }   
+
+    private bool safeAnimationSetState(string parameterName, bool value)
+    {
+        if (animator == null)
+            return false;
+
+        foreach (AnimatorControllerParameter parameter in animator.parameters)
+        {
+            animator.SetBool(parameter.name, false);
+        }
+
+        try
+        {
+            animator.SetBool(parameterName, true);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
+    }
 }

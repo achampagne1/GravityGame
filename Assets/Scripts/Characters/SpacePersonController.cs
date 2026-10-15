@@ -31,7 +31,6 @@ public class SpacePersonController : CharacterController
     private bool smokeLatch = false;
     private GameObject jetPackFlameClone;
     private bool holdingLatch = false;
-    private VisorController visorController;
 
     //protected game variables
     protected float currentFuel = 100f;
@@ -66,14 +65,6 @@ public class SpacePersonController : CharacterController
 
         base.Start();
 
-        foreach (CharacterProp prop in characterProps)
-        {
-            if (prop is VisorController)
-            {
-                visorController = (VisorController)prop;
-            }
-        }
-
         handController.itemSuccessfullyUsedOnce += onItemSucessfullyUsedOnce;
         handController.itemSuccessfullyUsedHold += onItemSucessfullyUsedHold;
         handController.itemSuccessfullyUsedRelease += onItemSuccessfullyUsedRelease;
@@ -98,24 +89,27 @@ public class SpacePersonController : CharacterController
             smoke.GetComponent<SpriteRenderer>().sortingOrder = 1;
         }
 
-        if(!handController.getHolding())
+        smokeLatch = false;
+        holdingLatch = handController.getHolding();
+    }
+
+    protected override void characterStateMachine()
+    {
+        if (!handController.getHolding())
         {
-            characterState = CHARACTERSTATE.IDLE;
+            addCharacterState(CHARACTERSTATE.IDLING);
         }
         else if (handController.getHolding())
         {
-            if(handController.getTimeLastUsedDiff() > relaxTime && handController.getTimeLastMovedDiff() > relaxTime)
+            if (handController.getTimeLastUsedDiff() > relaxTime && handController.getTimeLastMovedDiff() > relaxTime)
             {
-                characterState = CHARACTERSTATE.IDLE;
+                addCharacterState(CHARACTERSTATE.IDLING);
             }
             else
             {
-                characterState = CHARACTERSTATE.AIMING;
+                addCharacterState(CHARACTERSTATE.AIMING);
             }
         }
-
-        smokeLatch = false;
-        holdingLatch = handController.getHolding();
     }
 
     public override void triggerLogic(Collider2D trigger)
@@ -156,12 +150,6 @@ public class SpacePersonController : CharacterController
         if (hoverFlag)
             useFuel();
         hover = hoverFlag ? new Vector2(rotatedX * jetPackForce, rotatedY * jetPackForce) : Vector2.zero; //avoid new
-    }
-
-    public override void hit(GameObject hitGameObject)
-    {
-        visorController.setHit();
-        base.hit(hitGameObject);
     }
 
     private void onItemSucessfullyUsedOnce()
