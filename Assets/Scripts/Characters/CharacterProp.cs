@@ -32,7 +32,7 @@ public class CharacterProp : MonoBehaviour, ILeft
         originalPosition = transform.localPosition;
         originalRotation = transform.localRotation;
         originalScale = transform.localScale;
-        stateLatch = characterStates;
+        stateLatch = characterStates.Select(item => new CharacterStateNode(item)).ToList();
 
         animator = GetComponent<Animator>();
     }
@@ -51,7 +51,7 @@ public class CharacterProp : MonoBehaviour, ILeft
         transform.localPosition += (Vector3)animationOffset;
         appliedRotationOffset = Quaternion.Euler(rotationOffset);
         transform.localRotation *= appliedRotationOffset;
-        stateLatch = characterStates;
+        stateLatch = characterStates.Select(item => new CharacterStateNode(item)).ToList();
         transitionInterpolator = transitionSpeed * Time.deltaTime;
         Mathf.Clamp(transitionInterpolator, 0.0f, 1.0f);
     }
@@ -69,7 +69,6 @@ public class CharacterProp : MonoBehaviour, ILeft
                     walkingState();
                     break;
                 case CHARACTERSTATE.RELAXED:
-                default:
                     relaxedState();
                     break;
             }

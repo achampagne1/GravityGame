@@ -22,6 +22,12 @@ public struct CharacterStateNode
 {
     public CHARACTERSTATE characterState;
     public int subState; //used for things like airborne up/down, walking left/right
+
+    public CharacterStateNode(CharacterStateNode other)
+    {
+        this.characterState = other.characterState;
+        this.subState = other.subState;
+    }
 }
 
 public class CharacterController : ObjectController,IHealth
@@ -354,7 +360,6 @@ public class CharacterController : ObjectController,IHealth
         try
         {
             animator.SetBool(characterState.ToString(), true);
-            Debug.Log(characterState.ToString());
             return;
         }
         catch

@@ -138,11 +138,6 @@ public class HandController : CharacterProp
         }
     }
 
-    private void determineInputMoved()
-    {
-
-    }
-
     protected override void relaxedState()
     {
         //TODO: idle state needs to break up into emptyHand and holding something but not aiming, or (future) holding something but not aimable
