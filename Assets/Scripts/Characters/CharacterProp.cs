@@ -68,15 +68,15 @@ public class CharacterProp : MonoBehaviour, ILeft
                 case CHARACTERSTATE.WALKING:
                     walkingState();
                     break;
-                case CHARACTERSTATE.IDLING:
+                case CHARACTERSTATE.RELAXED:
                 default:
-                    idleState();
+                    relaxedState();
                     break;
             }
         }
     }
 
-    protected virtual void idleState()
+    protected virtual void relaxedState()
     {
         transform.localRotation = Quaternion.Lerp(transform.localRotation, originalRotation, transitionInterpolator);
         Vector3 offset = animationOffset;
@@ -87,7 +87,7 @@ public class CharacterProp : MonoBehaviour, ILeft
 
     protected virtual void walkingState()
     {
-        idleState();
+        relaxedState();
         safeAnimationSetState("Walk", true); //overrides the previously set idle stat ewith the walking state
     }
 
@@ -143,5 +143,14 @@ public class CharacterProp : MonoBehaviour, ILeft
         {
             return false;
         }
+    }
+
+    protected bool containsState(List<CharacterStateNode> states, CHARACTERSTATE state) { 
+        foreach(CharacterStateNode node in states)
+        {
+            if (node.characterState == state)
+                return true;
+        }
+        return false;
     }
 }

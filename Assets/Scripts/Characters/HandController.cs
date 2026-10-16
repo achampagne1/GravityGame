@@ -49,7 +49,7 @@ public class HandController : CharacterProp
 
     public override void FixedUpdate()
     {
-        if (stateLatch == CHARACTERSTATE.AIMING && characterState == CHARACTERSTATE.IDLE)
+        if (containsState(stateLatch,CHARACTERSTATE.AIMING) && containsState(characterStates, CHARACTERSTATE.RELAXED))
         {
             SoundManager.instance.playSound(relaxClip, transform, 1f);
         }
@@ -143,7 +143,7 @@ public class HandController : CharacterProp
 
     }
 
-    protected override void idleState()
+    protected override void relaxedState()
     {
         //TODO: idle state needs to break up into emptyHand and holding something but not aiming, or (future) holding something but not aimable
         if (holding)
@@ -163,7 +163,7 @@ public class HandController : CharacterProp
     { 
         originalRotation = Quaternion.Euler(0, 0, relaxAngle);
         originalPosition = originalRotation * new Vector3(armLengthPassive, 0, 0);
-        base.idleState();
+        base.relaxedState();
     }
 
     private void emptyHand()

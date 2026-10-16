@@ -2,17 +2,20 @@ using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection.Metadata;
 using UnityEngine;
+using UnityEngine.ResourceManagement.ResourceProviders.Simulation;
 using static Unity.Collections.AllocatorManager;
 
 public enum CHARACTERSTATE
 {
-    IDLING,
+    IDLE,
     WALKING,
     AIMING,
     AIRBORNE, //AIRBORNING?
-    GROUNDING,
+    GROUNDED,
     GETTINGHURT,
+    RELAXED,
 }
 
 public struct CharacterStateNode
@@ -103,8 +106,10 @@ public class CharacterController : ObjectController,IHealth
     // Update is called once per frame
     public override void FixedUpdate()
     {
-        turnLeftRight();
         characterStates.Clear();
+        resetAnimationVars();
+
+        turnLeftRight();
         wallInFrontVar = wallInFront();
         calculateJump();
         calculateMovement();
@@ -123,7 +128,7 @@ public class CharacterController : ObjectController,IHealth
         characterStateMachine();
         foreach (CharacterProp prop in characterProps)
         {
-            //prop.setFacingLeft(facingLeft);
+            prop.setFacingLeft(facingLeft);
             prop.setInputDirection(lookingDirection);
             prop.setCharacterStates(characterStates);
         }
@@ -144,6 +149,14 @@ public class CharacterController : ObjectController,IHealth
 
         strikeLeftLatch = false;
         hitLatch = false;
+    }
+
+    private void resetAnimationVars()
+    {
+        foreach(AnimatorControllerParameter parameter in animator.parameters)
+        {
+            animator.SetBool(parameter.name,false);
+        }
     }
 
     public override void triggerLogic(Collider2D trigger)
@@ -309,10 +322,14 @@ public class CharacterController : ObjectController,IHealth
     {
         if (isGrounded || groundStopWatch.getElapsedTime() < groundedGracePeriod)
         {
-            addCharacterState(CHARACTERSTATE.GROUNDING);
+            addCharacterState(CHARACTERSTATE.GROUNDED);
             if (horizontalInput != 0)
             {
                 addCharacterState(CHARACTERSTATE.WALKING,(int)horizontalInput);
+            }
+            else
+            {
+                addCharacterState(CHARACTERSTATE.IDLE);
             }
         }
         else
@@ -328,7 +345,22 @@ public class CharacterController : ObjectController,IHealth
             characterState = characterState,
             subState = subState
         };
+
         characterStates.Add(characterStateNode);
+
+        if (animator == null)
+            return;
+
+        try
+        {
+            animator.SetBool(characterState.ToString(), true);
+            Debug.Log(characterState.ToString());
+            return;
+        }
+        catch
+        {
+            return;
+        }
     }
 
     public void setMovement(int moveInput)

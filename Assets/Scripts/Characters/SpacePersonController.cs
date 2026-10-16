@@ -97,19 +97,20 @@ public class SpacePersonController : CharacterController
     {
         if (!handController.getHolding())
         {
-            addCharacterState(CHARACTERSTATE.IDLING);
+            addCharacterState(CHARACTERSTATE.RELAXED);
         }
         else if (handController.getHolding())
         {
             if (handController.getTimeLastUsedDiff() > relaxTime && handController.getTimeLastMovedDiff() > relaxTime)
             {
-                addCharacterState(CHARACTERSTATE.IDLING);
+                addCharacterState(CHARACTERSTATE.RELAXED);
             }
             else
             {
                 addCharacterState(CHARACTERSTATE.AIMING);
             }
         }
+        base.characterStateMachine();
     }
 
     public override void triggerLogic(Collider2D trigger)
