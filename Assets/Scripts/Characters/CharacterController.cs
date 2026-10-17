@@ -1,11 +1,8 @@
-using Microsoft.Win32.SafeHandles;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Reflection.Metadata;
+using Microsoft.Win32.SafeHandles;
 using UnityEngine;
-using UnityEngine.ResourceManagement.ResourceProviders.Simulation;
-using static Unity.Collections.AllocatorManager;
 
 public enum CHARACTERSTATE
 {
@@ -14,7 +11,7 @@ public enum CHARACTERSTATE
     AIMING,
     AIRBORNE, //AIRBORNING?
     GROUNDED,
-    GETTINGHURT,
+    HURT,
     RELAXED,
 }
 
@@ -46,6 +43,7 @@ public class CharacterController : ObjectController,IHealth
     [SerializeField] protected Sprite hitSprite;
     [SerializeField] protected AudioClip hitSound;
     [SerializeField] protected GameObject explodeTemplate;
+    [SerializeField] private GameObject hitMark;
 
     //public game variables
     [SerializeField] protected bool invincibleFlag = false;
@@ -58,6 +56,7 @@ public class CharacterController : ObjectController,IHealth
     [SerializeField] protected float health = 0f;
     [SerializeField] private float knockBackDuration = .1f;
     [SerializeField] protected float groundedGracePeriod = 0.1f;
+    [SerializeField] private Vector2 hitMarkCenter = Vector2.zero;
 
     //protected game variables
     protected bool click = false;
@@ -74,6 +73,8 @@ public class CharacterController : ObjectController,IHealth
     private float jumpMagnitude = 0;
     private float horizontalInput = 0;
     private List<CharacterStateNode> characterStates = new List<CharacterStateNode>();
+    private Coroutine hurtStateCoroutine;
+    private bool hurtStateActive;
 
     //vectors
     private Vector2 moveDirection = Vector2.zero;
@@ -191,8 +192,15 @@ public class CharacterController : ObjectController,IHealth
         if(!hitGameObject.GetComponent<IDamager>().damage(gameObject))
             return;
 
+        spawnHitMark();
+
+        if (hurtStateCoroutine != null)
+            StopCoroutine(hurtStateCoroutine);
+        hurtStateCoroutine = StartCoroutine(hurtStateForDuration());
+
         SoundManager.instance.playSound(hitSound, transform, 1f);
-        //StartCoroutine(HitHelper.changeColorWrapper(animator, spriteRenderer, hitSprite,gameObject));
+        StartCoroutine(HitHelper.changeColorWrapper(gameObject));
+
 
         if (hitGameObject.tag == "Hazard" || hitGameObject.tag == "Melee") //dependency injection?
             return;
@@ -211,6 +219,19 @@ public class CharacterController : ObjectController,IHealth
             forceLocalAdded = false;
             yield return null;
         }
+    }
+
+    private void spawnHitMark()
+    {
+        Vector3 center = transform.TransformPoint(new Vector3(hitMarkCenter.x, hitMarkCenter.y, 0f));
+        Vector2 offset = UnityEngine.Random.insideUnitCircle *.1f;
+        Vector3 position = center + transform.TransformDirection(new Vector3(offset.x, offset.y, 0f));
+        Quaternion rotation = Quaternion.Euler(0f, 0f, UnityEngine.Random.Range(0f, 360f));
+        GameObject mark = Instantiate(hitMark, position, rotation);
+        mark.transform.localScale *= UnityEngine.Random.Range(0.9f, 1.1f);
+        SpriteRenderer hitMarkSR = mark.GetComponent<SpriteRenderer>();
+        hitMarkSR.sortingOrder = spriteRenderer.sortingOrder +1;
+        Destroy(mark, 0.1f);
     }
 
     protected virtual IEnumerator die()
@@ -335,6 +356,11 @@ public class CharacterController : ObjectController,IHealth
 
     protected virtual void characterStateMachine()
     {
+        if (hurtStateActive)
+        {
+            addCharacterState(CHARACTERSTATE.HURT);
+        }
+
         if (isGrounded || groundStopWatch.getElapsedTime() < groundedGracePeriod)
         {
             addCharacterState(CHARACTERSTATE.GROUNDED);
@@ -369,6 +395,14 @@ public class CharacterController : ObjectController,IHealth
             }
             addCharacterState(CHARACTERSTATE.AIRBORNE,subState);
         }
+    }
+
+    private IEnumerator hurtStateForDuration()
+    {
+        hurtStateActive = true;
+        yield return new WaitForSeconds(0.1f);
+        hurtStateActive = false;
+        hurtStateCoroutine = null;
     }
 
     protected void addCharacterState(CHARACTERSTATE characterState, CHARACTERSUBSTATE subState = CHARACTERSUBSTATE.NONE)
