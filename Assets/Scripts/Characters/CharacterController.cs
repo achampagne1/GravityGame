@@ -18,10 +18,19 @@ public enum CHARACTERSTATE
     RELAXED,
 }
 
+public enum CHARACTERSUBSTATE
+{
+    NONE,
+    FORWARD,
+    BACKWARD,
+    UP,
+    DOWN,
+}
+
 public struct CharacterStateNode
 {
     public CHARACTERSTATE characterState;
-    public int subState; //used for things like airborne up/down, walking left/right
+    public CHARACTERSUBSTATE subState; //used for things like airborne up/down, walking left/right
 
     public CharacterStateNode(CharacterStateNode other)
     {
@@ -331,7 +340,16 @@ public class CharacterController : ObjectController,IHealth
             addCharacterState(CHARACTERSTATE.GROUNDED);
             if (horizontalInput != 0)
             {
-                addCharacterState(CHARACTERSTATE.WALKING,(int)horizontalInput);
+                CHARACTERSUBSTATE subState;
+                if((facingLeft && horizontalInput == 1) || (!facingLeft && horizontalInput == -1))
+                {
+                    subState = CHARACTERSUBSTATE.BACKWARD;
+                }
+                else
+                {
+                    subState = CHARACTERSUBSTATE.FORWARD;
+                }
+                addCharacterState(CHARACTERSTATE.WALKING,subState);
             }
             else
             {
@@ -340,11 +358,20 @@ public class CharacterController : ObjectController,IHealth
         }
         else
         {
-            addCharacterState(CHARACTERSTATE.AIRBORNE,up ? 1 : 0);
+            CHARACTERSUBSTATE subState;
+            if (up)
+            {
+                subState = CHARACTERSUBSTATE.UP;
+            }
+            else
+            {
+                subState = CHARACTERSUBSTATE.DOWN;
+            }
+            addCharacterState(CHARACTERSTATE.AIRBORNE,subState);
         }
     }
 
-    protected void addCharacterState(CHARACTERSTATE characterState, int subState = 0)
+    protected void addCharacterState(CHARACTERSTATE characterState, CHARACTERSUBSTATE subState = CHARACTERSUBSTATE.NONE)
     {
         CharacterStateNode characterStateNode = new CharacterStateNode()
         {
@@ -360,6 +387,10 @@ public class CharacterController : ObjectController,IHealth
         try
         {
             animator.SetBool(characterState.ToString(), true);
+            if (subState != CHARACTERSUBSTATE.NONE)
+            {
+                animator.SetBool(subState.ToString(), true);
+            }
             return;
         }
         catch
