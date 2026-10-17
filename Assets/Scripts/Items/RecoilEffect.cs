@@ -27,7 +27,7 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         recoil(inputDirection, float1);
     }
 
-    protected void recoil(Vector3 baseDirection, float magnitude)
+    public void recoil(Vector3 baseDirection, float magnitude)
     {
         if (recoilCoroutine != null)
             StopCoroutine(recoilCoroutine);
@@ -37,17 +37,14 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         recoilCoroutine = StartCoroutine(recoilRoutine(baseDirection, startingOffset, targetOffset, magnitude));
     }
 
-    protected IEnumerator recoilRoutine(Vector3 baseDirection, float startingOffset, float targetOffset, float magnitude)
+    private IEnumerator recoilRoutine(Vector3 baseDirection, float startingOffset, float targetOffset, float magnitude)
     {
         float elapsedTime = 0f;
         float kickDuration = recoilSpeedMultiplier * magnitude;
 
         while (elapsedTime < kickDuration)
         {
-            recoilOffsetAngle = Mathf.Lerp(startingOffset, targetOffset, elapsedTime / kickDuration);
-            inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
-            HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, left.facingLeftInt, maxRotationalAngle, point);
-            elapsedTime += Time.deltaTime;
+            lerpHelperFunc(startingOffset, targetOffset, kickDuration, ref elapsedTime, baseDirection);
             yield return null;
         }
 
@@ -55,10 +52,7 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         elapsedTime = 0f;
         while (elapsedTime < recoilReturnSpeed)
         {
-            recoilOffsetAngle = Mathf.Lerp(targetOffset, 0f, elapsedTime / recoilReturnSpeed);
-            inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
-            HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, left.facingLeftInt, maxRotationalAngle, point);
-            elapsedTime += Time.deltaTime;
+            lerpHelperFunc(targetOffset, 0f, recoilReturnSpeed, ref elapsedTime, baseDirection);
             yield return null;
         }
 
@@ -66,6 +60,13 @@ public class RecoilEffect : MonoBehaviour, IItemEffect
         inputDirection = baseDirection;
         HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, left.facingLeftInt, maxRotationalAngle, point);
         recoilCoroutine = null;
+    }
+
+    private void lerpHelperFunc(float start, float end,float speed,ref float elapsedTime, Vector3 baseDirection) {
+        recoilOffsetAngle = Mathf.Lerp(start, end, elapsedTime / speed);
+        inputDirection = Quaternion.Euler(0f, 0f, recoilOffsetAngle) * baseDirection;
+        HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, left.facingLeftInt, maxRotationalAngle, point);
+        elapsedTime += Time.deltaTime;
     }
 
     public void copyData(IItemEffect otherEffect)

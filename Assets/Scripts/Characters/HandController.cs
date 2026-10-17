@@ -205,8 +205,8 @@ public class HandController : CharacterProp
         hand2Offset               = newItem.hand2Pos;
         itemSortingOrder          = newItem.sortingOrder;
         relaxAngle                = newItem.relaxAngle;
-        itemParentedEffect        = newItem.itemEffect;
-        changeInItemEffect?.Invoke(itemParentedEffect);
+        itemEffect                = newItem.itemEffect;
+        changeInItemEffect?.Invoke(itemEffect);
     }
 
     public void resetItemData()
@@ -217,13 +217,13 @@ public class HandController : CharacterProp
         hand2Offset               = Vector2.zero;
         itemSortingOrder          = 0;
         relaxAngle                = 0.0f;
-        itemParentedEffect        = null;
+        itemEffect        = null;
         changeInItemEffect?.Invoke(null);
     }
 
     public IItemEffect getItemParentedEffect()
     {
-        return itemParentedEffect;
+        return itemEffect;
     }
 
     private void createSecondHand()

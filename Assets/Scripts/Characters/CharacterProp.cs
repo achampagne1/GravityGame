@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections;
 using System.Linq;
 using NUnit.Framework.Interfaces;
+using System.Drawing;
 
 public class CharacterProp : MonoBehaviour, ILeft
 {
@@ -12,7 +13,7 @@ public class CharacterProp : MonoBehaviour, ILeft
 
     [SerializeField] private Vector2 maxRotationalAngle = new Vector2(-180, 180);
     [SerializeField] private float transitionSpeed = 20f;
-    protected IItemEffect itemParentedEffect = null;
+    protected IItemEffect itemEffect = null;
     protected Quaternion originalRotation;
     protected Vector3 originalPosition;
     protected Vector3 originalScale;
@@ -24,6 +25,7 @@ public class CharacterProp : MonoBehaviour, ILeft
     private float transitionInterpolator = 0.0f;
     private Quaternion appliedRotationOffset = Quaternion.identity;
     protected Animator animator;
+    private Coroutine recoilCoroutine;
 
     protected List<CharacterStateNode> characterStates = new List<CharacterStateNode>();
     protected List<CharacterStateNode> stateLatch = new List<CharacterStateNode>();
@@ -82,6 +84,9 @@ public class CharacterProp : MonoBehaviour, ILeft
                 case CHARACTERSTATE.RELAXED:
                     relaxedState();
                     break;
+                case CHARACTERSTATE.HURT:
+                    hurtState();
+                    break;
             }
         }
 
@@ -95,7 +100,6 @@ public class CharacterProp : MonoBehaviour, ILeft
 
         foreach(CharacterStateNode characterState in characterStates)
         {
-            Debug.Log(characterState.characterState);
             animator.SetBool(characterState.characterState.ToString(), true);
             CHARACTERSUBSTATE subState = characterState.subState;
             if (subState != CHARACTERSUBSTATE.NONE)
@@ -117,10 +121,16 @@ public class CharacterProp : MonoBehaviour, ILeft
         HelperFunctions.rotateAboutPoint(transform, inputDirection, originalPosition, facingLeftInt, maxRotationalAngle);
     }
 
+    protected virtual void hurtState()
+    {
+        Vector3 hurtDirection = Quaternion.Euler(0f, 0f, 10f) * inputDirection;
+        HelperFunctions.rotateAboutPoint(transform, hurtDirection, originalPosition, facingLeftInt, maxRotationalAngle, Vector3.zero);
+    }
+
     public void useEffect()
     {
-        if(itemParentedEffect != null)
-            itemParentedEffect.effect(inputDirection,originalPosition,maxRotationalAngle);
+        if(itemEffect != null)
+            itemEffect.effect(inputDirection,originalPosition,maxRotationalAngle);
     }
 
     public void setCharacterStates(List<CharacterStateNode> characterStates)
@@ -141,7 +151,7 @@ public class CharacterProp : MonoBehaviour, ILeft
 
     public void setItemParentedEffect(IItemEffect itemEffect)
     {
-        itemParentedEffect = itemEffect;
+        this.itemEffect = itemEffect;
     }   
 
     protected bool containsState(List<CharacterStateNode> states, CHARACTERSTATE state) { 
