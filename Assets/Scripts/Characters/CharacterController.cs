@@ -473,6 +473,11 @@ public class CharacterController : ObjectController,IHealth
         this.shieldUpFlag = shieldUpFlag;
     }
 
+    public void setForceLocalAdded(bool forceLocalAdded)
+    {
+        this.forceLocalAdded = forceLocalAdded;
+    }
+
     public Vector2 getGravityDirection()
     {
         return gravityDirection;

@@ -200,4 +200,9 @@ public class ObjectController : MonoBehaviour, ILeft
         return collider;
     }
 
+    public Rigidbody2D getRigidbody()
+    {
+        return rb;
+    }
+
 }

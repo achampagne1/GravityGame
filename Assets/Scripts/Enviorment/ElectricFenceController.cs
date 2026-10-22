@@ -5,8 +5,11 @@ using System.Collections;
 public class ElectricFenceController : HazardController
 {
     [SerializeField] private List<Sprite> frames;
+    [SerializeField] private float stunTime = 1f;
+    [SerializeField] private float knockBackForce = 30f;
     private SpriteRenderer spriteRenderer;
     private Coroutine newFrame;
+    private Coroutine forceLocalAddedReset;
     private int currentFrameIndex = 0;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -28,13 +31,29 @@ public class ElectricFenceController : HazardController
             }
             spriteRenderer.sprite = frames[frameIndex];
             currentFrameIndex = frameIndex;
-            yield return new WaitForSeconds(.05f);
+            yield return new WaitForSeconds(.025f);
         }
     }
 
-    // Update is called once per frame
-    void FixedUpdate()
+    protected override IEnumerator damageOverTime()
     {
-        
+        characterController.setForceLocalAdded(true);
+        Vector2 fenceNormal = transform.up;
+        Vector2 hitObjectOffset = characterController.transform.position - transform.position;
+        Vector2 forceDirection = Vector2.Dot(hitObjectOffset, fenceNormal) >= 0f ? fenceNormal : -fenceNormal;
+        characterController.getRigidbody().AddForce(forceDirection * knockBackForce, ForceMode2D.Impulse);
+        if (forceLocalAddedReset != null)
+        {
+            StopCoroutine(forceLocalAddedReset);
+        }
+        forceLocalAddedReset = StartCoroutine(resetForceLocalAdded());
+        return base.damageOverTime();
+    }
+
+    private IEnumerator resetForceLocalAdded()
+    {
+        yield return new WaitForSeconds(stunTime);
+        characterController.setForceLocalAdded(false);
+        forceLocalAddedReset = null;
     }
 }
