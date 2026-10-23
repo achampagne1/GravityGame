@@ -2,12 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.Diagnostics;
+using TMPro;
 public class ShieldTriggerController : MonoBehaviour,IHealth
 {
     [SerializeField] GameObject shieldHit;
     [SerializeField] float fadeSize = .1f;
     [SerializeField] float shieldRebuildTime = 5f;
     [SerializeField] float shieldRechargeRate = 2.0f;
+    [SerializeField] bool disabled = false;
     private CharacterController parentController;
     private CircleCollider2D collider;
     private float shieldStrength = 100f;
@@ -21,7 +23,7 @@ public class ShieldTriggerController : MonoBehaviour,IHealth
 
     public void Update()
     {
-        if (shieldStrength == 0)
+        if (shieldStrength == 0 || disabled)
             parentController.setShieldUp(false);
         else
             parentController.setShieldUp(true); //maybe add a latch
@@ -34,7 +36,7 @@ public class ShieldTriggerController : MonoBehaviour,IHealth
     private void OnTriggerEnter2D(Collider2D trigger)
     {
         //TODO: make the logic work if the shield is attached to any layer
-        if (trigger.gameObject.tag == "Projectile"&&trigger.gameObject.GetComponent<IProjectileInfo>().getShotBy()!=6&& shieldStrength > 0)
+        if (trigger.gameObject.tag == "Projectile"&&trigger.gameObject.GetComponent<IProjectileInfo>().getShotBy()!=6&& shieldStrength > 0 && !disabled)
         {
             if(!trigger.gameObject.GetComponent<IDamager>().damage(gameObject))
                 return;

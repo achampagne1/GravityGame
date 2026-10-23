@@ -50,12 +50,12 @@ public class CharacterController : ObjectController,IHealth
     [SerializeField] protected bool forceLocalAdded = false;
     [SerializeField] protected bool movementToggle = true;
     [SerializeField] protected float jumpForce = 11f;
-    [SerializeField] protected float moveSpeed = 20f;
-    [SerializeField] protected float maxHealth = 3f; //default max health is 3
+    [SerializeField] protected float moveSpeed = 10f;
+    [SerializeField] protected float maxHealth = 10f; //default max health is 3
     [SerializeField] protected float health = 0f;
     [SerializeField] private float knockBackDuration = .1f;
     [SerializeField] protected float groundedGracePeriod = 0.1f;
-    [SerializeField] private Vector2 hitMarkCenter = Vector2.zero;
+    [SerializeField] private Vector2 hitMarkCenter = new Vector2(-2f,2.5f);
 
     //protected game variables
     protected bool click = false;

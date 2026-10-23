@@ -11,10 +11,7 @@ public class SpaceZombieController : SpacePersonController
     Timer timer = new Timer(3f);
     Timer shootTimer = new Timer(3f);
     EnemyAssistant enemyAssistant;
-
-    //public variables
-    public bool first = false;
-    public int normalState = 0;
+    [SerializeField] private int normalState = 0;
 
     //game variables
     private int moveInput = 0;

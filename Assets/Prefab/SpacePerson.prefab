@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 136032660726285174}
   - component: {fileID: 8492878060311762732}
   - component: {fileID: 5599241896144180993}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: Visor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,7 +144,7 @@ GameObject:
   - component: {fileID: 196552273224755160}
   - component: {fileID: 8596006523429432171}
   - component: {fileID: 7461905786222037249}
-  m_Layer: 0
+  m_Layer: 13
   m_Name: JetPack
   m_TagString: Untagged
   m_Icon: {fileID: 0}

@@ -14,12 +14,12 @@ public class SpacePersonController : CharacterController
 
     //public game variables;
     [SerializeField] private float jetPackForce = 30f;
-    [SerializeField] private float groundSmokeTime = 2f;
+    [SerializeField] private float groundSmokeTime = .5f;
     [SerializeField] private float footOffset = .1f;
-    [SerializeField] private float relaxTime = 3f;
+    [SerializeField] private float relaxTime = 5f;
     [SerializeField] private GameObject landingSmoke;
     [SerializeField] private GameObject jetPackFlame;
-    [SerializeField] private Vector2 flameOffset = new Vector2(0, 0);
+    [SerializeField] private Vector2 flameOffset = new Vector2(-4.25f, -6.5f);
 
 
     //private game variables
