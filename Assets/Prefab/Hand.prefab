@@ -109,7 +109,8 @@ MonoBehaviour:
   transitionSpeed: 20
   inputLatchSensitivity: 0.1
   animationOffset: {x: 0, y: 0}
-  characterState: 0
+  rotationOffset: {x: 0, y: 0, z: 0}
   relax: 0
-  relaxClip: {fileID: 8300000, guid: 9d62ba679dcfd7342a26b828ac8d69ee, type: 3}
+  relaxClip: {fileID: 8300000, guid: ed07d6acfdaf80742a88e021bb0635b9, type: 3}
+  aimClip: {fileID: 8300000, guid: 9d62ba679dcfd7342a26b828ac8d69ee, type: 3}
   aimDamper: 0.5

@@ -20,8 +20,6 @@ public class SpacePersonController : CharacterController
     [SerializeField] private GameObject landingSmoke;
     [SerializeField] private GameObject jetPackFlame;
     [SerializeField] private Vector2 flameOffset = new Vector2(0, 0);
-    [SerializeField] private Vector2 maxVisorAngle = new Vector2(-45, 45);
-    [SerializeField] private Vector2 maxJetPackAngle = new Vector2(-45, 45);
 
 
     //private game variables

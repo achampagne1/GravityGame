@@ -40,7 +40,6 @@ public class CharacterController : ObjectController,IHealth
 {
     //object creation
     protected Animator animator;
-    [SerializeField] protected Sprite hitSprite;
     [SerializeField] protected AudioClip hitSound;
     [SerializeField] protected GameObject explodeTemplate;
     [SerializeField] private GameObject hitMark;
