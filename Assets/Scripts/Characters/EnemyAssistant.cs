@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEngine.UI.Image;
 
 class EnemyAssistant
 {
@@ -14,36 +10,33 @@ class EnemyAssistant
     private GameObject gameObject;
     private GameObject player;
     private static readonly ContactFilter2D filter = getContactFilter2D();
-    public EnemyAssistant(GameObject gameObject,GameObject player)
+    private Vector2 viewingAngle = new Vector2(45f, -45f);
+
+    public EnemyAssistant(GameObject gameObject, GameObject player)
     {
         this.gameObject = gameObject;
         this.player = player;
     }
 
+    public EnemyAssistant(GameObject gameObject,GameObject player,Vector2 viewingAngle)
+    {
+        this.gameObject = gameObject;
+        this.player = player;
+        this.viewingAngle = viewingAngle;
+    }
+
     public Vector3 detectPlayer(bool facingLeft)
     {
-        //TODO: implement a viewing window bigger than 90 degrees
         bool validDirection = false;
-        if (player != null)
+        Vector3 playerDirection = (player.transform.position-gameObject.transform.position).normalized;
+        RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, playerDirection, 30f, filter.layerMask);
+        if (hit && hit.collider.gameObject.layer == LayerMask.NameToLayer("player"))
         {
-            Vector3 playerDirection = (player.transform.position-gameObject.transform.position).normalized;
-            RaycastHit2D hit = Physics2D.Raycast(gameObject.transform.position, playerDirection, 30f, filter.layerMask);//the .5 is to allow for a bit of wiggle room
-            if (hit)
-            {
-                if (hit.collider.gameObject.layer == LayerMask.NameToLayer("player"))
-                    Debug.Log("See player");
-            }
+            Vector2 facingDirection = gameObject.transform.right * (facingLeft ? -1f : 1f);
+            float angleToPlayer = Vector2.SignedAngle(facingDirection, playerDirection);
+            validDirection = angleToPlayer <= viewingAngle.x && angleToPlayer >= viewingAngle.y;
         }
-
-        if (!validDirection)
-        {
-            float angleToCast = gameObject.transform.eulerAngles.z + angle;
-            angleToCast += facingLeft ? 90+ angleOffsetSetting : -angleOffsetSetting;
-            direction.x = Mathf.Cos(angleToCast * Mathf.Deg2Rad);
-            direction.y = Mathf.Sin(angleToCast * Mathf.Deg2Rad);
-            angle = (angle + resolution) % 91;
-        }
-        return new Vector3(0f,0f,1f);
+        return validDirection ? playerDirection : new Vector3(0f, 0f, 1f);
     }
 
     public void setAngleOffsetSetting(float angleOffsetSetting)

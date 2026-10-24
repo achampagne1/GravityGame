@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 78098305417290325, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 507273502032372736, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
       propertyPath: m_Sprite
@@ -28,6 +33,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_CategoryHash
       value: 0.009161512
+      objectReference: {fileID: 0}
+    - target: {fileID: 4026397010897027809, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
+      propertyPath: disabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6531168470496589060, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
@@ -160,6 +170,7 @@ MonoBehaviour:
   flameOffset: {x: 0, y: 0}
   normalState: 0
   player: {fileID: 0}
+  viewingAngle: {x: 60, y: -60}
 --- !u!4 &8809794914833278230 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5070827973349304947, guid: 748d52aa7c804d44b86fd06f80ab99da,

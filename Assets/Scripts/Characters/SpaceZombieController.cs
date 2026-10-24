@@ -22,6 +22,7 @@ public class SpaceZombieController : SpacePersonController
     private Coroutine attackCoroutine = null;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
     [SerializeField] private GameObject player;
+    [SerializeField] private Vector2 viewingAngle = new Vector2(45f, -45f);
 
     public override void Start()
     {
@@ -30,7 +31,7 @@ public class SpaceZombieController : SpacePersonController
 
         timer.startTimer();
         shootTimer.startTimer(); //shoot timer must be started so that the enemey is ready when it first sees the player
-        enemyAssistant = new EnemyAssistant(gameObject,player);
+        enemyAssistant = new EnemyAssistant(gameObject,player,viewingAngle);
         base.Start();
 
         handController.setInputDirection(transform.rotation * new Vector3((float)orientationInput, 0f, 0f));
@@ -45,27 +46,15 @@ public class SpaceZombieController : SpacePersonController
 
         attackPlayer();
 
-        if (!attacking)
-        {
-            handController.setInputDirection(transform.rotation * new Vector3((float)orientationInput, 0f, 0f));
-            switch (normalState)
-            {
-                case 0:
-                    moveInput = 0;
-                    break;
-                case 1:
-                    patrol();
-                    break;
-                case 2:
-                    randomMovement();
-                    break;
-            };
-        }
-
         setMovement(moveInput);
         setOrientation(orientationInput);
 
         base.FixedUpdate();
+
+        if (attacking)
+        {
+            handController.setInputDirection(playerDirection);
+        }
     }
 
     private void randomMovement()
@@ -110,7 +99,6 @@ public class SpaceZombieController : SpacePersonController
         if (playerDirection != new Vector3(0f, 0f, 1f))
         {
             attacking = true;
-            handController.setInputDirection(gameObject.transform.TransformDirection(playerDirection));
             if (!attackRunning)
             {
                 attackCoroutine = StartCoroutine(attackFunction());
@@ -120,7 +108,6 @@ public class SpaceZombieController : SpacePersonController
         else
         {
             attacking = false;
-            handController.setInputDirection(transform.rotation * new Vector3((float)orientationInput, 0f, 0f));
             if(attackRunning)
             {
                 StopCoroutine(attackCoroutine);
