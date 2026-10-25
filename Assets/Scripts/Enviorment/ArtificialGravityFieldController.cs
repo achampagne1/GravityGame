@@ -6,24 +6,31 @@ public class ArtificialGravityFieldController : MonoBehaviour
 {
     [SerializeField] private float fieldStrength = 20f;
     [SerializeField] private Vector2 direction = new Vector2(0, -1);
+    private Collider2D fieldCollider;
+    private int type = 0; // 0 = directional, 1 = radial
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        fieldCollider = GetComponent<Collider2D>();
+        if (fieldCollider is CircleCollider2D)
+        {
+            type = 1;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D trigger)
     {
         if(!trigger.isTrigger)
         {
-            trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength* (Vector2)(transform.rotation * direction));
+            if(type == 1)
+            {
+                Vector2 directionToCenter = (Vector2)fieldCollider.bounds.center - (Vector2)trigger.transform.position;
+                trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength * directionToCenter.normalized);
+            }
+            else
+            {
+                trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength * (Vector2)(transform.rotation * direction));
+            }
         }
     }
 

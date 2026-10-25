@@ -2,15 +2,18 @@ using UnityEngine;
 
 public class BlackHoleUV : MonoBehaviour
 {
-    [SerializeField] private Transform blackHole;
-    [SerializeField] private Material blackHoleMaterial;
+    private Transform blackHole;
+    private Material blackHoleMaterial;
     [SerializeField] private Camera targetCamera;
+
+    private void Start()
+    {
+        blackHole = transform.parent;
+        blackHoleMaterial = GetComponent<Renderer>().material;
+    }
 
     private void LateUpdate()
     {
-        if (blackHole == null || blackHoleMaterial == null)
-            return;
-
         if (targetCamera == null)
             targetCamera = Camera.main;
 
