@@ -25,7 +25,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _CameraTex:
-        m_Texture: {fileID: 8400000, guid: 4d46fa0ed2b7cff46b2d28287b2283b2, type: 2}
+        m_Texture: {fileID: 8400000, guid: 0c10a5bb8b06ec7448b0ee0bfb0b02b4, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
@@ -42,10 +42,15 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
+    - _DiscWidth: 2.5
     - _Distortion: 1
-    - _HoleRadius: 0.3
+    - _HoleRadius: 1
+    - _Intensity: 1
+    - _Spin: 1
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
+    - _CoolColor: {r: 0, g: 0.9608458, b: 1, a: 1}
+    - _HotColor: {r: 0.4716981, g: 0.04672481, b: 0.04672481, a: 1}
     - _ScreenUV: {r: 0.53701204, g: 0.8023239, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

@@ -22,15 +22,28 @@ public class ArtificialGravityFieldController : MonoBehaviour
     {
         if(!trigger.isTrigger)
         {
-            if(type == 1)
-            {
-                Vector2 directionToCenter = (Vector2)fieldCollider.bounds.center - (Vector2)trigger.transform.position;
-                trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength * directionToCenter.normalized);
-            }
-            else
-            {
-                trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength * (Vector2)(transform.rotation * direction));
-            }
+            UpdateGravityOverride(trigger);
+        }
+    }
+
+    private void OnTriggerStay2D(Collider2D trigger)
+    {
+        if (!trigger.isTrigger)
+        {
+            UpdateGravityOverride(trigger);
+        }
+    }
+
+    private void UpdateGravityOverride(Collider2D trigger)
+    {
+        if (type == 1)
+        {
+            Vector2 directionToCenter = (Vector2)fieldCollider.bounds.center - (Vector2)trigger.transform.position;
+            trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength * directionToCenter.normalized);
+        }
+        else
+        {
+            trigger.gameObject.GetComponent<ObjectController>().setGravityOverride(fieldStrength * (Vector2)(transform.rotation * direction));
         }
     }
 
