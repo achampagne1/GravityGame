@@ -42,15 +42,19 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _DiscWidth: 2.5
+    - _DiscFalloff: 0.1
+    - _DiscStart: 0.3
+    - _DiscWidth: 0.02
     - _Distortion: 1
     - _HoleRadius: 1
     - _Intensity: 1
+    - _NoiseScale: 250
     - _Spin: 1
+    - _SpinSpeed: 30
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _CoolColor: {r: 0, g: 0.9608458, b: 1, a: 1}
-    - _HotColor: {r: 0.4716981, g: 0.04672481, b: 0.04672481, a: 1}
+    - _HotColor: {r: 10.077567, g: 2.3655996, b: 0.7130353, a: 1}
     - _ScreenUV: {r: 0.53701204, g: 0.8023239, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
