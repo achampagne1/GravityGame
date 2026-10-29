@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1432974709882111249}
-  - component: {fileID: 5990622411610303727}
   - component: {fileID: 8672229488759780108}
   m_Layer: 7
   m_Name: BlackHole
@@ -35,20 +34,6 @@ Transform:
   - {fileID: 3804226575793692417}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5990622411610303727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3831823814752557372}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 87039a221b432a64bb8df8f8a506d8c6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GravityPointController
-  fieldStrength: 750
-  fieldSize: 100
 --- !u!114 &8672229488759780108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -61,6 +46,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0cbff5bfe40c9d04bb6b5d79f2332617, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlackHoleController
+  distortion: {fileID: 7845391411806459864}
+  eventHorizonTransform: {fileID: 3804226575793692417}
+  eventHorizonRadius: 0.3
 --- !u!1 &6881244145610379286
 GameObject:
   m_ObjectHideFlags: 0
@@ -71,6 +59,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3804226575793692417}
   - component: {fileID: 758425070707339804}
+  - component: {fileID: 6778232451528882705}
   m_Layer: 7
   m_Name: EventHorizon
   m_TagString: Untagged
@@ -123,12 +112,24 @@ CircleCollider2D:
   m_CallbackLayers:
     serializedVersion: 2
     m_Bits: 4294967295
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
   m_Radius: 0.5
+--- !u!114 &6778232451528882705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6881244145610379286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a533b92ad81af2a4bb5d98d192607dba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EventHorizonTrigger
 --- !u!1 &7845391411806459864
 GameObject:
   m_ObjectHideFlags: 0
@@ -140,6 +141,8 @@ GameObject:
   - component: {fileID: 2550985329794237858}
   - component: {fileID: 2809910199970819168}
   - component: {fileID: 2597375006299283087}
+  - component: {fileID: 7166532697775559058}
+  - component: {fileID: 7753541206029624976}
   m_Layer: 3
   m_Name: Distortion
   m_TagString: Untagged
@@ -209,7 +212,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 100
+  m_SortingOrder: -100
   m_MaskInteraction: 0
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b,
     type: 3}
@@ -235,6 +238,54 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 390b5d6c1e747f4479897a133fa50592, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlackHoleUV
-  blackHole: {fileID: 1432974709882111249}
-  blackHoleMaterial: {fileID: 2100000, guid: de2d11914a4b5264c915e1b0490f61d2, type: 2}
   targetCamera: {fileID: 0}
+--- !u!58 &7166532697775559058
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7845391411806459864}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: 0, y: 0}
+  m_Radius: 0.5
+--- !u!114 &7753541206029624976
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7845391411806459864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 189348abb5c70954ebd9315415db4b56, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ArtificialGravityFieldController
+  fieldStrength: 750
+  direction: {x: 0, y: -1}
