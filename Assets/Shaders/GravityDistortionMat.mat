@@ -28,6 +28,10 @@ Material:
         m_Texture: {fileID: 8400000, guid: 0c10a5bb8b06ec7448b0ee0bfb0b02b4, type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _LensTex:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     - unity_Lightmaps:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
@@ -43,11 +47,12 @@ Material:
     m_Ints: []
     m_Floats:
     - _DiscFalloff: 0.1
-    - _DiscStart: 0.3
+    - _DiscStart: 0.5
     - _DiscWidth: 0.02
     - _Distortion: 1
     - _HoleRadius: 1
     - _Intensity: 1
+    - _LensHalfView: 0
     - _NoiseScale: 250
     - _Spin: 1
     - _SpinSpeed: 30
@@ -55,6 +60,7 @@ Material:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _CoolColor: {r: 0, g: 0.9608458, b: 1, a: 1}
     - _HotColor: {r: 2.1185472, g: 0.49730596, b: 0.14989717, a: 1}
+    - _LensCenter: {r: 0, g: 0, b: 0, a: 0}
     - _ScreenUV: {r: 0.53701204, g: 0.8023239, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

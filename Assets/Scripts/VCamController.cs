@@ -8,7 +8,7 @@ using UnityEngine.Rendering;
 public class VCamController : MonoBehaviour
 {
     public CinemachineVirtualCamera vcam;
-    public float initialZoom = 5f;
+    private float initialZoom = 5f;
     [SerializeField] float duration = .12f;
     [SerializeField] float shakeMagnitude = .2f;
     [SerializeField] float shootMagnitude = 2f;
@@ -17,9 +17,10 @@ public class VCamController : MonoBehaviour
     [SerializeField] GameObject hand;
     private Vector3 originalLocal;
     private Vector2 direction = Vector2.zero;
-    // Start is called before the first frame update
+
     void Start()
     {
+        initialZoom = vcam.m_Lens.OrthographicSize;
         originalLocal = new Vector3(transform.localPosition.x,transform.localPosition.y,transform.localPosition.z);
     }
 
@@ -49,6 +50,11 @@ public class VCamController : MonoBehaviour
                     direction = Vector2.zero;
                 }
              }
+        }
+
+        foreach(Camera cam in Camera.allCameras)
+        {
+            cam.orthographicSize = vcam.m_Lens.OrthographicSize;
         }
     }
 

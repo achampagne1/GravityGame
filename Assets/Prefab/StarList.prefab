@@ -62,8 +62,8 @@ MonoBehaviour:
   - {fileID: 2519772355537943749, guid: eac963b54e7140244830e622e99b8867, type: 3}
   _minMaxSize: {x: 0.005, y: 0.1}
   _mapSize: {x: 30, y: 30}
-  _count: 400
-  planetCount: 30
+  _count: 600
+  planetCount: 35
   spawnPoint: {fileID: 0}
 --- !u!1 &4815664691486403924
 GameObject:

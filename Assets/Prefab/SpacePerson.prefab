@@ -747,26 +747,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 6531168470496589061}
     m_Modifications:
-    - target: {fileID: 2659207592033062378, guid: 105085c0f91237d4faa3b183f84b75d1,
-        type: 3}
-      propertyPath: m_Lens.OrthographicSize
-      value: 15
-      objectReference: {fileID: 0}
     - target: {fileID: 7890692750123727933, guid: 105085c0f91237d4faa3b183f84b75d1,
         type: 3}
       propertyPath: hand
       value: 
       objectReference: {fileID: 78098305417290325}
-    - target: {fileID: 7890692750123727933, guid: 105085c0f91237d4faa3b183f84b75d1,
-        type: 3}
-      propertyPath: initialZoom
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890692750123727933, guid: 105085c0f91237d4faa3b183f84b75d1,
-        type: 3}
-      propertyPath: shakeMagnitude
-      value: 3
-      objectReference: {fileID: 0}
     - target: {fileID: 8523549729430537534, guid: 105085c0f91237d4faa3b183f84b75d1,
         type: 3}
       propertyPath: m_Name
