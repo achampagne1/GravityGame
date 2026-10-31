@@ -54,7 +54,7 @@ Material:
     m_Colors:
     - White: {r: 1, g: 1, b: 1, a: 1}
     - _CoolColor: {r: 0, g: 0.9608458, b: 1, a: 1}
-    - _HotColor: {r: 10.077567, g: 2.3655996, b: 0.7130353, a: 1}
+    - _HotColor: {r: 2.1185472, g: 0.49730596, b: 0.14989717, a: 1}
     - _ScreenUV: {r: 0.53701204, g: 0.8023239, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

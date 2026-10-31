@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class ArtificialGravityFieldController : MonoBehaviour
 {
-    [SerializeField] private float fieldStrength = 20f;
-    [SerializeField] private Vector2 direction = new Vector2(0, -1);
-    private Collider2D fieldCollider;
-    private int type = 0; // 0 = directional, 1 = radial
+    [SerializeField] protected float fieldStrength = 20f;
+    [SerializeField] protected Vector2 direction = new Vector2(0, -1);
+    protected Collider2D fieldCollider;
+    protected int type = 0; // 0 = directional, 1 = radial
 
     private void Start()
     {
@@ -22,7 +22,7 @@ public class ArtificialGravityFieldController : MonoBehaviour
     {
         if(!trigger.isTrigger)
         {
-            UpdateGravityOverride(trigger);
+            updateGravityOverride(trigger);
         }
     }
 
@@ -30,11 +30,11 @@ public class ArtificialGravityFieldController : MonoBehaviour
     {
         if (!trigger.isTrigger)
         {
-            UpdateGravityOverride(trigger);
+            updateGravityOverride(trigger);
         }
     }
 
-    private void UpdateGravityOverride(Collider2D trigger)
+    protected virtual void updateGravityOverride(Collider2D trigger)
     {
         if (type == 1)
         {
