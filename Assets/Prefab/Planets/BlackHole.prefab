@@ -49,7 +49,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlackHoleController
   distortion: {fileID: 7845391411806459864}
   eventHorizonTransform: {fileID: 3804226575793692417}
-  eventHorizonRadius: 0.3
+  eventHorizonRadius: 0.5
 --- !u!1 &6881244145610379286
 GameObject:
   m_ObjectHideFlags: 0
@@ -78,7 +78,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1432974709882111249}
@@ -200,10 +200,10 @@ Camera:
   field of view: 60
   orthographic: 1
   orthographic size: 20
-  m_Depth: 0
+  m_Depth: -10
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 512
+    m_Bits: 28608
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 8400000, guid: df543df4c55ae514ea1c234d6c66c464, type: 2}
   m_TargetDisplay: 0
@@ -212,7 +212,7 @@ Camera:
   m_AllowMSAA: 1
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!114 &4695878985748595963
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalCameraData
-  m_RenderShadows: 1
+  m_RenderShadows: 0
   m_RequiresDepthTextureOption: 2
   m_RequiresOpaqueTextureOption: 2
   m_CameraType: 0
@@ -271,6 +271,7 @@ GameObject:
   - component: {fileID: 2809910199970819168}
   - component: {fileID: 7166532697775559058}
   - component: {fileID: 2612048243467110650}
+  - component: {fileID: 286370414446761958}
   m_Layer: 3
   m_Name: Distortion
   m_TagString: Untagged
@@ -404,5 +405,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::BlackHoleLens
   mainCamera: {fileID: 0}
   lensCamera: {fileID: 3577307509052007199}
-  textureSize: 1920
-  viewScale: 4
+  textureSize: 3840
+  viewScale: 10
+--- !u!114 &286370414446761958
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7845391411806459864}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87039a221b432a64bb8df8f8a506d8c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GravityPointController
+  fieldStrength: 750
+  fieldSize: 200

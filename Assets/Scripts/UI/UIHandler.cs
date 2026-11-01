@@ -5,7 +5,60 @@ using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
 
-public class UIHandler : MonoBehaviour
+public struct UIFrame
+{
+    public Texture2D frame;
+    public float holdTime;
+}
+
+public class UIAnimation
+{
+    private VisualElement visualElement;
+    private List<UIFrame> frames = new List<UIFrame>();
+    private Coroutine animationCoroutine;
+    private int frameIndex;
+
+    public UIAnimation(VisualElement visualElement)
+    {
+        this.visualElement = visualElement;
+    }
+
+    public void addFrame(Texture2D frame, float holdTime)
+    {
+        frames.Add(new UIFrame { frame = frame, holdTime = holdTime });
+    }
+
+    public void startAnimation()
+    {
+        if(animationCoroutine == null)
+        {
+            animationCoroutine = UIHandler.instance.StartCoroutine(animateFrames());
+        }
+    }
+
+    public void stopAnimation()
+    {
+        if(animationCoroutine != null)
+        {
+            UIHandler.instance.StopCoroutine(animationCoroutine);
+            animationCoroutine = null;
+        }
+    }
+
+    private IEnumerator animateFrames()
+    {
+        while (true)
+        {
+            frameIndex = (frameIndex + 1) % frames.Count;
+            UIFrame currentFrame = frames[frameIndex];
+            visualElement.style.backgroundImage =
+                    new StyleBackground(currentFrame.frame);
+            yield return new WaitForSeconds(currentFrame.holdTime);
+        }
+    }
+}
+
+    public class UIHandler : MonoBehaviour
 {
     //game variables
     public float movePercent = 0f;
@@ -20,6 +73,8 @@ public class UIHandler : MonoBehaviour
     private bool up = false;
     private float healthLevel=100f;
     private float shieldLevel=100f;
+    private int leftRightFrameIndex = 0;
+    [SerializeField] bool playLeftRightAnimation = false;
     [SerializeField] float speed = .05f;
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
@@ -27,6 +82,7 @@ public class UIHandler : MonoBehaviour
     [SerializeField] float fadeSpeed = 2f;
     [SerializeField] Texture2D heartTexture;
     [SerializeField] Texture2D heartBrokenTexture;
+    [SerializeField] List<Texture2D> leftRightFrames = new List<Texture2D>();
 
     //object creation
     public static UIHandler instance { get; private set; }
@@ -50,6 +106,7 @@ public class UIHandler : MonoBehaviour
     private VisualElement levelFailed;
     private VisualElement comsOverlay;
     private VisualElement textBubble;
+    private VisualElement leftRight;
     private Label bubbleText;
 
     private Objective currentObjective;
@@ -64,6 +121,8 @@ public class UIHandler : MonoBehaviour
     private Coroutine moveScanLinesCoroutine = null;
     private Coroutine revealBubbleTextCoroutine = null;
     private Coroutine warningCoroutineVariable = null;
+
+    UIAnimation leftRightAnimation;
 
     private void Awake()
     {
@@ -102,6 +161,7 @@ public class UIHandler : MonoBehaviour
         comsOverlay = uiDocument.rootVisualElement.Q<VisualElement>("coms");
         textBubble = uiDocument.rootVisualElement.Q<VisualElement>("textBubble");
         bubbleText = uiDocument.rootVisualElement.Q<Label>("bubbleText");
+        leftRight = uiDocument.rootVisualElement.Q<VisualElement>("leftRight");
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
         pauseMenu.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
@@ -122,6 +182,12 @@ public class UIHandler : MonoBehaviour
         warning.style.opacity = 0f;
 
         exitGameButton.RegisterCallback<ClickEvent>(exitGame); //gotta figure this out
+
+        leftRightAnimation = new UIAnimation(leftRight);
+        leftRightAnimation.addFrame(leftRightFrames[0], 1f);
+        leftRightAnimation.addFrame(leftRightFrames[1], .75f);
+        leftRightAnimation.addFrame(leftRightFrames[0], 1f);
+        leftRightAnimation.addFrame(leftRightFrames[2], .75f);
     }
 
     // Update is called once per frame
@@ -194,6 +260,15 @@ public class UIHandler : MonoBehaviour
         }
         else
             acknowledgeComs = false;
+
+        if (playLeftRightAnimation)
+        {
+            leftRightAnimation.startAnimation();
+        }
+        else
+        {
+            leftRightAnimation.stopAnimation();
+        }
     }
 
     private IEnumerator shiftOverlayRoutine(float parentTop,VisualElement[] overlayArray)
@@ -275,6 +350,11 @@ public class UIHandler : MonoBehaviour
             warning.style.opacity = opacity;
             yield return new WaitForSeconds(.05f);
         }
+    }
+
+    public void setPlayLeftRightAnimation(bool play)
+    {
+        playLeftRightAnimation = play;
     }
 
     public void setHealthValue(float health)

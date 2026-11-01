@@ -78,23 +78,23 @@ public class TutorialScript : MonoBehaviour
         playerRb.simulated = false;
         //activate teleporter
         TeleporterController teleporterController = teleporter.GetComponent<TeleporterController>();
-        teleporterController.toggleStateFunc();
+        teleporterController.turnOnOff(true);
         yield return new WaitForSeconds(1f);
 
         //turns on the transport beam
-        teleporterController.setTransportTrigger(true);
+        teleporterController.triggerBeam();
         //shakes camera
-        //teleporterCamController.setShake(true);
+        teleporterCamController.setShake(true);
         yield return new WaitForSeconds(.2f);
 
         //puts player on pad(spawnPoint)
         player.transform.position = spawnPoint.transform.position;
         //turns off teleporter
-        teleporterController.toggleStateFunc();
+        teleporterController.turnOnOff(false);
         yield return new WaitForSeconds(.75f);
 
         //shuts off the beam
-        teleporterController.setTransportTrigger(false);
+        teleporterController.forceBeamOff();
         //changes camera to player
         teleporterCam.Priority = 1;
         playerCam.Priority = 2;
@@ -148,13 +148,13 @@ public class TutorialScript : MonoBehaviour
         uIHandler.setBubbleText("Thats about it for training today.Start making your way to the teleporter.");
         //activate teleporter2
         TeleporterController teleporterController2 = teleporter2.GetComponent<TeleporterController>();
-        teleporterController2.toggleStateFunc();
+        //teleporterController2.toggleStateFunc();
         //waits for player to intersect with enemy trigger
         yield return new WaitUntil(currentObjective.completionCondition);
 
 
         //generals orders
-        teleporterController2.toggleStateFunc();
+        //teleporterController2.toggleStateFunc();
         uIHandler.setBubbleText("Uh oh, hang on kid! Looks like you've got company!");
         //spawns green team
         GameObject one = Instantiate(greenTeamOriginal, new Vector3(-36f,-6f,0f), Quaternion.identity);
@@ -182,7 +182,7 @@ public class TutorialScript : MonoBehaviour
 
         //green team defeated
         uIHandler.setBubbleText("WOOOO you took care of those guys! Now we can get you. Get back to the teleporter.");
-        teleporterController2.toggleStateFunc();
+        //teleporterController2.toggleStateFunc();
         //waits until player is on the pad
         yield return new WaitUntil(() => teleporterController2.getPlayerOnPad());
 
@@ -190,7 +190,7 @@ public class TutorialScript : MonoBehaviour
         yield return new WaitForSeconds(.5f);
 
         //turns on transport beam
-        teleporterController2.setTransportTrigger(true);
+        //teleporterController2.setTransportTrigger(true);
         //sets player opacity to invisible
         setPlayerOpacity(0f,player);
         //switches to teleporter2 cam
@@ -204,7 +204,7 @@ public class TutorialScript : MonoBehaviour
         yield return new WaitForSeconds(1.9f);
 
         //shuts off the beam
-        teleporterController2.setTransportTrigger(false);
+        //teleporterController2.setTransportTrigger(false);
         yield return new WaitForSeconds(2f);
 
         //returns to main menu
@@ -250,9 +250,9 @@ public class TutorialScript : MonoBehaviour
 
     private void changeObjective(string name)
     {
-        currentObjective = objectives[name];
-        uIHandler.setCurrentObjective(currentObjective);
-        wayPointAbstraction();
+        //currentObjective = objectives[name];
+        //uIHandler.setCurrentObjective(currentObjective);
+        //wayPointAbstraction();
     }
 
     private IEnumerator loadObjectives()

@@ -10,22 +10,20 @@ public class TeleporterController : MonoBehaviour
     [SerializeField] float startPoint = 2.5f;
     [SerializeField] float lineCount = 5;
     [SerializeField] float beamDisplayTime = 2f;
-    [SerializeField] bool toggleState = false;
+    [SerializeField] bool on = false;
+    [SerializeField] bool beamOn = false;
     [SerializeField] Sprite onSprite;
     [SerializeField] Sprite offSprite;
+    [SerializeField] Sprite transportBeamSprite;
     [SerializeField] GameObject line;
-    [SerializeField] GameObject transportBeam;
     [SerializeField] ParticleSystem particleSystem;
     [SerializeField] AudioClip teleporterClip;
+    private GameObject transportBeam;
     private AudioSource audioSource;
     private SpriteRenderer sr;
     private List<SpriteRenderer> srLines = new List<SpriteRenderer>();
-    private SpriteRenderer transportBeamRenderer;
-    private Transform transportBreamTransform;
     private Coroutine moveLinesCoroutine;
-    private bool trigger = false;
-    private bool on = false;
-    private bool teleportLatch = true;
+    private Coroutine transportBeamCoroutine;
     private bool playerOnPad = false;
     // Start is called before the first frame update
     void Start()
@@ -42,45 +40,38 @@ public class TeleporterController : MonoBehaviour
             srLines.Add(newLine.GetComponent<SpriteRenderer>());
         }
 
-        //for getting transport beam stuff
-        transportBeamRenderer = transportBeam.GetComponent<SpriteRenderer>();
-        transportBreamTransform = transportBeam.GetComponent<Transform>();
-
-        //for sound clip
         audioSource = GetComponent<AudioSource>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (toggleState)
+        if (on)
         {
-            //if the state chagnes from on to off
-            if (sr.sprite == onSprite)
-            {
-                sr.sprite = offSprite;
-                StopCoroutine(moveLinesCoroutine);
-                foreach (SpriteRenderer line in srLines)
-                {
-                    Color c = line.color;
-                    c.a = 0f;
-                    line.color = c;
-                }
-            }
-            //vice versa
-            else
-            {
-                sr.sprite = onSprite;
+            sr.sprite = onSprite;
+            if (moveLinesCoroutine == null)
                 moveLinesCoroutine = StartCoroutine(moveLines());
+        }
+        else
+        {
+            sr.sprite = offSprite;
+            if (moveLinesCoroutine != null)
+            {
+                StopCoroutine(moveLinesCoroutine);
+                moveLinesCoroutine = null;
             }
-            on = !on; //reverses the state of the teleporter on or off
-            toggleState = false;
+            foreach (SpriteRenderer line in srLines)
+            {
+                Color c = line.color;
+                c.a = 0f;
+                line.color = c;
+            }
         }
 
-        if (trigger && on && teleportLatch) //currentlty this can only be done once.
+        if (beamOn)
         {
-            StartCoroutine(teleportBeam());
-            teleportLatch = false;
+            if (transportBeamCoroutine == null)
+                transportBeamCoroutine = StartCoroutine(teleportBeam());
         }
     }
 
@@ -88,26 +79,50 @@ public class TeleporterController : MonoBehaviour
     {
         audioSource.clip = teleporterClip;
         audioSource.Play();
-        Color c = transportBeamRenderer.color;
-        c.a = 1f;
         particleSystem.Play();
+        createBeam();
         Coroutine shiftBeamCoroutine = StartCoroutine(shiftBeam());
-        transportBeamRenderer.color = c;
         yield return new WaitForSeconds(beamDisplayTime);
-        c.a = 0f;
-        transportBeamRenderer.color = c;
         particleSystem.Stop();
-        StopCoroutine(shiftBeamCoroutine);
+        if (shiftBeamCoroutine != null)
+        {
+            StopCoroutine(shiftBeamCoroutine);
+        }
+        shiftBeamCoroutine = null;
+        destroyBeam();
         audioSource.Stop();
-        //teleportLatch = true;
+        beamOn = false;
+        transportBeamCoroutine = null;
+        yield return null;
+    }
+
+    private void createBeam()
+    {
+        transportBeam = new GameObject("TransportBeam");
+        transportBeam.transform.SetParent(transform);
+        SpriteRenderer beamSr = transportBeam.AddComponent<SpriteRenderer>();
+        beamSr.sprite = transportBeamSprite;
+        transportBeam.transform.parent = transform;
+        transportBeam.transform.localScale = new Vector3(1f, 1.5f, 1f);
+        transportBeam.transform.localPosition = new Vector3(0f, 68.6f, 0f);
+    }
+
+    private void destroyBeam()
+    {
+        if (transportBeam != null)
+        {
+            Destroy(transportBeam);
+            transportBeam = null;
+        }
     }
 
     private IEnumerator shiftBeam()
     {
-        while (true)
+        while (transportBeam != null)
         {
-            transportBreamTransform.localScale = new Vector3(-transportBreamTransform.localScale.x, transportBreamTransform.localScale.y, 0);
-            yield return new WaitForSeconds(.075f);
+            Vector3 localScale = transportBeam.transform.localScale;
+            transportBeam.transform.localScale = new Vector3(-localScale.x, localScale.y, localScale.z);
+            yield return new WaitForSeconds(.1f);
         }
     }
 
@@ -137,14 +152,19 @@ public class TeleporterController : MonoBehaviour
         }
     }
 
-    public void toggleStateFunc()
+    public void turnOnOff(bool on)
     {
-        toggleState = true;
+        this.on = on;
     }
 
-    public void setTransportTrigger(bool trigger)
+    public void triggerBeam()
     {
-        this.trigger = trigger;
+        beamOn = true;
+    }
+
+    public void forceBeamOff()
+    {
+        beamOn = false;
     }
 
     public void setPlayerOnPad(bool playerOnPad)
