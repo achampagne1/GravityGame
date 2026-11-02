@@ -30,7 +30,13 @@ public class UIAnimation
 
     public void startAnimation()
     {
-        if(animationCoroutine == null)
+        if(frames.Count == 0)
+        {
+            Debug.LogWarning("No frames added to the animation.");
+            return;
+        }
+
+        if (animationCoroutine == null)
         {
             animationCoroutine = UIHandler.instance.StartCoroutine(animateFrames());
         }
@@ -58,12 +64,12 @@ public class UIAnimation
     }
 }
 
-    public class UIHandler : MonoBehaviour
+public class UIHandler : MonoBehaviour
 {
     //game variables
     public float movePercent = 0f;
     private float parentTop = 0f;
-    private float healthBuffer =0f;
+    private float healthBuffer = 0f;
     private float fuelBuffer = 0f;
     private bool escapeClicked = false;
     private bool eClicked = false;
@@ -71,10 +77,11 @@ public class UIAnimation
     private bool acknowledgeComs = false;
     private bool revealOverride = false;
     private bool up = false;
-    private float healthLevel=100f;
-    private float shieldLevel=100f;
+    private float healthLevel = 100f;
+    private float shieldLevel = 100f;
     private int leftRightFrameIndex = 0;
     [SerializeField] bool playLeftRightAnimation = false;
+    [SerializeField] bool playSpaceAnimation = false;
     [SerializeField] float speed = .05f;
     [SerializeField] float shiftNum = 4f;
     [SerializeField] float screenTextScaler = 100f;
@@ -83,6 +90,7 @@ public class UIAnimation
     [SerializeField] Texture2D heartTexture;
     [SerializeField] Texture2D heartBrokenTexture;
     [SerializeField] List<Texture2D> leftRightFrames = new List<Texture2D>();
+    [SerializeField] List<Texture2D> spaceFrames = new List<Texture2D>();
 
     //object creation
     public static UIHandler instance { get; private set; }
@@ -107,6 +115,7 @@ public class UIAnimation
     private VisualElement comsOverlay;
     private VisualElement textBubble;
     private VisualElement leftRight;
+    private VisualElement space;
     private Label bubbleText;
 
     private Objective currentObjective;
@@ -123,6 +132,7 @@ public class UIAnimation
     private Coroutine warningCoroutineVariable = null;
 
     UIAnimation leftRightAnimation;
+    UIAnimation spaceAnimation;
 
     private void Awake()
     {
@@ -141,27 +151,28 @@ public class UIAnimation
     {
         UIDocument uiDocument = GetComponent<UIDocument>();
 
-        fuelBar = uiDocument.rootVisualElement.Q<VisualElement>("fuel");
-        shieldBar = uiDocument.rootVisualElement.Q<VisualElement>("shield");
-        heartContainer = uiDocument.rootVisualElement.Q<VisualElement>("heartContainer");
-        hearts = heartContainer.Query<VisualElement>("heart").ToList().ToArray();
-        warning = uiDocument.rootVisualElement.Q<VisualElement>("warning");
-        pauseMenu = uiDocument.rootVisualElement.Q<VisualElement>("pause");
-        pauseContainer = uiDocument.rootVisualElement.Q<VisualElement>("pauseContainer");
-        darken = uiDocument.rootVisualElement.Q<VisualElement>("darken");
-        exitGameButton = uiDocument.rootVisualElement.Q<Button>("exitGameButton");
-        objectiveContainer = uiDocument.rootVisualElement.Q<VisualElement>("text");
-        overlayContainerPause = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
-        overlayArrayPause = overlayContainerPause.Query<VisualElement>("overlay").ToList().ToArray();
-        overlayContainerEnd = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainerEnd");
-        overlayArrayEnd = overlayContainerEnd.Query<VisualElement>("overlayEnd").ToList().ToArray();
-        endScreen = uiDocument.rootVisualElement.Q<VisualElement>("endScreen");
-        levelComplete = uiDocument.rootVisualElement.Q<VisualElement>("levelComplete");
-        levelFailed = uiDocument.rootVisualElement.Q<VisualElement>("levelFailed");
-        comsOverlay = uiDocument.rootVisualElement.Q<VisualElement>("coms");
-        textBubble = uiDocument.rootVisualElement.Q<VisualElement>("textBubble");
-        bubbleText = uiDocument.rootVisualElement.Q<Label>("bubbleText");
-        leftRight = uiDocument.rootVisualElement.Q<VisualElement>("leftRight");
+        fuelBar                    = uiDocument.rootVisualElement.Q<VisualElement>("fuel");
+        shieldBar                  = uiDocument.rootVisualElement.Q<VisualElement>("shield");
+        heartContainer             = uiDocument.rootVisualElement.Q<VisualElement>("heartContainer");
+        hearts                     = heartContainer.Query<VisualElement>("heart").ToList().ToArray();
+        warning                    = uiDocument.rootVisualElement.Q<VisualElement>("warning");
+        pauseMenu                  = uiDocument.rootVisualElement.Q<VisualElement>("pause");
+        pauseContainer             = uiDocument.rootVisualElement.Q<VisualElement>("pauseContainer");
+        darken                     = uiDocument.rootVisualElement.Q<VisualElement>("darken");
+        exitGameButton             = uiDocument.rootVisualElement.Q<Button>("exitGameButton");
+        objectiveContainer         = uiDocument.rootVisualElement.Q<VisualElement>("text");
+        overlayContainerPause      = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainer");
+        overlayArrayPause          = overlayContainerPause.Query<VisualElement>("overlay").ToList().ToArray();
+        overlayContainerEnd        = uiDocument.rootVisualElement.Q<VisualElement>("overlayContainerEnd");
+        overlayArrayEnd            = overlayContainerEnd.Query<VisualElement>("overlayEnd").ToList().ToArray();
+        endScreen                  = uiDocument.rootVisualElement.Q<VisualElement>("endScreen");
+        levelComplete              = uiDocument.rootVisualElement.Q<VisualElement>("levelComplete");
+        levelFailed                = uiDocument.rootVisualElement.Q<VisualElement>("levelFailed");
+        comsOverlay                = uiDocument.rootVisualElement.Q<VisualElement>("coms");
+        textBubble                 = uiDocument.rootVisualElement.Q<VisualElement>("textBubble");
+        bubbleText                 = uiDocument.rootVisualElement.Q<Label>("bubbleText");
+        leftRight                  = uiDocument.rootVisualElement.Q<VisualElement>("leftRight");
+        space                      = uiDocument.rootVisualElement.Q<VisualElement>("space");
         pauseContainer.style.opacity = 0f;
         objectiveContainer.style.opacity = 0f;
         pauseMenu.style.transitionDuration = new List<TimeValue> { new TimeValue(0.25f, TimeUnit.Second) };
@@ -188,6 +199,12 @@ public class UIAnimation
         leftRightAnimation.addFrame(leftRightFrames[1], .75f);
         leftRightAnimation.addFrame(leftRightFrames[0], 1f);
         leftRightAnimation.addFrame(leftRightFrames[2], .75f);
+
+        spaceAnimation = new UIAnimation(space);
+        spaceAnimation.addFrame(spaceFrames[0], 1f);
+        spaceAnimation.addFrame(spaceFrames[1], .5f);
+        spaceAnimation.addFrame(spaceFrames[0], .5f);
+        spaceAnimation.addFrame(spaceFrames[1], 1f);
     }
 
     // Update is called once per frame
@@ -268,6 +285,14 @@ public class UIAnimation
         else
         {
             leftRightAnimation.stopAnimation();
+        }
+
+        if (playSpaceAnimation)
+        {
+            spaceAnimation.startAnimation();
+        }
+        else {
+            spaceAnimation.stopAnimation();
         }
     }
 
