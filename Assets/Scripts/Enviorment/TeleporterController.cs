@@ -104,6 +104,7 @@ public class TeleporterController : MonoBehaviour
         beamSr.sprite = transportBeamSprite;
         transportBeam.transform.parent = transform;
         transportBeam.transform.localScale = new Vector3(1f, 1.5f, 1f);
+        transportBeam.transform.localRotation = Quaternion.Euler(0f, 0f, 0f);
         transportBeam.transform.localPosition = new Vector3(0f, 68.6f, 0f);
     }
 
