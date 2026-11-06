@@ -8,6 +8,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3662340250099636513, guid: 748d52aa7c804d44b86fd06f80ab99da,
+        type: 3}
+      propertyPath: camController
+      value: 
+      objectReference: {fileID: 8997945860311151854}
     - target: {fileID: 6531168470496589061, guid: 748d52aa7c804d44b86fd06f80ab99da,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -68,3 +73,15 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 748d52aa7c804d44b86fd06f80ab99da, type: 3}
+--- !u!114 &8997945860311151854 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6898283208228239933, guid: 748d52aa7c804d44b86fd06f80ab99da,
+    type: 3}
+  m_PrefabInstance: {fileID: 2550304100616408787}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b1c59303989f4348b6a6d25bf1faa5d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

@@ -4,19 +4,18 @@ using UnityEngine;
 public class NavigationNode
 {
     public Vector2 position;
-    public bool isWalkable;
     public float movementCost = 1f;
-    public List<NavigationNode> neighbors;
+    public List<NavigationNode> neighbors = new List<NavigationNode>();
 }
 
 public class NavigationRules
 {
     public bool canMoveTo(NavigationNode from,NavigationNode to,NavigationProfile profile)
     {
-        if (!to.isWalkable)
-            return false;
+        //if (!to.isWalkable)
+          //  return false;
 
-        if (!profile.CanTraverse(from.position, to.position))
+        if (!profile.canTraverse(from.position, to.position))
             return false;
 
         return true;

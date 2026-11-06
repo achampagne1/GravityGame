@@ -75,6 +75,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8c0f6da5eb3f4b419c32352bc03fa1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NavigationManager
+  runGenerateNavigationMesh: 0
+  meshCenter: {x: 0, y: 0}
+  navigationMeshSize: {x: 10, y: 10}
+  navigationMeshResolution: 1
+  obstacleLayerMask:
+    serializedVersion: 2
+    m_Bits: 384
 --- !u!1 &4820754451978364282
 GameObject:
   m_ObjectHideFlags: 0

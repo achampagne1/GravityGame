@@ -8,6 +8,9 @@ public class TrainerController : SpacePersonController
 
     //public variables
     [SerializeField] int normalState = 0;
+    //[SerializeField] Vector2 start = new Vector2();
+    [SerializeField] Vector2 end = new Vector2();
+    [SerializeField] bool findPath = false;
 
     //game variables
     private int moveInput = 0;
@@ -15,6 +18,8 @@ public class TrainerController : SpacePersonController
     private bool following = false;
     private bool attackLatch = false;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
+    private Coroutine navigationCoroutine = null;
+
 
     public override void Start()
     {
@@ -23,7 +28,27 @@ public class TrainerController : SpacePersonController
 
     public void FixedUpdate()
     {
-        base.FixedUpdate();
+        if (findPath && navigationCoroutine == null)
+        {
+            findPath = false;
+            navigationCoroutine = StartCoroutine(navigation(NavigationManager.findPath(transform.position, end, null)));
+
+        }
+        //base.FixedUpdate();
+    }
+
+    private IEnumerator navigation(List<Vector2> nodes)
+    {
+        Vector2 currentNode = nodes[0];
+        int iterator = 1;
+        while(currentNode != nodes[nodes.Count - 1])
+        {
+            currentNode = nodes[iterator++];
+            transform.position = (Vector3)currentNode;
+            yield return new WaitForSeconds(.1f);
+        }
+        navigationCoroutine = null;
+        yield return null;
     }
 
     private int lookLeftOrRight()
