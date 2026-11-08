@@ -1,11 +1,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum NAVIGATIONCOSTS
+{
+    SOLID = 1000,
+    AIR = 10,
+    GROUND = 1,
+}
+
 public class NavigationNode
 {
     public Vector2 position;
-    public float movementCost = 1f;
-    public List<NavigationNode> neighbors = new List<NavigationNode>();
+    public int movementCost = 1;
+    public List<(Vector2,NavigationNode)> neighbors = new List<(Vector2, NavigationNode)>();
+    public Collider2D[] colliders;
 }
 
 public class NavigationRules

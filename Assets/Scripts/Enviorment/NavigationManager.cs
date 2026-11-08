@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class NavigationManager : MonoBehaviour
 {
@@ -9,8 +10,10 @@ public class NavigationManager : MonoBehaviour
     [SerializeField] private Vector2 navigationMeshSize = new Vector2(50, 50);
     [SerializeField] private float navigationMeshResolution = 1f;
     [SerializeField] private LayerMask obstacleLayerMask;
+    [SerializeField] private GameObject planets;
     private Coroutine navigationMeshGenerationCoroutine;
     private static List<NavigationNode> navigationNodes = new List<NavigationNode>();
+    private static List<GravityPoint> gravityPoints = new List<GravityPoint>();
 
     public static NavigationManager instance { get; private set; }
 
@@ -39,67 +42,154 @@ public class NavigationManager : MonoBehaviour
     {
         navigationNodes.Clear();
 
-        int rows = Mathf.Max(1, Mathf.CeilToInt(navigationMeshSize.y / navigationMeshResolution));
-        int columns = Mathf.Max(1, Mathf.CeilToInt(navigationMeshSize.x / navigationMeshResolution));
+        int rows = Mathf.Max(1, Mathf.CeilToInt(navigationMeshSize.y * navigationMeshResolution));
+        int columns = Mathf.Max(1, Mathf.CeilToInt(navigationMeshSize.x * navigationMeshResolution));
 
         float startX = -navigationMeshSize.x / 2f;
         float startY = -navigationMeshSize.y / 2f;
 
+        //node creation
         for (int i = 0; i < columns; i++)
         {
             for (int j = 0; j < rows; j++)
             {
                 Vector2 position = meshCenter + new Vector2(
-                    startX + (i * navigationMeshResolution),
-                    startY + (j * navigationMeshResolution)
+                    startX + (i / navigationMeshResolution),
+                    startY + (j / navigationMeshResolution)
                 );
-
-                Collider2D[] colliders = Physics2D.OverlapBoxAll(
-                    position,
-                    new Vector2(4.5f, 4.5f),
-                    0f,
-                    obstacleLayerMask
-                );
-
-                bool isWalkable = colliders.Length == 0;
-                /*foreach (Collider2D collider in colliders) //TODO: is walkable based upon what is in the collider
-                {
-
-                }*/
 
                 NavigationNode node = new NavigationNode();
                 node.position = position;
-                node.movementCost = isWalkable ? 1f : 1000f;
+
+                node.colliders = Physics2D.OverlapPointAll(
+                    node.position,
+                    obstacleLayerMask
+                );
+
                 navigationNodes.Add(node);
             }
         }
 
+        //mesh connection
         for (int i = 0; i < columns; i++)
         {
             for (int j = 0; j < rows; j++)
             {
                 NavigationNode node = navigationNodes[i * rows + j];
-                if (j > 0) //left node
-                {
-                    node.neighbors.Add(navigationNodes[i * rows + (j - 1)]);
-                }
                 if (j < rows - 1) //right node
                 {
-                    node.neighbors.Add(navigationNodes[i * rows + (j + 1)]);
+                    node.neighbors.Add((new Vector2(337.5f,22.5f), navigationNodes[i * rows + (j + 1)]));
                 }
-                if (i > 0) //down node
+                if (i > 0 && j < rows - 1) //top-right diagonal node
                 {
-                    node.neighbors.Add(navigationNodes[(i - 1) * rows + j]);
+                    node.neighbors.Add((new Vector2(22.5f, 67.5f), navigationNodes[(i - 1) * rows + (j + 1)]));
                 }
                 if (i < columns - 1) //up node
                 {
-                    node.neighbors.Add(navigationNodes[(i + 1) * rows + j]);
+                    node.neighbors.Add((new Vector2(67.5f, 112.5f), navigationNodes[(i + 1) * rows + j]));
+                }
+                if (i > 0 && j > 0) //top-left diagonal node
+                {
+                    node.neighbors.Add((new Vector2(112.5f, 157.5f), navigationNodes[(i - 1) * rows + (j - 1)]));
+                }
+                if (j > 0) //left node
+                {
+                    node.neighbors.Add((new Vector2(157.5f, 202.5f), navigationNodes[i * rows + (j - 1)]));
+                }
+                if (i < columns - 1 && j > 0) //bottom-left diagonal node
+                {
+                    node.neighbors.Add((new Vector2(202.5f, 247.5f), navigationNodes[(i + 1) * rows + (j - 1)]));
+                }
+                if (i > 0) //down node
+                {
+                    node.neighbors.Add((new Vector2(247.5f, 292.5f), navigationNodes[(i - 1) * rows + j]));
+                }
+                if (i < columns - 1 && j < rows - 1) //bottom-right diagonal node
+                {
+                    node.neighbors.Add((new Vector2(292.5f, 337.5f), navigationNodes[(i + 1) * rows + (j + 1)]));
                 }
             }
         }
 
+        generateGravityPointMap();
+
+        //rule creation
+        foreach (NavigationNode node in navigationNodes)
+        {
+            if(node.colliders.Length > 0) //node contains a solid substance
+            {
+                node.movementCost = (int)NAVIGATIONCOSTS.SOLID;
+            }
+            else if (neighborIsGround(node)){
+                node.movementCost = (int)NAVIGATIONCOSTS.GROUND;
+            }
+            else
+            {
+                node.movementCost = (int)NAVIGATIONCOSTS.AIR; //node is air, tougher to navigate than ground, but passable
+            }
+        }
         navigationMeshGenerationCoroutine = null;
         yield return null;
+    }
+
+    /// <summary>
+    /// Checks neighbors of the node and returns true if the neighbor that gravity points to is solid
+    /// </summary>
+    private static bool neighborIsGround(NavigationNode node)
+    {
+        float minDistance = float.MaxValue;
+        float closestDirection = -1.0f;
+
+        for (int i = 0; i < gravityPoints.Count; i++)
+        {
+            Vector2 gpPos = new Vector2(gravityPoints[i].x, gravityPoints[i].y);
+            float distance = Vector2.Distance(node.position, gpPos) / gravityPoints[i].fieldSize;
+            float direction = Vector2.Angle(Vector2.right, (gpPos - node.position).normalized);
+            if (distance < minDistance)
+            {
+                minDistance = distance;
+                closestDirection = direction;
+            }
+        }
+
+        foreach (var neighborTuple in node.neighbors)
+        {
+            if (closestDirection >= neighborTuple.Item1.x && closestDirection < neighborTuple.Item1.y)
+            {
+                NavigationNode groundNeighbor = neighborTuple.Item2;
+                if (groundNeighbor.colliders.Length > 0)
+                {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private static void generateGravityPointMap() {
+        gravityPoints.Clear();
+
+        int i = 0;
+        foreach (Transform planet in instance.planets.transform)
+        {
+            GravityPointController controller = planet.GetComponent<GravityPointController>();
+            if (controller != null)
+            {
+                GravityPoint gp = new GravityPoint
+                {
+                    x = planet.position.x,
+                    y = planet.position.y,
+                    fieldSize = controller.getFieldSize()
+                };
+
+                gravityPoints.Add(gp);
+            }
+            else
+            {
+                Debug.LogError($"No GravityPointController attached to {planet.name}");
+            }
+            i++;
+        }
     }
 
     public static List<Vector2> findPath(Vector2 from,Vector2 to,NavigationProfile navigationProfile)
@@ -156,8 +246,9 @@ public class NavigationManager : MonoBehaviour
             closedSet.Add(current);
 
             // Evaluate neighboring nodes.
-            foreach (NavigationNode neighbor in current.neighbors)
+            foreach (var neighborTuple in current.neighbors)
             {
+                NavigationNode neighbor = neighborTuple.Item2;
                 if (closedSet.Contains(neighbor))
                     continue;
 
