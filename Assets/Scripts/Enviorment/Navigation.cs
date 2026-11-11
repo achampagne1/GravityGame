@@ -11,6 +11,7 @@ public enum NAVIGATIONCOSTS
 public class NavigationNode
 {
     public Vector2 position;
+    public Vector2 gravityDirection = Vector2.zero;
     public int movementCost = 1;
     public List<(Vector2,NavigationNode)> neighbors = new List<(Vector2, NavigationNode)>();
     public Collider2D[] colliders;

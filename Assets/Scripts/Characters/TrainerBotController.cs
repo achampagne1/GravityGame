@@ -11,6 +11,7 @@ public class TrainerController : SpacePersonController
     //[SerializeField] Vector2 start = new Vector2();
     [SerializeField] Vector2 end = new Vector2();
     [SerializeField] bool findPath = false;
+    [SerializeField] float nodeArrivalDistance = 0.1f;
 
     //game variables
     private int moveInput = 0;
@@ -19,6 +20,8 @@ public class TrainerController : SpacePersonController
     private bool attackLatch = false;
     private Vector3 playerDirection = new Vector3(0f, 0f, 0f);
     private Coroutine navigationCoroutine = null;
+    private Coroutine generatePathCoroutine = null;
+    private List<Vector2> path = null;
 
 
     public override void Start()
@@ -28,27 +31,50 @@ public class TrainerController : SpacePersonController
 
     public void FixedUpdate()
     {
-        if (findPath && navigationCoroutine == null)
+        if (NavigationManager.meshReady && generatePathCoroutine == null)
+        {
+            generatePathCoroutine = StartCoroutine(generatePath());
+        }
+
+        if (findPath && navigationCoroutine == null && path != null)
         {
             findPath = false;
-            navigationCoroutine = StartCoroutine(navigation(NavigationManager.findPath(transform.position, end, null)));
+            navigationCoroutine = StartCoroutine(navigation(path));
 
         }
-        //base.FixedUpdate();
+        base.FixedUpdate();
+    }
+
+    private IEnumerator generatePath()
+    {
+        path = NavigationManager.findPath(transform.position, end, null);
+        Debug.Log("Path generated with " + path.Count + " nodes.");
+        yield return null;
     }
 
     private IEnumerator navigation(List<Vector2> nodes)
     {
-        Vector2 currentNode = nodes[0];
         int iterator = 1;
-        while(currentNode != nodes[nodes.Count - 1])
+        while (iterator < nodes.Count)
         {
-            currentNode = nodes[iterator++];
-            transform.position = (Vector3)currentNode;
-            yield return new WaitForSeconds(.1f);
+            Vector2 currentNode = nodes[iterator];
+            Vector2 nodeOffset = Quaternion.Inverse(transform.rotation) * (currentNode - (Vector2)transform.position);
+
+            if (nodeOffset.x <= nodeArrivalDistance)
+            {
+                iterator++;
+            }
+            else
+            {
+                float relativeDirection = nodeOffset.x;
+                setMovement(relativeDirection > 0f ? 1 : relativeDirection < 0f ? -1 : 0);
+            }
+
+            yield return null;
         }
+
+        setMovement(0);
         navigationCoroutine = null;
-        yield return null;
     }
 
     private int lookLeftOrRight()

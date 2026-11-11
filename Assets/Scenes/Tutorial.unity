@@ -1074,6 +1074,11 @@ PrefabInstance:
       propertyPath: m_LocalPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5233015827370839076, guid: 180c2d0849ace704da608f2050777c00,
+        type: 3}
+      propertyPath: uIHandler
+      value: 
+      objectReference: {fileID: 456653263}
     - target: {fileID: 6495974381748838253, guid: 180c2d0849ace704da608f2050777c00,
         type: 3}
       propertyPath: spaceFrames.Array.size

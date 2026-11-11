@@ -9,16 +9,18 @@ public class NavigationManager : MonoBehaviour
     [SerializeField] private Vector2 meshCenter = Vector2.zero;
     [SerializeField] private Vector2 navigationMeshSize = new Vector2(50, 50);
     [SerializeField] private float navigationMeshResolution = 1f;
-    [SerializeField] private LayerMask obstacleLayerMask;
+    [SerializeField] private LayerMask layerMask;
     [SerializeField] private GameObject planets;
     private Coroutine navigationMeshGenerationCoroutine;
     private static List<NavigationNode> navigationNodes = new List<NavigationNode>();
     private static List<GravityPoint> gravityPoints = new List<GravityPoint>();
+    public static bool meshReady { get; private set; }
 
     public static NavigationManager instance { get; private set; }
 
     private void Awake()
     {
+        meshReady = false;
         if (instance == null)
         {
             instance = this;
@@ -35,6 +37,7 @@ public class NavigationManager : MonoBehaviour
         {
             navigationMeshGenerationCoroutine = StartCoroutine(generateNavigationMesh());
             runGenerateNavigationMesh = false;
+            meshReady = true;
         }
     }
 
@@ -63,7 +66,7 @@ public class NavigationManager : MonoBehaviour
 
                 node.colliders = Physics2D.OverlapPointAll(
                     node.position,
-                    obstacleLayerMask
+                    layerMask
                 );
 
                 navigationNodes.Add(node);
@@ -116,6 +119,27 @@ public class NavigationManager : MonoBehaviour
         //rule creation
         foreach (NavigationNode node in navigationNodes)
         {
+            bool solid = false;
+            foreach(Collider2D collider in node.colliders)
+            {
+                if(collider.gameObject.layer == LayerMask.NameToLayer("gravityField"))
+                {
+                    node.gravityDirection = collider.transform.rotation * Vector2.down;
+                }
+                solid = (collider.gameObject.layer == LayerMask.NameToLayer("planet") || collider.gameObject.layer == LayerMask.NameToLayer("platform"));
+            }
+            if (solid)
+            {
+                node.movementCost = (int)NAVIGATIONCOSTS.SOLID;
+            }
+            else if(neighborIsGround(node)){
+                node.movementCost = (int)NAVIGATIONCOSTS.GROUND;
+            }
+            else
+            {
+                node.movementCost = (int)NAVIGATIONCOSTS.AIR; //node is air, tougher to navigate than ground, but passable
+            }
+            /*
             if(node.colliders.Length > 0) //node contains a solid substance
             {
                 node.movementCost = (int)NAVIGATIONCOSTS.SOLID;
@@ -126,7 +150,7 @@ public class NavigationManager : MonoBehaviour
             else
             {
                 node.movementCost = (int)NAVIGATIONCOSTS.AIR; //node is air, tougher to navigate than ground, but passable
-            }
+            }*/
         }
         navigationMeshGenerationCoroutine = null;
         yield return null;
@@ -144,7 +168,16 @@ public class NavigationManager : MonoBehaviour
         {
             Vector2 gpPos = new Vector2(gravityPoints[i].x, gravityPoints[i].y);
             float distance = Vector2.Distance(node.position, gpPos) / gravityPoints[i].fieldSize;
-            float direction = Vector2.Angle(Vector2.right, (gpPos - node.position).normalized);
+            float direction = 0;
+            if(node.gravityDirection != Vector2.zero)
+            {
+                direction = Vector2.Angle(Vector2.right, node.gravityDirection.normalized);
+            }
+            else
+            {
+                direction = Vector2.Angle(Vector2.right, (gpPos - node.position).normalized);
+            }
+
             if (distance < minDistance)
             {
                 minDistance = distance;

@@ -82,6 +82,7 @@ MonoBehaviour:
   obstacleLayerMask:
     serializedVersion: 2
     m_Bits: 384
+  planets: {fileID: 0}
 --- !u!1 &4820754451978364282
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,6 +122,7 @@ Transform:
   - {fileID: 8510096577708234573}
   - {fileID: 8173721292013939510}
   - {fileID: 6515747798628572892}
+  - {fileID: 38697216518146500}
   - {fileID: 5217794214046338846}
   - {fileID: 7462812396393129286}
   - {fileID: 5456524660552821408}
@@ -175,6 +177,37 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   audioSource: {fileID: 2234962419110363748, guid: 215fa42240bbba844a2641505b25c7a0,
     type: 3}
+--- !u!1 &4923444916970940127
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 38697216518146500}
+  m_Layer: 3
+  m_Name: GravityFields
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &38697216518146500
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4923444916970940127}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2556209261401331668}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5281557668713350936
 GameObject:
   m_ObjectHideFlags: 0

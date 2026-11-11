@@ -347,10 +347,6 @@ PrefabInstance:
         type: 3}
       insertIndex: 2
       addedObject: {fileID: 5653041072752670153}
-    - targetCorrespondingSourceObject: {fileID: 6531168470496589063, guid: 748d52aa7c804d44b86fd06f80ab99da,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 5860399690151510152}
   m_SourcePrefab: {fileID: 100100000, guid: 748d52aa7c804d44b86fd06f80ab99da, type: 3}
 --- !u!1 &3991316344611716969 stripped
 GameObject:
@@ -401,49 +397,9 @@ MonoBehaviour:
     type: 3}
   flameOffset: {x: -4.25, y: -6.5}
   normalState: 0
---- !u!114 &5860399690151510152
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3991316344611716969}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ddbd26afa8ae4d458d6264d5bd3e8f7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TrainerController
-  terminalVelocity: 30
-  gravityAffected: 1
-  orientToGravity: 1
-  updateGravityField: 1
-  calculateIsGrounded: 1
-  simulated: 1
-  hitSound: {fileID: 8300000, guid: 31e4f915dcf6e1c43b4fd822b1968560, type: 3}
-  explodeTemplate: {fileID: 6680122378165076922, guid: aee5d51fceed3454680cec5eddc0a016,
-    type: 3}
-  hitMark: {fileID: 1943766059380431280, guid: e4cf3698d1d392245b49507dd0540e6f, type: 3}
-  invincibleFlag: 0
-  shieldUpFlag: 0
-  forceLocalAdded: 0
-  movementToggle: 1
-  jumpForce: 11
-  moveSpeed: 10
-  maxHealth: 10
-  health: 0
-  knockBackDuration: 0.1
-  groundedGracePeriod: 0.1
-  hitMarkCenter: {x: -2, y: 2.5}
-  jetPackForce: 30
-  groundSmokeTime: 0.5
-  footOffset: 0.1
-  relaxTime: 5
-  landingSmoke: {fileID: 8098803252328287543, guid: 9e37d826df48111448919318eaf8a42f,
-    type: 3}
-  jetPackFlame: {fileID: 3859246152096219491, guid: e73ac5e7184a70d40be4d842179e59a0,
-    type: 3}
-  flameOffset: {x: -4.25, y: -6.5}
-  normalState: 0
+  end: {x: 0, y: 0}
+  findPath: 0
+  nodeArrivalDistance: 0.1
 --- !u!4 &3991316344611716971 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6531168470496589061, guid: 748d52aa7c804d44b86fd06f80ab99da,
