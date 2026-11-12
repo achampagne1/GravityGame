@@ -11,6 +11,8 @@ public class NavigationManager : MonoBehaviour
     [SerializeField] private float navigationMeshResolution = 1f;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private GameObject planets;
+    [SerializeField] private bool pathDebug;
+    [SerializeField] private Sprite nodeSprite;
     private Coroutine navigationMeshGenerationCoroutine;
     private static List<NavigationNode> navigationNodes = new List<NavigationNode>();
     private static List<GravityPoint> gravityPoints = new List<GravityPoint>();
@@ -139,18 +141,6 @@ public class NavigationManager : MonoBehaviour
             {
                 node.movementCost = (int)NAVIGATIONCOSTS.AIR; //node is air, tougher to navigate than ground, but passable
             }
-            /*
-            if(node.colliders.Length > 0) //node contains a solid substance
-            {
-                node.movementCost = (int)NAVIGATIONCOSTS.SOLID;
-            }
-            else if (neighborIsGround(node)){
-                node.movementCost = (int)NAVIGATIONCOSTS.GROUND;
-            }
-            else
-            {
-                node.movementCost = (int)NAVIGATIONCOSTS.AIR; //node is air, tougher to navigate than ground, but passable
-            }*/
         }
         navigationMeshGenerationCoroutine = null;
         yield return null;
@@ -273,7 +263,22 @@ public class NavigationManager : MonoBehaviour
 
             // Destination reached.
             if (current == targetNode)
-                return reconstructPath(cameFrom, current, startNode);
+            {
+                List<Vector2> path = reconstructPath(cameFrom, current, startNode);
+                if (instance.pathDebug)
+                {
+                    foreach (Vector2 nodePosition in path)
+                    {
+                        GameObject pathNode = new GameObject("Path Node");
+                        pathNode.transform.position = nodePosition;
+                        SpriteRenderer sr = pathNode.AddComponent<SpriteRenderer>();
+                        sr.sprite = instance.nodeSprite;
+
+                    }
+                }
+
+                return path;
+            }
 
             openSet.Remove(current);
             closedSet.Add(current);

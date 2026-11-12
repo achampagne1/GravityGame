@@ -12,6 +12,7 @@ public class TrainerController : SpacePersonController
     [SerializeField] Vector2 end = new Vector2();
     [SerializeField] bool findPath = false;
     [SerializeField] float nodeArrivalDistance = 0.1f;
+    [SerializeField] float jumpThreshold = .1f;
 
     //game variables
     private int moveInput = 0;
@@ -57,19 +58,25 @@ public class TrainerController : SpacePersonController
         int iterator = 1;
         while (iterator < nodes.Count)
         {
+            space = false;
             Vector2 currentNode = nodes[iterator];
             Vector2 nodeOffset = Quaternion.Inverse(transform.rotation) * (currentNode - (Vector2)transform.position);
 
-            if (nodeOffset.x <= nodeArrivalDistance)
+            if (Mathf.Abs(nodeOffset.x) <= nodeArrivalDistance || Mathf.Abs(nodeOffset.y) <= nodeArrivalDistance)
             {
                 iterator++;
             }
             else
             {
-                float relativeDirection = nodeOffset.x;
-                setMovement(relativeDirection > 0f ? 1 : relativeDirection < 0f ? -1 : 0);
-            }
+                int direction = nodeOffset.x > 0f ? 1 : nodeOffset.x < 0f ? -1 : 0;
+                setMovement(direction);
+                setOrientation(direction);
 
+                if (nodeOffset.y > jumpThreshold)
+                {
+                    space = true;
+                }
+            }
             yield return null;
         }
 

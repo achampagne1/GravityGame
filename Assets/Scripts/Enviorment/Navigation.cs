@@ -3,8 +3,8 @@ using UnityEngine;
 
 public enum NAVIGATIONCOSTS
 {
-    SOLID = 1000,
-    AIR = 10,
+    SOLID = 9999,
+    AIR = 900,
     GROUND = 1,
 }
 
