@@ -91,5 +91,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 189348abb5c70954ebd9315415db4b56, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fieldStrength: 20
+  fieldStrength: 15
   direction: {x: 0, y: -1}

@@ -11,6 +11,7 @@ public class TrainerController : SpacePersonController
     //[SerializeField] Vector2 start = new Vector2();
     [SerializeField] Vector2 end = new Vector2();
     [SerializeField] bool findPath = false;
+    [SerializeField] bool pathDebug = false;
     [SerializeField] float nodeArrivalDistance = 0.1f;
     [SerializeField] float jumpThreshold = .1f;
 
@@ -82,6 +83,17 @@ public class TrainerController : SpacePersonController
 
         setMovement(0);
         navigationCoroutine = null;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if (path == null || !pathDebug)
+            return; 
+
+        foreach (Vector2 nodePosition in path)
+        {
+            Gizmos.DrawSphere(nodePosition, 0.1f);
+        }
     }
 
     private int lookLeftOrRight()

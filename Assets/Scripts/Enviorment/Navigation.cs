@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum NAVIGATIONCOSTS
 {
-    SOLID = 9999,
+    SOLID = 10000,
     AIR = 900,
     GROUND = 1,
 }
@@ -12,7 +12,7 @@ public class NavigationNode
 {
     public Vector2 position;
     public Vector2 gravityDirection = Vector2.zero;
-    public int movementCost = 1;
+    public NAVIGATIONCOSTS movementCost = NAVIGATIONCOSTS.GROUND;
     public List<(Vector2,NavigationNode)> neighbors = new List<(Vector2, NavigationNode)>();
     public Collider2D[] colliders;
 }
@@ -37,7 +37,7 @@ public class NavigationRules
             to.position
         );
 
-        cost *= to.movementCost;
+        cost *= (int)to.movementCost;
 
         return cost;
     }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,11 +12,13 @@ public class NavigationManager : MonoBehaviour
     [SerializeField] private float navigationMeshResolution = 1f;
     [SerializeField] private LayerMask layerMask;
     [SerializeField] private GameObject planets;
-    [SerializeField] private bool pathDebug;
+    [SerializeField] private bool pathDebug = false;
     [SerializeField] private Sprite nodeSprite;
+    [SerializeField] private bool drawMesh = false;
     private Coroutine navigationMeshGenerationCoroutine;
     private static List<NavigationNode> navigationNodes = new List<NavigationNode>();
     private static List<GravityPoint> gravityPoints = new List<GravityPoint>();
+    private static int impassableCost = 10000;
     public static bool meshReady { get; private set; }
 
     public static NavigationManager instance { get; private set; }
@@ -66,10 +69,19 @@ public class NavigationManager : MonoBehaviour
                 NavigationNode node = new NavigationNode();
                 node.position = position;
 
-                node.colliders = Physics2D.OverlapPointAll(
+                ContactFilter2D filter = new ContactFilter2D();
+                filter.SetLayerMask(layerMask);
+                filter.useTriggers = true;
+
+                List<Collider2D> results = new List<Collider2D>();
+
+                Physics2D.OverlapPoint(
                     node.position,
-                    layerMask
+                    filter,
+                    results
                 );
+
+                node.colliders = results.ToArray();
 
                 navigationNodes.Add(node);
             }
@@ -132,14 +144,14 @@ public class NavigationManager : MonoBehaviour
             }
             if (solid)
             {
-                node.movementCost = (int)NAVIGATIONCOSTS.SOLID;
+                node.movementCost = NAVIGATIONCOSTS.SOLID;
             }
             else if(neighborIsGround(node)){
-                node.movementCost = (int)NAVIGATIONCOSTS.GROUND;
+                node.movementCost = NAVIGATIONCOSTS.GROUND;
             }
             else
             {
-                node.movementCost = (int)NAVIGATIONCOSTS.AIR; //node is air, tougher to navigate than ground, but passable
+                node.movementCost = NAVIGATIONCOSTS.AIR; //node is air, tougher to navigate than ground, but passable
             }
         }
         navigationMeshGenerationCoroutine = null;
@@ -152,40 +164,43 @@ public class NavigationManager : MonoBehaviour
     private static bool neighborIsGround(NavigationNode node)
     {
         float minDistance = float.MaxValue;
-        float closestDirection = -1.0f;
+        Vector2 closestGravityDirection = Vector2.zero;
 
         for (int i = 0; i < gravityPoints.Count; i++)
         {
             Vector2 gpPos = new Vector2(gravityPoints[i].x, gravityPoints[i].y);
             float distance = Vector2.Distance(node.position, gpPos) / gravityPoints[i].fieldSize;
-            float direction = 0;
-            if(node.gravityDirection != Vector2.zero)
-            {
-                direction = Vector2.Angle(Vector2.right, node.gravityDirection.normalized);
-            }
-            else
-            {
-                direction = Vector2.Angle(Vector2.right, (gpPos - node.position).normalized);
-            }
 
             if (distance < minDistance)
             {
                 minDistance = distance;
-                closestDirection = direction;
+                closestGravityDirection = gpPos - node.position;
             }
         }
 
+        NavigationNode groundNeighbor = null;
+        float smallestAngle = float.MaxValue;
         foreach (var neighborTuple in node.neighbors)
         {
-            if (closestDirection >= neighborTuple.Item1.x && closestDirection < neighborTuple.Item1.y)
+            NavigationNode neighbor = neighborTuple.Item2;
+            Vector2 neighborDirection = neighbor.position - node.position;
+            float angle = Vector2.Angle(closestGravityDirection, neighborDirection);
+            if (angle <= 22.5f && angle < smallestAngle)
             {
-                NavigationNode groundNeighbor = neighborTuple.Item2;
-                if (groundNeighbor.colliders.Length > 0)
-                {
-                    return true;
-                }
+                smallestAngle = angle;
+                groundNeighbor = neighbor;
             }
         }
+
+        foreach (Collider2D collider in groundNeighbor.colliders)
+        {
+            if (collider.gameObject.layer == LayerMask.NameToLayer("planet") ||
+                collider.gameObject.layer == LayerMask.NameToLayer("platform"))
+            {
+                return true;
+            }
+        }
+
         return false;
     }
 
@@ -217,7 +232,6 @@ public class NavigationManager : MonoBehaviour
 
     public static List<Vector2> findPath(Vector2 from,Vector2 to,NavigationProfile navigationProfile)
     {
-        const float impassableCost = 10000f;
 
         // Find the closest nodes to the start and destination.
         NavigationNode startNode = getClosestNode(from);
@@ -265,18 +279,6 @@ public class NavigationManager : MonoBehaviour
             if (current == targetNode)
             {
                 List<Vector2> path = reconstructPath(cameFrom, current, startNode);
-                if (instance.pathDebug)
-                {
-                    foreach (Vector2 nodePosition in path)
-                    {
-                        GameObject pathNode = new GameObject("Path Node");
-                        pathNode.transform.position = nodePosition;
-                        SpriteRenderer sr = pathNode.AddComponent<SpriteRenderer>();
-                        sr.sprite = instance.nodeSprite;
-
-                    }
-                }
-
                 return path;
             }
 
@@ -291,14 +293,14 @@ public class NavigationManager : MonoBehaviour
                     continue;
 
                 // Treat extremely expensive nodes as impassable.
-                if (neighbor.movementCost >= impassableCost)
+                if ((int)neighbor.movementCost >= impassableCost)
                     continue;
 
                 // Calculate the cost of reaching this neighbor.
                 float tentativeGScore =
                     gScore[current] +
                     Vector2.Distance(current.position, neighbor.position)
-                    * neighbor.movementCost;
+                    * (int)neighbor.movementCost;
 
                 // Check whether this is a better route.
                 if (gScore.TryGetValue(neighbor, out float previousScore)
@@ -362,5 +364,28 @@ public class NavigationManager : MonoBehaviour
         }
 
         return closest;
+    }
+
+    private void OnDrawGizmos()
+    {
+        if(instance == null || !instance.drawMesh || !meshReady)
+            return;
+
+        foreach(NavigationNode node in navigationNodes)
+        {
+            if(node.movementCost==NAVIGATIONCOSTS.SOLID)
+            {
+                Gizmos.color = Color.red;
+            }
+            else if(node.movementCost == NAVIGATIONCOSTS.GROUND)
+            {
+                Gizmos.color = Color.green;
+            }
+            else if(node.movementCost == NAVIGATIONCOSTS.AIR)
+            {
+                Gizmos.color = Color.blue;
+            }
+            Gizmos.DrawSphere(node.position, 0.1f);
+        }
     }
 }
