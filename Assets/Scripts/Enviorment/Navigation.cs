@@ -5,6 +5,7 @@ public enum NAVIGATIONCOSTS
 {
     SOLID = 10000,
     AIR = 900,
+    JUMPABLE = 50,
     GROUND = 1,
 }
 
@@ -13,7 +14,7 @@ public class NavigationNode
     public Vector2 position;
     public Vector2 gravityDirection = Vector2.zero;
     public NAVIGATIONCOSTS movementCost = NAVIGATIONCOSTS.GROUND;
-    public List<(Vector2,NavigationNode)> neighbors = new List<(Vector2, NavigationNode)>();
+    public List<NavigationNode> neighbors = new List<NavigationNode>();
     public Collider2D[] colliders;
 }
 

@@ -1,3 +1,4 @@
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ public class NavigationManager : MonoBehaviour
     [SerializeField] private bool pathDebug = false;
     [SerializeField] private Sprite nodeSprite;
     [SerializeField] private bool drawMesh = false;
+    [SerializeField] private int jumpMax = 0;
     private Coroutine navigationMeshGenerationCoroutine;
     private static List<NavigationNode> navigationNodes = new List<NavigationNode>();
     private static List<GravityPoint> gravityPoints = new List<GravityPoint>();
@@ -95,35 +97,35 @@ public class NavigationManager : MonoBehaviour
                 NavigationNode node = navigationNodes[i * rows + j];
                 if (j < rows - 1) //right node
                 {
-                    node.neighbors.Add((new Vector2(337.5f,22.5f), navigationNodes[i * rows + (j + 1)]));
+                    node.neighbors.Add(navigationNodes[i * rows + (j + 1)]);
                 }
                 if (i > 0 && j < rows - 1) //top-right diagonal node
                 {
-                    node.neighbors.Add((new Vector2(22.5f, 67.5f), navigationNodes[(i - 1) * rows + (j + 1)]));
+                    node.neighbors.Add(navigationNodes[(i - 1) * rows + (j + 1)]);
                 }
                 if (i < columns - 1) //up node
                 {
-                    node.neighbors.Add((new Vector2(67.5f, 112.5f), navigationNodes[(i + 1) * rows + j]));
+                    node.neighbors.Add(navigationNodes[(i + 1) * rows + j]);
                 }
                 if (i > 0 && j > 0) //top-left diagonal node
                 {
-                    node.neighbors.Add((new Vector2(112.5f, 157.5f), navigationNodes[(i - 1) * rows + (j - 1)]));
+                    node.neighbors.Add(navigationNodes[(i - 1) * rows + (j - 1)]);
                 }
                 if (j > 0) //left node
                 {
-                    node.neighbors.Add((new Vector2(157.5f, 202.5f), navigationNodes[i * rows + (j - 1)]));
+                    node.neighbors.Add(navigationNodes[i * rows + (j - 1)]);
                 }
                 if (i < columns - 1 && j > 0) //bottom-left diagonal node
                 {
-                    node.neighbors.Add((new Vector2(202.5f, 247.5f), navigationNodes[(i + 1) * rows + (j - 1)]));
+                    node.neighbors.Add(navigationNodes[(i + 1) * rows + (j - 1)]);
                 }
                 if (i > 0) //down node
                 {
-                    node.neighbors.Add((new Vector2(247.5f, 292.5f), navigationNodes[(i - 1) * rows + j]));
+                    node.neighbors.Add(navigationNodes[(i - 1) * rows + j]);
                 }
                 if (i < columns - 1 && j < rows - 1) //bottom-right diagonal node
                 {
-                    node.neighbors.Add((new Vector2(292.5f, 337.5f), navigationNodes[(i + 1) * rows + (j + 1)]));
+                    node.neighbors.Add(navigationNodes[(i + 1) * rows + (j + 1)]);
                 }
             }
         }
@@ -146,12 +148,22 @@ public class NavigationManager : MonoBehaviour
             {
                 node.movementCost = NAVIGATIONCOSTS.SOLID;
             }
-            else if(neighborIsGround(node)){
-                node.movementCost = NAVIGATIONCOSTS.GROUND;
-            }
             else
             {
-                node.movementCost = NAVIGATIONCOSTS.AIR; //node is air, tougher to navigate than ground, but passable
+                int depth = neighborIsGround(node);
+                if(depth == 0)
+                {
+                    node.movementCost = NAVIGATIONCOSTS.GROUND;
+                }
+                else if(depth > 0 && depth <= jumpMax)
+                {
+                    node.movementCost = NAVIGATIONCOSTS.JUMPABLE;
+                }
+                else
+                {
+                    node.movementCost = NAVIGATIONCOSTS.AIR;
+                }
+
             }
         }
         navigationMeshGenerationCoroutine = null;
@@ -161,29 +173,42 @@ public class NavigationManager : MonoBehaviour
     /// <summary>
     /// Checks neighbors of the node and returns true if the neighbor that gravity points to is solid
     /// </summary>
-    private static bool neighborIsGround(NavigationNode node)
+    private static int neighborIsGround(NavigationNode node)
     {
         float minDistance = float.MaxValue;
         Vector2 closestGravityDirection = Vector2.zero;
 
-        for (int i = 0; i < gravityPoints.Count; i++)
+        if (node.gravityDirection != Vector2.zero) { 
+            closestGravityDirection = node.gravityDirection;
+        }
+        else
         {
-            Vector2 gpPos = new Vector2(gravityPoints[i].x, gravityPoints[i].y);
-            float distance = Vector2.Distance(node.position, gpPos) / gravityPoints[i].fieldSize;
-
-            if (distance < minDistance)
+            for (int i = 0; i < gravityPoints.Count; i++)
             {
-                minDistance = distance;
-                closestGravityDirection = gpPos - node.position;
+                Vector2 gpPos = new Vector2(gravityPoints[i].x, gravityPoints[i].y);
+                float distance = Vector2.Distance(node.position, gpPos) / gravityPoints[i].fieldSize;
+
+                if (distance < minDistance)
+                {
+                    minDistance = distance;
+                    closestGravityDirection = gpPos - node.position;
+                }
             }
         }
 
         NavigationNode groundNeighbor = null;
         float smallestAngle = float.MaxValue;
-        foreach (var neighborTuple in node.neighbors)
+        return recursiveNeighborCheck(node, closestGravityDirection, 0);
+    }
+
+    private static int recursiveNeighborCheck(NavigationNode homeNode, Vector2 closestGravityDirection,int parentDepth)
+    {
+        //which neighbor is in the direction of the gravity source
+        NavigationNode groundNeighbor = null;
+        float smallestAngle = float.MaxValue;
+        foreach (NavigationNode neighbor in homeNode.neighbors)
         {
-            NavigationNode neighbor = neighborTuple.Item2;
-            Vector2 neighborDirection = neighbor.position - node.position;
+            Vector2 neighborDirection = neighbor.position - homeNode.position;
             float angle = Vector2.Angle(closestGravityDirection, neighborDirection);
             if (angle <= 22.5f && angle < smallestAngle)
             {
@@ -192,16 +217,22 @@ public class NavigationManager : MonoBehaviour
             }
         }
 
+        //is the neighbor in the direction a solid
         foreach (Collider2D collider in groundNeighbor.colliders)
         {
             if (collider.gameObject.layer == LayerMask.NameToLayer("planet") ||
                 collider.gameObject.layer == LayerMask.NameToLayer("platform"))
             {
-                return true;
+                return parentDepth;
             }
         }
 
-        return false;
+        if (parentDepth >= 5)
+        {
+            return parentDepth+1;
+        }
+
+        return recursiveNeighborCheck(groundNeighbor, closestGravityDirection, parentDepth + 1);
     }
 
     private static void generateGravityPointMap() {
@@ -286,9 +317,8 @@ public class NavigationManager : MonoBehaviour
             closedSet.Add(current);
 
             // Evaluate neighboring nodes.
-            foreach (var neighborTuple in current.neighbors)
+            foreach (NavigationNode neighbor in current.neighbors)
             {
-                NavigationNode neighbor = neighborTuple.Item2;
                 if (closedSet.Contains(neighbor))
                     continue;
 
@@ -384,6 +414,10 @@ public class NavigationManager : MonoBehaviour
             else if(node.movementCost == NAVIGATIONCOSTS.AIR)
             {
                 Gizmos.color = Color.blue;
+            }
+            else if(node.movementCost == NAVIGATIONCOSTS.JUMPABLE)
+            {
+                Gizmos.color = Color.yellow;
             }
             Gizmos.DrawSphere(node.position, 0.1f);
         }
