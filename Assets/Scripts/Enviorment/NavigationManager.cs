@@ -36,6 +36,7 @@ public class NavigationManager : MonoBehaviour
         {
             Destroy(gameObject);
         }
+        runGenerateNavigationMesh = true;
     }
 
     public void FixedUpdate()
@@ -142,7 +143,11 @@ public class NavigationManager : MonoBehaviour
                 {
                     node.gravityDirection = collider.transform.rotation * Vector2.down;
                 }
-                solid = (collider.gameObject.layer == LayerMask.NameToLayer("planet") || collider.gameObject.layer == LayerMask.NameToLayer("platform"));
+                if (collider.gameObject.layer == LayerMask.NameToLayer("planet") ||
+                    collider.gameObject.layer == LayerMask.NameToLayer("platform"))
+                {
+                    solid = true;
+                }
             }
             if (solid)
             {
@@ -227,7 +232,7 @@ public class NavigationManager : MonoBehaviour
             }
         }
 
-        if (parentDepth >= 5)
+        if (parentDepth >= instance.jumpMax)
         {
             return parentDepth+1;
         }

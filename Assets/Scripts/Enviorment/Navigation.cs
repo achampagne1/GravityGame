@@ -5,7 +5,7 @@ public enum NAVIGATIONCOSTS
 {
     SOLID = 10000,
     AIR = 900,
-    JUMPABLE = 50,
+    JUMPABLE = 2,
     GROUND = 1,
 }
 

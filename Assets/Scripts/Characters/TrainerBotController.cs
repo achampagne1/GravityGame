@@ -12,6 +12,7 @@ public class TrainerController : SpacePersonController
     [SerializeField] Vector2 end = new Vector2();
     [SerializeField] bool findPath = false;
     [SerializeField] bool pathDebug = false;
+    [SerializeField] bool regeneratePath = false;
     [SerializeField] float nodeArrivalDistance = 0.1f;
     [SerializeField] float jumpThreshold = .1f;
 
@@ -29,12 +30,14 @@ public class TrainerController : SpacePersonController
     public override void Start()
     {
         base.Start();
+        regeneratePath = true;
     }
 
     public void FixedUpdate()
     {
-        if (NavigationManager.meshReady && generatePathCoroutine == null)
+        if (NavigationManager.meshReady && generatePathCoroutine == null && regeneratePath)
         {
+            regeneratePath = false;
             generatePathCoroutine = StartCoroutine(generatePath());
         }
 
@@ -52,6 +55,7 @@ public class TrainerController : SpacePersonController
         path = NavigationManager.findPath(transform.position, end, null);
         Debug.Log("Path generated with " + path.Count + " nodes.");
         yield return null;
+        generatePathCoroutine = null;
     }
 
     private IEnumerator navigation(List<Vector2> nodes)
@@ -63,11 +67,12 @@ public class TrainerController : SpacePersonController
             Vector2 currentNode = nodes[iterator];
             Vector2 nodeOffset = Quaternion.Inverse(transform.rotation) * (currentNode - (Vector2)transform.position);
 
-            if (Mathf.Abs(nodeOffset.x) <= nodeArrivalDistance || Mathf.Abs(nodeOffset.y) <= nodeArrivalDistance)
+            //if within a reasonable distance of the node
+            if (nodeOffset.magnitude <= nodeArrivalDistance)
             {
                 iterator++;
             }
-            else
+            else //navigate to node
             {
                 int direction = nodeOffset.x > 0f ? 1 : nodeOffset.x < 0f ? -1 : 0;
                 setMovement(direction);
