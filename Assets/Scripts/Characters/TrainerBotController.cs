@@ -64,25 +64,26 @@ public class TrainerController : SpacePersonController
         while (iterator < nodes.Count)
         {
             space = false;
-            Vector2 currentNode = nodes[iterator];
-            Vector2 nodeOffset = Quaternion.Inverse(transform.rotation) * (currentNode - (Vector2)transform.position);
-
-            //if within a reasonable distance of the node
-            if (nodeOffset.magnitude <= nodeArrivalDistance)
+            Vector2 nodeOffset = Vector2.zero;
+            
+            //fast forward node until node outside of arrival distance is found
+            while(nodeOffset.magnitude <= nodeArrivalDistance && iterator < nodes.Count)
             {
+                Vector2 currentNode = nodes[iterator];
+                nodeOffset = Quaternion.Inverse(transform.rotation) * (currentNode - (Vector2)transform.position);
                 iterator++;
             }
-            else //navigate to node
-            {
-                int direction = nodeOffset.x > 0f ? 1 : nodeOffset.x < 0f ? -1 : 0;
-                setMovement(direction);
-                setOrientation(direction);
 
-                if (nodeOffset.y > jumpThreshold)
-                {
-                    space = true;
-                }
+
+            int direction = nodeOffset.x > 0f ? 1 : nodeOffset.x < 0f ? -1 : 0;
+            setMovement(direction);
+            setOrientation(direction);
+
+            if (nodeOffset.y > jumpThreshold)
+            {
+                space = true;
             }
+
             yield return null;
         }
 
