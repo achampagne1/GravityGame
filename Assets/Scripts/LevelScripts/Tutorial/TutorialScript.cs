@@ -15,7 +15,7 @@ public class TutorialScript : MonoBehaviour
     [SerializeField] GameObject teleporter2;
     [SerializeField] GameObject player;
     [SerializeField] GameObject greenTeamOriginal;
-    [SerializeField] GameObject spawnPoint;
+    [SerializeField] Vector2 spawnPoint;
     [SerializeField] GameObject uIDocument;
     [SerializeField] GameObject enemies;
     [SerializeField] GameObject wayPoint;
@@ -23,7 +23,10 @@ public class TutorialScript : MonoBehaviour
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam;
     [SerializeField] Cinemachine.CinemachineVirtualCamera teleporterCam2;
     [SerializeField] Cinemachine.CinemachineVirtualCamera playerCam;
-    [SerializeField] float[] playArea = { 50, 50 }; //generic play area 
+    [SerializeField] float[] playArea = { 50, 50 }; //generic play area
+    [SerializeField] private Collider2D teleporterTriggerCollider;
+    [SerializeField] private Collider2D jumpTrigger;
+    [SerializeField] private Collider2D asteroidTrigger;
     private SpaceManController spaceManController;
     private Timer eventTimer = new Timer(30f);
     private UIHandler uIHandler;
@@ -32,6 +35,8 @@ public class TutorialScript : MonoBehaviour
     private Objective currentObjective;
     private bool objectivesLoading = true;
     int eventChoice = 0; //0 is reserved for no choice being made or reset
+    private float playerSpawnTime = 0.0f;
+    private float playerJumpTime = 0.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -57,8 +62,6 @@ public class TutorialScript : MonoBehaviour
             StartCoroutine(loadObjectives());
             yield return new WaitUntil(() => !objectivesLoading); //waits for the loading of the objectives to complete
 
-            //set player body and hand to transparent
-            setPlayerOpacity(0f, player);
             StartCoroutine(gameScript());
             StartCoroutine(failConditions());
         }
@@ -68,6 +71,9 @@ public class TutorialScript : MonoBehaviour
     {
         //KEEP UP WITH THE COMMENTS!!!
         //Each action should have a comment
+
+        //set player body and hand to transparent
+        setPlayerOpacity(0f, player);
 
         //Sets initial objective
         changeObjective("nocurrentobjective");
@@ -86,15 +92,15 @@ public class TutorialScript : MonoBehaviour
         //shakes camera
         teleporterCamController.setShake(true);
         yield return new WaitForSeconds(.2f);
-
-        //puts player on pad(spawnPoint)
-        player.transform.position = spawnPoint.transform.position;
+        
         //turns off teleporter
         teleporterController.turnOnOff(false);
         yield return new WaitForSeconds(.75f);
 
         //shuts off the beam
         teleporterController.forceBeamOff();
+        //puts player on pad(spawnPoint)
+        player.transform.position = spawnPoint;
         //changes camera to player
         teleporterCam.Priority = 1;
         playerCam.Priority = 2;
@@ -102,8 +108,14 @@ public class TutorialScript : MonoBehaviour
         playerRb.simulated = true;
         //set player back to visible
         setPlayerOpacity(1f,player);
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(2f);
 
+        //waits for player to leave spawn, if dont leave, display left right animation
+        yield return new WaitUntil(playerLeaveSpawn);
+
+        yield return new WaitUntil(playerJump);
+
+        /*
         //pulls up coms and displayes general text
         uIHandler.setBubbleText("Coms check kid, can you hear me?");
         yield return new WaitForSeconds(.1f); //tiny delay for loading
@@ -209,6 +221,49 @@ public class TutorialScript : MonoBehaviour
 
         //returns to main menu
         SceneManager.LoadScene("MainMenu");
+        */
+    }
+
+    private bool playerLeaveSpawn()
+    {
+        bool leftSpawn = !teleporterTriggerCollider.IsTouching(spaceManController.getCollider());
+        if (!leftSpawn)
+        {
+            playerSpawnTime += Time.deltaTime;
+            if (playerSpawnTime > 5f)
+            {
+                uIHandler.setElementVisible("leftRight", true);
+                uIHandler.runAnimation("leftRightAnimation", true);
+            }
+        }
+        else
+        {
+            uIHandler.setElementVisible("leftRight", false);
+            uIHandler.runAnimation("leftRightAnimation", false);
+        }
+            return leftSpawn;
+    }
+
+    private bool playerJump()
+    {
+        bool playerJumped = asteroidTrigger.IsTouching(spaceManController.getCollider());
+        bool playerEnteredumpTrigger = jumpTrigger.IsTouching(spaceManController.getCollider());
+        if (playerEnteredumpTrigger)
+        {
+            playerJumpTime += Time.deltaTime;
+            if (playerJumpTime > 5f)
+            {
+                uIHandler.setElementVisible("space", true);
+                uIHandler.runAnimation("spaceAnimation", true);
+            }
+        }
+
+        if(playerJumped)
+        {
+            uIHandler.setElementVisible("space", false);
+            uIHandler.runAnimation("spaceAnimation", false);
+        }
+        return playerJumped;
     }
 
     private IEnumerator failConditions()
@@ -226,26 +281,6 @@ public class TutorialScript : MonoBehaviour
             }
             yield return new WaitForSeconds(.2f);
         }
-    }
-
-    private bool acknowledgeOrWait()
-    {
-        if (!eventTimer.getIsRunning())
-            eventTimer.startTimer();
-        if (uIHandler.getAcknowledgeComs())
-        {
-            eventChoice = 1;
-            eventTimer.resetTimer();
-            return true;
-        }
-        else if (eventTimer.checkTimer())
-        {
-            eventChoice = 2;
-            eventTimer.resetTimer();
-            return true;
-        }
-        else
-            return false;
     }
 
     private void changeObjective(string name)

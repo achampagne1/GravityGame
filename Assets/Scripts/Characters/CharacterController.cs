@@ -59,7 +59,7 @@ public class CharacterController : ObjectController,IHealth
 
     //protected game variables
     protected bool click = false;
-    protected bool space = false;
+    [SerializeField] protected bool space = false;
     protected bool dead = false;
     protected bool strikeLeftLatch = false;
     protected bool hitLatch = false;

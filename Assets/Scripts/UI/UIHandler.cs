@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using UnityEngine.InputSystem;
 using System.Threading.Tasks;
+using System.Reflection;
 
 public struct UIFrame
 {
@@ -16,6 +17,7 @@ public class UIAnimation
     private VisualElement visualElement;
     private List<UIFrame> frames = new List<UIFrame>();
     private Coroutine animationCoroutine;
+    private bool running = false;
     private int frameIndex;
 
     public UIAnimation(VisualElement visualElement)
@@ -36,6 +38,12 @@ public class UIAnimation
             return;
         }
 
+        if (running)
+        {
+            return;
+        }
+
+        running = true;
         if (animationCoroutine == null)
         {
             animationCoroutine = UIHandler.instance.StartCoroutine(animateFrames());
@@ -44,6 +52,8 @@ public class UIAnimation
 
     public void stopAnimation()
     {
+        running = false;
+
         if(animationCoroutine != null)
         {
             UIHandler.instance.StopCoroutine(animationCoroutine);
@@ -131,8 +141,8 @@ public class UIHandler : MonoBehaviour
     private Coroutine revealBubbleTextCoroutine = null;
     private Coroutine warningCoroutineVariable = null;
 
-    UIAnimation leftRightAnimation;
-    UIAnimation spaceAnimation;
+    private UIAnimation leftRightAnimation;
+    private UIAnimation spaceAnimation;
 
     private void Awake()
     {
@@ -377,9 +387,44 @@ public class UIHandler : MonoBehaviour
         }
     }
 
-    public void setPlayLeftRightAnimation(bool play)
+    public void setElementVisible(string name, bool visible)
     {
-        playLeftRightAnimation = play;
+        VisualElement element = GetComponent<UIDocument>().rootVisualElement.Q<VisualElement>(name);
+        if (element != null)
+        {
+            element.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+        else
+        {
+            Debug.LogWarning($"Element with name '{name}' not found.");
+        }
+    }
+
+    public void runAnimation(string name, bool run)
+    {
+        UIAnimation animation = this.GetType().GetField(name, BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(this) as UIAnimation;
+        if(animation == null)
+        {
+            return;
+        }
+
+        if (name == nameof(leftRightAnimation))
+        {
+            playLeftRightAnimation = run;
+        }
+        else if (name == nameof(spaceAnimation))
+        {
+            playSpaceAnimation = run;
+        }
+
+        if (run)
+        {
+            animation.startAnimation();
+        }
+        else
+        {
+            animation.stopAnimation();
+        }
     }
 
     public void setHealthValue(float health)
