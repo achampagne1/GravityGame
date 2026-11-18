@@ -81,14 +81,12 @@ public class SpaceManController : SpacePersonController
         }
     }
 
-    private Vector3 mouseToDirection(Vector3 inputDirection, Quaternion playerRotation)
+    private Vector2 mouseToDirection(Vector2 inputDirection, Quaternion playerRotation)
     {
-        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f+ (cameraShift * Screen.height));
-        Vector2 direction = new Vector2(inputDirection.x, inputDirection.y) - screenCenter;
-        Vector2 normalizedDirection = direction.normalized;
-        Vector3 direction3D = new Vector3(normalizedDirection.x, normalizedDirection.y, 0f);
-        Vector3 rotatedDirection = playerRotation * direction3D;
-        return new Vector2(rotatedDirection.x, rotatedDirection.y).normalized;
+        Vector2 screenCenter = Camera.main.WorldToScreenPoint(transform.position);
+        Vector2 direction = inputDirection - screenCenter;
+        Vector2 rotatedDirection = playerRotation * direction;
+        return rotatedDirection.normalized;
     }
 
     //NOTE: triggers have to be done on a seperate trigger game object. If you are looking for a trigger, look there
