@@ -272,7 +272,7 @@ public class TutorialScript : MonoBehaviour
         {
             //for all the failure conditions
             if(spaceManController.getDead()|| 
-                (Mathf.Abs(player.transform.position.x) > playArea[0] || Mathf.Abs(player.transform.position.y) > playArea[1])||
+                //(Mathf.Abs(player.transform.position.x) > playArea[0] || Mathf.Abs(player.transform.position.y) > playArea[1])||
                 spaceManController.getCurrentFuel()==0)
             {
                 uIHandler.showLevelEnd(false);
