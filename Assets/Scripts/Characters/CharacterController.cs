@@ -56,6 +56,7 @@ public class CharacterController : ObjectController,IHealth
     [SerializeField] private float knockBackDuration = .1f;
     [SerializeField] protected float groundedGracePeriod = 0.1f;
     [SerializeField] private Vector2 hitMarkCenter = new Vector2(-2f,2.5f);
+    [SerializeField] private int footstepIndex = -1;
 
     //protected game variables
     protected bool click = false;
@@ -74,6 +75,8 @@ public class CharacterController : ObjectController,IHealth
     private List<CharacterStateNode> characterStates = new List<CharacterStateNode>();
     private Coroutine hurtStateCoroutine;
     private bool hurtStateActive;
+    private List<AudioClip> materialFootsteps = new List<AudioClip>();
+    private AudioSource soundEffectSource;
 
     //vectors
     private Vector2 moveDirection = Vector2.zero;
@@ -96,6 +99,15 @@ public class CharacterController : ObjectController,IHealth
 
         health = maxHealth;
         characterProps = new List<CharacterProp>();
+
+        try
+        {
+            soundEffectSource = GetComponent<AudioSource>();
+        }
+        catch
+        {
+            Debug.LogError("no attached audio source");
+        }
 
         try
         {
@@ -130,6 +142,7 @@ public class CharacterController : ObjectController,IHealth
         calculateMovement();
         calculateDrag();
         detectLedge();
+        playFootstep();
 
         //NOTE: when a force local is added, movement,jump, and drag are ignored. mioght redo in the future
         if (!forceLocalAdded)
@@ -432,6 +445,17 @@ public class CharacterController : ObjectController,IHealth
         }
     }
 
+    public void playFootstep()
+    {
+        if(footstepIndex == -1 || materialFootsteps == null || materialFootsteps.Count == 0)
+            return;
+
+        soundEffectSource.Stop();
+        soundEffectSource.clip = materialFootsteps[footstepIndex];
+        soundEffectSource.Play();
+        footstepIndex = -1;
+    }
+
     public void setMovement(int moveInput)
     {
         horizontalInput = moveInput;
@@ -475,6 +499,11 @@ public class CharacterController : ObjectController,IHealth
     public void setForceLocalAdded(bool forceLocalAdded)
     {
         this.forceLocalAdded = forceLocalAdded;
+    }
+
+    public void setMaterialFootsteps(List<AudioClip> footsteps)
+    {
+        materialFootsteps = footsteps;
     }
 
     public Vector2 getGravityDirection()

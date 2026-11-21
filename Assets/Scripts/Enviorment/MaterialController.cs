@@ -6,6 +6,7 @@ public class MaterialController : MonoBehaviour
 {
     [SerializeField] ParticleSystem hitMark;
     [SerializeField] float dirtThrowThreshold = 5f;
+    [SerializeField] List<AudioClip> footsteps = new List<AudioClip>();
     // Start is called before the first frame update
     void Start()
     {
@@ -19,7 +20,9 @@ public class MaterialController : MonoBehaviour
     }
     public void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.relativeVelocity.magnitude < dirtThrowThreshold)
+        CharacterController character = collision.gameObject.GetComponent<CharacterController>();
+        character.setMaterialFootsteps(footsteps);
+        /*if (collision.relativeVelocity.magnitude < dirtThrowThreshold)
             return;
 
         //TODO: use the collision code for the shield hit locaiton and explosiions
@@ -30,6 +33,6 @@ public class MaterialController : MonoBehaviour
         hitMarkClone.transform.up = contact.normal;
         hitMarkClone.transform.rotation *= rotationAdjuster;
         hitMarkClone.Play();
-        Destroy(hitMarkClone.gameObject, .1f);
+        Destroy(hitMarkClone.gameObject, .1f);*/
     }
 }

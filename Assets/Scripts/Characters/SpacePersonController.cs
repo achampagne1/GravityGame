@@ -9,7 +9,6 @@ public class SpacePersonController : CharacterController
 {
     //object creation
     protected HandController handController;
-    private AudioSource jetPackAudioSource;
     protected Timer hoverTimer;
 
     //public game variables;
@@ -40,15 +39,6 @@ public class SpacePersonController : CharacterController
 
     public override void Start()
     {
-
-        try
-        {
-            jetPackAudioSource = GetComponents<AudioSource>()[1];
-        }
-        catch
-        {
-            Debug.LogError("no attached audio source");
-        }
 
         foreach(Transform child in transform)
         {
@@ -131,7 +121,7 @@ public class SpacePersonController : CharacterController
         rotatedY = -gravityDirection.y;
         if (space && groundStopWatch.getElapsedTime()>0.4f && !hoverFlag&& currentFuel > 0)
         {
-            jetPackAudioSource.Play();
+            //jetPackAudioSource.Play();
             hoverFlag = true;
             jetPackFlameClone = Instantiate(jetPackFlame);
             jetPackFlameClone.transform.parent = gameObject.transform;
@@ -141,7 +131,7 @@ public class SpacePersonController : CharacterController
 
         if (!space || currentFuel == 0)
         {
-            jetPackAudioSource.Stop();
+            //jetPackAudioSource.Stop();
             hoverFlag = false;
             Destroy(jetPackFlameClone);
         }
