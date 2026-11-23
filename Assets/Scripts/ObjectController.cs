@@ -33,7 +33,7 @@ public class ObjectController : MonoBehaviour, ILeft
     //game variables
     static protected int layerMaskPlatforms = 0;
     protected bool up = false;
-    protected bool isGrounded = false;
+    [SerializeField] protected bool isGrounded = false;
     protected float heightObject = 0;
     private float groundAngle = 0f;
     private float steepestGrade = 135f;

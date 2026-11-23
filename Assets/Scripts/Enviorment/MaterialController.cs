@@ -22,17 +22,5 @@ public class MaterialController : MonoBehaviour
     {
         CharacterController character = collision.gameObject.GetComponent<CharacterController>();
         character.setMaterialFootsteps(footsteps);
-        /*if (collision.relativeVelocity.magnitude < dirtThrowThreshold)
-            return;
-
-        //TODO: use the collision code for the shield hit locaiton and explosiions
-        ContactPoint2D contact = collision.GetContact(0);
-        Vector2 collisionPoint = contact.point;
-        ParticleSystem hitMarkClone = Instantiate(hitMark, collisionPoint, Quaternion.identity);
-        Quaternion rotationAdjuster = Quaternion.Euler(90f, -90f, 0f);
-        hitMarkClone.transform.up = contact.normal;
-        hitMarkClone.transform.rotation *= rotationAdjuster;
-        hitMarkClone.Play();
-        Destroy(hitMarkClone.gameObject, .1f);*/
     }
 }

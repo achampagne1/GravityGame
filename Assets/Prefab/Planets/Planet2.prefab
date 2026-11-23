@@ -388,6 +388,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   hitMark: {fileID: 6006924426108491367, guid: 7f56c4cac122c224e82e6b6e94ba8625, type: 3}
   dirtThrowThreshold: 5
+  footsteps:
+  - {fileID: 8300000, guid: ad2c2c038049cf740a5db58546e8f7c7, type: 3}
+  - {fileID: 8300000, guid: dce11ebfb8ef4594a8d7cb34ad07fc98, type: 3}
+  - {fileID: 8300000, guid: 3e367d855471a0a49a82e910bf865228, type: 3}
+  - {fileID: 8300000, guid: b9de46f7e102e2147ba3dd1761656ade, type: 3}
+  - {fileID: 8300000, guid: 0a85319d5005e4c40b328f931ce9d1c1, type: 3}
 --- !u!1 &5313542911417304333
 GameObject:
   m_ObjectHideFlags: 0

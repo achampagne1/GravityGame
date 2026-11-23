@@ -19,6 +19,7 @@ public class SpacePersonController : CharacterController
     [SerializeField] private GameObject landingSmoke;
     [SerializeField] private GameObject jetPackFlame;
     [SerializeField] private Vector2 flameOffset = new Vector2(-4.25f, -6.5f);
+    [SerializeField] private AudioClip jetPackSound;
 
 
     //private game variables
@@ -121,7 +122,8 @@ public class SpacePersonController : CharacterController
         rotatedY = -gravityDirection.y;
         if (space && groundStopWatch.getElapsedTime()>0.4f && !hoverFlag&& currentFuel > 0)
         {
-            //jetPackAudioSource.Play();
+            soundEffectSource.clip = jetPackSound;
+            soundEffectSource.Play();
             hoverFlag = true;
             jetPackFlameClone = Instantiate(jetPackFlame);
             jetPackFlameClone.transform.parent = gameObject.transform;
@@ -131,7 +133,8 @@ public class SpacePersonController : CharacterController
 
         if (!space || currentFuel == 0)
         {
-            //jetPackAudioSource.Stop();
+            if(soundEffectSource.clip == jetPackSound) //NOTE: dont rally like using the clip to determine to stop the sound
+                soundEffectSource.Stop();
             hoverFlag = false;
             Destroy(jetPackFlameClone);
         }

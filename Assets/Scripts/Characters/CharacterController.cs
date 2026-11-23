@@ -76,8 +76,8 @@ public class CharacterController : ObjectController,IHealth
     private Coroutine hurtStateCoroutine;
     private bool hurtStateActive;
     private List<AudioClip> materialFootsteps = new List<AudioClip>();
-    private AudioSource soundEffectSource;
-    private int footStepIndex = 0;
+    protected AudioSource soundEffectSource;
+    [SerializeField] private int footStepIndex = 0;
 
     //vectors
     private Vector2 moveDirection = Vector2.zero;
@@ -505,8 +505,12 @@ public class CharacterController : ObjectController,IHealth
 
     public void setMaterialFootsteps(List<AudioClip> footsteps)
     {
-        footStepIndex = 0;
-        materialFootsteps = footsteps;
+        if(footsteps != materialFootsteps)
+        {
+            Debug.Log("here\n");
+            footStepIndex = 0;
+            materialFootsteps = footsteps;
+        }
     }
 
     public Vector2 getGravityDirection()

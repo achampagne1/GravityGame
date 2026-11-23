@@ -376,6 +376,9 @@ MonoBehaviour:
   footsteps:
   - {fileID: 8300000, guid: da7c3bffe6046ef4fafb40f9f927513d, type: 3}
   - {fileID: 8300000, guid: 260096aae14feee45b1dc6095af802db, type: 3}
+  - {fileID: 8300000, guid: 557a9e0f322859e4e9104477f6789573, type: 3}
+  - {fileID: 8300000, guid: 64498cdac8189394291ad00815dc2087, type: 3}
+  - {fileID: 8300000, guid: a856850ee18343748b3023d2a477776c, type: 3}
 --- !u!1 &5269796088060109694
 GameObject:
   m_ObjectHideFlags: 0
