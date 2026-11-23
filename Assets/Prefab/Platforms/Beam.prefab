@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7578315729686971080}
   - component: {fileID: 511028534992545758}
   - component: {fileID: 8760399099236853274}
+  - component: {fileID: 485290129860444966}
   m_Layer: 8
   m_Name: Beam
   m_TagString: Untagged
@@ -139,3 +140,23 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 10.48, y: 3.19}
   m_EdgeRadius: 0
+--- !u!114 &485290129860444966
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1384425628665736535}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7168cfad7f4e51c47b25ee74ba85a997, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MaterialController
+  hitMark: {fileID: 0}
+  dirtThrowThreshold: 5
+  footsteps:
+  - {fileID: 8300000, guid: 734631c44398b004c8940e84c1332ab7, type: 3}
+  - {fileID: 8300000, guid: 5f8482ee224b3dd42b8e6980bed2ace2, type: 3}
+  - {fileID: 8300000, guid: ff85dd901a5b3984896cbf024b806081, type: 3}
+  - {fileID: 8300000, guid: f43bc376309e38340b9958752ef5fa51, type: 3}
+  - {fileID: 8300000, guid: cf7678152655e3a49976aa9c89a901fa, type: 3}

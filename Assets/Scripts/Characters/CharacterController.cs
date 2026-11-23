@@ -56,7 +56,7 @@ public class CharacterController : ObjectController,IHealth
     [SerializeField] private float knockBackDuration = .1f;
     [SerializeField] protected float groundedGracePeriod = 0.1f;
     [SerializeField] private Vector2 hitMarkCenter = new Vector2(-2f,2.5f);
-    [SerializeField] private int footstepIndex = -1;
+    [SerializeField] private bool triggerFootstep = false;
 
     //protected game variables
     protected bool click = false;
@@ -77,6 +77,7 @@ public class CharacterController : ObjectController,IHealth
     private bool hurtStateActive;
     private List<AudioClip> materialFootsteps = new List<AudioClip>();
     private AudioSource soundEffectSource;
+    private int footStepIndex = 0;
 
     //vectors
     private Vector2 moveDirection = Vector2.zero;
@@ -447,13 +448,14 @@ public class CharacterController : ObjectController,IHealth
 
     public void playFootstep()
     {
-        if(footstepIndex == -1 || materialFootsteps == null || materialFootsteps.Count == 0)
+        if(!triggerFootstep|| materialFootsteps == null || materialFootsteps.Count == 0)
             return;
 
         soundEffectSource.Stop();
-        soundEffectSource.clip = materialFootsteps[footstepIndex];
+        soundEffectSource.clip = materialFootsteps[footStepIndex];
         soundEffectSource.Play();
-        footstepIndex = -1;
+        footStepIndex = (footStepIndex + 1) % materialFootsteps.Count;
+        triggerFootstep = false;
     }
 
     public void setMovement(int moveInput)
@@ -503,6 +505,7 @@ public class CharacterController : ObjectController,IHealth
 
     public void setMaterialFootsteps(List<AudioClip> footsteps)
     {
+        footStepIndex = 0;
         materialFootsteps = footsteps;
     }
 
