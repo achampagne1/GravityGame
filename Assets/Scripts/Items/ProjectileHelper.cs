@@ -42,9 +42,10 @@ public class ProjectileHelper:IProjectileInfo,IDamager
 
     public void OnTriggerEnter2D(Collider2D trigger)
     {
-        //dont know if this affects anything
-        //if (trigger.gameObject.GetComponent<TriggerBoundaryController>().getLayerConnectedTo() != shotBy)
-        //    Object.Destroy(gameObject);
+        TriggerBoundaryController trController = trigger.GetComponent<TriggerBoundaryController>();
+
+        if (trController!=null && trController.getLayerConnectedTo() != shotBy)
+            Object.Destroy(gameObject);
     }
 
     public void update()
@@ -55,8 +56,8 @@ public class ProjectileHelper:IProjectileInfo,IDamager
 
     public bool damage(GameObject hitGameObject)
     {
-
-        if (shotBy == hitGameObject.layer|| (hitGameObject.layer == 14&&hitGameObject.GetComponent<TriggerBoundaryController>().getLayerConnectedTo()==shotBy))
+        TriggerBoundaryController trController = hitGameObject.GetComponent<TriggerBoundaryController>();
+        if (shotBy == hitGameObject.layer||(trController!= null && trController.getLayerConnectedTo()==shotBy))
         {
             return false;
         }
