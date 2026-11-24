@@ -109,6 +109,12 @@ public class CharacterProp : MonoBehaviour, ILeft
         }  
     }
 
+    public void frameSync()
+    {
+        if(animator!=null)
+            animator.Play(animator.GetCurrentAnimatorStateInfo(0).fullPathHash, 0, 0f);
+    }
+
     protected virtual void relaxedState()
     {
         transform.localRotation = Quaternion.Lerp(transform.localRotation, originalRotation, transitionInterpolator);

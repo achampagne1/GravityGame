@@ -56,7 +56,6 @@ public class CharacterController : ObjectController,IHealth
     [SerializeField] private float knockBackDuration = .1f;
     [SerializeField] protected float groundedGracePeriod = 0.1f;
     [SerializeField] private Vector2 hitMarkCenter = new Vector2(-2f,2.5f);
-    [SerializeField] private bool triggerFootstep = false;
 
     //protected game variables
     protected bool click = false;
@@ -143,7 +142,6 @@ public class CharacterController : ObjectController,IHealth
         calculateMovement();
         calculateDrag();
         detectLedge();
-        playFootstep();
 
         //NOTE: when a force local is added, movement,jump, and drag are ignored. mioght redo in the future
         if (!forceLocalAdded)
@@ -245,6 +243,14 @@ public class CharacterController : ObjectController,IHealth
         SpriteRenderer hitMarkSR = mark.GetComponent<SpriteRenderer>();
         hitMarkSR.sortingOrder = spriteRenderer.sortingOrder +1;
         Destroy(mark, 0.1f);
+    }
+
+    public void frameSync()
+    {
+        foreach (CharacterProp characterProp in characterProps)
+        {
+            characterProp.frameSync();
+        }
     }
 
     protected virtual IEnumerator die()
@@ -448,14 +454,12 @@ public class CharacterController : ObjectController,IHealth
 
     public void playFootstep()
     {
-        if(!triggerFootstep|| materialFootsteps == null || materialFootsteps.Count == 0)
+        if(materialFootsteps == null || materialFootsteps.Count == 0)
             return;
 
         soundEffectSource.Stop();
-        soundEffectSource.clip = materialFootsteps[footStepIndex];
+        soundEffectSource.clip = materialFootsteps[UnityEngine.Random.Range(0, materialFootsteps.Count)];
         soundEffectSource.Play();
-        footStepIndex = (footStepIndex + 1) % materialFootsteps.Count;
-        triggerFootstep = false;
     }
 
     public void setMovement(int moveInput)
@@ -507,7 +511,6 @@ public class CharacterController : ObjectController,IHealth
     {
         if(footsteps != materialFootsteps)
         {
-            Debug.Log("here\n");
             footStepIndex = 0;
             materialFootsteps = footsteps;
         }

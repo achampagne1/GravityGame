@@ -43,7 +43,6 @@ public class ProjectileHelper:IProjectileInfo,IDamager
     public void OnTriggerEnter2D(Collider2D trigger)
     {
         TriggerBoundaryController trController = trigger.GetComponent<TriggerBoundaryController>();
-
         if (trController!=null && trController.getLayerConnectedTo() != shotBy)
             Object.Destroy(gameObject);
     }
