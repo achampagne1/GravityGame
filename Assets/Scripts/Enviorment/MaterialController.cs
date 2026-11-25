@@ -21,6 +21,9 @@ public class MaterialController : MonoBehaviour
     public void OnCollisionEnter2D(Collision2D collision)
     {
         CharacterController character = collision.gameObject.GetComponent<CharacterController>();
-        character.setMaterialFootsteps(footsteps);
+        if (character != null)
+        {
+            character.setMaterialFootsteps(footsteps);
+        }
     }
 }
