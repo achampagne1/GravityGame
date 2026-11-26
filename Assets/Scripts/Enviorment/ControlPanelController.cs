@@ -11,10 +11,14 @@ public class ControlPanelController : MonoBehaviour
     [SerializeField] Material off;
     [SerializeField] GameObject normalButton;
     [SerializeField] GameObject depressedButton;
+    [SerializeField] float pressReturnTime = 3f;
     [SerializeField] bool press = false;
+    [SerializeField] AudioClip alarmClip;
+    private float pressTime = 0f;
     private bool pressLatch = false;
     private GameObject depressedButtonInstance;
     private List<SpriteRenderer> squares = new List<SpriteRenderer>();
+    private AudioSource audioSource;
     private Coroutine flashingCoroutine;
     void Start()
     {
@@ -24,8 +28,9 @@ public class ControlPanelController : MonoBehaviour
         normalButton.SetActive(!press);
         depressedButtonInstance.SetActive(press);
         pressLatch = press;
+        audioSource = GetComponent<AudioSource>();
 
-        foreach(Transform child in transform)
+        foreach (Transform child in transform)
         {
             if(child.name == "Squares")
             {
@@ -44,9 +49,25 @@ public class ControlPanelController : MonoBehaviour
         if (press != pressLatch)
         {
             normalButton.SetActive(!press);
-            depressedButtonInstance.SetActive(press);
+
+            if(press)
+            {
+                SoundManager.instance.playSound(alarmClip, transform, 1f);
+                depressedButtonInstance.SetActive(true);
+            }
             pressLatch = press;
         }
+
+        if(press && pressTime < pressReturnTime)
+        {
+            pressTime += Time.deltaTime;
+        }
+        else
+        {
+            press = false;
+            pressTime = 0f;
+        }
+
     }
 
     private IEnumerator flashing()

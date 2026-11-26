@@ -457,9 +457,8 @@ public class CharacterController : ObjectController,IHealth
         if(materialFootsteps == null || materialFootsteps.Count == 0)
             return;
 
-        soundEffectSource.Stop();
-        soundEffectSource.clip = materialFootsteps[UnityEngine.Random.Range(0, materialFootsteps.Count)];
-        soundEffectSource.Play();
+        AudioClip footStep = materialFootsteps[UnityEngine.Random.Range(0, materialFootsteps.Count)];
+        SoundManager.instance.playSound(footStep, transform, 1f);
     }
 
     public void setMovement(int moveInput)
